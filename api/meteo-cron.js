@@ -1,8 +1,5 @@
 import { Redis } from '@upstash/redis';
 
-
-const kv = Redis.fromEnv();
-
 // Nadlac coordinates
 const LAT = 46.17;
 const LON = 20.75;
@@ -11,6 +8,13 @@ export default async function handler(req) {
   const API_KEY = process.env.OPENWEATHER_API_KEY;
   if (!API_KEY) {
     return Response.json({ error: 'OPENWEATHER_API_KEY lipsa' }, { status: 500 });
+  }
+
+  let kv;
+  try {
+    kv = Redis.fromEnv();
+  } catch (err) {
+    return Response.json({ error: 'Upstash Redis nu este configurat: ' + err.message }, { status: 503 });
   }
 
   try {
@@ -71,7 +75,7 @@ export default async function handler(req) {
     // 5) Disease risk detection (rain + warm = fungal risk)
     let diseaseRisk = { active: false, updatedAt: new Date().toISOString() };
     if (forecast?.list) {
-      const next48h = forecast.list.slice(0, 16); // 48 hours
+      const next48h = forecast.list.slice(0, 16);
       const rainyHours = next48h.filter(f => f.rain?.['3h'] > 0 || f.weather[0].main === 'Rain');
       const avgTemp = next48h.reduce((s, f) => s + f.main.temp, 0) / next48h.length;
       const avgHumidity = next48h.reduce((s, f) => s + f.main.humidity, 0) / next48h.length;
@@ -86,6 +90,14 @@ export default async function handler(req) {
     }
     await kv.set('livada:disease-risk', diseaseRisk);
 
+    // 6) Save cron run status (IMP-11: monitoring)
+    await kv.set('livada:cron:last-run', {
+      date: today,
+      success: true,
+      temp: weather.main.temp,
+      timestamp: Date.now(),
+    });
+
     return Response.json({
       success: true,
       date: today,
@@ -94,6 +106,8 @@ export default async function handler(req) {
       diseaseRisk: diseaseRisk.active,
     });
   } catch (err) {
+    // Save failure status
+    try { await kv.set('livada:cron:last-run', { success: false, error: err.message, timestamp: Date.now() }); } catch {}
     return Response.json({ error: err.message }, { status: 500 });
   }
 }

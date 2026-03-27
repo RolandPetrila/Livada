@@ -1,14 +1,21 @@
 import { Redis } from '@upstash/redis';
-
+import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
 export default async function handler(req) {
+  if (req.method === 'OPTIONS') return handleOptions(req);
+
   if (req.method !== 'POST') {
-    return Response.json({ error: 'Metoda nepermisa' }, { status: 405 });
+    return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders(req) });
   }
+
+  const authErr = checkAuth(req);
+  if (authErr) return authErr;
+  const limitErr = rateLimit(req);
+  if (limitErr) return limitErr;
 
   const GROQ_KEY = process.env.GROQ_API_KEY;
   if (!GROQ_KEY) {
-    return Response.json({ error: 'GROQ_API_KEY lipsa' }, { status: 500 });
+    return Response.json({ error: 'GROQ_API_KEY lipsa' }, { status: 500, headers: corsHeaders(req) });
   }
 
   try {
@@ -85,12 +92,12 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
     const result = await groqRes.json();
     const report = result.choices?.[0]?.message?.content || 'Nu am putut genera raportul.';
 
-    return Response.json({ report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length });
+    return Response.json({ report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length }, { headers: corsHeaders(req) });
   } catch (err) {
     const msg = err.message || String(err);
     if (msg.includes('UPSTASH')) {
-      return Response.json({ error: 'Vercel KV nu este configurat.' }, { status: 503 });
+      return Response.json({ error: 'Vercel KV nu este configurat.' }, { status: 503, headers: corsHeaders(req) });
     }
-    return Response.json({ error: msg }, { status: 500 });
+    return Response.json({ error: msg }, { status: 500, headers: corsHeaders(req) });
   }
 }

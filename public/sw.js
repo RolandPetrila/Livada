@@ -1,10 +1,13 @@
-const CACHE_NAME = 'livada-v1';
+const CACHE_NAME = 'livada-v3';
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
   '/icon.svg'
 ];
+
+// Google Fonts cache (IMP-1: offline fonts)
+const FONT_CACHE = 'livada-fonts-v1';
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -16,28 +19,51 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter(k => k !== CACHE_NAME && k !== FONT_CACHE)
+          .map(k => caches.delete(k))
+      )
     )
   );
   self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
-  // Network-first for API calls, cache-first for static
-  if (event.request.url.includes('/api/') || event.request.url.includes('api.openweathermap')) {
+  const url = event.request.url;
+
+  // Network-first for API calls
+  if (url.includes('/api/') || url.includes('api.openweathermap')) {
     event.respondWith(
       fetch(event.request).catch(() => caches.match(event.request))
     );
-  } else {
+    return;
+  }
+
+  // Cache-first for Google Fonts (long-lived)
+  if (url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com')) {
     event.respondWith(
       caches.match(event.request).then(cached => {
-        const fetched = fetch(event.request).then(response => {
+        if (cached) return cached;
+        return fetch(event.request).then(response => {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          caches.open(FONT_CACHE).then(cache => cache.put(event.request, clone));
           return response;
-        }).catch(() => cached);
-        return cached || fetched;
+        });
       })
     );
+    return;
   }
+
+  // Stale-while-revalidate for static assets
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      const fetched = fetch(event.request).then(response => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        return response;
+      }).catch(() => cached);
+      return cached || fetched;
+    })
+  );
 });

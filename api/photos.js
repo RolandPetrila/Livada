@@ -1,19 +1,11 @@
 import { put, list, del } from '@vercel/blob';
-
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
 export default async function handler(req) {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  if (req.method === 'OPTIONS') return handleOptions(req);
 
   try {
-    // GET — list photos (optionally filtered by species)
+    // GET — list photos (optionally filtered by species) — public, read-only
     if (req.method === 'GET') {
       const url = new URL(req.url);
       const species = url.searchParams.get('species');
@@ -27,8 +19,14 @@ export default async function handler(req) {
         uploadedAt: b.uploadedAt,
       }));
 
-      return Response.json(photos, { headers: corsHeaders });
+      return Response.json(photos, { headers: corsHeaders(req) });
     }
+
+    // POST/DELETE require auth + rate limit
+    const authErr = checkAuth(req);
+    if (authErr) return authErr;
+    const limitErr = rateLimit(req);
+    if (limitErr) return limitErr;
 
     // POST — upload a photo
     if (req.method === 'POST') {
@@ -38,7 +36,7 @@ export default async function handler(req) {
       const note = formData.get('note') || '';
 
       if (!file) {
-        return Response.json({ error: 'Niciun fisier selectat' }, { status: 400, headers: corsHeaders });
+        return Response.json({ error: 'Niciun fisier selectat' }, { status: 400, headers: corsHeaders(req) });
       }
 
       // Validate file type
@@ -46,7 +44,7 @@ export default async function handler(req) {
       if (!validTypes.includes(file.type)) {
         return Response.json(
           { error: 'Format invalid. Acceptat: JPG, PNG, WebP, HEIC' },
-          { status: 400, headers: corsHeaders }
+          { status: 400, headers: corsHeaders(req) }
         );
       }
 
@@ -54,7 +52,7 @@ export default async function handler(req) {
       if (file.size > 5 * 1024 * 1024) {
         return Response.json(
           { error: 'Fisierul depaseste 5MB' },
-          { status: 400, headers: corsHeaders }
+          { status: 400, headers: corsHeaders(req) }
         );
       }
 
@@ -69,7 +67,7 @@ export default async function handler(req) {
 
       return Response.json(
         { url: blob.url, pathname: blob.pathname, uploadedAt: new Date().toISOString() },
-        { headers: corsHeaders }
+        { headers: corsHeaders(req) }
       );
     }
 
@@ -77,21 +75,21 @@ export default async function handler(req) {
     if (req.method === 'DELETE') {
       const { url } = await req.json();
       if (!url) {
-        return Response.json({ error: 'URL lipsa' }, { status: 400, headers: corsHeaders });
+        return Response.json({ error: 'URL lipsa' }, { status: 400, headers: corsHeaders(req) });
       }
       await del(url);
-      return Response.json({ ok: true }, { headers: corsHeaders });
+      return Response.json({ ok: true }, { headers: corsHeaders(req) });
     }
 
-    return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders });
+    return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders(req) });
   } catch (err) {
     const msg = err.message || String(err);
     if (msg.includes('BLOB_READ_WRITE_TOKEN') || msg.includes('Missing')) {
       return Response.json(
         { error: 'Vercel Blob nu este configurat. Provisoneaza un Blob store din Vercel Dashboard → Storage.' },
-        { status: 503, headers: corsHeaders }
+        { status: 503, headers: corsHeaders(req) }
       );
     }
-    return Response.json({ error: msg }, { status: 500, headers: corsHeaders });
+    return Response.json({ error: msg }, { status: 500, headers: corsHeaders(req) });
   }
 }

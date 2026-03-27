@@ -1,3 +1,4 @@
+import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
 function uint8ToBase64(uint8) {
   const CHUNK = 8192;
@@ -9,13 +10,20 @@ function uint8ToBase64(uint8) {
 }
 
 export default async function handler(req) {
+  if (req.method === 'OPTIONS') return handleOptions(req);
+
   if (req.method !== 'POST') {
-    return Response.json({ error: 'Metoda nepermisa' }, { status: 405 });
+    return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders(req) });
   }
+
+  const authErr = checkAuth(req);
+  if (authErr) return authErr;
+  const limitErr = rateLimit(req);
+  if (limitErr) return limitErr;
 
   const API_KEY = process.env.GOOGLE_AI_API_KEY;
   if (!API_KEY) {
-    return Response.json({ error: 'GOOGLE_AI_API_KEY lipsa' }, { status: 500 });
+    return Response.json({ error: 'GOOGLE_AI_API_KEY lipsa' }, { status: 500, headers: corsHeaders(req) });
   }
 
   try {
@@ -24,12 +32,12 @@ export default async function handler(req) {
     const species = formData.get('species') || 'necunoscut';
 
     if (!file) {
-      return Response.json({ error: 'Nicio imagine selectata' }, { status: 400 });
+      return Response.json({ error: 'Nicio imagine selectata' }, { status: 400, headers: corsHeaders(req) });
     }
 
-    // Limit 10MB
-    if (file.size > 10 * 1024 * 1024) {
-      return Response.json({ error: 'Imaginea depaseste 10MB' }, { status: 400 });
+    // Limit 4MB (Vercel body limit is 4.5MB)
+    if (file.size > 4 * 1024 * 1024) {
+      return Response.json({ error: 'Imaginea depaseste 4MB' }, { status: 400, headers: corsHeaders(req) });
     }
 
     const bytes = new Uint8Array(await file.arrayBuffer());
@@ -95,8 +103,8 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     const text =
       result.candidates?.[0]?.content?.parts?.[0]?.text || 'Nu am putut analiza imaginea. Incearca cu o poza mai clara.';
 
-    return Response.json({ diagnosis: text });
+    return Response.json({ diagnosis: text }, { headers: corsHeaders(req) });
   } catch (err) {
-    return Response.json({ error: err.message }, { status: 500 });
+    return Response.json({ error: err.message }, { status: 500, headers: corsHeaders(req) });
   }
 }

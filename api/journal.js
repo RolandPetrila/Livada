@@ -1,29 +1,22 @@
 import { Redis } from '@upstash/redis';
-
+import { corsHeaders, handleOptions, checkAuth } from './_auth.js';
 
 const KEY = 'livada:journal';
 
-function getKV() {
-  return Redis.fromEnv();
-}
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
-
 export default async function handler(req) {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  if (req.method === 'OPTIONS') return handleOptions(req);
+
+  const authErr = checkAuth(req);
+  if (authErr) return authErr;
+
+  const hdrs = corsHeaders(req);
 
   try {
-    const kv = getKV();
+    const kv = Redis.fromEnv();
 
     if (req.method === 'GET') {
       const entries = (await kv.get(KEY)) || [];
-      return Response.json(entries, { headers: corsHeaders });
+      return Response.json(entries, { headers: hdrs });
     }
 
     if (req.method === 'POST') {
@@ -37,7 +30,7 @@ export default async function handler(req) {
       const merged = [...map.values()].sort((a, b) => b.id - a.id);
 
       await kv.set(KEY, merged);
-      return Response.json({ ok: true, count: merged.length }, { headers: corsHeaders });
+      return Response.json({ ok: true, count: merged.length }, { headers: hdrs });
     }
 
     if (req.method === 'DELETE') {
@@ -45,18 +38,18 @@ export default async function handler(req) {
       const stored = (await kv.get(KEY)) || [];
       const filtered = stored.filter(e => e.id !== id);
       await kv.set(KEY, filtered);
-      return Response.json({ ok: true, count: filtered.length }, { headers: corsHeaders });
+      return Response.json({ ok: true, count: filtered.length }, { headers: hdrs });
     }
 
-    return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders });
+    return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: hdrs });
   } catch (err) {
     const msg = err.message || String(err);
     if (msg.includes('UPSTASH') || msg.includes('Missing') || msg.includes('ERR')) {
       return Response.json(
-        { error: 'Vercel KV nu este configurat. Provisoneaza un KV store din Vercel Dashboard → Storage.' },
-        { status: 503, headers: corsHeaders }
+        { error: 'Vercel KV nu este configurat. Provisioneaza un KV store din Vercel Dashboard → Storage.' },
+        { status: 503, headers: hdrs }
       );
     }
-    return Response.json({ error: msg }, { status: 500, headers: corsHeaders });
+    return Response.json({ error: msg }, { status: 500, headers: hdrs });
   }
 }

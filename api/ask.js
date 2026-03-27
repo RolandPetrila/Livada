@@ -1,19 +1,27 @@
+import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
 export default async function handler(req) {
+  if (req.method === 'OPTIONS') return handleOptions(req);
+
   if (req.method !== 'POST') {
-    return Response.json({ error: 'Metoda nepermisa' }, { status: 405 });
+    return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders(req) });
   }
+
+  const authErr = checkAuth(req);
+  if (authErr) return authErr;
+  const limitErr = rateLimit(req);
+  if (limitErr) return limitErr;
 
   const API_KEY = process.env.GROQ_API_KEY;
   if (!API_KEY) {
-    return Response.json({ error: 'GROQ_API_KEY lipsa' }, { status: 500 });
+    return Response.json({ error: 'GROQ_API_KEY lipsa' }, { status: 500, headers: corsHeaders(req) });
   }
 
   try {
     const { question, species, context } = await req.json();
 
     if (!question || !question.trim()) {
-      return Response.json({ error: 'Scrie o intrebare' }, { status: 400 });
+      return Response.json({ error: 'Scrie o intrebare' }, { status: 400, headers: corsHeaders(req) });
     }
 
     // Truncate context to ~3000 chars (~750 tokens) to stay within limits
@@ -60,8 +68,8 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
     const result = await groqRes.json();
     const answer = result.choices?.[0]?.message?.content || 'Nu am putut genera un raspuns. Incearca din nou.';
 
-    return Response.json({ answer });
+    return Response.json({ answer }, { headers: corsHeaders(req) });
   } catch (err) {
-    return Response.json({ error: err.message }, { status: 500 });
+    return Response.json({ error: err.message }, { status: 500, headers: corsHeaders(req) });
   }
 }
