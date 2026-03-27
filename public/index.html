@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1a2e1a">
@@ -355,6 +355,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
   th { background: #e8e8e8; color: #333; }
 }
 
+/* ====== SKIP LINK ====== */
+.skip-link { position: absolute; top: -40px; left: 0; background: var(--accent); padding: 8px 16px; color: #fff; z-index: 1000; text-decoration: none; font-size: 0.9rem; }
+.skip-link:focus { top: 0; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
 /* ====== FROST & DISEASE ALERTS ====== */
 .alert-banner { padding: 10px 16px; font-size: 0.83rem; display: none; align-items: center; gap: 8px; color: #fff; }
 .alert-banner.active { display: flex; }
@@ -430,15 +435,17 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <body>
 
 <!-- ====== HEADER ====== -->
+<a href="#content" class="skip-link">Sari la con&#539;inut</a>
+<h1 class="visually-hidden">Livada Mea - Ghid Complet Pomicultur&#259;</h1>
 <header class="app-header">
   <div class="header-left">
     <div class="app-title">&#127795; Livada Mea <span>— Ghid Complet</span></div>
     <div class="app-subtitle">100+ pomi &bull; 17 specii &bull; Zona N&#259;dlac/Arad &bull; 2026</div>
   </div>
   <div class="header-actions">
-    <button class="icon-btn" id="btnSearch" title="Cautare">&#128269;</button>
-    <button class="icon-btn" id="btnTheme" title="Schimba tema">&#9790;</button>
-    <button class="icon-btn" onclick="showTokenSetup()" title="Set&#259;ri API">&#9881;</button>
+    <button class="icon-btn" id="btnSearch" title="Cautare" aria-label="Cautare">&#128269;</button>
+    <button class="icon-btn" id="btnTheme" title="Schimba tema" aria-label="Schimba tema">&#9790;</button>
+    <button class="icon-btn" onclick="showTokenSetup()" title="Set&#259;ri API" aria-label="Setari API">&#9881;</button>
   </div>
 </header>
 
@@ -461,7 +468,7 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <!-- ====== TABS ====== -->
-<nav class="tabs-wrapper" id="tabsWrapper">
+<nav class="tabs-wrapper" id="tabsWrapper" role="tablist">
   <div class="tabs" id="tabsBar">
     <span class="tab-sep">&#128203;</span>
     <div class="tab active" data-tab="plan-livada"><span class="tab-icon">&#128203;</span>Plan Livad&#259;</div>
@@ -494,7 +501,7 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </nav>
 
 <!-- ====== MAIN CONTENT ====== -->
-<main class="content">
+<main class="content" id="content">
 
 <!-- ==================== TAB: PLAN LIVADA ==================== -->
 <div class="tab-content active" id="plan-livada">
@@ -5674,11 +5681,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 
 <!-- ====== BOTTOM BAR ====== -->
 <nav class="bottom-bar">
-  <button class="bottom-btn" onclick="openModal('calculator')"><span class="b-icon">&#129518;</span>Calculator</button>
-  <button class="bottom-btn" onclick="openModal('jurnal')"><span class="b-icon">&#128211;</span>Jurnal</button>
-  <button class="bottom-btn" onclick="openModal('calendar')"><span class="b-icon">&#128197;</span>Calendar</button>
-  <button class="bottom-btn" onclick="openModal('meteo')"><span class="b-icon">&#127780;</span>Meteo</button>
-  <button class="bottom-btn" onclick="exportPDF()"><span class="b-icon">&#128228;</span>Export</button>
+  <button class="bottom-btn" onclick="openModal('calculator')" aria-label="Calculator dozare"><span class="b-icon">&#129518;</span>Calculator</button>
+  <button class="bottom-btn" onclick="openModal('jurnal')" aria-label="Jurnal interventii"><span class="b-icon">&#128211;</span>Jurnal</button>
+  <button class="bottom-btn" onclick="openModal('calendar')" aria-label="Calendar tratamente"><span class="b-icon">&#128197;</span>Calendar</button>
+  <button class="bottom-btn" onclick="openModal('meteo')" aria-label="Meteo Nadlac"><span class="b-icon">&#127780;</span>Meteo</button>
+  <button class="bottom-btn" onclick="exportPDF()" aria-label="Export PDF"><span class="b-icon">&#128228;</span>Export</button>
 </nav>
 
 <!-- ====== INSTALL BANNER ====== -->
@@ -5691,11 +5698,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <!-- ====== MODAL: CALCULATOR DOZE ====== -->
-<div class="modal-overlay" id="modal-calculator">
+<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-calculator">
   <div class="modal">
     <div class="modal-header">
       <h2>&#129518; Calculator Doze Tratamente</h2>
-      <button class="modal-close" onclick="closeModal('calculator')">&#10005;</button>
+      <button class="modal-close" aria-label="Inchide" onclick="closeModal('calculator')">&#10005;</button>
     </div>
     <div class="modal-body">
       <label for="calcProduct">Produs</label>
@@ -5745,11 +5752,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <!-- ====== MODAL: JURNAL ====== -->
-<div class="modal-overlay" id="modal-jurnal">
+<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-jurnal">
   <div class="modal">
     <div class="modal-header">
       <h2>&#128211; Jurnal <span id="syncBadge" class="sync-badge"><span class="sd"></span></span></h2>
-      <button class="modal-close" onclick="closeModal('jurnal')">&#10005;</button>
+      <button class="modal-close" aria-label="Inchide" onclick="closeModal('jurnal')">&#10005;</button>
     </div>
     <div class="modal-body">
       <label for="jurnalDate">Data</label>
@@ -5781,17 +5788,17 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <!-- ====== MODAL: CALENDAR ====== -->
-<div class="modal-overlay" id="modal-calendar">
+<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-calendar">
   <div class="modal">
     <div class="modal-header">
       <h2>&#128197; Calendar Tratamente</h2>
-      <button class="modal-close" onclick="closeModal('calendar')">&#10005;</button>
+      <button class="modal-close" aria-label="Inchide" onclick="closeModal('calendar')">&#10005;</button>
     </div>
     <div class="modal-body">
       <div class="cal-nav">
-        <button onclick="calNav(-1)">&larr;</button>
+        <button onclick="calNav(-1)" aria-label="Luna anterioara">&larr;</button>
         <h3 id="calTitle"></h3>
-        <button onclick="calNav(1)">&rarr;</button>
+        <button onclick="calNav(1)" aria-label="Luna urmatoare">&rarr;</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
       <div class="cal-events" id="calEvents"></div>
@@ -5800,11 +5807,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <!-- ====== MODAL: METEO ====== -->
-<div class="modal-overlay" id="modal-meteo">
+<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-meteo">
   <div class="modal">
     <div class="modal-header">
       <h2>&#127780; Meteo N&#259;dlac</h2>
-      <button class="modal-close" onclick="closeModal('meteo')">&#10005;</button>
+      <button class="modal-close" aria-label="Inchide" onclick="closeModal('meteo')">&#10005;</button>
     </div>
     <div class="modal-body" id="meteoBody">
       <div class="meteo-setup" id="meteoSetup">
@@ -5823,11 +5830,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <!-- ====== MODAL: GALERIE FOTO ====== -->
-<div class="modal-overlay" id="modal-gallery">
+<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-gallery">
   <div class="modal">
     <div class="modal-header">
       <h2>&#128444;&#65039; Galerie &#8212; <span id="galSpecies">-</span></h2>
-      <button class="modal-close" onclick="closeModal('gallery')">&#10005;</button>
+      <button class="modal-close" aria-label="Inchide" onclick="closeModal('gallery')">&#10005;</button>
     </div>
     <div class="modal-body">
       <div class="gal-upload" onclick="document.getElementById('galFileInput').click()">
@@ -5843,11 +5850,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <!-- ====== MODAL: DIAGNOSTIC AI ====== -->
-<div class="modal-overlay" id="modal-diagnose">
+<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-diagnose">
   <div class="modal">
     <div class="modal-header">
       <h2>&#128248; Diagnostic &#8212; <span id="diagSpecies">-</span></h2>
-      <button class="modal-close" onclick="closeModal('diagnose')">&#10005;</button>
+      <button class="modal-close" aria-label="Inchide" onclick="closeModal('diagnose')">&#10005;</button>
     </div>
     <div class="modal-body">
       <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:12px;">
@@ -5868,11 +5875,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <!-- ====== MODAL: INTREABA AI ====== -->
-<div class="modal-overlay" id="modal-ask">
+<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-ask">
   <div class="modal">
     <div class="modal-header">
       <h2>&#128172; &#206;ntreab&#259; &#8212; <span id="askSpecies">-</span></h2>
-      <button class="modal-close" onclick="closeModal('ask')">&#10005;</button>
+      <button class="modal-close" aria-label="Inchide" onclick="closeModal('ask')">&#10005;</button>
     </div>
     <div class="modal-body">
       <label for="askInput">Pune o &#238;ntrebare despre aceast&#259; specie</label>
@@ -5893,19 +5900,24 @@ const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
 // ====== TAB SWITCHING ======
-$$('.tab[data-tab]').forEach(tab => {
-  tab.addEventListener('click', () => {
-    $$('.tab').forEach(t => t.classList.remove('active'));
-    $$('.tab-content').forEach(tc => tc.classList.remove('active'));
+$$('.tab[data-tab]').forEach(function(tab) {
+  tab.setAttribute('role', 'tab');
+  tab.setAttribute('aria-selected', tab.classList.contains('active') ? 'true' : 'false');
+  tab.setAttribute('tabindex', tab.classList.contains('active') ? '0' : '-1');
+  tab.addEventListener('click', function() {
+    $$('.tab').forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected','false'); t.setAttribute('tabindex','-1'); });
+    $$('.tab-content').forEach(function(tc) { tc.classList.remove('active'); });
     tab.classList.add('active');
-    const target = document.getElementById(tab.dataset.tab);
+    tab.setAttribute('aria-selected','true');
+    tab.setAttribute('tabindex','0');
+    var target = document.getElementById(tab.dataset.tab);
     if (target) target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    // Inject species tools (AI, gallery, etc.)
     injectSpeciesTools(tab.dataset.tab);
   });
 });
+$$('.tab-content').forEach(function(tc) { tc.setAttribute('role', 'tabpanel'); });
 
 // ====== COLLAPSIBLE SECTIONS ======
 $$('.section-title').forEach(title => {
@@ -5992,14 +6004,18 @@ function clearSearch() {
 }
 
 // ====== MODALS ======
+var _lastFocused = null;
 function openModal(name) {
   const overlay = document.getElementById('modal-' + name);
   if (overlay) {
+    _lastFocused = document.activeElement;
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     if (name === 'jurnal') { renderJurnal(); syncJournal(); }
     if (name === 'calendar') { renderCalendar(); enhanceCalendarWithMeteo(); }
     if (name === 'meteo') { initMeteo(); loadMeteoHistory(); }
+    var first = overlay.querySelector('button, input, textarea, select, [tabindex="0"]');
+    if (first) setTimeout(function() { first.focus(); }, 100);
   }
 }
 function closeModal(name) {
@@ -6007,6 +6023,7 @@ function closeModal(name) {
   if (overlay) {
     overlay.classList.remove('open');
     document.body.style.overflow = '';
+    if (_lastFocused) { _lastFocused.focus(); _lastFocused = null; }
   }
 }
 // Close modal on overlay click
