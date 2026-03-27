@@ -6,7 +6,7 @@ export function corsHeaders(req) {
   const origin = req?.headers?.get?.('origin') || '';
   const allowed =
     origin === ALLOWED_ORIGIN ||
-    origin.endsWith('.vercel.app') ||
+    (origin.endsWith('.vercel.app') && origin.includes('livada-mea')) ||
     origin.startsWith('http://localhost');
 
   return {

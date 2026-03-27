@@ -213,8 +213,8 @@ td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
 .bottom-btn {
   display: flex; flex-direction: column; align-items: center;
   gap: 2px; background: none; border: none; color: var(--text-dim);
-  font-size: 0.6rem; cursor: pointer; padding: 6px 8px;
-  min-width: 52px; min-height: 44px; justify-content: center;
+  font-size: 0.7rem; cursor: pointer; padding: 4px 6px;
+  min-width: 48px; min-height: 44px; justify-content: center;
   transition: color 0.2s; font-family: inherit;
 }
 .bottom-btn:hover, .bottom-btn:active { color: var(--accent); }
@@ -6239,7 +6239,9 @@ async function fetchMeteo(key) {
 
 // ====== EXPORT PDF ======
 function exportPDF() {
+  document.body.classList.add('print-all');
   window.print();
+  document.body.classList.remove('print-all');
 }
 
 // ====== PWA ======
@@ -6265,6 +6267,21 @@ $('#dismissBtn').addEventListener('click', () => {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
+
+// iOS PWA Install Instructions (IMP-6)
+(function() {
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  var isStandalone = window.navigator.standalone === true;
+  if (isIOS && !isStandalone) {
+    var banner = document.getElementById('installBanner');
+    if (banner) {
+      banner.querySelector('p').innerHTML = '\uD83D\uDCF1 Instaleaz\u0103 <strong>Livada Mea</strong>: apas\u0103 <strong>Partajeaz\u0103</strong> (\u2191) \u2192 <strong>Ad\u0103ugare pe ecranul principal</strong>';
+      var installBtn = document.getElementById('installBtn');
+      if (installBtn) installBtn.style.display = 'none';
+      banner.classList.add('show');
+    }
+  }
+})();
 
 // ====== AUTH TOKEN ======
 function getLivadaToken() { return localStorage.getItem('livada-api-token') || ''; }
