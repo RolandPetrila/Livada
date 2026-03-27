@@ -50,21 +50,27 @@
 - [x] Afin — cercetare completa A-G + SECTIUNE SPECIALA acidifiere sol, integrat in HTML (accent: pH 4.0-5.5 obligatoriu!)
 - [x] Alun tufa — cercetare completa A-G, integrat in HTML (accent: polenizare eoliana, minim 2 soiuri)
 
-## FAZA 2 — Vercel Backend
+## FAZA 2 — Vercel Backend ✅ COMPLET
 
-- [ ] 2.1 Configurare Vercel (env vars, KV, Blob)
-- [ ] 2.2 Sincronizare jurnal (Vercel KV)
-- [ ] 2.3 Istoric meteo + cron zilnic
-- [ ] 2.4 Alerta ingheturi automate
-- [ ] 2.5 Galerie foto (Vercel Blob)
-- [ ] 2.6 Notificari push (optional)
+- [x] 2.1 Configurare Vercel (env vars pe Vercel: OPENWEATHER_API_KEY, GOOGLE_AI_API_KEY, GROQ_API_KEY. Deps: @upstash/redis + @vercel/blob)
+- [x] 2.2 Sincronizare jurnal (Upstash Redis via api/journal.js, merge by timestamp, sync la online)
+- [x] 2.3 Istoric meteo + cron zilnic (api/meteo-cron.js cron 0 6 * * * + api/meteo-history.js, grafic 30 zile)
+- [x] 2.4 Alerta ingheturi automate (api/frost-alert.js, banner rosu in header, detectie temp<0 in mar-mai + risc boli fungice)
+- [x] 2.5 Galerie foto (Vercel Blob, api/photos.js, upload/list/delete per specie, grid in modal)
+- [ ] 2.6 Notificari push (optional — SARIT, nu complica excesiv)
 
-## FAZA 3 — AI Features
+## FAZA 3 — AI Features ✅ COMPLET
 
-- [ ] 3.1 Identificare boli din poza (Edge Runtime + streaming)
-- [ ] 3.2 Calendar inteligent cu meteo
-- [ ] 3.3 Raport anual
-- [ ] 3.4 Multi-user (optional)
+- [x] 3.1 Identificare boli din poza — Gemini Vision (api/diagnose.js, Node.js runtime, prompt structurat cu diagnostic+tratament+urgenta)
+- [x] 3.2 Cautare inteligenta per tab — Groq Llama 3.3 70B (api/ask.js, context extras din tab activ, intrebari in limbaj natural)
+- [x] 3.3 Calendar inteligent cu meteo (enhanceCalendarWithMeteo: overlay temp pe zile, alerte inghet/boli fungice in calendar)
+- [x] 3.4 Raport anual (api/report.js, Groq, combina jurnal+meteo, genereaza raport structurat)
+- [ ] 3.5 Multi-user (optional — SARIT)
+
+### API Keys Faza 3 (setate ca env vars pe Vercel):
+- Gemini Vision: GOOGLE_AI_API_KEY
+- Groq (text/rezumate): GROQ_API_KEY
+- Meteo: OPENWEATHER_API_KEY
 
 ---
 
@@ -93,3 +99,24 @@
 
 **Decizii T1 Sesiunea 2:** vezi PLAN_DECISIONS.md
 **Blocaje:** Niciun blocaj semnificativ. API overload la agenti (rezolvat cu retry + paralel)
+
+### Sesiunea 3 (2026-03-27) — T1 autonom
+
+**Faza 2 COMPLETATA:** Backend Vercel complet.
+- 8 API routes (Node.js runtime): journal, meteo-cron, meteo-history, frost-alert, photos, diagnose, ask, report
+- 3 env vars setate pe Vercel (OPENWEATHER_API_KEY, GOOGLE_AI_API_KEY, GROQ_API_KEY)
+- Cron zilnic 06:00 UTC: salveaza meteo + detecteaza inghet + risc boli
+- @upstash/redis (KV) + @vercel/blob (photos)
+- Sync jurnal intre dispozitive cu merge by timestamp
+
+**Faza 3 COMPLETATA:** AI Features integrate.
+- Diagnostic foto: Gemini 2.0 Flash, prompt structurat, base64 upload
+- Cautare AI: Groq Llama 3.3 70B, context din tab activ (3000 chars)
+- Calendar inteligent: overlay meteo, alerte inghet si boli fungice
+- Raport anual: Groq, combina jurnal+meteo, raport structurat
+- Galerie foto per specie: Vercel Blob, upload/list/delete
+
+**Frontend:** +508 linii (6123→6631). Species tools bar injectat dinamic, 3 modale noi, CSS complet, offline fallback.
+**Decizii T1 Sesiunea 3:** vezi PLAN_DECISIONS.md
+**Blocaje:** Edge Runtime incompatibil cu undici (rezolvat cu Node.js runtime). KV/Blob necesita provisionare manuala din Vercel Dashboard.
+**Deploy:** https://livada-mea-psi.vercel.app

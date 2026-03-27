@@ -1,45 +1,55 @@
 # RUNDA CURENTA — Livada Mea Dashboard
 
 **Data:** 2026-03-27
-**Sesiune:** 2 din 2 — COMPLETATA ✅
+**Sesiune:** 3 — Faza 2 + Faza 3 — COMPLETATE
 **Status:** EXECUTIE FINALIZATA
 
 ---
 
-## REZULTAT SESIUNEA 2
+## REZULTAT
 
-### Ce s-a realizat: Toate 11 specii ramase — cercetare + integrare HTML
+Fazele 2 si 3 sunt **COMPLETE**. Toate features implementate si deploy-uite.
 
-| # | Specie | Status | Accent specific |
-|---|--------|--------|----------------|
-| 1 | Mar Florina | ✅ | Documentatie DUBLA spalier+vas, rezistenta rapan |
-| 2 | Mar Golden Spur | ✅ | Program intensiv anti-rapan, rarire obligatorie |
-| 3 | Par Favorita lui Clapp | ✅ | Focul bacterian CRITIC, recoltare timpurie |
-| 4 | Par Williams | ✅ | Irigare critica, oportunitate palinca |
-| 5 | Par Hosui | ✅ | Nashi japonez, diferente vs par european |
-| 6 | Par Napoca | ✅ | Soi romanesc, rezistenta superioara boli |
-| 7 | Migdal | ✅ | Specie exotica, protectie inghet critica |
-| 8 | Zmeur | ✅ | Clasic vs remontant, tundere diferita |
-| 9 | Mur | ✅ | Palisat obligatoriu, soiuri fara spini |
-| 10 | Afin | ✅ | SECTIUNE SPECIALA acidifiere sol |
-| 11 | Alun tufa | ✅ | Polenizare eoliana, minim 2 soiuri |
+### Ce s-a implementat:
 
-### Statistici Sesiunea 2
-- 3 commits + 3 deploy-uri Vercel
-- HTML: de la 4255 linii → 6123 linii (+1868 linii de continut)
-- 11 fisiere cercetare noi MD in content/ (~40,000+ cuvinte)
-- Fiecare specie: structura completa A-G (Cercetare, Tratamente, Tundere, Boli, Soiuri, Protectie, Note)
-- Deploy productie: https://livada-mea-psi.vercel.app
+**Faza 2 — Vercel Backend:**
+- 8 API routes (Node.js runtime)
+- Sync jurnal intre dispozitive (merge by timestamp)
+- Cron zilnic meteo (06:00 UTC) + istoric 90 zile
+- Alerta ingheturi automate (mar-mai, temp<0) + risc boli fungice
+- Galerie foto per specie (Vercel Blob, upload/list/delete)
+- 3 env vars setate pe Vercel
 
-### Statistici TOTALE (Sesiunea 1 + 2)
-- 17/17 specii COMPLETATE cu cercetare A-G
-- 22 fisiere MD in content/
-- HTML: ~6123 linii
-- 7+ commits, 6+ deploy-uri Vercel
+**Faza 3 — AI Features:**
+- Diagnostic foto cu Gemini 2.0 Flash (diagnostic + tratament + urgenta)
+- Intrebari AI cu Groq Llama 3.3 70B (context din tab activ)
+- Calendar inteligent (overlay meteo pe calendar, alerte)
+- Raport anual AI (jurnal + meteo → raport structurat)
 
-## Blocaje
-Niciun blocaj semnificativ. Agenti API overload la crearea fisierelor MD (rezolvat cu retry si paralel).
+**Frontend:** 6631 linii. Species tools bar dinamic, 3 modale noi, CSS complet.
 
-## Ce urmeaza (Faza 2)
-- Vercel Backend: sync jurnal, istoric meteo, alerta ingheturi
-- AI Features: identificare boli din poza, calendar inteligent
+### Ce necesita actiune manuala Roland:
+
+1. **Vercel KV (Upstash Redis)** — necesita provisionare:
+   - Vercel Dashboard → Storage → Create Database → Redis (Upstash)
+   - Connect la proiect livada-mea
+   - Auto-seteaza: UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN
+
+2. **Vercel Blob** — necesita provisionare:
+   - Vercel Dashboard → Storage → Create Blob Store
+   - Connect la proiect livada-mea
+   - Auto-seteaza: BLOB_READ_WRITE_TOKEN
+
+Fara aceste provisionari: features locale (calculator, jurnal local, calendar, cautare, meteo live) functioneaza normal.
+Cu provisionare: + sync jurnal, + galerie foto, + alerte automate, + raport anual.
+
+### Ce NU s-a implementat (optional, marcat in plan):
+- 2.6 Push notifications — prea complex, beneficiu marginal
+- 3.5 Multi-user — nu era necesar pt un singur proprietar
+
+### Deploy:
+https://livada-mea-psi.vercel.app
+
+## Blocaje rezolvate
+- Edge Runtime incompatibil cu undici → rezolvat cu Node.js runtime
+- @vercel/kv deprecated → rezolvat cu @upstash/redis

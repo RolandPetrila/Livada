@@ -73,3 +73,30 @@
 ## 2026-03-27 T1 Sesiunea 2 — Flux executie paralel
 **Decizie:** Agenti paraleli pentru MD files + integrare HTML secventiala de catre T1 principal
 **Motiv:** Maximizare eficienta. MD files sunt independente (un agent per specie). HTML integration e secventiala (un fisier). API overload gestionat cu retry.
+
+## 2026-03-27 T1 Sesiunea 3 — Node.js runtime (nu Edge)
+**Decizie:** Toate API routes pe Node.js runtime, nu Edge Runtime
+**Alternativa respinsa:** Edge Runtime — incompatibil cu undici (transitive dep din @vercel/blob si @upstash/redis)
+**Motiv:** Edge nu suporta node:stream, net, http, tls. Node.js runtime e 100% compatibil. Cold start ~200ms e acceptabil pt dashboard personal.
+
+## 2026-03-27 T1 Sesiunea 3 — @upstash/redis (nu @vercel/kv)
+**Decizie:** Folosit @upstash/redis in loc de @vercel/kv
+**Motiv:** @vercel/kv e deprecated oficial. Upstash Redis e replacement-ul recomandat. Env vars: UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN.
+
+## 2026-03-27 T1 Sesiunea 3 — Species tools bar injectat dinamic
+**Decizie:** Butoanele AI (Diagnostic, Intreaba, Galerie) sunt injectate dinamic in fiecare tab de specie la activare
+**Alternativa respinsa:** HTML static in toate 17 tab-uri (ar fi adaugat ~500 linii repetitive)
+**Motiv:** Un singur bloc JS care injecteaza la tab switch. Curat, DRY, usor de modificat.
+
+## 2026-03-27 T1 Sesiunea 3 — Gemini 2.0 Flash pt diagnostic
+**Decizie:** Model gemini-2.0-flash pentru diagnostic foto (nu gemini-pro-vision)
+**Motiv:** Rapid, capabil multimodal, gratuit in limita free tier. Prompt structurat: diagnostic + severitate + tratament + preventie + urgenta.
+
+## 2026-03-27 T1 Sesiunea 3 — Groq Llama 3.3 70B pt AI text
+**Decizie:** Model llama-3.3-70b-versatile pe Groq pentru intrebari AI si raport anual
+**Motiv:** Rapid (Groq = inferenta rapida), 70B calitate buna, gratuit pe free tier. Context din tab trimis de frontend (max 3000 chars).
+
+## 2026-03-27 T1 Sesiunea 3 — KV/Blob necesita provisionare manuala
+**Decizie:** Vercel KV (Upstash) si Vercel Blob se provisioneaza manual din Vercel Dashboard → Storage
+**Impact:** Fara KV: sync jurnal/meteo/alerte nu functioneaza (features locale OK). Fara Blob: galerie foto nu functioneaza.
+**Pasi:** Dashboard → Storage → Create Database (Redis) + Create Blob Store → Connect to livada-mea
