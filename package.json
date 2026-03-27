@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "Dashboard PWA pentru livada semi-comerciala — 17 specii, zona Nadlac/Arad",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vercel dev",
     "deploy": "vercel --prod"

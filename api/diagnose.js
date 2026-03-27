@@ -1,4 +1,3 @@
-export const config = { runtime: 'edge' };
 
 function uint8ToBase64(uint8) {
   const CHUNK = 8192;

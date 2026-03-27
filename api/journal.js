@@ -1,6 +1,5 @@
 import { Redis } from '@upstash/redis';
 
-export const config = { runtime: 'edge' };
 
 const KEY = 'livada:journal';
 

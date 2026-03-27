@@ -1,6 +1,5 @@
 import { put, list, del } from '@vercel/blob';
 
-export const config = { runtime: 'edge' };
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
