@@ -7,7 +7,7 @@ export default async function handler(req) {
   try {
     const kv = Redis.fromEnv();
     const url = new URL(req.url);
-    const days = parseInt(url.searchParams.get('days') || '30', 10);
+    const days = Math.min(Math.max(parseInt(url.searchParams.get('days') || '30', 10) || 30, 1), 365);
 
     const history = (await kv.get('livada:meteo:history')) || {};
 

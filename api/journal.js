@@ -26,7 +26,16 @@ export default async function handler(req) {
 
       const map = new Map();
       for (const e of stored) map.set(e.id, e);
-      for (const e of incoming) map.set(e.id, e);
+      for (const e of incoming) {
+        if (typeof e.id !== 'number' || !e.date || !e.type) continue;
+        map.set(e.id, {
+          id: e.id,
+          date: String(e.date).substring(0, 10),
+          type: String(e.type).substring(0, 50),
+          note: String(e.note || '').substring(0, 500),
+          timestamp: Number(e.timestamp || Date.now()),
+        });
+      }
       const merged = [...map.values()].sort((a, b) => b.id - a.id);
 
       await kv.set(KEY, merged);
