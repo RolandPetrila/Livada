@@ -70,6 +70,7 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
 
     return Response.json({ answer }, { headers: corsHeaders(req) });
   } catch (err) {
-    return Response.json({ error: err.message }, { status: 500, headers: corsHeaders(req) });
+    console.error('API ask error:', err);
+    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: corsHeaders(req) });
   }
 }

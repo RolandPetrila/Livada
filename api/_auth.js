@@ -1,6 +1,10 @@
 // Shared auth, CORS, and rate-limit middleware for all API routes
 
-const ALLOWED_ORIGIN = 'https://livada-mea-psi.vercel.app';
+const ALLOWED_ORIGINS = [
+  'https://livada-mea-psi.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:5173',
+];
 
 // Helper: citeste header compatibil cu Web API Headers SI plain object (Node.js IncomingMessage)
 function getHeader(req, name) {
@@ -10,13 +14,10 @@ function getHeader(req, name) {
 
 export function corsHeaders(req) {
   const origin = getHeader(req, 'origin') || '';
-  const allowed =
-    origin === ALLOWED_ORIGIN ||
-    (origin.endsWith('.vercel.app') && origin.includes('livada-mea')) ||
-    origin.startsWith('http://localhost');
+  const allowed = ALLOWED_ORIGINS.includes(origin);
 
   return {
-    'Access-Control-Allow-Origin': allowed ? origin : ALLOWED_ORIGIN,
+    'Access-Control-Allow-Origin': allowed ? origin : ALLOWED_ORIGINS[0],
     'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, x-livada-token',
   };

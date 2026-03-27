@@ -105,6 +105,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
 
     return Response.json({ diagnosis: text }, { headers: corsHeaders(req) });
   } catch (err) {
-    return Response.json({ error: err.message }, { status: 500, headers: corsHeaders(req) });
+    console.error('API diagnose error:', err);
+    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: corsHeaders(req) });
   }
 }

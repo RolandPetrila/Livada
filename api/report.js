@@ -98,6 +98,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
     if (msg.includes('UPSTASH')) {
       return Response.json({ error: 'Vercel KV nu este configurat.' }, { status: 503, headers: corsHeaders(req) });
     }
-    return Response.json({ error: msg }, { status: 500, headers: corsHeaders(req) });
+    console.error('API report error:', err);
+    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: corsHeaders(req) });
   }
 }

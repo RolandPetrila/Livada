@@ -8,8 +8,8 @@ export default async function handler(req) {
     // GET — list photos (optionally filtered by species) — public, read-only
     if (req.method === 'GET') {
       const url = new URL(req.url);
-      const species = url.searchParams.get('species');
-      const prefix = species ? `livada/photos/${species}/` : 'livada/photos/';
+      const rawSpecies = (url.searchParams.get('species') || '').replace(/[^a-zA-Z0-9_-]/g, '');
+      const prefix = rawSpecies ? `livada/photos/${rawSpecies}/` : 'livada/photos/';
 
       const result = await list({ prefix });
       const photos = result.blobs.map(b => ({
@@ -32,8 +32,8 @@ export default async function handler(req) {
     if (req.method === 'POST') {
       const formData = await req.formData();
       const file = formData.get('file');
-      const species = formData.get('species') || 'general';
-      const note = formData.get('note') || '';
+      let species = (formData.get('species') || 'general').replace(/[^a-zA-Z0-9_-]/g, '');
+      if (!species) species = 'general';
 
       if (!file) {
         return Response.json({ error: 'Niciun fisier selectat' }, { status: 400, headers: corsHeaders(req) });

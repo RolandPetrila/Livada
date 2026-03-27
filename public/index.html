@@ -6298,11 +6298,14 @@ function authFetch(url, opts) {
   return fetch(url, opts);
 }
 
-// ====== SANITIZE AI (anti-XSS) ======
-function sanitizeAI(text) {
+// ====== HTML ESCAPE + SANITIZE AI (anti-XSS) ======
+function escapeHtml(s) {
   var d = document.createElement('div');
-  d.textContent = text;
-  var safe = d.innerHTML;
+  d.textContent = s;
+  return d.innerHTML;
+}
+function sanitizeAI(text) {
+  var safe = escapeHtml(text);
   safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   safe = safe.replace(/\n/g, '<br>');
   return safe;
@@ -6375,9 +6378,10 @@ async function loadGallery() {
     loading.style.display = 'none';
     if (Array.isArray(photos) && photos.length > 0) {
       grid.innerHTML = photos.map(function(p) {
-        return '<div class="gal-item"><img src="' + p.url + '" alt="" loading="lazy">' +
-          '<button class="gal-del" onclick="deletePhoto(\'' + p.url.replace(/'/g,"\\'") + '\')">\u2715</button></div>';
+        return '<div class="gal-item"><img src="' + escapeHtml(p.url) + '" alt="Foto livada" loading="lazy">' +
+          '<button class="gal-del" data-url="' + escapeHtml(p.url) + '">&#10005;</button></div>';
       }).join('');
+      grid.onclick = function(e) { var btn = e.target.closest('.gal-del'); if (btn) deletePhoto(btn.dataset.url); };
     } else { empty.style.display = 'block'; }
   } catch(e) {
     loading.style.display = 'none';
