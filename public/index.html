@@ -6202,7 +6202,7 @@ async function fetchMeteo(key) {
   const data = $('#meteoData');
   data.innerHTML = '<p style="text-align:center;color:var(--text-dim);">Se \u00eencarc\u0103...</p>';
   try {
-    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=46.17&lon=20.75&units=metric&lang=ro&appid=${key}`);
+    const res = await fetchWithTimeout(`https://api.openweathermap.org/data/2.5/weather?lat=46.17&lon=20.75&units=metric&lang=ro&appid=${key}`, {}, 10000);
     if (!res.ok) throw new Error('API error ' + res.status);
     const w = await res.json();
 
@@ -6284,6 +6284,18 @@ if ('serviceWorker' in navigator) {
   }
 })();
 
+// ====== FETCH WITH TIMEOUT ======
+async function fetchWithTimeout(url, opts, ms) {
+  ms = ms || 10000;
+  var ctrl = new AbortController();
+  var timer = setTimeout(function() { ctrl.abort(); }, ms);
+  try {
+    opts = opts || {};
+    opts.signal = ctrl.signal;
+    return await fetch(url, opts);
+  } finally { clearTimeout(timer); }
+}
+
 // ====== AUTH TOKEN ======
 function getLivadaToken() { return localStorage.getItem('livada-api-token') || ''; }
 function setLivadaToken(t) { localStorage.setItem('livada-api-token', t); }
@@ -6292,10 +6304,10 @@ function authHeaders(extra) {
   if (extra) for (var k in extra) h[k] = extra[k];
   return h;
 }
-function authFetch(url, opts) {
+function authFetch(url, opts, ms) {
   opts = opts || {};
   opts.headers = authHeaders(opts.headers || {});
-  return fetch(url, opts);
+  return fetchWithTimeout(url, opts, ms || 15000);
 }
 
 // ====== HTML ESCAPE + SANITIZE AI (anti-XSS) ======
@@ -6531,7 +6543,7 @@ async function syncDeleteJournal(id) {
 async function checkAlerts() {
   if (!navigator.onLine) return;
   try {
-    var res = await fetch('/api/frost-alert');
+    var res = await fetchWithTimeout('/api/frost-alert', {}, 5000);
     if (!res.ok) return;
     var data = await res.json();
     if (data.frost && data.frost.active) {
@@ -6551,7 +6563,7 @@ async function loadMeteoHistory() {
   var container = document.getElementById('meteoHistory');
   if (!container) return;
   try {
-    var res = await fetch('/api/meteo-history?days=30');
+    var res = await fetchWithTimeout('/api/meteo-history?days=30', {}, 10000);
     if (!res.ok) throw new Error('Server ' + res.status);
     var data = await res.json();
     if (data.error || Object.keys(data).length === 0) {
@@ -6592,7 +6604,7 @@ async function enhanceCalendarWithMeteo() {
   if (!navigator.onLine) return;
   if (!calendarMeteoData) {
     try {
-      var res = await fetch('/api/meteo-history?days=90');
+      var res = await fetchWithTimeout('/api/meteo-history?days=90', {}, 10000);
       if (res.ok) calendarMeteoData = await res.json();
     } catch(e) { return; }
   }

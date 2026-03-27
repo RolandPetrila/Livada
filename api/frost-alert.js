@@ -9,7 +9,7 @@ export default async function handler(req) {
     const frost = (await kv.get('livada:frost-alert')) || { active: false };
     const disease = (await kv.get('livada:disease-risk')) || { active: false };
 
-    return Response.json({ frost, disease }, { headers: corsHeaders(req) });
+    return Response.json({ frost, disease }, { headers: { ...corsHeaders(req), 'Cache-Control': 'public, max-age=300' } });
   } catch (err) {
     // Graceful fallback when KV not provisioned
     return Response.json({
