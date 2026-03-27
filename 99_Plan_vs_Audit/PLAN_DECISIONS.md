@@ -100,3 +100,16 @@
 **Decizie:** Vercel KV (Upstash) si Vercel Blob se provisioneaza manual din Vercel Dashboard → Storage
 **Impact:** Fara KV: sync jurnal/meteo/alerte nu functioneaza (features locale OK). Fara Blob: galerie foto nu functioneaza.
 **Pasi:** Dashboard → Storage → Create Database (Redis) + Create Blob Store → Connect to livada-mea
+
+## 2026-03-27 T1 Sesiunea 3 — Securitate API (post-audit T2)
+**Decizie:** Token auth (LIVADA_API_TOKEN) + CORS restrict + rate limiting 10 req/min
+**Alternativa respinsa:** OAuth/JWT — overkill pt single-user dashboard
+**Motiv:** T2 a identificat CRITIC-3 (API publice fara auth). Token simplu blocheaza abuz automat. CORS restrict blocheaza cross-origin. Rate limit protejaza free tier.
+
+## 2026-03-27 T1 Sesiunea 3 — XSS sanitize AI responses (post-audit T2)
+**Decizie:** sanitizeAI() — escape HTML inainte de markdown formatting
+**Motiv:** T2 a identificat CRITIC-4. Raspunsuri AI pot contine HTML via prompt injection. Escape text INAINTE de replace markdown previne executie cod.
+
+## 2026-03-27 T1 Sesiunea 3 — SW cache v3 (post-audit T2)
+**Decizie:** Cache bumped la livada-v3, Google Fonts cached in SW separat (livada-fonts-v1)
+**Motiv:** T2 a identificat IMP-10 (users vechi nu vad features noi) si IMP-1 (Google Fonts offline). Activate event sterge cache-uri vechi automat.
