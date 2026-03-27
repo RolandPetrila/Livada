@@ -6,11 +6,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1a2e1a">
+<meta name="description" content="Dashboard livada semi-comerciala — 17 specii, zona Nadlac/Arad">
 <title>Livada Mea — Ghid Complet</title>
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTGl2YWRhIE1lYSIsInNob3J0X25hbWUiOiJMaXZhZGEiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzFhMmUxYSIsInRoZW1lX2NvbG9yIjoiIzFhMmUxYSIsImljb25zIjpbXX0=">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap');
-
+/* ====== CSS VARIABLES — DARK (default) ====== */
 :root {
   --bg-deep: #0f1a0f;
   --bg-card: #1a2e1a;
@@ -27,12 +32,30 @@
   --info: #5a9fd4;
   --border: #2a4a2a;
   --radius: 12px;
+  --header-h: 68px;
+  --tabs-h: 48px;
+  --bottom-h: 56px;
+}
+/* ====== LIGHT MODE ====== */
+body.light-mode {
+  --bg-deep: #f4f7f4;
+  --bg-card: #ffffff;
+  --bg-card-alt: #f0f7f0;
+  --bg-surface: #e4ede4;
+  --accent: #2d8a2d;
+  --accent-dim: #4a9e4a;
+  --accent-glow: #1a6b1a;
+  --text: #2d3b2d;
+  --text-dim: #5a6e5a;
+  --text-bright: #1a2a1a;
+  --warning: #c48a20;
+  --danger: #b83a32;
+  --info: #3a7ab8;
+  --border: #c8d8c8;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-
 html { scroll-behavior: smooth; }
-
 body {
   font-family: 'Source Sans 3', sans-serif;
   background: var(--bg-deep);
@@ -40,652 +63,1348 @@ body {
   min-height: 100vh;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  padding-bottom: var(--bottom-h);
 }
 
-/* ---- HEADER ---- */
+/* ====== HEADER ====== */
 .app-header {
-  background: linear-gradient(135deg, var(--bg-card) 0%, #0d1f0d 100%);
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-deep) 100%);
   border-bottom: 1px solid var(--border);
-  padding: 16px 20px 12px;
+  padding: 12px 16px 8px;
   position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
 }
+.header-left { flex: 1; min-width: 0; }
 .app-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: var(--accent-glow);
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.app-title span { color: var(--text-dim); font-size: 0.75em; font-family: 'Source Sans 3', sans-serif; font-weight: 300; }
-.app-subtitle { color: var(--text-dim); font-size: 0.8rem; margin-top: 2px; }
+.app-title span { color: var(--text-dim); font-size: 0.7em; font-family: 'Source Sans 3', sans-serif; font-weight: 300; }
+.app-subtitle { color: var(--text-dim); font-size: 0.75rem; margin-top: 1px; }
+.header-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; margin-left: 12px; }
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--text); font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.icon-btn:hover, .icon-btn:active { background: var(--accent-dim); color: var(--text-bright); }
 
-/* ---- TABS ---- */
+/* ====== SEARCH PANEL ====== */
+.search-panel {
+  display: none; background: var(--bg-card);
+  padding: 10px 16px; border-bottom: 1px solid var(--border);
+  position: sticky; top: var(--header-h); z-index: 99;
+}
+.search-panel.open { display: flex; gap: 10px; align-items: center; }
+.search-panel input {
+  flex: 1; padding: 10px 14px; border-radius: 8px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--text); font-size: 0.9rem; outline: none;
+}
+.search-panel input:focus { border-color: var(--accent); }
+.search-count { color: var(--text-dim); font-size: 0.8rem; white-space: nowrap; }
+
+/* ====== TABS ====== */
 .tabs-wrapper {
   background: var(--bg-card);
   border-bottom: 1px solid var(--border);
-  position: sticky; top: 72px; z-index: 99;
+  position: sticky; top: var(--header-h); z-index: 98;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
+.search-panel.open ~ .tabs-wrapper { top: calc(var(--header-h) + 52px); }
 .tabs-wrapper::-webkit-scrollbar { display: none; }
 .tabs {
-  display: flex;
-  padding: 0 12px;
-  gap: 2px;
+  display: flex; padding: 0 8px; gap: 1px;
   min-width: max-content;
 }
 .tab {
-  padding: 12px 18px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-dim);
-  cursor: pointer;
+  padding: 10px 14px; font-size: 0.8rem; font-weight: 600;
+  color: var(--text-dim); cursor: pointer;
   border-bottom: 3px solid transparent;
-  transition: all 0.25s ease;
-  white-space: nowrap;
-  user-select: none;
-  position: relative;
+  transition: all 0.2s; white-space: nowrap;
+  user-select: none; min-height: 44px;
+  display: flex; align-items: center;
 }
 .tab:hover { color: var(--text); background: rgba(106,191,105,0.05); }
-.tab.active {
-  color: var(--accent-glow);
-  border-bottom-color: var(--accent);
-  background: rgba(106,191,105,0.08);
+.tab.active { color: var(--accent-glow); border-bottom-color: var(--accent); background: rgba(106,191,105,0.08); }
+.tab .tab-icon { margin-right: 5px; font-size: 1rem; }
+.tab-sep {
+  padding: 10px 6px; font-size: 0.65rem; font-weight: 700;
+  color: var(--accent-dim); text-transform: uppercase;
+  letter-spacing: 1px; display: flex; align-items: center;
+  opacity: 0.7; white-space: nowrap;
 }
-.tab .tab-icon { margin-right: 6px; }
+.tab.search-match { background: rgba(106,191,105,0.15); }
 
-/* ---- CONTENT ---- */
-.content { padding: 20px; max-width: 900px; margin: 0 auto; }
+/* ====== CONTENT ====== */
+.content { padding: 16px; max-width: 900px; margin: 0 auto; }
 .tab-content { display: none; animation: fadeIn 0.3s ease; }
 .tab-content.active { display: block; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
-/* ---- SECTIONS ---- */
+/* ====== SECTIONS ====== */
 .section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-  margin-bottom: 20px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
 }
 .section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
-  color: var(--accent-glow);
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
+  font-family: 'Playfair Display', serif; font-size: 1.3rem;
+  color: var(--accent-glow); margin-bottom: 14px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  cursor: pointer; user-select: none;
 }
-.section h3 {
-  font-size: 1.1rem;
-  color: var(--accent);
-  margin: 20px 0 10px;
-}
-.section h4 {
-  font-size: 1rem;
-  color: var(--accent-dim);
-  margin: 16px 0 8px;
-  font-weight: 600;
-}
-.section p { margin-bottom: 12px; color: var(--text); }
-.section ul, .section ol { margin: 8px 0 16px 20px; }
-.section li { margin-bottom: 6px; color: var(--text); }
+.section-title::after { content: ' \25BE'; font-size: 0.7em; color: var(--accent-dim); }
+.section-title.collapsed::after { content: ' \25B8'; }
+.section-body.collapsed { display: none; }
+.section h3 { font-size: 1.05rem; color: var(--accent); margin: 16px 0 8px; }
+.section h4 { font-size: 0.95rem; color: var(--accent-dim); margin: 14px 0 6px; font-weight: 600; }
+.section p { margin-bottom: 10px; }
+.section ul, .section ol { margin: 6px 0 14px 20px; }
+.section li { margin-bottom: 5px; }
 .section li strong { color: var(--accent); }
 
-/* ---- ALERT BOXES ---- */
+/* ====== ALERTS ====== */
 .alert {
-  border-radius: 8px;
-  padding: 14px 18px;
-  margin: 16px 0;
-  font-size: 0.9rem;
-  border-left: 4px solid;
+  border-radius: 8px; padding: 12px 16px; margin: 14px 0;
+  font-size: 0.88rem; border-left: 4px solid;
 }
 .alert-success { background: rgba(106,191,105,0.1); border-color: var(--accent); }
 .alert-warning { background: rgba(232,168,56,0.1); border-color: var(--warning); }
 .alert-danger { background: rgba(212,83,74,0.1); border-color: var(--danger); }
 .alert-info { background: rgba(90,159,212,0.1); border-color: var(--info); }
-.alert strong { display: block; margin-bottom: 4px; }
+.alert strong { display: block; margin-bottom: 3px; }
 
-/* ---- TABLES ---- */
-.table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 8px; border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+/* ====== TABLES ====== */
+.table-wrap { overflow-x: auto; margin: 14px 0; border-radius: 8px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
 th {
-  background: var(--bg-surface);
-  color: var(--accent-glow);
-  font-weight: 700;
-  text-align: left;
-  padding: 10px 12px;
-  border-bottom: 2px solid var(--accent-dim);
-  white-space: nowrap;
+  background: var(--bg-surface); color: var(--accent-glow);
+  font-weight: 700; text-align: left; padding: 9px 10px;
+  border-bottom: 2px solid var(--accent-dim); white-space: nowrap;
 }
-td {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-}
+td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
 tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
 tr:hover td { background: rgba(106,191,105,0.05); }
 td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
 
-/* ---- PLACEHOLDER TAB ---- */
-.placeholder {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text-dim);
-}
-.placeholder-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
-.placeholder h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text); margin-bottom: 8px; }
-.placeholder p { font-size: 0.9rem; max-width: 400px; margin: 0 auto; }
+/* ====== PLACEHOLDER ====== */
+.placeholder { text-align: center; padding: 50px 16px; color: var(--text-dim); }
+.placeholder-icon { font-size: 2.8rem; margin-bottom: 12px; opacity: 0.5; }
+.placeholder h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text); margin-bottom: 6px; }
+.placeholder p { font-size: 0.88rem; max-width: 380px; margin: 0 auto; }
 
-/* ---- SEARCH (future) ---- */
-.search-bar {
-  display: flex; gap: 8px; margin-bottom: 20px;
-}
-.search-bar input {
-  flex: 1; padding: 10px 14px; border-radius: 8px;
-  background: var(--bg-surface); border: 1px solid var(--border);
-  color: var(--text); font-size: 0.9rem; outline: none;
-  transition: border-color 0.2s;
-}
-.search-bar input:focus { border-color: var(--accent); }
-
-/* ---- COLLAPSIBLE ---- */
-.collapsible { cursor: pointer; user-select: none; }
-.collapsible::after { content: ' ▾'; font-size: 0.8em; color: var(--accent-dim); }
-.collapsible.collapsed::after { content: ' ▸'; }
-.collapse-content { overflow: hidden; transition: max-height 0.3s ease; }
-.collapse-content.hidden { max-height: 0 !important; }
-
-/* ---- INSTALL BANNER ---- */
-.install-banner {
+/* ====== BOTTOM BAR ====== */
+.bottom-bar {
   position: fixed; bottom: 0; left: 0; right: 0;
-  background: linear-gradient(135deg, var(--bg-card), #0d1f0d);
+  height: var(--bottom-h); background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around; align-items: center;
+  z-index: 200; padding: 0 4px;
+}
+.bottom-btn {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; background: none; border: none; color: var(--text-dim);
+  font-size: 0.6rem; cursor: pointer; padding: 6px 8px;
+  min-width: 52px; min-height: 44px; justify-content: center;
+  transition: color 0.2s; font-family: inherit;
+}
+.bottom-btn:hover, .bottom-btn:active { color: var(--accent); }
+.bottom-btn .b-icon { font-size: 1.3rem; }
+
+/* ====== MODALS ====== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); z-index: 300;
+  align-items: flex-end; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-card); width: 100%; max-width: 500px;
+  max-height: 85vh; border-radius: 16px 16px 0 0;
+  overflow-y: auto; padding: 0;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--bg-card); z-index: 1;
+}
+.modal-header h2 {
+  font-family: 'Playfair Display', serif; font-size: 1.2rem;
+  color: var(--accent-glow);
+}
+.modal-close {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--text); font-size: 1.2rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-body { padding: 20px; }
+.modal-body label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 4px; margin-top: 12px; }
+.modal-body label:first-child { margin-top: 0; }
+.modal-body select, .modal-body input, .modal-body textarea {
+  width: 100%; padding: 10px 12px; border-radius: 8px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--text); font-size: 0.9rem; font-family: inherit;
+  outline: none;
+}
+.modal-body select:focus, .modal-body input:focus, .modal-body textarea:focus { border-color: var(--accent); }
+.modal-body textarea { resize: vertical; min-height: 80px; }
+.btn {
+  padding: 10px 20px; border-radius: 8px; border: none;
+  font-weight: 700; cursor: pointer; font-size: 0.88rem;
+  font-family: inherit; transition: all 0.2s;
+}
+.btn-primary { background: var(--accent); color: var(--bg-deep); }
+.btn-primary:hover { background: var(--accent-glow); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-secondary { background: var(--bg-surface); color: var(--text); border: 1px solid var(--border); }
+
+/* ====== CALCULATOR RESULT ====== */
+.calc-result {
+  background: var(--bg-surface); border: 2px solid var(--accent);
+  border-radius: var(--radius); padding: 16px; margin-top: 16px;
+  text-align: center;
+}
+.calc-result .dose { font-size: 2rem; font-weight: 700; color: var(--accent-glow); }
+.calc-result .unit { font-size: 1rem; color: var(--text-dim); }
+
+/* ====== JURNAL ====== */
+.jurnal-entry {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px; margin-bottom: 10px;
+}
+.jurnal-entry .je-date { font-size: 0.78rem; color: var(--accent); font-weight: 700; }
+.jurnal-entry .je-type { font-size: 0.72rem; color: var(--text-dim); background: var(--bg-card-alt); padding: 2px 8px; border-radius: 4px; display: inline-block; margin-left: 8px; }
+.jurnal-entry .je-text { margin-top: 6px; font-size: 0.88rem; }
+.jurnal-entry .je-actions { margin-top: 8px; text-align: right; }
+.jurnal-empty { text-align: center; color: var(--text-dim); padding: 30px; font-size: 0.9rem; }
+
+/* ====== CALENDAR ====== */
+.cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.cal-nav h3 { font-size: 1.1rem; color: var(--accent-glow); }
+.cal-nav button { background: var(--bg-surface); border: 1px solid var(--border); color: var(--text); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1rem; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-day-name { text-align: center; font-size: 0.7rem; color: var(--text-dim); font-weight: 700; padding: 4px; }
+.cal-day {
+  text-align: center; padding: 8px 2px; font-size: 0.8rem;
+  border-radius: 6px; min-height: 40px; position: relative;
+  cursor: default;
+}
+.cal-day.empty { opacity: 0; }
+.cal-day.today { border: 2px solid var(--accent); font-weight: 700; }
+.cal-day.has-event { background: rgba(106,191,105,0.15); color: var(--accent-glow); font-weight: 600; }
+.cal-day.has-event::after { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); }
+.cal-events { margin-top: 16px; }
+.cal-event-item {
+  background: var(--bg-surface); border-left: 3px solid var(--accent);
+  padding: 10px 12px; margin-bottom: 8px; border-radius: 0 8px 8px 0;
+  font-size: 0.85rem;
+}
+.cal-event-item strong { color: var(--accent); }
+
+/* ====== METEO ====== */
+.meteo-card {
+  background: var(--bg-surface); border-radius: var(--radius);
+  padding: 20px; text-align: center;
+}
+.meteo-temp { font-size: 3rem; font-weight: 700; color: var(--accent-glow); }
+.meteo-desc { font-size: 1rem; color: var(--text); text-transform: capitalize; margin: 4px 0; }
+.meteo-details { display: flex; justify-content: center; gap: 20px; margin-top: 12px; font-size: 0.85rem; color: var(--text-dim); }
+.meteo-alert { margin-top: 16px; }
+.meteo-setup { text-align: center; padding: 20px; }
+
+/* ====== INSTALL BANNER ====== */
+.install-banner {
+  position: fixed; bottom: var(--bottom-h); left: 0; right: 0;
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-deep));
   border-top: 1px solid var(--accent-dim);
-  padding: 14px 20px;
-  display: none; align-items: center; justify-content: space-between;
-  z-index: 200;
+  padding: 12px 16px; display: none;
+  align-items: center; justify-content: space-between; z-index: 199;
 }
 .install-banner.show { display: flex; }
-.install-banner p { font-size: 0.85rem; color: var(--text); }
-.install-btn {
-  padding: 8px 20px; border: none; border-radius: 8px;
-  background: var(--accent); color: var(--bg-deep);
-  font-weight: 700; cursor: pointer; font-size: 0.85rem;
-}
-.dismiss-btn { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.2rem; margin-left: 12px; }
+.install-banner p { font-size: 0.82rem; }
+.install-btn { padding: 8px 18px; border: none; border-radius: 8px; background: var(--accent); color: var(--bg-deep); font-weight: 700; cursor: pointer; font-size: 0.82rem; }
+.dismiss-btn { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.1rem; margin-left: 10px; }
 
-/* ---- RESPONSIVE ---- */
+/* ====== SEARCH HIGHLIGHT ====== */
+mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius: 2px; padding: 0 2px; }
+
+/* ====== PRINT ====== */
+@media print {
+  .app-header, .tabs-wrapper, .bottom-bar, .install-banner, .search-panel, .modal-overlay { display: none !important; }
+  body { background: #fff; color: #000; padding: 0; }
+  .tab-content { display: block !important; page-break-inside: avoid; }
+  .tab-content:not(.active) { display: none !important; }
+  .section { background: #fff; border: 1px solid #ccc; }
+  .section-title { color: #1a6b1a; }
+  .alert { border-left: 4px solid #999; }
+  th { background: #e8e8e8; color: #333; }
+}
+
+/* ====== RESPONSIVE ====== */
 @media (max-width: 600px) {
-  .content { padding: 12px; }
-  .section { padding: 16px; }
-  .section-title { font-size: 1.2rem; }
-  .app-title { font-size: 1.3rem; }
-  .tab { padding: 10px 14px; font-size: 0.8rem; }
-  table { font-size: 0.78rem; }
-  th, td { padding: 8px 8px; }
+  .content { padding: 10px; }
+  .section { padding: 14px; }
+  .section-title { font-size: 1.15rem; }
+  .app-title { font-size: 1.2rem; }
+  .tab { padding: 8px 11px; font-size: 0.75rem; }
+  table { font-size: 0.75rem; }
+  th, td { padding: 7px 7px; }
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="app-header">
-  <div class="app-title">🌳 Livada Mea <span>— Ghid Complet</span></div>
-  <div class="app-subtitle">100+ pomi • 5 specii • Zona Nădlac/Arad • Actualizat 2026</div>
+<!-- ====== HEADER ====== -->
+<header class="app-header">
+  <div class="header-left">
+    <div class="app-title">&#127795; Livada Mea <span>— Ghid Complet</span></div>
+    <div class="app-subtitle">100+ pomi &bull; 17 specii &bull; Zona N&#259;dlac/Arad &bull; 2026</div>
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" id="btnSearch" title="Cautare">&#128269;</button>
+    <button class="icon-btn" id="btnTheme" title="Schimba tema">&#9790;</button>
+  </div>
+</header>
+
+<!-- ====== SEARCH ====== -->
+<div class="search-panel" id="searchPanel">
+  <input type="search" id="searchInput" placeholder="Cauta in toate speciile..." autocomplete="off">
+  <span class="search-count" id="searchCount"></span>
 </div>
 
-<!-- TABS -->
-<div class="tabs-wrapper">
-  <div class="tabs">
-    <div class="tab active" data-tab="rodiu"><span class="tab-icon">🌿</span>Rodiu</div>
-    <div class="tab" data-tab="plan"><span class="tab-icon">📋</span>Plan Livadă</div>
-    <div class="tab" data-tab="piersic"><span class="tab-icon">🍑</span>Piersic</div>
-    <div class="tab" data-tab="cais"><span class="tab-icon">🟠</span>Cais</div>
-    <div class="tab" data-tab="prun"><span class="tab-icon">🫐</span>Prun</div>
-    <div class="tab" data-tab="mar"><span class="tab-icon">🍎</span>Măr</div>
-    <div class="tab" data-tab="par"><span class="tab-icon">🍐</span>Păr</div>
+<!-- ====== TABS ====== -->
+<nav class="tabs-wrapper" id="tabsWrapper">
+  <div class="tabs" id="tabsBar">
+    <span class="tab-sep">&#128203;</span>
+    <div class="tab active" data-tab="plan-livada"><span class="tab-icon">&#128203;</span>Plan Livad&#259;</div>
+
+    <span class="tab-sep">S&#226;mburoase</span>
+    <div class="tab" data-tab="cires"><span class="tab-icon">&#127826;</span>Cire&#537;</div>
+    <div class="tab" data-tab="visin"><span class="tab-icon">&#129747;</span>Vi&#537;in</div>
+    <div class="tab" data-tab="cais"><span class="tab-icon">&#128992;</span>Cais</div>
+    <div class="tab" data-tab="piersic"><span class="tab-icon">&#127825;</span>Piersic</div>
+    <div class="tab" data-tab="prun"><span class="tab-icon">&#129744;</span>Prun</div>
+    <div class="tab" data-tab="migdal"><span class="tab-icon">&#129372;</span>Migdal</div>
+
+    <span class="tab-sep">Semin&#539;oase</span>
+    <div class="tab" data-tab="par-clapp"><span class="tab-icon">&#127824;</span>P&#259;r Clapp</div>
+    <div class="tab" data-tab="par-williams"><span class="tab-icon">&#127824;</span>P&#259;r Williams</div>
+    <div class="tab" data-tab="par-hosui"><span class="tab-icon">&#127824;</span>P&#259;r Hosui</div>
+    <div class="tab" data-tab="par-napoca"><span class="tab-icon">&#127824;</span>P&#259;r Napoca</div>
+    <div class="tab" data-tab="mar-florina"><span class="tab-icon">&#127822;</span>M&#259;r Florina</div>
+    <div class="tab" data-tab="mar-golden"><span class="tab-icon">&#127823;</span>M&#259;r Golden</div>
+
+    <span class="tab-sep">Arbu&#537;ti</span>
+    <div class="tab" data-tab="zmeur"><span class="tab-icon">&#128308;</span>Zmeur</div>
+    <div class="tab" data-tab="mur"><span class="tab-icon">&#9899;</span>Mur</div>
+    <div class="tab" data-tab="afin"><span class="tab-icon">&#128309;</span>Afin</div>
+
+    <span class="tab-sep">Altele</span>
+    <div class="tab" data-tab="alun"><span class="tab-icon">&#127792;</span>Alun</div>
+    <div class="tab" data-tab="rodiu"><span class="tab-icon">&#127807;</span>Rodiu</div>
   </div>
-</div>
+</nav>
 
-<!-- ============= TAB: RODIU ============= -->
-<div class="content">
-<div class="tab-content active" id="rodiu">
+<!-- ====== MAIN CONTENT ====== -->
+<main class="content">
 
-<!-- Cercetare completă -->
-<div class="section">
-  <h2 class="section-title">Tunderea pomului tânăr de rodiu — Ghid complet</h2>
-  <p><em>Cercetare pe baza surselor: UGA Cooperative Extension, UC Agriculture & Natural Resources, Agrobiznes.ro, Horticultorul.ro, Verdena.ro, Lumea Satului</em></p>
-
-  <div class="alert alert-success">
-    <strong>✅ VERDICT</strong>
-    Structura pomului (3–4 tulpini de la bază) este bună pentru România. Nu este „tuns greșit", dar necesită formare activă: selecție tulpini, eliminare lăstari, modelare vază deschisă.
-  </div>
-
-  <h3>De ce forma de tufă (nu copac pe un singur trunchi)</h3>
-  <p>Rodiile (<em>Punica granatum</em>) sunt arbuști multi-tulpinali în mod natural. Antrenarea lor ca pomi pe un singur trunchi este o tehnică din livezile comerciale din California, Spania sau Israel — regiuni care rareori văd îngheț sever. În clima continentală a României, unde temperaturile iarna pot coborî sub <strong>−10°C până la −15°C</strong>, forma de tufă nu este doar preferată — este practic obligatorie.</p>
-  <p>Universitatea din Georgia precizează: cu tufe multi-trunchi, dacă înghețul deteriorează o parte, se elimină și se antrenează un lăstar viguros în loc, „fără pierdere semnificativă de producție". Sursele românești recomandă menținerea a <strong>4–5 tulpini principale</strong> cu coroană aerisită.</p>
-
-  <h4>Avantajele formei de tufă:</h4>
-  <ul>
-    <li><strong>Rezistență la îngheț:</strong> Dacă un trunchi moare, ceilalți supraviețuiesc și planta se recuperează fără pierderi de ani.</li>
-    <li><strong>Protecție de iarnă fezabilă:</strong> O tufă joasă (2–3m) poate fi îndoită la pământ și acoperită cu 15–20 cm pământ + crengi de brad.</li>
-    <li><strong>Reînnoire naturală:</strong> Lăstarii de la bază servesc ca „asigurare" — pot înlocui trunchiul deteriorat.</li>
-    <li><strong>Fructificare mai rapidă:</strong> Mai multe tulpini = mai mult lemn productiv, roade mai devreme.</li>
-  </ul>
-
-  <h3>Cum să tunzi corect — pas cu pas</h3>
-
-  <h4>Acum (primăvara, Anul 1–2)</h4>
-  <ol>
-    <li><strong>Selectează 3–5 tulpini principale:</strong> Alege cele mai viguroase, groase și bine spațiate. Dacă ai 3–4 sănătoase, păstrează-le pe toate.</li>
-    <li><strong>Elimină tulpinile slabe:</strong> Cele vizibil mai subțiri, slabe sau care se încrucișează — taie la nivelul solului.</li>
-    <li><strong>Verifică lemnul mort:</strong> Scară ușor coaja cu unghia. Verde = vie. Maro/uscat = moartă → tăiată.</li>
-    <li><strong>NU tunde nimic altceva în Anul 1:</strong> Lasă planta să-și dezvolte rădăcinile. Singura intervenție = eliminarea drajonilor de 3–4 ori pe sezon.</li>
-  </ol>
-
-  <h4>Pe parcursul primului sezon de vegetație</h4>
-  <p>Rodiile produc lăstari (drajoni) agresiv de la bază și rădăcini. <strong>Elimină-i regulat, de 3–4 ori pe sezon</strong>, altfel planta devine deasă cu zeci de tulpini subțiri. Păstrează doar cele 3–5 selectate.</p>
-
-  <h4>Tunderea structurală (iarna Anului 2)</h4>
-  <p>Cea mai importantă tundere vreodată:</p>
-  <ul>
-    <li><strong>Scurtează toate ramurile cu 1/4 până la 1/3</strong> din lungime, tăind deasupra unui mugure orientat spre exterior.</li>
-    <li><strong>Elimină ramurile care se încrucișează</strong> sau se freacă între ele.</li>
-    <li><strong>Păstrează 3–5 ramificații laterale</strong> pe fiecare tulpină principală — devin scheletul permanent.</li>
-    <li><strong>Scopul: formă de vază deschisă</strong> — centrul primește lumină și aer.</li>
-  </ul>
-
-  <h4>Anul 3+ — întreținere anuală</h4>
-  <p>Tundere ușoară: elimină lemnul mort, rărește creșterea interioară, continuă eliminarea drajonilor. <strong>Nu tăia niciodată mai mult de 1/3 din coroana totală.</strong> Rodiile fructifică pe lemnul de 2–3 ani — tunderea excesivă reduce recolta direct.</p>
-
-  <h3>Când să tunzi</h3>
-  <div class="table-wrap">
-    <table>
-      <tr><th>Perioadă</th><th>Acțiune</th><th>Detalii</th></tr>
-      <tr><td>Sf. iarnă / înc. primăvară</td><td><strong>Tundere structurală</strong></td><td>După ultimul îngheț, înainte de înmugurit. În România: martie–aprilie.</td></tr>
-      <tr><td>Vară (mai–sept.)</td><td><strong>Doar eliminare drajoni</strong></td><td>De 3–4 ori pe sezon. NU tăia ramuri productive.</td></tr>
-      <tr><td>Toamnă</td><td><strong>INTERZISĂ</strong></td><td>Stimulează creștere nouă care îngheață. Maxim curățare lemn mort.</td></tr>
-      <tr><td>Iarnă (repaus)</td><td><strong>Pregătire protecție</strong></td><td>Zeamă bordaleză 3%, mulț, protecție antigel.</td></tr>
-    </table>
-  </div>
-
-  <h3>5 greșeli frecvente de evitat</h3>
-  <div class="alert alert-danger">
-    <strong>1. Tundere excesivă</strong>
-    Nu tăia mai mult de 1/3. Rodiile nu sunt meri — au nevoie de mai puțină intervenție.
-  </div>
-  <div class="alert alert-danger">
-    <strong>2. Ignorarea drajonilor</strong>
-    Fără eliminare regulată → tufă deasă cu zeci de tulpini subțiri. Calitatea fructelor scade dramatic.
-  </div>
-  <div class="alert alert-warning">
-    <strong>3. Tăiere plată („topping")</strong>
-    Stimulează lăstari slabi, distruge structura fructificării. Scurtează selectiv la ramuri laterale.
-  </div>
-  <div class="alert alert-danger">
-    <strong>4. Tundere în sezonul greșit</strong>
-    Tunderea de toamnă stimulează creștere fragilă care îngheață iarna. Poate ucide plantele tinere.
-  </div>
-  <div class="alert alert-warning">
-    <strong>5. Eliminarea lemnului de 2–3 ani</strong>
-    Aici se formează fructele! Lasă ramificații laterale mature când scurtezi.
-  </div>
-
-  <h3>Gestionarea drajonilor: eliminare + strategie de reînnoire</h3>
-  <p>Consensul este clar: <strong>drajonii se elimină regulat</strong>. Fiecare lăstar lăsat divertește energie de la creșterea trunchiului și fructificare.</p>
-  <p>Totuși, la maturitate (după anul 4–5), permiteți 1–2 drajoni bine poziționați/an ca lemn de înlocuire. Mugurele de fruct produce doar 3–4 ani, apoi trunchiul vechi se taie la sol și tânărul îl înlocuiește. Acest ciclu de reînnoire este un avantaj major în clima rece — dacă gerul ucide un trunchi, un lăstar îl înlocuiește rapid.</p>
-
-  <h3>Protecție de iarnă — esențială în România</h3>
-  <p>Rodiul este o <em>specie sensibilă la ger</em> care suferă la temperaturi sub −10°C / −15°C.</p>
-
-  <h4>Metoda tradițională românească:</h4>
-  <ol>
-    <li>Aplică zeamă bordaleză 3% toamna contra bolilor fungice.</li>
-    <li>Mulțește zona rădăcinilor cu frunze uscate sau paie (15–20 cm).</li>
-    <li>Îndoaie tulpinile flexibile la pământ și fixează-le.</li>
-    <li>Acoperă cu 15–20 cm pământ + crengi de brad sau paie.</li>
-    <li>Primăvara — așteaptă temperaturi stabile pozitive. Tratează cu zeamă bordaleză 1%.</li>
-  </ol>
-
-  <h3>Soiuri recomandate pentru România</h3>
-  <div class="table-wrap">
-    <table>
-      <tr><th>Soi</th><th>Rezistență la frig</th><th>Observații</th></tr>
-      <tr><td>Salavatski</td><td>până la −24°C</td><td>Cel mai rezistent. Ideal pentru întreaga Românie.</td></tr>
-      <tr><td>Russian 26</td><td>până la −20°C</td><td>Bună rezistență, fructe de calitate.</td></tr>
-      <tr><td>Makedonia</td><td>până la −18°C</td><td>Creat pentru Europa de Sud-Est.</td></tr>
-      <tr><td>Wonderful</td><td>până la −12°C</td><td>Popular, dar necesită protecție suplimentară.</td></tr>
-    </table>
-  </div>
-
-  <h3>Concluzie</h3>
-  <p>Pomul de rodie cu 3–4 tulpini de la bază are structură bună. Pașii esențiali: <strong>păstrează cele 3 tulpini cele mai puternice</strong>, elimină toți lăstarii pe tot sezonul, așteaptă trecerea ultimului îngheț pentru tăieri, modelează vază deschisă cu tundere ușoară. O tufă bine întreținută poate fi productivă timp de decenii.</p>
-</div>
-
-</div><!-- /rodiu -->
-
-<!-- ============= TAB: PLAN LIVADĂ ============= -->
-<div class="tab-content" id="plan">
+<!-- ==================== TAB: PLAN LIVADA ==================== -->
+<div class="tab-content active" id="plan-livada">
 
 <div class="section">
   <h2 class="section-title">Partea I — Calendar Tratamente Fitosanitare</h2>
-  <p>Livadă mixtă, zona vest România. Doze ca concentrație (%) la 10L apă.</p>
-
+  <div class="section-body">
+  <p>Livad&#259; mixt&#259;, zona vest Rom&#226;nia. Doze ca concentra&#539;ie (%) la 10L ap&#259;.</p>
   <div class="table-wrap">
     <table>
-      <tr><th>Perioadă</th><th>Fază fenologică</th><th>Fungicid</th><th>Insecticid</th><th>Note</th></tr>
-      <tr><td>Feb–Mar</td><td>Repaus vegetativ</td><td>Zeamă bordaleză 3% / Funguran OH 0.3%</td><td>Oleomin / Confidor Oil 1%</td><td>Toate speciile. T&gt;0°C.</td></tr>
-      <tr><td>15–31 Mar</td><td>Dezmugurire</td><td>Score 250 EC 0.02%</td><td>Mospilan 20 SG 0.03%</td><td>Piersic: anti-bășicare. Măr/păr: anti-răpăn.</td></tr>
-      <tr><td>1–10 Apr</td><td>Buton floral</td><td>Chorus 50 WG 0.03% + Captadin 0.2%</td><td>Mavrik 2F 0.02%</td><td>Mavrik = sigur pt albine.</td></tr>
-      <tr><td>10–25 Apr</td><td>Primele flori</td><td>Difcor / Score 0.02%</td><td>Decis 25 WG 0.003%</td><td>⚠️ NU stropiti dacă sunt albine!</td></tr>
-      <tr><td>Sc. petale</td><td>Scăderea petalelor</td><td>Switch 0.1% / Topsin 0.07%</td><td>Calypso 480 SC 0.02%</td><td>Anti-monilioză cais/piersic.</td></tr>
-      <tr><td>Mai</td><td>Fruct 5–10mm</td><td>Merpan 80 WDG 0.15% + Thiovit Jet 0.5%</td><td>Teppeki 0.015%</td><td>Rărire fructe piersic/măr!</td></tr>
-      <tr><td>Iunie</td><td>Fruct în creștere</td><td>Luna Experience 0.05% / Topsin 0.07%</td><td>Coragen 0.0175%</td><td>Viermele fructelor, ciuruire.</td></tr>
-      <tr><td>Iulie</td><td>Fruct pârgă</td><td>Switch 0.1% / Dithane 0.2%</td><td>Karate Zeon 0.015%</td><td>Monilioză fructe. Recoltat cais.</td></tr>
-      <tr><td>August</td><td>După recoltă</td><td>Topsin 0.07% + Captadin 0.2%</td><td>Karate Zeon 0.015%</td><td>Tăieri în verde post-recoltare.</td></tr>
-      <tr><td>Sept–Oct</td><td>Fructe măr/păr</td><td>Dithane 0.2%</td><td>—</td><td>Respectă pauza de securitate!</td></tr>
-      <tr><td>Noiembrie</td><td>După căderea frunzelor</td><td>Sulfat cupru 1–3%</td><td>—</td><td>Curățenie: adună frunze căzute.</td></tr>
+      <tr><th>Perioad&#259;</th><th>Faz&#259; fenologic&#259;</th><th>Fungicid</th><th>Insecticid</th><th>Note</th></tr>
+      <tr><td>Feb&#8211;Mar</td><td>Repaus vegetativ</td><td>Zeam&#259; bordalez&#259; 3% / Funguran OH 0.3%</td><td>Oleomin / Confidor Oil 1%</td><td>Toate speciile. T&gt;0&#176;C.</td></tr>
+      <tr><td>15&#8211;31 Mar</td><td>Dezmugurire</td><td>Score 250 EC 0.02%</td><td>Mospilan 20 SG 0.03%</td><td>Piersic: anti-b&#259;&#537;icare. M&#259;r/p&#259;r: anti-r&#259;p&#259;n.</td></tr>
+      <tr><td>1&#8211;10 Apr</td><td>Buton floral</td><td>Chorus 50 WG 0.03% + Captadin 0.2%</td><td>Mavrik 2F 0.02%</td><td>Mavrik = sigur pt albine.</td></tr>
+      <tr><td>10&#8211;25 Apr</td><td>Primele flori</td><td>Difcor / Score 0.02%</td><td>Decis 25 WG 0.003%</td><td>&#9888;&#65039; NU stropiti dac&#259; sunt albine!</td></tr>
+      <tr><td>Sc. petale</td><td>Sc&#259;derea petalelor</td><td>Switch 0.1% / Topsin 0.07%</td><td>Calypso 480 SC 0.02%</td><td>Anti-monilioz&#259; cais/piersic.</td></tr>
+      <tr><td>Mai</td><td>Fruct 5&#8211;10mm</td><td>Merpan 80 WDG 0.15% + Thiovit Jet 0.5%</td><td>Teppeki 0.015%</td><td>R&#259;rire fructe piersic/m&#259;r!</td></tr>
+      <tr><td>Iunie</td><td>Fruct &#238;n cre&#537;tere</td><td>Luna Experience 0.05% / Topsin 0.07%</td><td>Coragen 0.0175%</td><td>Viermele fructelor, ciuruire.</td></tr>
+      <tr><td>Iulie</td><td>Fruct p&#226;rg&#259;</td><td>Switch 0.1% / Dithane 0.2%</td><td>Karate Zeon 0.015%</td><td>Monilioz&#259; fructe. Recoltat cais.</td></tr>
+      <tr><td>August</td><td>Dup&#259; recolt&#259;</td><td>Topsin 0.07% + Captadin 0.2%</td><td>Karate Zeon 0.015%</td><td>T&#259;ieri &#238;n verde post-recoltare.</td></tr>
+      <tr><td>Sept&#8211;Oct</td><td>Fructe m&#259;r/p&#259;r</td><td>Dithane 0.2%</td><td>&#8212;</td><td>Respect&#259; pauza de securitate!</td></tr>
+      <tr><td>Noiembrie</td><td>Dup&#259; c&#259;derea frunzelor</td><td>Sulfat cupru 1&#8211;3%</td><td>&#8212;</td><td>Cur&#259;&#539;enie: adun&#259; frunze c&#259;zute.</td></tr>
     </table>
   </div>
-
   <div class="alert alert-info">
-    <strong>⚡ Reguli cheie</strong>
-    Alternează substanțele active (evită rezistență) • Respectă pauza de securitate • Stropește dimineața/seara, fără vânt, T&lt;25°C • Adună frunze și fructe mumifiate (sursa #1 de infecție) • Bio alternativ: zeamă bordaleză + ulei horticol + Bt
+    <strong>&#9889; Reguli cheie</strong>
+    Alterneaz&#259; substan&#539;ele active (evit&#259; rezisten&#539;&#259;) &bull; Respect&#259; pauza de securitate &bull; Stropeste diminea&#539;a/seara, f&#259;r&#259; v&#226;nt, T&lt;25&#176;C &bull; Adun&#259; frunze &#537;i fructe mumifiate (sursa #1 de infec&#539;ie) &bull; Bio alternativ: zeam&#259; bordalez&#259; + ulei horticol + Bt
   </div>
-
   <h3>Bolile principale pe specii</h3>
   <ul>
-    <li><strong>Piersic:</strong> bășicarea frunzelor (cea mai importantă!), monilioza, ciuruirea, făinarea, molia vărgată</li>
-    <li><strong>Cais:</strong> monilioza lăstarilor și florilor (cea mai gravă!), ciuruirea, antracnoza</li>
-    <li><strong>Prun:</strong> monilioza, ciuruirea, pătarea roșie, viermele prunelor</li>
-    <li><strong>Măr:</strong> răpănul (Venturia), făinarea, focul bacterian, viermele merelor</li>
-    <li><strong>Păr:</strong> răpănul, focul bacterian (Erwinia), puricele melifer</li>
+    <li><strong>Piersic:</strong> b&#259;&#537;icarea frunzelor (cea mai important&#259;!), monilioza, ciuruirea, f&#259;inarea, molia v&#259;rgat&#259;</li>
+    <li><strong>Cais:</strong> monilioza l&#259;starilor &#537;i florilor (cea mai grav&#259;!), ciuruirea, antracnoza</li>
+    <li><strong>Prun:</strong> monilioza, ciuruirea, p&#259;tarea ro&#537;ie, viermele prunelor</li>
+    <li><strong>M&#259;r:</strong> r&#259;p&#259;nul (Venturia), f&#259;inarea, focul bacterian, viermele merelor</li>
+    <li><strong>P&#259;r:</strong> r&#259;p&#259;nul, focul bacterian (Erwinia), puricele melifer</li>
   </ul>
+  </div>
 </div>
 
 <div class="section">
-  <h2 class="section-title">Partea II — Ghid Tundere și Formare Coroană</h2>
-
+  <h2 class="section-title">Partea II — Ghid Tundere &#537;i Formare Coroan&#259;</h2>
+  <div class="section-body">
   <div class="alert alert-warning">
-    <strong>📌 Pomii tăi au 4–7 ani</strong>
-    Sunt în tranziția de la formarea coroanei la tunderea de rodire. Greșelile de acum afectează producția pe următorii 10+ ani.
+    <strong>&#128204; Pomii t&#259;i au 4&#8211;7 ani</strong>
+    Sunt &#238;n tranzi&#539;ia de la formarea coroanei la tunderea de rodire. Gre&#537;elile de acum afecteaz&#259; produc&#539;ia pe urm&#259;torii 10+ ani.
   </div>
-
   <h3>Principii generale</h3>
   <ul>
-    <li><strong>Când:</strong> Tundere uscat = sf. februarie–înc. martie (T&gt;5°C). Verde = iunie–august.</li>
-    <li><strong>Regula de aur:</strong> NU tăia mai mult de 1/3 din coroana totală într-un sezon.</li>
-    <li><strong>Unelte:</strong> foarfece (&lt;2cm), fierăstrău (&gt;2cm). Dezinfectează cu alcool 70% între pomi.</li>
-    <li><strong>Tăieți la inel:</strong> fără cioturi! Se usucă → poartă de intrare boli.</li>
-    <li><strong>Deasupra mugurilor exteriori:</strong> direcționează creșterea spre exterior.</li>
+    <li><strong>C&#226;nd:</strong> Tundere uscat = sf. februarie&#8211;&#238;nc. martie (T&gt;5&#176;C). Verde = iunie&#8211;august.</li>
+    <li><strong>Regula de aur:</strong> NU t&#259;ia mai mult de 1/3 din coroana total&#259; &#238;ntr-un sezon.</li>
+    <li><strong>Unelte:</strong> foarfece (&lt;2cm), fier&#259;str&#259;u (&gt;2cm). Dezinfecteaz&#259; cu alcool 70% &#238;ntre pomi.</li>
+    <li><strong>T&#259;ie&#539;i la inel:</strong> f&#259;r&#259; cioturi! Se usuc&#259; &#8594; poart&#259; de intrare boli.</li>
+    <li><strong>Deasupra mugurilor exteriori:</strong> direc&#539;ioneaz&#259; cre&#537;terea spre exterior.</li>
   </ul>
-
-  <h3>Forme de coroană pe specii</h3>
+  <h3>Forme de coroan&#259; pe specii</h3>
   <div class="table-wrap">
     <table>
-      <tr><th>Specie</th><th>Formă</th><th>Structură</th><th>Tundere rodire</th><th>Obs.</th></tr>
-      <tr><td>Piersic</td><td>Vas ameliorat</td><td>3–4 șarpante, 2.5–3m</td><td>Scurtare rod 1/3. Cep înlocuire.</td><td>Cea mai multă tundere. Rod pe lemn 1 an.</td></tr>
-      <tr><td>Cais</td><td>Vas ameliorat</td><td>3–4 șarpante, 2.5–3m</td><td>Rărire lăstari 15–20cm.</td><td>Mai ușoară. Atenție monilioză tăieturi.</td></tr>
-      <tr><td>Prun</td><td>Vas / Piramidă</td><td>3–4 șarpante, 2.5–3.5m</td><td>Rărire, scurtare 1/3.</td><td>Rod 3–5 ani. NU tunde excesiv.</td></tr>
-      <tr><td>Măr</td><td>Piramidă etajată</td><td>3 etaje × 3–4 șarp.</td><td>Ax central păstrat.</td><td>Rod pe lemn 2+ ani. Incl. 45–55°.</td></tr>
-      <tr><td>Păr</td><td>Piramidă etajată</td><td>3 etaje, ax central</td><td>Similar măr. Incl. 45–50°.</td><td>Creștere verticală. Rod 3–4 ani.</td></tr>
+      <tr><th>Specie</th><th>Form&#259;</th><th>Structur&#259;</th><th>Tundere rodire</th><th>Obs.</th></tr>
+      <tr><td>Piersic</td><td>Vas ameliorat</td><td>3&#8211;4 &#537;arpante, 2.5&#8211;3m</td><td>Scurtare rod 1/3. Cep &#238;nlocuire.</td><td>Cea mai mult&#259; tundere. Rod pe lemn 1 an.</td></tr>
+      <tr><td>Cais</td><td>Vas ameliorat</td><td>3&#8211;4 &#537;arpante, 2.5&#8211;3m</td><td>R&#259;rire l&#259;stari 15&#8211;20cm.</td><td>Mai u&#537;oar&#259;. Aten&#539;ie monilioz&#259; t&#259;ieturi.</td></tr>
+      <tr><td>Prun</td><td>Vas / Piramid&#259;</td><td>3&#8211;4 &#537;arpante, 2.5&#8211;3.5m</td><td>R&#259;rire, scurtare 1/3.</td><td>Rod 3&#8211;5 ani. NU tunde excesiv.</td></tr>
+      <tr><td>M&#259;r</td><td>Piramid&#259; etajat&#259;</td><td>3 etaje &times; 3&#8211;4 &#537;arp.</td><td>Ax central p&#259;strat.</td><td>Rod pe lemn 2+ ani. Incl. 45&#8211;55&#176;.</td></tr>
+      <tr><td>P&#259;r</td><td>Piramid&#259; etajat&#259;</td><td>3 etaje, ax central</td><td>Similar m&#259;r. Incl. 45&#8211;50&#176;.</td><td>Cre&#537;tere vertical&#259;. Rod 3&#8211;4 ani.</td></tr>
     </table>
   </div>
-
-  <h3>Piersic & Cais — detalii</h3>
+  <h3>Piersic &amp; Cais — detalii</h3>
   <ul>
-    <li><strong>Vas ameliorat:</strong> 3–4 șarpante pe ax scurt, 10–12 cm distanță, subșarpante la 40–50 cm. Max 2.5–3m.</li>
-    <li><strong>Tundere rodire:</strong> ramuri mixte scurtate la 6–8 grupuri muguri. Cep înlocuire 2–3 muguri.</li>
-    <li><strong>Verde (vara):</strong> elimină lăstari verticali (lacomi), ciupește la 40 cm.</li>
-    <li><strong>Rărire fructe piersic:</strong> OBLIGATORIE! Un fruct la 15–20 cm. Altfel = fructe mici + monilioză.</li>
-    <li><strong>Cais:</strong> tundere ușoară, rărire lăstari 15–20cm. Mastic pe răni &gt;2cm (scurgere clei).</li>
+    <li><strong>Vas ameliorat:</strong> 3&#8211;4 &#537;arpante pe ax scurt, 10&#8211;12 cm distan&#539;&#259;, sub&#537;arpante la 40&#8211;50 cm. Max 2.5&#8211;3m.</li>
+    <li><strong>Tundere rodire:</strong> ramuri mixte scurtate la 6&#8211;8 grupuri muguri. Cep &#238;nlocuire 2&#8211;3 muguri.</li>
+    <li><strong>Verde (vara):</strong> elimin&#259; l&#259;stari verticali (lacomi), concuren&#539;ii de prelungire. Ciupe&#537;te la 40 cm.</li>
+    <li><strong>R&#259;rire fructe piersic:</strong> OBLIGATORIE! Dup&#259; legat, las&#259; un fruct la 15&#8211;20 cm.</li>
+    <li><strong>Cais:</strong> tundere u&#537;oar&#259;, r&#259;rire l&#259;stari 15&#8211;20cm. Mastic pe r&#259;ni &gt;2cm.</li>
   </ul>
-
   <h3>Prun — detalii</h3>
   <ul>
-    <li>Vas ameliorat sau piramidă întreruptă</li>
-    <li>Ramuri de 1 an scurtate cu 1/3 (pe acestea rodește)</li>
-    <li>Rărire interior coroană, eliminare ramuri încrucișate</li>
-    <li>Tăieri vară: iunie–iulie, ramuri înghețate + lăstari lacomi</li>
+    <li>Vas ameliorat sau piramid&#259; &#238;ntrerupt&#259;</li>
+    <li>Ramuri de 1 an scurtate cu 1/3</li>
+    <li>R&#259;rire interior coroan&#259;, eliminare ramuri &#238;ncruci&#537;ate</li>
+    <li>T&#259;ieri var&#259;: iunie&#8211;iulie</li>
   </ul>
-
-  <h3>Măr & Păr — detalii</h3>
+  <h3>M&#259;r &amp; P&#259;r — detalii</h3>
   <ul>
-    <li>Piramidă etajată cu ax central, 3 etaje × 3–4 șarpante</li>
-    <li>Distanță între etaje: 80–100cm (măr), 70–90cm (păr)</li>
-    <li>Inclinație ramuri: 45–55° (măr), 45–50° (păr) — greutăți/sfori</li>
-    <li>NU tăia formațiuni rod tinere: pinteni, țepușe, burse, smicele</li>
-    <li>Rărire fructe măr: OBLIGATORIE. 1 fruct/inflorescență, la 15–20cm</li>
+    <li>Piramid&#259; etajat&#259; cu ax central, 3 etaje &times; 3&#8211;4 &#537;arpante</li>
+    <li>Distan&#539;&#259; &#238;ntre etaje: 80&#8211;100cm (m&#259;r), 70&#8211;90cm (p&#259;r)</li>
+    <li>Inclina&#539;ie ramuri: 45&#8211;55&#176; (m&#259;r), 45&#8211;50&#176; (p&#259;r)</li>
+    <li>NU t&#259;ia forma&#539;iuni rod tinere: pinteni, &#539;epu&#537;e, burse, smicele</li>
+    <li>R&#259;rire fructe m&#259;r: OBLIGATORIE. 1 fruct/infloresccen&#539;&#259;, la 15&#8211;20cm</li>
   </ul>
+  </div>
 </div>
 
 <div class="section">
-  <h2 class="section-title">Partea III — Plan Anual de Îngrijire</h2>
-
+  <h2 class="section-title">Partea III — Plan Anual de &#206;ngrijire</h2>
+  <div class="section-body">
   <h3>Calendar lunar</h3>
   <div class="table-wrap">
     <table>
-      <tr><th>Lună</th><th>Lucrări principale</th><th>Lucrări secundare</th></tr>
-      <tr><td>Ian.</td><td>Verificare protecții antigel. Comandă produse fitosanitare.</td><td>Reparații unelte. Ascuțire foarfece.</td></tr>
-      <tr><td>Feb.</td><td>Tundere în uscat (T&gt;5°C). Văruire trunchi.</td><td>Primul tratament cupric când T&gt;0°C.</td></tr>
-      <tr><td>Mar.</td><td>Finalizare tundere. Fertilizare NPK la bază.</td><td>Al 2-lea tratament (dezmugurire). Capcane feromonale.</td></tr>
-      <tr><td>Apr.</td><td>Tratamente buton floral + înflorire. Rărire piersic.</td><td>Cosit iarbă. Irigare dacă e secetă.</td></tr>
-      <tr><td>Mai</td><td>Tratament fruct mic. Rărire fructe măr.</td><td>Ciupit lăstari (verde). Eliminare drajoni.</td></tr>
-      <tr><td>Iun.</td><td>Tratament vara I. Tăieri în verde.</td><td>Irigare. Monitorizare dăunători.</td></tr>
-      <tr><td>Iul.</td><td>Recoltat cais + piersici timpurii. Trat. vara II.</td><td>Tăieri după recoltare cais. Cosit.</td></tr>
-      <tr><td>Aug.</td><td>Recoltat piersic, prun timpuriu. Tăieri verde.</td><td>Tratament post-recoltare specii recoltate.</td></tr>
-      <tr><td>Sept.</td><td>Recoltat prun, mere, pere timpurii.</td><td>Ultimul tratament măr/păr (respectă pauza!).</td></tr>
-      <tr><td>Oct.</td><td>Recoltat mere/pere tardive. Adunare frunze.</td><td>Pregătire protecție iarnă pomi tineri.</td></tr>
-      <tr><td>Nov.</td><td>Tratament cupric după căderea frunzelor.</td><td>Văruit trunchi. Mulț la bază.</td></tr>
-      <tr><td>Dec.</td><td>Verificare tutori, legături. Repaus.</td><td>Planificare sezon următor.</td></tr>
+      <tr><th>Lun&#259;</th><th>Lucr&#259;ri principale</th><th>Lucr&#259;ri secundare</th></tr>
+      <tr><td>Ian.</td><td>Verificare protec&#539;ii antigel. Comand&#259; produse fitosanitare.</td><td>Repara&#539;ii unelte. Ascu&#539;ire foarfece.</td></tr>
+      <tr><td>Feb.</td><td>Tundere &#238;n uscat (T&gt;5&#176;C). V&#259;ruire trunchi.</td><td>Primul tratament cupric c&#226;nd T&gt;0&#176;C.</td></tr>
+      <tr><td>Mar.</td><td>Finalizare tundere. Fertilizare NPK la baz&#259;.</td><td>Al 2-lea tratament (dezmugurire). Capcane feromonale.</td></tr>
+      <tr><td>Apr.</td><td>Tratamente buton floral + &#238;nflorire. R&#259;rire piersic.</td><td>Cosit iarb&#259;. Irigare dac&#259; e secet&#259;.</td></tr>
+      <tr><td>Mai</td><td>Tratament fruct mic. R&#259;rire fructe m&#259;r.</td><td>Ciupit l&#259;stari (verde). Eliminare drajoni.</td></tr>
+      <tr><td>Iun.</td><td>Tratament vara I. T&#259;ieri &#238;n verde.</td><td>Irigare. Monitorizare d&#259;un&#259;tori.</td></tr>
+      <tr><td>Iul.</td><td>Recoltat cais + piersici timpurii. Trat. vara II.</td><td>T&#259;ieri dup&#259; recoltare cais. Cosit.</td></tr>
+      <tr><td>Aug.</td><td>Recoltat piersic, prun timpuriu. T&#259;ieri verde.</td><td>Tratament post-recoltare specii recoltate.</td></tr>
+      <tr><td>Sept.</td><td>Recoltat prun, mere, pere timpurii.</td><td>Ultimul tratament m&#259;r/p&#259;r (respect&#259; pauza!).</td></tr>
+      <tr><td>Oct.</td><td>Recoltat mere/pere tardive. Adunare frunze.</td><td>Preg&#259;tire protec&#539;ie iarn&#259; pomi tineri.</td></tr>
+      <tr><td>Nov.</td><td>Tratament cupric dup&#259; c&#259;derea frunzelor.</td><td>V&#259;ruit trunchi. Mul&#539; la baz&#259;.</td></tr>
+      <tr><td>Dec.</td><td>Verificare tutori, leg&#259;turi. Repaus.</td><td>Planificare sezon urm&#259;tor.</td></tr>
+    </table>
+  </div>
+  <h3>Fertilizare</h3>
+  <ul>
+    <li><strong>Martie:</strong> NPK 16-16-16 sau 20-20-20 — 100&#8211;150g/pom, &#238;ngropat, urmat de irigare</li>
+    <li><strong>Mai&#8211;Iunie:</strong> Foliar (Fertitell, Cropmax, Atonik) ad&#259;ugat &#238;n solu&#539;ia de stropire</li>
+    <li><strong>Septembrie:</strong> K + P (f&#259;r&#259; azot!) — preg&#259;te&#537;te lemnul pentru iarn&#259;</li>
+    <li><strong>Toamna:</strong> Gunoi compostat 5&#8211;10 kg/pom, &#238;n&#539;epat u&#537;or la baz&#259;</li>
+  </ul>
+  <h3>Irigare</h3>
+  <ul>
+    <li><strong>Minim:</strong> 20&#8211;30 L/pom, de 2&#8211;3 ori/s&#259;pt&#259;m&#226;n&#259; &#238;n secet&#259;</li>
+    <li><strong>Ideal:</strong> Sistem pic&#259;ture (&#8722;50% ap&#259;, previne boli foliare)</li>
+    <li><strong>STOP:</strong> Cu 2&#8211;3 s&#259;pt&#259;m&#226;ni &#238;nainte de recoltare (concentrare zaharuri)</li>
+  </ul>
+  <h3>Protec&#539;ie de iarn&#259;</h3>
+  <ul>
+    <li><strong>V&#259;ruire trunchi:</strong> var stins + sulfat cupru contra &#238;nghe&#539;-dezghe&#539; + d&#259;un&#259;tori</li>
+    <li><strong>Mul&#539; la baz&#259;:</strong> 10&#8211;15 cm paie/frunze uscate = protec&#539;ie r&#259;d&#259;cini</li>
+    <li><strong>Piersici tineri:</strong> agrotextil pe trunchi dac&#259; se prognozeaz&#259; sub &#8722;15&#176;C</li>
+  </ul>
+  <h3>Cosit &#537;i &#238;ntre&#539;inere sol</h3>
+  <ul>
+    <li>Cosit 4&#8211;6 ori/sezon. Max 15&#8211;20 cm &#238;n&#259;l&#539;ime iarb&#259;.</li>
+    <li>Iarba cosit&#259; = mul&#539; pe loc (nutrien&#539;i + umiditate).</li>
+    <li>Sub coroan&#259;: curat de buruieni pe 1m de fiecare parte a trunchiului.</li>
+  </ul>
+  <p style="margin-top:16px;color:var(--text-dim);font-size:0.82rem;"><em>Surse: Agrointel.ro, AgroMentor.ro, Agrobiznes.md, CasaPlant.ro, Lumea Satului, Revista Ferma, Magazin Agricover, Paradis Verde</em></p>
+  </div>
+</div>
+</div><!-- /plan-livada -->
+
+<!-- ==================== TAB: CIRES ==================== -->
+<div class="tab-content" id="cires">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127826;</div>
+  <h3>Cire&#537; — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259; &#238;n cur&#226;nd.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare complet&#259; &bull; B. Calendar tratamente &bull; C. Ghid tundere<br>
+    D. Boli &#537;i d&#259;un&#259;tori &bull; E. Soiuri recomandate &bull; F. Protec&#539;ie iarn&#259; &bull; G. Note practice
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: VISIN ==================== -->
+<div class="tab-content" id="visin">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#129747;</div>
+  <h3>Vi&#537;in — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259; &#238;n cur&#226;nd.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare complet&#259; &bull; B. Calendar tratamente &bull; C. Ghid tundere<br>
+    D. Boli &#537;i d&#259;un&#259;tori &bull; E. Soiuri recomandate &bull; F. Protec&#539;ie iarn&#259; &bull; G. Note practice
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: CAIS ==================== -->
+<div class="tab-content" id="cais">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#128992;</div>
+  <h3>Cais — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259; &#238;n cur&#226;nd. Cercetare existent&#259; &#238;n curs de integrare.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare complet&#259; (monilioza!) &bull; B. Calendar tratamente &bull; C. Ghid tundere<br>
+    D. Boli &#537;i d&#259;un&#259;tori &bull; E. Soiuri recomandate &bull; F. Protec&#539;ie iarn&#259; &bull; G. Note practice
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: PIERSIC ==================== -->
+<div class="tab-content" id="piersic">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127825;</div>
+  <h3>Piersic — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259; &#238;n cur&#226;nd. Prioritate: b&#259;&#537;icarea frunzelor.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare complet&#259; &bull; B. Calendar tratamente &bull; C. Ghid tundere vas ameliorat<br>
+    D. B&#259;&#537;icarea frunzelor + alte boli &bull; E. Soiuri zona Arad &bull; F. Protec&#539;ie iarn&#259; &bull; G. R&#259;rire fructe
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: PRUN ==================== -->
+<div class="tab-content" id="prun">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#129744;</div>
+  <h3>Prun — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259; &#238;n cur&#226;nd.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare complet&#259; &bull; B. Calendar tratamente &bull; C. Ghid tundere<br>
+    D. Monilioza &#537;i viermele prunelor &bull; E. Soiuri rom&#226;ne&#537;ti &bull; F. Protec&#539;ie iarn&#259; &bull; G. Note practice
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: MIGDAL ==================== -->
+<div class="tab-content" id="migdal">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#129372;</div>
+  <h3>Migdal — Ghid Complet</h3>
+  <p>Specie exotic&#259; pentru Rom&#226;nia. Documenta&#539;ia va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare &bull; B. Tratamente &bull; C. Tundere &bull; D. Boli<br>
+    E. Soiuri rezistente la frig &bull; F. Protec&#539;ie iarn&#259; (critic!) &bull; G. Note practice
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: PAR CLAPP ==================== -->
+<div class="tab-content" id="par-clapp">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127824;</div>
+  <h3>P&#259;r Favorita lui Clapp — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare specific&#259; soi &bull; B. Calendar tratamente &bull; C. Piramid&#259; etajat&#259;<br>
+    D. Focul bacterian &bull; E. Compatibilitate &bull; F. Protec&#539;ie iarn&#259; &bull; G. Recoltare
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: PAR WILLIAMS ==================== -->
+<div class="tab-content" id="par-williams">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127824;</div>
+  <h3>P&#259;r Williams — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare specific&#259; soi &bull; B. Calendar tratamente &bull; C. Piramid&#259; etajat&#259;<br>
+    D. Boli &#537;i d&#259;un&#259;tori &bull; E. Compatibilitate &bull; F. Protec&#539;ie iarn&#259; &bull; G. P&#259;strare fructe
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: PAR HOSUI ==================== -->
+<div class="tab-content" id="par-hosui">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127824;</div>
+  <h3>P&#259;r Hosui — Ghid Complet</h3>
+  <p>Soi japonez. Documenta&#539;ia specific&#259; va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare soi japonez &bull; B. Calendar tratamente &bull; C. Tundere specific&#259;<br>
+    D. Boli specifice &bull; E. Polenizare &#238;ncruci&#537;at&#259; &bull; F. Protec&#539;ie iarn&#259; &bull; G. Recoltare
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: PAR NAPOCA ==================== -->
+<div class="tab-content" id="par-napoca">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127824;</div>
+  <h3>P&#259;r Napoca — Ghid Complet</h3>
+  <p>Soi rom&#226;nesc. Documenta&#539;ia specific&#259; va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare soi rom&#226;nesc &bull; B. Calendar tratamente &bull; C. Tundere<br>
+    D. Rezisten&#539;&#259; la boli &bull; E. Compatibilitate &bull; F. Avantaje clim&#259; local&#259; &bull; G. Recoltare
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: MAR FLORINA ==================== -->
+<div class="tab-content" id="mar-florina">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127822;</div>
+  <h3>M&#259;r Florina — Ghid Complet (Spalier + Vas)</h3>
+  <p>Documenta&#539;ie DUBL&#258; — spalier &#537;i vas. Va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare soi (rezisten&#539;&#259; r&#259;p&#259;n!) &bull; B. Calendar tratamente redus &bull; C. Tundere spalier + vas<br>
+    D. Boli specifice &bull; E. Avantaje genetice &bull; F. Protec&#539;ie iarn&#259; &bull; G. Note practice
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: MAR GOLDEN SPUR ==================== -->
+<div class="tab-content" id="mar-golden">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127823;</div>
+  <h3>M&#259;r Golden Spur — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare specific&#259; soi &bull; B. Calendar tratamente &bull; C. Piramid&#259; etajat&#259;<br>
+    D. R&#259;p&#259;nul &#537;i alte boli &bull; E. Compatibilitate &bull; F. Protec&#539;ie iarn&#259; &bull; G. P&#259;strare fructe
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: ZMEUR ==================== -->
+<div class="tab-content" id="zmeur">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#128308;</div>
+  <h3>Zmeur — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare &bull; B. Tratamente &bull; C. Tundere lujeri<br>
+    D. Boli &#537;i d&#259;un&#259;tori &bull; E. Soiuri &bull; F. Protec&#539;ie iarn&#259; &bull; G. Recoltare &#537;i &#238;nmul&#539;ire
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: MUR ==================== -->
+<div class="tab-content" id="mur">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#9899;</div>
+  <h3>Mur — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare &bull; B. Tratamente &bull; C. Tundere &#537;i palisa&#539;<br>
+    D. Boli &#537;i d&#259;un&#259;tori &bull; E. Soiuri &bull; F. Protec&#539;ie iarn&#259; &bull; G. Recoltare
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: AFIN ==================== -->
+<div class="tab-content" id="afin">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#128309;</div>
+  <h3>Afin — Ghid Complet</h3>
+  <p>Cerin&#539;e speciale: sol acid! Documenta&#539;ia va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare &bull; B. Tratamente &bull; C. Tundere<br>
+    D. Boli &#537;i d&#259;un&#259;tori &bull; E. Soiuri &bull; F. Acidifiere sol &bull; G. Recoltare &#537;i p&#259;strare
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: ALUN ==================== -->
+<div class="tab-content" id="alun">
+<div class="section"><div class="placeholder">
+  <div class="placeholder-icon">&#127792;</div>
+  <h3>Alun Tuf&#259; — Ghid Complet</h3>
+  <p>Documenta&#539;ia detaliat&#259; va fi ad&#259;ugat&#259;.</p>
+  <div class="alert alert-info" style="text-align:left;margin-top:16px;">
+    <strong>&#128203; Con&#539;inut planificat:</strong><br>
+    A. Cercetare &bull; B. Tratamente &bull; C. Tundere tuf&#259;<br>
+    D. Boli &#537;i d&#259;un&#259;tori &bull; E. Soiuri &bull; F. Protec&#539;ie iarn&#259; &bull; G. Recoltare
+  </div>
+</div></div>
+</div>
+
+<!-- ==================== TAB: RODIU ==================== -->
+<div class="tab-content" id="rodiu">
+
+<div class="section">
+  <h2 class="section-title">Tunderea pomului t&#226;n&#259;r de rodiu — Ghid complet</h2>
+  <div class="section-body">
+  <p><em>Cercetare pe baza surselor: UGA Cooperative Extension, UC Agriculture &amp; Natural Resources, Agrobiznes.ro, Horticultorul.ro, Verdena.ro, Lumea Satului</em></p>
+
+  <div class="alert alert-success">
+    <strong>&#9989; VERDICT</strong>
+    Structura pomului (3&#8211;4 tulpini de la baz&#259;) este bun&#259; pentru Rom&#226;nia. Nu este &#8222;tuns gre&#537;it&#8221;, dar necesit&#259; formare activ&#259;: selec&#539;ie tulpini, eliminare l&#259;stari, modelare vaz&#259; deschis&#259;.
+  </div>
+
+  <h3>De ce forma de tuf&#259; (nu copac pe un singur trunchi)</h3>
+  <p>Rodiile (<em>Punica granatum</em>) sunt arbu&#537;ti multi-tulpinali &#238;n mod natural. &#206;n clima continental&#259; a Rom&#226;niei, unde temperaturile iarna pot cobor&#238; sub <strong>&#8722;10&#176;C p&#226;n&#259; la &#8722;15&#176;C</strong>, forma de tuf&#259; nu este doar preferat&#259; — este practic obligatorie.</p>
+  <p>Cu tufe multi-trunchi, dac&#259; &#238;nghe&#539;ul deterioreaz&#259; o parte, se elimin&#259; &#537;i se antreneaz&#259; un l&#259;star viguros &#238;n loc, &#8222;f&#259;r&#259; pierdere semnificativ&#259; de produc&#539;ie&#8221;. Sursele rom&#226;ne&#537;ti recomand&#259; men&#539;inerea a <strong>4&#8211;5 tulpini principale</strong> cu coroan&#259; aerisit&#259;.</p>
+
+  <h4>Avantajele formei de tuf&#259;:</h4>
+  <ul>
+    <li><strong>Rezisten&#539;&#259; la &#238;nghe&#539;:</strong> Dac&#259; un trunchi moare, ceilal&#539;i supravie&#539;uiesc.</li>
+    <li><strong>Protec&#539;ie de iarn&#259; fezabil&#259;:</strong> O tuf&#259; joas&#259; (2&#8211;3m) poate fi &#238;ndoit&#259; la p&#259;m&#226;nt &#537;i acoperit&#259;.</li>
+    <li><strong>Re&#238;nnoire natural&#259;:</strong> L&#259;starii de la baz&#259; servesc ca &#8222;asigurare&#8221;.</li>
+    <li><strong>Fructificare mai rapid&#259;:</strong> Mai multe tulpini = mai mult lemn productiv.</li>
+  </ul>
+
+  <h3>Cum s&#259; tunzi corect — pas cu pas</h3>
+  <h4>Acum (prim&#259;vara, Anul 1&#8211;2)</h4>
+  <ol>
+    <li><strong>Selecteaz&#259; 3&#8211;5 tulpini principale:</strong> Alege cele mai viguroase, groase &#537;i bine spa&#539;iate.</li>
+    <li><strong>Elimin&#259; tulpinile slabe:</strong> Cele vizibil mai sub&#539;iri — taie la nivelul solului.</li>
+    <li><strong>Verific&#259; lemnul mort:</strong> Scar&#259; u&#537;or coaja. Verde = vie. Maro = moart&#259; &#8594; t&#259;iat&#259;.</li>
+    <li><strong>NU tunde nimic altceva &#238;n Anul 1:</strong> Las&#259; planta s&#259;-&#537;i dezvolte r&#259;d&#259;cinile.</li>
+  </ol>
+
+  <h4>Pe parcursul primului sezon de vegeta&#539;ie</h4>
+  <p>Rodiile produc l&#259;stari (drajoni) agresiv de la baz&#259; &#537;i r&#259;d&#259;cini. <strong>Elimin&#259;-i regulat, de 3&#8211;4 ori pe sezon</strong>. P&#259;streaz&#259; doar cele 3&#8211;5 selectate.</p>
+
+  <h4>Tunderea structural&#259; (iarna Anului 2)</h4>
+  <ul>
+    <li><strong>Scurteaz&#259; ramurile cu 1/4 p&#226;n&#259; la 1/3</strong> din lungime, t&#259;ind deasupra unui mugure orientat spre exterior.</li>
+    <li><strong>Elimin&#259; ramurile care se &#238;ncruci&#537;eaz&#259;</strong> sau se freac&#259; &#238;ntre ele.</li>
+    <li><strong>P&#259;streaz&#259; 3&#8211;5 ramifica&#539;ii laterale</strong> pe fiecare tulpin&#259; principal&#259;.</li>
+    <li><strong>Scopul: form&#259; de vaz&#259; deschis&#259;</strong> — centrul prime&#537;te lumin&#259; &#537;i aer.</li>
+  </ul>
+
+  <h4>Anul 3+ — &#238;ntre&#539;inere anual&#259;</h4>
+  <p>Tundere u&#537;oar&#259;: elimin&#259; lemnul mort, r&#259;re&#537;te cre&#537;terea interioar&#259;. <strong>Nu t&#259;ia niciodat&#259; mai mult de 1/3 din coroana total&#259;.</strong> Rodiile fructific&#259; pe lemnul de 2&#8211;3 ani.</p>
+
+  <h3>C&#226;nd s&#259; tunzi</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Perioad&#259;</th><th>Ac&#539;iune</th><th>Detalii</th></tr>
+      <tr><td>Sf. iarn&#259; / &#238;nc. prim&#259;var&#259;</td><td><strong>Tundere structural&#259;</strong></td><td>Dup&#259; ultimul &#238;nghe&#539;, &#238;nainte de &#238;nmugurit. Martie&#8211;aprilie.</td></tr>
+      <tr><td>Var&#259; (mai&#8211;sept.)</td><td><strong>Doar eliminare drajoni</strong></td><td>De 3&#8211;4 ori pe sezon. NU t&#259;ia ramuri productive.</td></tr>
+      <tr><td>Toamn&#259;</td><td><strong>INTERZIS&#258;</strong></td><td>Stimuleaz&#259; cre&#537;tere nou&#259; care &#238;nghea&#539;&#259;.</td></tr>
+      <tr><td>Iarn&#259; (repaus)</td><td><strong>Preg&#259;tire protec&#539;ie</strong></td><td>Zeam&#259; bordalez&#259; 3%, mul&#539;, protec&#539;ie antigel.</td></tr>
     </table>
   </div>
 
-  <h3>Fertilizare</h3>
-  <ul>
-    <li><strong>Martie:</strong> NPK 16-16-16 sau 20-20-20 — 100–150g/pom, îngropat, urmat de irigare</li>
-    <li><strong>Mai–Iunie:</strong> Foliar (Fertitell, Cropmax, Atonik) adăugat în soluția de stropire</li>
-    <li><strong>Septembrie:</strong> K + P (fără azot!) — pregătește lemnul pentru iarnă</li>
-    <li><strong>Toamna:</strong> Gunoi compostat 5–10 kg/pom, înțepat ușor la bază</li>
-  </ul>
+  <h3>5 gre&#537;eli frecvente de evitat</h3>
+  <div class="alert alert-danger"><strong>1. Tundere excesiv&#259;</strong> Nu t&#259;ia mai mult de 1/3. Rodiile nu sunt meri.</div>
+  <div class="alert alert-danger"><strong>2. Ignorarea drajonilor</strong> F&#259;r&#259; eliminare regulat&#259; &#8594; tuf&#259; deas&#259; cu zeci de tulpini sub&#539;iri.</div>
+  <div class="alert alert-warning"><strong>3. T&#259;iere plat&#259; (&#8222;topping&#8221;)</strong> Stimuleaz&#259; l&#259;stari slabi. Scurteaz&#259; selectiv la ramuri laterale.</div>
+  <div class="alert alert-danger"><strong>4. Tundere &#238;n sezonul gre&#537;it</strong> Tunderea de toamn&#259; stimuleaz&#259; cre&#537;tere fragil&#259; care &#238;nghea&#539;&#259; iarna.</div>
+  <div class="alert alert-warning"><strong>5. Eliminarea lemnului de 2&#8211;3 ani</strong> Aici se formeaz&#259; fructele! Las&#259; ramifica&#539;ii laterale mature.</div>
 
-  <h3>Irigare</h3>
-  <ul>
-    <li><strong>Minim:</strong> 20–30 L/pom, de 2–3 ori/săptămână în secetă</li>
-    <li><strong>Ideal:</strong> Sistem picurare (−50% apă, previne boli foliare)</li>
-    <li><strong>STOP:</strong> Cu 2–3 săptămâni înainte de recoltare (concentrare zaharuri)</li>
-  </ul>
+  <h3>Gestionarea drajonilor</h3>
+  <p>Drajonii se elimin&#259; regulat. La maturitate (dup&#259; anul 4&#8211;5), permite&#539;i 1&#8211;2 drajoni bine pozi&#539;iona&#539;i/an ca lemn de &#238;nlocuire.</p>
 
-  <h3>Protecție de iarnă</h3>
-  <ul>
-    <li><strong>Văruire trunchi:</strong> var stins + sulfat cupru contra îngheț-dezgheț + dăunători</li>
-    <li><strong>Mulț la bază:</strong> 10–15 cm paie/frunze uscate = protecție rădăcini</li>
-    <li><strong>Piersici tineri:</strong> agrotextil pe trunchi dacă se prognosează sub −15°C</li>
-  </ul>
+  <h3>Protec&#539;ie de iarn&#259; — esen&#539;ial&#259; &#238;n Rom&#226;nia</h3>
+  <p>Rodiul sufer&#259; la temperaturi sub &#8722;10&#176;C / &#8722;15&#176;C.</p>
+  <h4>Metoda tradi&#539;ional&#259; rom&#226;neasc&#259;:</h4>
+  <ol>
+    <li>Aplic&#259; zeam&#259; bordalez&#259; 3% toamna.</li>
+    <li>Mul&#539;e&#537;te zona r&#259;d&#259;cinilor (15&#8211;20 cm frunze/paie).</li>
+    <li>&#206;ndoaie tulpinile flexibile la p&#259;m&#226;nt.</li>
+    <li>Acoper&#259; cu 15&#8211;20 cm p&#259;m&#226;nt + crengi de brad.</li>
+    <li>Prim&#259;vara — a&#537;teapt&#259; temperaturi stabile pozitive.</li>
+  </ol>
 
-  <h3>Cosit și întreținere sol</h3>
-  <ul>
-    <li>Cosit 4–6 ori/sezon. Max 15–20 cm înălțime iarbă.</li>
-    <li>Iarba cosită = mulț pe loc (nutrienți + umiditate).</li>
-    <li>Sub coroană: curat de buruieni pe 1m de fiecare parte a trunchiului.</li>
-  </ul>
+  <h3>Soiuri recomandate pentru Rom&#226;nia</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Soi</th><th>Rezisten&#539;&#259; la frig</th><th>Observa&#539;ii</th></tr>
+      <tr><td>Salavatski</td><td>p&#226;n&#259; la &#8722;24&#176;C</td><td>Cel mai rezistent. Ideal pentru &#238;ntreaga Rom&#226;nie.</td></tr>
+      <tr><td>Russian 26</td><td>p&#226;n&#259; la &#8722;20&#176;C</td><td>Bun&#259; rezisten&#539;&#259;, fructe de calitate.</td></tr>
+      <tr><td>Makedonia</td><td>p&#226;n&#259; la &#8722;18&#176;C</td><td>Creat pentru Europa de Sud-Est.</td></tr>
+      <tr><td>Wonderful</td><td>p&#226;n&#259; la &#8722;12&#176;C</td><td>Popular, dar necesit&#259; protec&#539;ie suplimentar&#259;.</td></tr>
+    </table>
+  </div>
 
-  <p style="margin-top:20px;color:var(--text-dim);font-size:0.85rem;"><em>Surse: Agrointel.ro (ing. Marius Roman), AgroMentor.ro, Agrobiznes.md, CasaPlant.ro, Lumea Satului, Revista Ferma, Magazin Agricover, Paradis Verde / Zdravan.ro</em></p>
-</div>
-
-</div><!-- /plan -->
-
-<!-- ============= TAB: PIERSIC ============= -->
-<div class="tab-content" id="piersic">
-<div class="section">
-  <div class="placeholder">
-    <div class="placeholder-icon">🍑</div>
-    <h3>Piersic — Ghid Complet</h3>
-    <p>Documentația detaliată pentru piersic va fi generată după ce trimiți lista completă cu soiurile din livadă. Va include: cercetare completă, calendar tratamente specific, ghid tundere, boli și dăunători, soiuri.</p>
-    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
-      <strong>📋 Conținut planificat:</strong>
-      <br>• Cercetare detaliată (traducere RO)
-      <br>• Bășicarea frunzelor — prevenție și tratament
-      <br>• Tundere vas ameliorat — an cu an
-      <br>• Calendar tratamente specific piersic
-      <br>• Rărirea fructelor — tehnica corectă
-      <br>• Soiuri recomandate zona Arad
-    </div>
+  <p style="margin-top:16px;color:var(--text-dim);font-size:0.82rem;"><em>Surse: UGA Cooperative Extension, UC Agriculture, Agrobiznes.ro, Horticultorul.ro, Verdena.ro, Lumea Satului</em></p>
+  <p style="color:var(--text-dim);font-size:0.82rem;"><em>Consult&#259; un specialist agronom pentru cazul t&#259;u specific.</em></p>
   </div>
 </div>
-</div>
+</div><!-- /rodiu -->
 
-<!-- ============= TAB: CAIS ============= -->
-<div class="tab-content" id="cais">
-<div class="section">
-  <div class="placeholder">
-    <div class="placeholder-icon">🟠</div>
-    <h3>Cais — Ghid Complet</h3>
-    <p>Documentația detaliată pentru cais va fi generată. Va include cercetare completă, calendar tratamente, ghid tundere, boli specifice (monilioza!), soiuri.</p>
-    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
-      <strong>📋 Conținut planificat:</strong>
-      <br>• Cercetare detaliată (traducere RO)
-      <br>• Monilioza lăstarilor — principala amenințare
-      <br>• Tundere vas ameliorat — specific cais
-      <br>• Rărirea fructelor și suportul ramurilor
-      <br>• Protecție brume târzii
-      <br>• Soiuri recomandate zona Arad
-    </div>
-  </div>
-</div>
-</div>
+</main>
 
-<!-- ============= TAB: PRUN ============= -->
-<div class="tab-content" id="prun">
-<div class="section">
-  <div class="placeholder">
-    <div class="placeholder-icon">🫐</div>
-    <h3>Prun — Ghid Complet</h3>
-    <p>Documentația detaliată pentru prun va fi generată. Include cercetare, tratamente, tundere, boli, soiuri.</p>
-    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
-      <strong>📋 Conținut planificat:</strong>
-      <br>• Cercetare detaliată (traducere RO)
-      <br>• Coroana vas ameliorat la prun
-      <br>• Calendar tratamente specific prun
-      <br>• Monilioza și ciuruirea frunzelor
-      <br>• Viermele prunelor — combatere
-      <br>• Soiuri românești tradiționale
-    </div>
-  </div>
-</div>
-</div>
+<!-- ====== BOTTOM BAR ====== -->
+<nav class="bottom-bar">
+  <button class="bottom-btn" onclick="openModal('calculator')"><span class="b-icon">&#129518;</span>Calculator</button>
+  <button class="bottom-btn" onclick="openModal('jurnal')"><span class="b-icon">&#128211;</span>Jurnal</button>
+  <button class="bottom-btn" onclick="openModal('calendar')"><span class="b-icon">&#128197;</span>Calendar</button>
+  <button class="bottom-btn" onclick="openModal('meteo')"><span class="b-icon">&#127780;</span>Meteo</button>
+  <button class="bottom-btn" onclick="exportPDF()"><span class="b-icon">&#128228;</span>Export</button>
+</nav>
 
-<!-- ============= TAB: MĂR ============= -->
-<div class="tab-content" id="mar">
-<div class="section">
-  <div class="placeholder">
-    <div class="placeholder-icon">🍎</div>
-    <h3>Măr — Ghid Complet</h3>
-    <p>Documentația detaliată pentru măr va fi generată. Include cercetare, tratamente, tundere piramidă etajată, boli, soiuri.</p>
-    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
-      <strong>📋 Conținut planificat:</strong>
-      <br>• Cercetare detaliată (traducere RO)
-      <br>• Piramida etajată — formare an cu an
-      <br>• Răpănul (Venturia) — tratamente
-      <br>• Focul bacterian — identificare și acțiune
-      <br>• Rărirea fructelor — obligatorie
-      <br>• Soiuri recomandate zona vest
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- ============= TAB: PĂR ============= -->
-<div class="tab-content" id="par">
-<div class="section">
-  <div class="placeholder">
-    <div class="placeholder-icon">🍐</div>
-    <h3>Păr — Ghid Complet</h3>
-    <p>Documentația detaliată pentru păr va fi generată. Include cercetare, tratamente, tundere, boli (focul bacterian!), soiuri.</p>
-    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
-      <strong>📋 Conținut planificat:</strong>
-      <br>• Cercetare detaliată (traducere RO)
-      <br>• Piramida etajată cu ax central
-      <br>• Focul bacterian (Erwinia) — amenințare majoră
-      <br>• Puricele melifer — combatere
-      <br>• Calendar tratamente specific păr
-      <br>• Soiuri românești performante
-    </div>
-  </div>
-</div>
-</div>
-
-</div><!-- /content -->
-
-<!-- INSTALL BANNER -->
+<!-- ====== INSTALL BANNER ====== -->
 <div class="install-banner" id="installBanner">
-  <p>📱 Instalează <strong>Livada Mea</strong> ca aplicație</p>
+  <p>&#128241; Instaleaz&#259; <strong>Livada Mea</strong> ca aplica&#539;ie</p>
   <div>
-    <button class="install-btn" id="installBtn">Instalează</button>
-    <button class="dismiss-btn" id="dismissBtn">✕</button>
+    <button class="install-btn" id="installBtn">Instaleaz&#259;</button>
+    <button class="dismiss-btn" id="dismissBtn">&#10005;</button>
+  </div>
+</div>
+
+<!-- ====== MODAL: CALCULATOR DOZE ====== -->
+<div class="modal-overlay" id="modal-calculator">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>&#129518; Calculator Doze Tratamente</h2>
+      <button class="modal-close" onclick="closeModal('calculator')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <label for="calcProduct">Produs</label>
+      <select id="calcProduct" onchange="updateCalcConc()">
+        <option value="">— Alege produsul —</option>
+        <option value="3" data-unit="g">Zeam&#259; bordalez&#259; 3%</option>
+        <option value="0.3" data-unit="g">Funguran OH 0.3%</option>
+        <option value="1" data-unit="ml">Oleomin / Confidor Oil 1%</option>
+        <option value="0.02" data-unit="ml">Score 250 EC 0.02%</option>
+        <option value="0.03" data-unit="g">Mospilan 20 SG 0.03%</option>
+        <option value="0.03" data-unit="g">Chorus 50 WG 0.03%</option>
+        <option value="0.2" data-unit="g">Captadin 0.2%</option>
+        <option value="0.02" data-unit="ml">Mavrik 2F 0.02%</option>
+        <option value="0.02" data-unit="ml">Difcor / Score 0.02%</option>
+        <option value="0.003" data-unit="g">Decis 25 WG 0.003%</option>
+        <option value="0.1" data-unit="g">Switch 0.1%</option>
+        <option value="0.07" data-unit="ml">Topsin 0.07%</option>
+        <option value="0.02" data-unit="ml">Calypso 480 SC 0.02%</option>
+        <option value="0.15" data-unit="g">Merpan 80 WDG 0.15%</option>
+        <option value="0.5" data-unit="g">Thiovit Jet 0.5%</option>
+        <option value="0.015" data-unit="g">Teppeki 0.015%</option>
+        <option value="0.05" data-unit="ml">Luna Experience 0.05%</option>
+        <option value="0.0175" data-unit="ml">Coragen 0.0175%</option>
+        <option value="0.2" data-unit="g">Dithane 0.2%</option>
+        <option value="0.015" data-unit="ml">Karate Zeon 0.015%</option>
+      </select>
+
+      <label for="calcConc">Concentra&#539;ie (%)</label>
+      <input type="number" id="calcConc" step="0.001" min="0" placeholder="ex: 0.02">
+
+      <label for="calcVolume">Volum ap&#259; (litri)</label>
+      <input type="number" id="calcVolume" value="10" min="1" step="1" placeholder="ex: 10">
+
+      <button class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="calculateDose()">Calculeaz&#259; doza</button>
+
+      <div class="calc-result" id="calcResult" style="display:none;">
+        <div class="dose" id="calcDose">—</div>
+        <div class="unit" id="calcUnit">la 10L ap&#259;</div>
+      </div>
+
+      <div class="alert alert-warning" style="margin-top:16px;">
+        <strong>&#9888;&#65039; Aten&#539;ie</strong>
+        Dozele sunt orientative. Consult&#259; MEREU eticheta produsului &#537;i un specialist agronom.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: JURNAL ====== -->
+<div class="modal-overlay" id="modal-jurnal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>&#128211; Jurnal Interven&#539;ii</h2>
+      <button class="modal-close" onclick="closeModal('jurnal')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <label for="jurnalDate">Data</label>
+      <input type="date" id="jurnalDate">
+
+      <label for="jurnalType">Tip interven&#539;ie</label>
+      <select id="jurnalType">
+        <option value="tratament">&#128167; Tratament fitosanitar</option>
+        <option value="tundere">&#9986;&#65039; Tundere</option>
+        <option value="fertilizare">&#127793; Fertilizare</option>
+        <option value="irigare">&#128167; Irigare</option>
+        <option value="recoltare">&#127822; Recoltare</option>
+        <option value="observatie">&#128065;&#65039; Observa&#539;ie</option>
+        <option value="altele">&#128204; Altele</option>
+      </select>
+
+      <label for="jurnalNote">Descriere</label>
+      <textarea id="jurnalNote" placeholder="Ce ai f&#259;cut, la ce specii, produse folosite..."></textarea>
+
+      <button class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="addJurnalEntry()">Adaug&#259; &#238;n jurnal</button>
+
+      <h3 style="margin-top:24px;color:var(--accent);">Istoric interven&#539;ii</h3>
+      <div id="jurnalList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: CALENDAR ====== -->
+<div class="modal-overlay" id="modal-calendar">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>&#128197; Calendar Tratamente</h2>
+      <button class="modal-close" onclick="closeModal('calendar')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="cal-nav">
+        <button onclick="calNav(-1)">&larr;</button>
+        <h3 id="calTitle"></h3>
+        <button onclick="calNav(1)">&rarr;</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-events" id="calEvents"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: METEO ====== -->
+<div class="modal-overlay" id="modal-meteo">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>&#127780; Meteo N&#259;dlac</h2>
+      <button class="modal-close" onclick="closeModal('meteo')">&#10005;</button>
+    </div>
+    <div class="modal-body" id="meteoBody">
+      <div class="meteo-setup" id="meteoSetup">
+        <p>Pentru meteo live, ai nevoie de un API key gratuit de la OpenWeatherMap.</p>
+        <label for="meteoKey">API Key OpenWeatherMap</label>
+        <input type="text" id="meteoKey" placeholder="Introdu API key-ul t&#259;u">
+        <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="saveMeteoKey()">Salveaz&#259; &#537;i &#238;ncarc&#259; meteo</button>
+        <p style="margin-top:12px;font-size:0.8rem;color:var(--text-dim);">
+          Ob&#539;ine gratuit de la <strong>openweathermap.org/appid</strong> &#8594; Sign Up &#8594; API Keys
+        </p>
+      </div>
+      <div id="meteoData" style="display:none;"></div>
+    </div>
   </div>
 </div>
 
 <script>
-// ---- TAB SWITCHING ----
-document.querySelectorAll('.tab').forEach(tab => {
+// ====== GLOBALS ======
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+// ====== TAB SWITCHING ======
+$$('.tab[data-tab]').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    $$('.tab').forEach(t => t.classList.remove('active'));
+    $$('.tab-content').forEach(tc => tc.classList.remove('active'));
     tab.classList.add('active');
-    document.getElementById(tab.dataset.tab).classList.add('active');
+    const target = document.getElementById(tab.dataset.tab);
+    if (target) target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll tab into view
+    tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   });
 });
 
-// ---- COLLAPSIBLE SECTIONS ----
-document.querySelectorAll('.collapsible').forEach(el => {
-  el.addEventListener('click', () => {
-    el.classList.toggle('collapsed');
-    const content = el.nextElementSibling;
-    if (content && content.classList.contains('collapse-content')) {
-      content.classList.toggle('hidden');
+// ====== COLLAPSIBLE SECTIONS ======
+$$('.section-title').forEach(title => {
+  title.addEventListener('click', () => {
+    title.classList.toggle('collapsed');
+    const body = title.nextElementSibling;
+    if (body && body.classList.contains('section-body')) {
+      body.classList.toggle('collapsed');
     }
   });
 });
 
-// ---- PWA INSTALL ----
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('installBanner').classList.add('show');
+// ====== DARK/LIGHT TOGGLE ======
+const btnTheme = $('#btnTheme');
+function setTheme(light) {
+  document.body.classList.toggle('light-mode', light);
+  btnTheme.textContent = light ? '\u2600' : '\u263E';
+  localStorage.setItem('livada-theme', light ? 'light' : 'dark');
+  // Update theme-color meta
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = light ? '#f4f7f4' : '#1a2e1a';
+}
+btnTheme.addEventListener('click', () => {
+  setTheme(!document.body.classList.contains('light-mode'));
 });
+// Restore theme
+if (localStorage.getItem('livada-theme') === 'light') setTheme(true);
 
-document.getElementById('installBtn').addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    document.getElementById('installBanner').classList.remove('show');
+// ====== SEARCH ======
+const btnSearch = $('#btnSearch');
+const searchPanel = $('#searchPanel');
+const searchInput = $('#searchInput');
+const searchCount = $('#searchCount');
+
+btnSearch.addEventListener('click', () => {
+  searchPanel.classList.toggle('open');
+  if (searchPanel.classList.contains('open')) {
+    searchInput.focus();
+  } else {
+    clearSearch();
   }
 });
 
-document.getElementById('dismissBtn').addEventListener('click', () => {
-  document.getElementById('installBanner').classList.remove('show');
+let searchTimeout;
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(doSearch, 300);
 });
 
-// ---- SERVICE WORKER REGISTRATION (inline for single-file PWA) ----
+function doSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  // Clear previous highlights
+  $$('mark.search-hl').forEach(m => {
+    const parent = m.parentNode;
+    parent.replaceChild(document.createTextNode(m.textContent), m);
+    parent.normalize();
+  });
+  $$('.tab').forEach(t => t.classList.remove('search-match'));
+
+  if (q.length < 2) { searchCount.textContent = ''; return; }
+
+  let totalMatches = 0;
+  $$('.tab-content').forEach(tc => {
+    const text = tc.textContent.toLowerCase();
+    if (text.includes(q)) {
+      totalMatches++;
+      // Mark matching tab
+      const tabBtn = document.querySelector(`.tab[data-tab="${tc.id}"]`);
+      if (tabBtn) tabBtn.classList.add('search-match');
+    }
+  });
+  searchCount.textContent = totalMatches > 0 ? `${totalMatches} tab${totalMatches > 1 ? 'uri' : ''}` : 'Nimic gasit';
+}
+
+function clearSearch() {
+  searchInput.value = '';
+  searchCount.textContent = '';
+  $$('.tab').forEach(t => t.classList.remove('search-match'));
+  $$('mark.search-hl').forEach(m => {
+    const parent = m.parentNode;
+    parent.replaceChild(document.createTextNode(m.textContent), m);
+    parent.normalize();
+  });
+}
+
+// ====== MODALS ======
+function openModal(name) {
+  const overlay = document.getElementById('modal-' + name);
+  if (overlay) {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (name === 'jurnal') renderJurnal();
+    if (name === 'calendar') renderCalendar();
+    if (name === 'meteo') initMeteo();
+  }
+}
+function closeModal(name) {
+  const overlay = document.getElementById('modal-' + name);
+  if (overlay) {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+// Close modal on overlay click
+$$('.modal-overlay').forEach(ov => {
+  ov.addEventListener('click', e => {
+    if (e.target === ov) {
+      ov.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+});
+
+// ====== CALCULATOR ======
+function updateCalcConc() {
+  const sel = $('#calcProduct');
+  const opt = sel.options[sel.selectedIndex];
+  if (opt.value) {
+    $('#calcConc').value = opt.value;
+  }
+}
+function calculateDose() {
+  const conc = parseFloat($('#calcConc').value);
+  const vol = parseFloat($('#calcVolume').value);
+  if (isNaN(conc) || isNaN(vol) || conc <= 0 || vol <= 0) return;
+
+  const dose = conc * vol * 10; // conc% * volume_L * 10 = grams or mL
+  const sel = $('#calcProduct');
+  const opt = sel.options[sel.selectedIndex];
+  const unit = opt.dataset.unit || 'g/ml';
+
+  const result = $('#calcResult');
+  result.style.display = 'block';
+  $('#calcDose').textContent = dose < 1 ? dose.toFixed(2) : dose < 10 ? dose.toFixed(1) : Math.round(dose);
+  $('#calcUnit').textContent = `${unit} la ${vol}L apa`;
+}
+
+// ====== JURNAL ======
+function getJurnalEntries() {
+  try { return JSON.parse(localStorage.getItem('livada-jurnal') || '[]'); }
+  catch { return []; }
+}
+function saveJurnalEntries(entries) {
+  localStorage.setItem('livada-jurnal', JSON.stringify(entries));
+}
+function addJurnalEntry() {
+  const date = $('#jurnalDate').value;
+  const type = $('#jurnalType').value;
+  const note = $('#jurnalNote').value.trim();
+  if (!date || !note) return;
+
+  const entries = getJurnalEntries();
+  entries.unshift({ id: Date.now(), date, type, note });
+  saveJurnalEntries(entries);
+  $('#jurnalNote').value = '';
+  renderJurnal();
+}
+function deleteJurnalEntry(id) {
+  const entries = getJurnalEntries().filter(e => e.id !== id);
+  saveJurnalEntries(entries);
+  renderJurnal();
+}
+function renderJurnal() {
+  const list = $('#jurnalList');
+  const entries = getJurnalEntries();
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="jurnal-empty">Nicio interventie inregistrata.<br>Adauga prima interventie mai sus.</div>';
+    return;
+  }
+  const typeLabels = {
+    tratament: '\uD83D\uDCA7 Tratament', tundere: '\u2702\uFE0F Tundere',
+    fertilizare: '\uD83C\uDF31 Fertilizare', irigare: '\uD83D\uDCA7 Irigare',
+    recoltare: '\uD83C\uDF4E Recoltare', observatie: '\uD83D\uDC41\uFE0F Observatie',
+    altele: '\uD83D\uDCCC Altele'
+  };
+  list.innerHTML = entries.map(e => `
+    <div class="jurnal-entry">
+      <span class="je-date">${e.date}</span>
+      <span class="je-type">${typeLabels[e.type] || e.type}</span>
+      <div class="je-text">${escapeHtml(e.note)}</div>
+      <div class="je-actions">
+        <button class="btn btn-danger" style="padding:4px 12px;font-size:0.75rem;" onclick="deleteJurnalEntry(${e.id})">Sterge</button>
+      </div>
+    </div>
+  `).join('');
+}
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+// Set today as default date
+document.addEventListener('DOMContentLoaded', () => {
+  const today = new Date().toISOString().split('T')[0];
+  $('#jurnalDate').value = today;
+});
+
+// ====== CALENDAR ======
+const MONTHS_RO = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+const DAYS_RO = ['Lu','Ma','Mi','Jo','Vi','S\u00E2','Du'];
+const TREATMENTS_CAL = [
+  { m1:2, m2:3, label:'Repaus vegetativ', desc:'Zeama bordelez\u0103 3% / Funguran OH + Oleomin', color:'var(--accent)' },
+  { m1:3, m2:3, d1:15, label:'Dezmugurire', desc:'Score 0.02% + Mospilan 0.03%', color:'var(--info)' },
+  { m1:4, m2:4, d2:10, label:'Buton floral', desc:'Chorus + Captadin + Mavrik', color:'var(--warning)' },
+  { m1:4, m2:4, d1:10, d2:25, label:'Primele flori', desc:'Score 0.02% + Decis. NU stropiti cu albine!', color:'var(--danger)' },
+  { m1:4, m2:5, d1:25, d2:5, label:'Sc\u0103derea petalelor', desc:'Switch/Topsin + Calypso', color:'var(--accent)' },
+  { m1:5, m2:5, label:'Fruct mic', desc:'Merpan + Thiovit Jet + Teppeki. R\u0103rire fructe!', color:'var(--info)' },
+  { m1:6, m2:6, label:'Fruct \u00een cre\u0219tere', desc:'Luna Experience/Topsin + Coragen', color:'var(--warning)' },
+  { m1:7, m2:7, label:'Fruct p\u00e2rg\u0103', desc:'Switch/Dithane + Karate Zeon. Recoltat cais.', color:'var(--accent)' },
+  { m1:8, m2:8, label:'Dup\u0103 recolt\u0103', desc:'Topsin + Captadin + Karate Zeon. T\u0103ieri verde.', color:'var(--info)' },
+  { m1:9, m2:10, label:'Fructe m\u0103r/p\u0103r', desc:'Dithane 0.2%. Respect\u0103 pauza!', color:'var(--warning)' },
+  { m1:11, m2:11, label:'Dup\u0103 c\u0103derea frunzelor', desc:'Sulfat cupru 1-3%. Cur\u0103\u021benie livad\u0103.', color:'var(--accent)' },
+];
+
+let calMonth, calYear;
+function initCalendarDate() {
+  const now = new Date();
+  calMonth = now.getMonth(); // 0-indexed
+  calYear = now.getFullYear();
+}
+initCalendarDate();
+
+function renderCalendar() {
+  const title = $('#calTitle');
+  const grid = $('#calGrid');
+  const events = $('#calEvents');
+  title.textContent = `${MONTHS_RO[calMonth]} ${calYear}`;
+
+  // Days of week header
+  let html = DAYS_RO.map(d => `<div class="cal-day-name">${d}</div>`).join('');
+
+  // First day of month (0=Sun, adjust to Mon=0)
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date();
+
+  // Empty cells
+  for (let i = 0; i < startOffset; i++) html += '<div class="cal-day empty"></div>';
+
+  // Day cells
+  const monthNum = calMonth + 1; // 1-indexed
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear();
+    const hasEvent = TREATMENTS_CAL.some(t => {
+      const from = t.m1;
+      const to = t.m2;
+      if (monthNum < from || monthNum > to) return false;
+      if (monthNum === from && t.d1 && d < t.d1) return false;
+      if (monthNum === to && t.d2 && d > t.d2) return false;
+      return true;
+    });
+    html += `<div class="cal-day${isToday ? ' today' : ''}${hasEvent ? ' has-event' : ''}">${d}</div>`;
+  }
+  grid.innerHTML = html;
+
+  // Events for this month
+  const monthEvents = TREATMENTS_CAL.filter(t => monthNum >= t.m1 && monthNum <= t.m2);
+  if (monthEvents.length > 0) {
+    events.innerHTML = '<h4 style="color:var(--accent);margin-bottom:8px;">Tratamente luna aceasta:</h4>' +
+      monthEvents.map(t => `<div class="cal-event-item" style="border-color:${t.color}"><strong>${t.label}</strong><br>${t.desc}</div>`).join('');
+  } else {
+    events.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:20px;">Niciun tratament planificat luna aceasta.</p>';
+  }
+}
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+
+// ====== METEO ======
+function initMeteo() {
+  const key = localStorage.getItem('livada-meteo-key');
+  if (key) {
+    $('#meteoSetup').style.display = 'none';
+    $('#meteoData').style.display = 'block';
+    fetchMeteo(key);
+  } else {
+    $('#meteoSetup').style.display = 'block';
+    $('#meteoData').style.display = 'none';
+  }
+}
+function saveMeteoKey() {
+  const key = $('#meteoKey').value.trim();
+  if (!key) return;
+  localStorage.setItem('livada-meteo-key', key);
+  initMeteo();
+}
+async function fetchMeteo(key) {
+  const data = $('#meteoData');
+  data.innerHTML = '<p style="text-align:center;color:var(--text-dim);">Se \u00eencarc\u0103...</p>';
+  try {
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=46.17&lon=20.75&units=metric&lang=ro&appid=${key}`);
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const w = await res.json();
+
+    const icon = w.weather[0].icon;
+    const alertHtml = w.main.temp <= 0
+      ? '<div class="alert alert-danger meteo-alert"><strong>\u26A0\uFE0F Temperaturi negative!</strong> Verific\u0103 protec\u021bia pomilor sensibili (rodiu, piersic).</div>'
+      : w.main.temp >= 30
+      ? '<div class="alert alert-warning meteo-alert"><strong>\u2600\uFE0F C\u0103ldur\u0103 excesiv\u0103!</strong> Verific\u0103 irigarea.</div>'
+      : '';
+
+    data.innerHTML = `
+      <div class="meteo-card">
+        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${w.weather[0].description}" style="width:80px;height:80px;">
+        <div class="meteo-temp">${Math.round(w.main.temp)}\u00B0C</div>
+        <div class="meteo-desc">${w.weather[0].description}</div>
+        <div class="meteo-details">
+          <span>\uD83C\uDF21\uFE0F Sim\u021bit: ${Math.round(w.main.feels_like)}\u00B0C</span>
+          <span>\uD83D\uDCA7 Umiditate: ${w.main.humidity}%</span>
+          <span>\uD83C\uDF2C\uFE0F V\u00E2nt: ${Math.round(w.wind.speed * 3.6)} km/h</span>
+        </div>
+      </div>
+      ${alertHtml}
+      <p style="margin-top:12px;font-size:0.78rem;color:var(--text-dim);text-align:center;">
+        N\u0103dlac, Arad &bull; Actualizat: ${new Date().toLocaleTimeString('ro-RO')}
+      </p>
+      <button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="localStorage.removeItem('livada-meteo-key');initMeteo();">Schimb\u0103 API Key</button>
+    `;
+  } catch (err) {
+    data.innerHTML = `
+      <div class="alert alert-danger"><strong>Eroare meteo</strong> ${err.message}. Verific\u0103 API key-ul sau conexiunea.</div>
+      <button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="localStorage.removeItem('livada-meteo-key');initMeteo();">Reseteaz\u0103 API Key</button>
+    `;
+  }
+}
+
+// ====== EXPORT PDF ======
+function exportPDF() {
+  window.print();
+}
+
+// ====== PWA ======
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  $('#installBanner').classList.add('show');
+});
+$('#installBtn').addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    $('#installBanner').classList.remove('show');
+  }
+});
+$('#dismissBtn').addEventListener('click', () => {
+  $('#installBanner').classList.remove('show');
+});
+
+// Service Worker Registration
 if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE = 'livada-v1';
-    self.addEventListener('install', e => {
-      e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/'])));
-      self.skipWaiting();
-    });
-    self.addEventListener('fetch', e => {
-      e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(() => {});
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 </script>
 </body>

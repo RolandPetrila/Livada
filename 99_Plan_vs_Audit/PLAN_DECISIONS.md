@@ -30,3 +30,29 @@
 ## 2026-03-27 — Prioritati UX
 **Decizie:** Android-first + Offline-first + Romana 100%
 **Detalii:** Tab structure regandita pt incepatori, selectii clare si vizibile, touch-first.
+
+## 2026-03-27 T1 — Structura tools (Calculator/Jurnal/Calendar/Meteo)
+**Decizie:** Bottom bar cu 5 butoane care deschid modal panels (slide-up)
+**Alternativa respinsa:** Tab-uri separate pentru tools — ar fi aglomerat tab bar-ul
+**Motiv:** UX Android-native, nu interfereaza cu navigarea pe specii, acces rapid la orice tool.
+
+## 2026-03-27 T1 — Service Worker si Manifest
+**Decizie:** Fisiere separate (public/sw.js, public/manifest.json) in loc de inline blob URL
+**Motiv:** Suntem pe Vercel, nu single-file local. SW separat e mai fiabil cross-browser.
+
+## 2026-03-27 T1 — Export PDF
+**Decizie:** window.print() cu @media print CSS
+**Alternativa respinsa:** Biblioteca jsPDF (adauga ~200KB, dependinta externa)
+**Motiv:** Zero dependente externe. Print nativ functioneaza pe toate browserele.
+
+## 2026-03-27 T1 — Meteo API Key
+**Decizie:** API key salvat in localStorage cu prompt de setup
+**Motiv:** Nu expunem chei in cod sursa. Utilizatorul introduce propria cheie gratuita.
+
+## 2026-03-27 T1 — Dark/Light mode
+**Decizie:** CSS variables override pe body.light-mode, persisted in localStorage
+**Motiv:** Simplu, instant, fara flash la reload.
+
+## 2026-03-27 T1 — Vercel project name
+**Decizie:** livada-mea (URL: livada-mea-psi.vercel.app)
+**Motiv:** Nume scurt, descriptiv. URL poate fi schimbat ulterior cu custom domain.
