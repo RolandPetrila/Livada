@@ -88,7 +88,7 @@ body {
 .app-subtitle { color: var(--text-dim); font-size: 0.75rem; margin-top: 1px; }
 .header-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; margin-left: 12px; }
 .icon-btn {
-  width: 38px; height: 38px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;
   background: var(--bg-surface); border: 1px solid var(--border);
   color: var(--text); font-size: 1.1rem; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -342,15 +342,76 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 
 /* ====== PRINT ====== */
 @media print {
-  .app-header, .tabs-wrapper, .bottom-bar, .install-banner, .search-panel, .modal-overlay { display: none !important; }
+  .app-header, .tabs-wrapper, .bottom-bar, .install-banner, .search-panel, .modal-overlay, .alert-banner, .sp-tools { display: none !important; }
   body { background: #fff; color: #000; padding: 0; }
-  .tab-content { display: block !important; page-break-inside: avoid; }
-  .tab-content:not(.active) { display: none !important; }
+  .tab-content { page-break-inside: avoid; }
+  body.print-all .tab-content { display: block !important; }
+  body:not(.print-all) .tab-content:not(.active) { display: none !important; }
+  body:not(.print-all) .tab-content.active { display: block !important; }
   .section { background: #fff; border: 1px solid #ccc; }
   .section-title { color: #1a6b1a; }
   .alert { border-left: 4px solid #999; }
   th { background: #e8e8e8; color: #333; }
 }
+
+/* ====== FROST & DISEASE ALERTS ====== */
+.alert-banner { padding: 10px 16px; font-size: 0.83rem; display: none; align-items: center; gap: 8px; color: #fff; }
+.alert-banner.active { display: flex; }
+.alert-banner.frost { background: linear-gradient(135deg, #d4534a, #b83a32); }
+.alert-banner.disease { background: linear-gradient(135deg, #e8a838, #c48a20); }
+.alert-banner .ab-close { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.1rem; cursor: pointer; padding: 4px; }
+.alert-banner .ab-text { flex: 1; }
+
+/* ====== SPECIES TOOLS BAR ====== */
+.sp-tools { display: flex; gap: 8px; padding: 12px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.sp-tool-btn {
+  display: flex; align-items: center; gap: 6px; padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: var(--radius); background: var(--bg-surface); color: var(--text); font-size: 0.8rem;
+  font-family: inherit; cursor: pointer; white-space: nowrap; min-height: 44px; transition: all 0.2s;
+}
+.sp-tool-btn:hover, .sp-tool-btn:active { background: var(--accent-dim); color: var(--text-bright); border-color: var(--accent); }
+.sp-tool-btn .sti { font-size: 1.1rem; }
+
+/* ====== GALLERY ====== */
+.gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 12px; }
+.gal-item { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--bg-surface); }
+.gal-item img { width: 100%; height: 100%; object-fit: cover; }
+.gal-item .gal-del {
+  position: absolute; top: 4px; right: 4px; width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(0,0,0,0.7); color: #fff; border: none; font-size: 0.8rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.gal-upload { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.2s; margin-bottom: 12px; }
+.gal-upload:hover { border-color: var(--accent); }
+.gal-upload .gu-icon { font-size: 2rem; margin-bottom: 6px; }
+.gal-empty { text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.85rem; }
+
+/* ====== AI RESULTS ====== */
+.ai-res { background: var(--bg-surface); border-radius: var(--radius); padding: 16px; margin-top: 12px; font-size: 0.86rem; line-height: 1.7; word-wrap: break-word; }
+.ai-res strong, .ai-res b { color: var(--accent); }
+.ai-load { text-align: center; padding: 30px; color: var(--text-dim); }
+.ai-spin { display: inline-block; width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: aispin 0.8s linear infinite; }
+@keyframes aispin { to { transform: rotate(360deg); } }
+
+/* ====== METEO HISTORY CHART ====== */
+.m-chart { margin-top: 20px; padding: 12px; background: var(--bg-surface); border-radius: var(--radius); }
+.m-chart h4 { color: var(--accent); margin-bottom: 10px; font-size: 0.9rem; }
+.m-chart-wrap { display: flex; align-items: flex-end; gap: 2px; height: 100px; overflow-x: auto; padding-bottom: 20px; }
+.m-bar { flex: 0 0 auto; width: 7px; min-height: 2px; border-radius: 2px 2px 0 0; position: relative; cursor: pointer; }
+.m-bar.cold { background: var(--info); }
+.m-bar.warm { background: var(--accent); }
+.m-bar.hot { background: var(--danger); }
+.m-bar-tip { position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); background: var(--bg-card); color: var(--text); padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; white-space: nowrap; pointer-events: none; display: none; border: 1px solid var(--border); z-index: 10; }
+.m-bar:hover .m-bar-tip { display: block; }
+
+/* ====== SYNC BADGE ====== */
+.sync-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; color: var(--text-dim); padding: 2px 8px; border-radius: 10px; background: var(--bg-surface); margin-left: 8px; }
+.sync-badge.ok { color: var(--accent); }
+.sync-badge.err { color: var(--danger); }
+.sd { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ====== REPORT ====== */
+.report-box { background: var(--bg-surface); border-radius: var(--radius); padding: 20px; margin-top: 16px; font-size: 0.86rem; line-height: 1.8; word-wrap: break-word; }
 
 /* ====== RESPONSIVE ====== */
 @media (max-width: 600px) {
@@ -377,6 +438,18 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
     <button class="icon-btn" id="btnTheme" title="Schimba tema">&#9790;</button>
   </div>
 </header>
+
+<!-- ====== ALERT BANNERS ====== -->
+<div class="alert-banner frost" id="frostBanner">
+  <span>&#10052;&#65039;</span>
+  <span class="ab-text" id="frostText"></span>
+  <button class="ab-close" onclick="document.getElementById('frostBanner').classList.remove('active')">&#10005;</button>
+</div>
+<div class="alert-banner disease" id="diseaseBanner">
+  <span>&#9888;&#65039;</span>
+  <span class="ab-text" id="diseaseText"></span>
+  <button class="ab-close" onclick="document.getElementById('diseaseBanner').classList.remove('active')">&#10005;</button>
+</div>
 
 <!-- ====== SEARCH ====== -->
 <div class="search-panel" id="searchPanel">
@@ -5672,7 +5745,7 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="modal-overlay" id="modal-jurnal">
   <div class="modal">
     <div class="modal-header">
-      <h2>&#128211; Jurnal Interven&#539;ii</h2>
+      <h2>&#128211; Jurnal <span id="syncBadge" class="sync-badge"><span class="sd"></span></span></h2>
       <button class="modal-close" onclick="closeModal('jurnal')">&#10005;</button>
     </div>
     <div class="modal-body">
@@ -5738,6 +5811,72 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
         </p>
       </div>
       <div id="meteoData" style="display:none;"></div>
+      <div id="meteoHistory"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: GALERIE FOTO ====== -->
+<div class="modal-overlay" id="modal-gallery">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>&#128444;&#65039; Galerie &#8212; <span id="galSpecies">-</span></h2>
+      <button class="modal-close" onclick="closeModal('gallery')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="gal-upload" onclick="document.getElementById('galFileInput').click()">
+        <div class="gu-icon">&#128247;</div>
+        <div>Adaug&#259; o poz&#259; (max 5MB)</div>
+      </div>
+      <input type="file" id="galFileInput" accept="image/*" capture="environment" style="display:none" onchange="uploadPhoto(this)">
+      <div id="galLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Se &#238;ncarc&#259;...</div>
+      <div id="galGrid" class="gal-grid"></div>
+      <div id="galEmpty" class="gal-empty" style="display:none;">Nicio poz&#259; ad&#259;ugat&#259; pentru aceast&#259; specie.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: DIAGNOSTIC AI ====== -->
+<div class="modal-overlay" id="modal-diagnose">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>&#128248; Diagnostic &#8212; <span id="diagSpecies">-</span></h2>
+      <button class="modal-close" onclick="closeModal('diagnose')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:12px;">
+        Fotografiaz&#259; frunza, fructul sau ramura afectat&#259;. AI-ul analizeaz&#259; &#537;i sugereaz&#259; tratament.
+      </p>
+      <div class="gal-upload" onclick="document.getElementById('diagFileInput').click()">
+        <div class="gu-icon">&#128248;</div>
+        <div>Selecteaz&#259; sau fotografiaz&#259;</div>
+      </div>
+      <input type="file" id="diagFileInput" accept="image/*" capture="environment" style="display:none" onchange="submitDiagnose(this)">
+      <div id="diagPreview" style="display:none;margin-bottom:12px;">
+        <img id="diagImg" style="width:100%;max-height:250px;object-fit:contain;border-radius:8px;">
+      </div>
+      <div id="diagLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Gemini analizeaz&#259; imaginea...</div>
+      <div id="diagResult" class="ai-res" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: INTREABA AI ====== -->
+<div class="modal-overlay" id="modal-ask">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>&#128172; &#206;ntreab&#259; &#8212; <span id="askSpecies">-</span></h2>
+      <button class="modal-close" onclick="closeModal('ask')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <label for="askInput">Pune o &#238;ntrebare despre aceast&#259; specie</label>
+      <textarea id="askInput" rows="3" placeholder="Ex: Ce tratamente aplic &#238;n aprilie? Cum recunosc r&#259;p&#259;nul? Ce fac dac&#259; are frunzele galbene?"></textarea>
+      <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="submitAsk()">Trimite &#238;ntrebarea</button>
+      <div id="askLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Se genereaz&#259; r&#259;spunsul...</div>
+      <div id="askResult" class="ai-res" style="display:none;"></div>
+      <p style="margin-top:12px;font-size:0.72rem;color:var(--text-dim);text-align:center;">
+        R&#259;spunsurile sunt generate de AI &#537;i pot con&#539;ine imprecizii. Consult&#259; un specialist agronom.
+      </p>
     </div>
   </div>
 </div>
@@ -5756,8 +5895,9 @@ $$('.tab[data-tab]').forEach(tab => {
     const target = document.getElementById(tab.dataset.tab);
     if (target) target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    // Scroll tab into view
     tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    // Inject species tools (AI, gallery, etc.)
+    injectSpeciesTools(tab.dataset.tab);
   });
 });
 
@@ -5851,9 +5991,9 @@ function openModal(name) {
   if (overlay) {
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
-    if (name === 'jurnal') renderJurnal();
-    if (name === 'calendar') renderCalendar();
-    if (name === 'meteo') initMeteo();
+    if (name === 'jurnal') { renderJurnal(); syncJournal(); }
+    if (name === 'calendar') { renderCalendar(); enhanceCalendarWithMeteo(); }
+    if (name === 'meteo') { initMeteo(); loadMeteoHistory(); }
   }
 }
 function closeModal(name) {
@@ -5916,11 +6056,13 @@ function addJurnalEntry() {
   saveJurnalEntries(entries);
   $('#jurnalNote').value = '';
   renderJurnal();
+  syncJournal();
 }
 function deleteJurnalEntry(id) {
   const entries = getJurnalEntries().filter(e => e.id !== id);
   saveJurnalEntries(entries);
   renderJurnal();
+  syncDeleteJournal(id);
 }
 function renderJurnal() {
   const list = $('#jurnalList');
@@ -6034,7 +6176,7 @@ function calNav(dir) {
 
 // ====== METEO ======
 function initMeteo() {
-  const key = localStorage.getItem('livada-meteo-key') || '04e63218881f0f03e17458e33270070b';
+  const key = localStorage.getItem('livada-meteo-key');
   if (key) {
     $('#meteoSetup').style.display = 'none';
     $('#meteoData').style.display = 'block';
@@ -6118,6 +6260,372 @@ $('#dismissBtn').addEventListener('click', () => {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
+
+// ====== SPECIES MAP ======
+const SPECIES = {
+  'cires':'Cire\u0219','visin':'Vi\u0219in','cais':'Cais','piersic':'Piersic',
+  'prun':'Prun','migdal':'Migdal','par-clapp':'P\u0103r Clapp',
+  'par-williams':'P\u0103r Williams','par-hosui':'P\u0103r Hosui','par-napoca':'P\u0103r Napoca',
+  'mar-florina':'M\u0103r Florina','mar-golden':'M\u0103r Golden Spur',
+  'zmeur':'Zmeur','mur':'Mur','afin':'Afin','alun':'Alun Tuf\u0103','rodiu':'Rodiu'
+};
+let activeSpeciesId = 'plan-livada';
+
+// ====== INJECT SPECIES TOOLS ======
+function injectSpeciesTools(tabId) {
+  const prev = document.getElementById('sp-tools-section');
+  if (prev) prev.remove();
+  activeSpeciesId = tabId;
+
+  if (tabId === 'plan-livada') { injectReportButton(); return; }
+  if (!SPECIES[tabId]) return;
+
+  const tc = document.getElementById(tabId);
+  if (!tc) return;
+  const div = document.createElement('div');
+  div.id = 'sp-tools-section';
+  div.innerHTML = '<div class="sp-tools">' +
+    '<button class="sp-tool-btn" onclick="openDiagnoseModal()"><span class="sti">\uD83D\uDCF8</span> Diagnostic AI</button>' +
+    '<button class="sp-tool-btn" onclick="openAskModal()"><span class="sti">\uD83D\uDCAC</span> \u00CEntreab\u0103 AI</button>' +
+    '<button class="sp-tool-btn" onclick="openGalleryModal()"><span class="sti">\uD83D\uDDBC\uFE0F</span> Galerie foto</button>' +
+    '</div>';
+  tc.insertBefore(div, tc.firstChild);
+}
+
+function injectReportButton() {
+  if (document.getElementById('report-section')) return;
+  const tc = document.getElementById('plan-livada');
+  if (!tc) return;
+  const div = document.createElement('div');
+  div.id = 'report-section';
+  div.className = 'section';
+  div.style.marginTop = '16px';
+  div.innerHTML = '<h2 class="section-title" style="cursor:default;">\uD83D\uDCCA Raport Anual AI</h2>' +
+    '<div class="section-body">' +
+    '<p>Genereaz\u0103 un raport anual bazat pe jurnalul de interven\u021Bii \u0219i datele meteo.</p>' +
+    '<button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="generateReport()" id="reportBtn">Genereaz\u0103 Raport ' + new Date().getFullYear() + '</button>' +
+    '<div id="reportLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Se genereaz\u0103 raportul...</div>' +
+    '<div id="reportResult" class="report-box" style="display:none;"></div>' +
+    '</div>';
+  tc.appendChild(div);
+}
+
+// ====== GALLERY FUNCTIONS ======
+function openGalleryModal() {
+  document.getElementById('galSpecies').textContent = SPECIES[activeSpeciesId] || activeSpeciesId;
+  openModal('gallery');
+  loadGallery();
+}
+async function loadGallery() {
+  const grid = document.getElementById('galGrid');
+  const empty = document.getElementById('galEmpty');
+  const loading = document.getElementById('galLoading');
+  grid.innerHTML = ''; empty.style.display = 'none'; loading.style.display = 'block';
+  try {
+    const res = await fetch('/api/photos?species=' + activeSpeciesId);
+    const photos = await res.json();
+    loading.style.display = 'none';
+    if (Array.isArray(photos) && photos.length > 0) {
+      grid.innerHTML = photos.map(function(p) {
+        return '<div class="gal-item"><img src="' + p.url + '" alt="" loading="lazy">' +
+          '<button class="gal-del" onclick="deletePhoto(\'' + p.url.replace(/'/g,"\\'") + '\')">\u2715</button></div>';
+      }).join('');
+    } else { empty.style.display = 'block'; }
+  } catch(e) {
+    loading.style.display = 'none';
+    empty.textContent = e.message || 'Nu s-au putut \u00EEnc\u0103rca pozele.';
+    empty.style.display = 'block';
+  }
+}
+async function uploadPhoto(input) {
+  var file = input.files[0]; if (!file) return;
+  document.getElementById('galLoading').style.display = 'block';
+  try {
+    var fd = new FormData(); fd.append('file', file); fd.append('species', activeSpeciesId);
+    var res = await fetch('/api/photos', { method: 'POST', body: fd });
+    var data = await res.json();
+    if (data.error) throw new Error(data.error);
+    document.getElementById('galLoading').style.display = 'none';
+    loadGallery();
+  } catch(e) {
+    document.getElementById('galLoading').style.display = 'none';
+    alert('Eroare la \u00EEnc\u0103rcare: ' + e.message);
+  }
+  input.value = '';
+}
+async function deletePhoto(url) {
+  if (!confirm('\u0218tergi aceast\u0103 poz\u0103?')) return;
+  try {
+    await fetch('/api/photos', { method: 'DELETE', headers: {'Content-Type':'application/json'}, body: JSON.stringify({url:url}) });
+    loadGallery();
+  } catch(e) { alert('Eroare: ' + e.message); }
+}
+
+// ====== DIAGNOSE FUNCTIONS ======
+function openDiagnoseModal() {
+  document.getElementById('diagSpecies').textContent = SPECIES[activeSpeciesId] || activeSpeciesId;
+  document.getElementById('diagResult').style.display = 'none';
+  document.getElementById('diagPreview').style.display = 'none';
+  document.getElementById('diagLoading').style.display = 'none';
+  openModal('diagnose');
+}
+async function submitDiagnose(input) {
+  var file = input.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('diagImg').src = e.target.result;
+    document.getElementById('diagPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('diagLoading').style.display = 'block';
+  document.getElementById('diagResult').style.display = 'none';
+  try {
+    var fd = new FormData();
+    fd.append('image', file);
+    fd.append('species', SPECIES[activeSpeciesId] || activeSpeciesId);
+    var res = await fetch('/api/diagnose', { method: 'POST', body: fd });
+    var data = await res.json();
+    document.getElementById('diagLoading').style.display = 'none';
+    var resultEl = document.getElementById('diagResult');
+    if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; }
+    else {
+      var text = data.diagnosis || '';
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      text = text.replace(/\n/g, '<br>');
+      resultEl.innerHTML = text;
+    }
+    resultEl.style.display = 'block';
+  } catch(e) {
+    document.getElementById('diagLoading').style.display = 'none';
+    var r = document.getElementById('diagResult');
+    r.textContent = navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.';
+    r.style.display = 'block';
+  }
+  input.value = '';
+}
+
+// ====== ASK AI FUNCTIONS ======
+function openAskModal() {
+  document.getElementById('askSpecies').textContent = SPECIES[activeSpeciesId] || activeSpeciesId;
+  document.getElementById('askResult').style.display = 'none';
+  document.getElementById('askLoading').style.display = 'none';
+  document.getElementById('askInput').value = '';
+  openModal('ask');
+}
+async function submitAsk() {
+  var question = document.getElementById('askInput').value.trim();
+  if (!question) return;
+  if (!navigator.onLine) { alert('Offline! Folose\u0219te c\u0103utarea din header (\uD83D\uDD0D) pentru c\u0103utare local\u0103.'); return; }
+  document.getElementById('askLoading').style.display = 'block';
+  document.getElementById('askResult').style.display = 'none';
+  var tc = document.getElementById(activeSpeciesId);
+  var context = tc ? tc.innerText.substring(0, 3000) : '';
+  try {
+    var res = await fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: question, species: SPECIES[activeSpeciesId] || activeSpeciesId, context: context })
+    });
+    var data = await res.json();
+    document.getElementById('askLoading').style.display = 'none';
+    var r = document.getElementById('askResult');
+    if (data.error) { r.textContent = 'Eroare: ' + data.error; }
+    else {
+      var text = data.answer || '';
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      text = text.replace(/\n/g, '<br>');
+      r.innerHTML = text;
+    }
+    r.style.display = 'block';
+  } catch(e) {
+    document.getElementById('askLoading').style.display = 'none';
+    var r2 = document.getElementById('askResult');
+    r2.textContent = 'Eroare: ' + e.message;
+    r2.style.display = 'block';
+  }
+}
+
+// ====== JOURNAL SYNC ======
+var jSyncStatus = 'idle';
+async function syncJournal() {
+  if (!navigator.onLine) return;
+  try {
+    jSyncStatus = 'syncing'; updateSyncBadge();
+    var local = getJurnalEntries();
+    var res = await fetch('/api/journal', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(local) });
+    if (!res.ok) throw new Error('sync fail');
+    var pullRes = await fetch('/api/journal');
+    if (pullRes.ok) {
+      var remote = await pullRes.json();
+      if (Array.isArray(remote) && remote.length > 0) {
+        var map = new Map();
+        local.forEach(function(e) { map.set(e.id, e); });
+        remote.forEach(function(e) { map.set(e.id, e); });
+        var merged = Array.from(map.values()).sort(function(a,b) { return b.id - a.id; });
+        saveJurnalEntries(merged);
+        if (document.getElementById('modal-jurnal').classList.contains('open')) renderJurnal();
+      }
+    }
+    jSyncStatus = 'synced'; updateSyncBadge();
+  } catch(e) { jSyncStatus = 'error'; updateSyncBadge(); }
+}
+function updateSyncBadge() {
+  var badge = document.getElementById('syncBadge');
+  if (!badge) return;
+  var labels = { idle: '', syncing: '\u21BB Sincronizare...', synced: '\u2713 Sincronizat', error: '\u2717 Eroare sync' };
+  var cls = { idle: '', syncing: '', synced: 'ok', error: 'err' };
+  badge.className = 'sync-badge ' + (cls[jSyncStatus] || '');
+  badge.innerHTML = '<span class="sd"></span> ' + (labels[jSyncStatus] || '');
+}
+async function syncDeleteJournal(id) {
+  if (!navigator.onLine) return;
+  try { await fetch('/api/journal', { method: 'DELETE', headers: {'Content-Type':'application/json'}, body: JSON.stringify({id:id}) }); } catch(e) {}
+}
+
+// ====== FROST & DISEASE ALERTS ======
+async function checkAlerts() {
+  if (!navigator.onLine) return;
+  try {
+    var res = await fetch('/api/frost-alert');
+    var data = await res.json();
+    if (data.frost && data.frost.active) {
+      document.getElementById('frostText').textContent = data.frost.message;
+      document.getElementById('frostBanner').classList.add('active');
+    }
+    if (data.disease && data.disease.active) {
+      document.getElementById('diseaseText').textContent = data.disease.message;
+      document.getElementById('diseaseBanner').classList.add('active');
+    }
+  } catch(e) {}
+}
+
+// ====== METEO HISTORY ======
+async function loadMeteoHistory() {
+  if (!navigator.onLine) return;
+  var container = document.getElementById('meteoHistory');
+  if (!container) return;
+  try {
+    var res = await fetch('/api/meteo-history?days=30');
+    var data = await res.json();
+    if (data.error || Object.keys(data).length === 0) {
+      container.innerHTML = '<p style="font-size:0.8rem;color:var(--text-dim);text-align:center;padding:12px;">Nu exist\u0103 date istorice. Cron-ul zilnic le va ad\u0103uga automat.</p>';
+      return;
+    }
+    var entries = Object.entries(data).sort(function(a,b) { return a[0].localeCompare(b[0]); });
+    var temps = entries.map(function(e) { return e[1].temp; });
+    var minT = Math.min.apply(null, temps);
+    var maxT = Math.max.apply(null, temps);
+    var range = Math.max(maxT - minT, 1);
+    var bars = entries.map(function(e) {
+      var date = e[0], d = e[1];
+      var h = Math.max(5, ((d.temp - minT) / range) * 90);
+      var cls = d.temp < 0 ? 'cold' : d.temp > 30 ? 'hot' : 'warm';
+      return '<div class="m-bar ' + cls + '" style="height:' + h + 'px"><div class="m-bar-tip">' + date.slice(5) + ': ' + d.temp + '\u00B0C ' + d.description + '</div></div>';
+    }).join('');
+    container.innerHTML = '<div class="m-chart"><h4>Istoric temperaturi \u2014 ultimele ' + entries.length + ' zile</h4>' +
+      '<div class="m-chart-wrap">' + bars + '</div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-dim);margin-top:4px;">' +
+      '<span>' + (entries[0] ? entries[0][0].slice(5) : '') + '</span>' +
+      '<span>Min: ' + Math.round(minT) + '\u00B0 / Max: ' + Math.round(maxT) + '\u00B0</span>' +
+      '<span>' + (entries[entries.length-1] ? entries[entries.length-1][0].slice(5) : '') + '</span>' +
+      '</div></div>';
+  } catch(e) { container.innerHTML = ''; }
+}
+
+// ====== SMART CALENDAR ENHANCEMENT ======
+var calendarMeteoData = null;
+async function enhanceCalendarWithMeteo() {
+  if (!navigator.onLine) return;
+  if (!calendarMeteoData) {
+    try {
+      var res = await fetch('/api/meteo-history?days=90');
+      if (res.ok) calendarMeteoData = await res.json();
+    } catch(e) { return; }
+  }
+  if (!calendarMeteoData || Object.keys(calendarMeteoData).length === 0) return;
+  // Add weather icons to past calendar days
+  var calGrid = document.getElementById('calGrid');
+  if (!calGrid) return;
+  var days = calGrid.querySelectorAll('.cal-day:not(.empty)');
+  days.forEach(function(dayEl) {
+    var dayNum = parseInt(dayEl.textContent);
+    if (isNaN(dayNum)) return;
+    var dateStr = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(dayNum).padStart(2, '0');
+    var meteo = calendarMeteoData[dateStr];
+    if (meteo) {
+      dayEl.title = meteo.temp + '\u00B0C, ' + meteo.description;
+      if (meteo.temp < 0) dayEl.style.borderBottom = '2px solid var(--info)';
+      else if (meteo.temp > 30) dayEl.style.borderBottom = '2px solid var(--danger)';
+    }
+  });
+  // Show frost/disease warnings in calendar events
+  var events = document.getElementById('calEvents');
+  if (events) {
+    var monthNum = calMonth + 1;
+    if (monthNum >= 3 && monthNum <= 5) {
+      var frostDays = Object.entries(calendarMeteoData).filter(function(e) {
+        return e[0].startsWith(calYear + '-' + String(monthNum).padStart(2, '0')) && e[1].temp < 0;
+      });
+      if (frostDays.length > 0) {
+        events.innerHTML += '<div class="cal-event-item" style="border-color:var(--danger);margin-top:12px;">' +
+          '<strong>\u2744\uFE0F Zile cu \u00EEnghe\u021B luna aceasta: ' + frostDays.length + '</strong><br>' +
+          'Protejeaz\u0103 pomii sensibili (piersic, cais, migdal, rodiu). Verific\u0103 protec\u021Bia de iarn\u0103.</div>';
+      }
+    }
+    // Rain + warm = disease risk
+    var rainyWarm = Object.entries(calendarMeteoData).filter(function(e) {
+      return e[0].startsWith(calYear + '-' + String(monthNum).padStart(2, '0')) && e[1].rain > 0 && e[1].temp >= 10 && e[1].temp <= 25;
+    });
+    if (rainyWarm.length >= 3) {
+      events.innerHTML += '<div class="cal-event-item" style="border-color:var(--warning);margin-top:8px;">' +
+        '<strong>\u26A0\uFE0F ' + rainyWarm.length + ' zile cu ploi \u0219i temperaturi optime pt boli fungice</strong><br>' +
+        'Verific\u0103 r\u0103p\u0103nul la m\u0103r/p\u0103r \u0219i monilioza la cais/piersic.</div>';
+    }
+  }
+}
+
+// ====== REPORT GENERATION ======
+async function generateReport() {
+  var btn = document.getElementById('reportBtn');
+  var loading = document.getElementById('reportLoading');
+  var result = document.getElementById('reportResult');
+  btn.disabled = true; loading.style.display = 'block'; result.style.display = 'none';
+  var localJournal = getJurnalEntries().map(function(e) { return e.date + ': [' + e.type + '] ' + e.note; }).join('\n');
+  try {
+    var res = await fetch('/api/report', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ localJournal: localJournal })
+    });
+    var data = await res.json();
+    loading.style.display = 'none'; btn.disabled = false;
+    if (data.error) { result.textContent = 'Eroare: ' + data.error; }
+    else {
+      var text = data.report || '';
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      text = text.replace(/#{1,3}\s*(.*)/g, '<strong style="color:var(--accent);font-size:1.05em;">$1</strong>');
+      text = text.replace(/\n/g, '<br>');
+      result.innerHTML = '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">Bazat pe ' +
+        data.journalCount + ' interven\u021Bii \u0219i ' + data.meteoDays + ' zile meteo</div>' + text;
+    }
+    result.style.display = 'block';
+  } catch(e) {
+    loading.style.display = 'none'; btn.disabled = false;
+    result.textContent = navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.';
+    result.style.display = 'block';
+  }
+}
+
+// ====== INIT NEW FEATURES ======
+(function initNewFeatures() {
+  // Inject tools for default tab
+  injectSpeciesTools('plan-livada');
+  // Check alerts
+  setTimeout(checkAlerts, 1500);
+  // Sync journal after short delay
+  setTimeout(syncJournal, 3000);
+  // Re-sync on reconnect
+  window.addEventListener('online', function() { syncJournal(); checkAlerts(); });
+})();
 </script>
 </body>
 </html>
