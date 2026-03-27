@@ -2,8 +2,14 @@
 
 const ALLOWED_ORIGIN = 'https://livada-mea-psi.vercel.app';
 
+// Helper: citeste header compatibil cu Web API Headers SI plain object (Node.js IncomingMessage)
+function getHeader(req, name) {
+  if (typeof req?.headers?.get === 'function') return req.headers.get(name);
+  return req?.headers?.[name.toLowerCase()] ?? null;
+}
+
 export function corsHeaders(req) {
-  const origin = req?.headers?.get?.('origin') || '';
+  const origin = getHeader(req, 'origin') || '';
   const allowed =
     origin === ALLOWED_ORIGIN ||
     (origin.endsWith('.vercel.app') && origin.includes('livada-mea')) ||
@@ -20,18 +26,12 @@ export function handleOptions(req) {
   return new Response(null, { status: 204, headers: corsHeaders(req) });
 }
 
-/**
- * Verifica token-ul de autentificare.
- * Daca LIVADA_API_TOKEN nu e setat pe Vercel, lasa traficul sa treaca (backwards compat).
- * Daca e setat, cere header x-livada-token.
- * GET requests pe routes read-only (frost-alert, meteo-history) pot fi excluse.
- */
 export function checkAuth(req) {
   const token = process.env.LIVADA_API_TOKEN;
-  if (!token) return null; // no token configured, allow all
+  if (!token) return null;
 
-  const provided = req.headers.get('x-livada-token');
-  if (provided === token) return null; // authorized
+  const provided = getHeader(req, 'x-livada-token');
+  if (provided === token) return null;
 
   return Response.json(
     { error: 'Neautorizat. Seteaza token-ul in Setari aplicatie.' },
@@ -39,17 +39,12 @@ export function checkAuth(req) {
   );
 }
 
-/**
- * Basic rate limiting using in-memory Map.
- * Note: On Vercel serverless, state resets between cold starts.
- * For persistent rate limiting, use Upstash Redis.
- */
 const rateLimitMap = new Map();
-const RATE_WINDOW = 60_000; // 1 minute
-const RATE_MAX = 10; // max requests per minute per IP
+const RATE_WINDOW = 60_000;
+const RATE_MAX = 10;
 
 export function rateLimit(req) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const ip = (getHeader(req, 'x-forwarded-for') || 'unknown').split(',')[0].trim();
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
 

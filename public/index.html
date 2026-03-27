@@ -13,6 +13,7 @@
 <link rel="apple-touch-icon" href="/icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" as="style">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 /* ====== CSS VARIABLES — DARK (default) ====== */
@@ -147,8 +148,8 @@ body {
 
 /* ====== CONTENT ====== */
 .content { padding: 16px; max-width: 900px; margin: 0 auto; }
-.tab-content { display: none; animation: fadeIn 0.3s ease; }
-.tab-content.active { display: block; }
+.tab-content { display: none; animation: fadeIn 0.3s ease; content-visibility: auto; contain-intrinsic-size: 0 500px; }
+.tab-content.active { display: block; content-visibility: visible; }
 @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
 /* ====== SECTIONS ====== */
@@ -6369,6 +6370,7 @@ async function loadGallery() {
   grid.innerHTML = ''; empty.style.display = 'none'; loading.style.display = 'block';
   try {
     const res = await authFetch('/api/photos?species=' + activeSpeciesId);
+    if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     const photos = await res.json();
     loading.style.display = 'none';
     if (Array.isArray(photos) && photos.length > 0) {
@@ -6389,6 +6391,7 @@ async function uploadPhoto(input) {
   try {
     var fd = new FormData(); fd.append('file', file); fd.append('species', activeSpeciesId);
     var res = await authFetch('/api/photos', { method: 'POST', body: fd });
+    if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
     if (data.error) throw new Error(data.error);
     document.getElementById('galLoading').style.display = 'none';
@@ -6430,6 +6433,7 @@ async function submitDiagnose(input) {
     fd.append('image', file);
     fd.append('species', SPECIES[activeSpeciesId] || activeSpeciesId);
     var res = await authFetch('/api/diagnose', { method: 'POST', body: fd });
+    if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
     document.getElementById('diagLoading').style.display = 'none';
     var resultEl = document.getElementById('diagResult');
@@ -6467,6 +6471,7 @@ async function submitAsk() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question: question, species: SPECIES[activeSpeciesId] || activeSpeciesId, context: context })
     });
+    if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
     document.getElementById('askLoading').style.display = 'none';
     var r = document.getElementById('askResult');
@@ -6523,6 +6528,7 @@ async function checkAlerts() {
   if (!navigator.onLine) return;
   try {
     var res = await fetch('/api/frost-alert');
+    if (!res.ok) return;
     var data = await res.json();
     if (data.frost && data.frost.active) {
       document.getElementById('frostText').textContent = data.frost.message;
@@ -6542,6 +6548,7 @@ async function loadMeteoHistory() {
   if (!container) return;
   try {
     var res = await fetch('/api/meteo-history?days=30');
+    if (!res.ok) throw new Error('Server ' + res.status);
     var data = await res.json();
     if (data.error || Object.keys(data).length === 0) {
       container.innerHTML = '<p style="font-size:0.8rem;color:var(--text-dim);text-align:center;padding:12px;">Nu exist\u0103 date istorice. Cron-ul zilnic le va ad\u0103uga automat.</p>';
@@ -6653,6 +6660,7 @@ async function generateReport() {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ localJournal: localJournal })
     });
+    if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
     loading.style.display = 'none'; btn.disabled = false;
     if (data.error) { result.textContent = 'Eroare: ' + data.error; }

@@ -50,7 +50,7 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
         Authorization: `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'llama-4-scout-17b-16e-instruct',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userMsg },
