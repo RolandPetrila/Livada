@@ -1,27 +1,36 @@
 # RUNDA CURENTA — Livada Mea Dashboard
 
 **Data:** 2026-03-27
-**Sesiune:** 4 — Bug fix + Quick Wins — COMPLETATE
+**Sesiune:** 5 — Fix-uri CRITICE + HIGH din /audit
 **Status:** EXECUTIE FINALIZATA
 
 ---
 
-## REZULTAT
+## REZULTAT — Toate 4 blocuri COMPLETATE
 
-### BUG LIVE CRITIC — REZOLVAT
-- **BUG-1**: `req.headers.get()` crash pe TOATE POST endpoints in Node.js runtime
-  - Fix: `getHeader()` helper in `_auth.js` compatibil Web API Headers + plain object
-- **BUG-2**: 7 locuri in frontend faceau `res.json()` fara `res.ok` check
-  - Fix: adaugat `if (!res.ok) throw new Error(...)` la toate
+### BLOC 1 — CRITICE SECURITATE ✅
+- SEC-1: Path traversal photos.js — species sanitizat cu regex
+- SEC-2: XSS stored galerie — escapeHtml() + event delegation
+- SEC-3: CORS exact match — ALLOWED_ORIGINS array
+- SEC-4: Error messages generice pe ask/diagnose/report
 
-### 5 QUICK WINS — COMPLETATE
-1. Gemini 2.0 Flash → **2.5 Flash** (deprecation 31 mar evitata)
-2. Groq Llama 3.3 70B → **Llama 4 Scout** (5x mai ieftin, 50% mai rapid)
-3. **content-visibility: auto** pe tab-uri inactive (7x rendering boost)
-4. @upstash/redis confirmat **1.37** (latest)
-5. **Font preload** Source Sans 3 (FCP improvement)
+### BLOC 2 — HIGH SECURITATE ✅
+- SEC-5: Journal schema validation (id/date/type validate + truncate)
+- SEC-6: meteo-history days clamped [1, 365]
+- SEC-7: Referrer-Policy + Permissions-Policy headers
+
+### BLOC 3 — HIGH PERFORMANTA ✅
+- PERF-1: fetchWithTimeout() cu AbortController pe toate fetch-urile
+- PERF-2: Cache-Control pe frost-alert (5min) si meteo-history (30min)
+
+### BLOC 4 — HIGH ACCESIBILITATE ✅
+- A11Y-1: ARIA pe tabs (role=tablist/tab/tabpanel, aria-selected, tabindex)
+- A11Y-2: ARIA pe modale (role=dialog, aria-modal, focus save/restore)
+- A11Y-3: aria-label pe 13 butoane
+- A11Y-4: Labels — deja existente pe toate inputurile
+- A11Y-5: Skip link + h1 visually-hidden + id=content
+- A11Y-6: Viewport user-scalable=yes
 
 ### Deploy: https://livada-mea-psi.vercel.app
-
-## Blocaje
-Niciun blocaj.
+### Commits: 4 blocuri separate (BLOC 1, 2, 3, 4)
+### Blocaje: Niciun blocaj
