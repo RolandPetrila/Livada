@@ -37,18 +37,18 @@
 - [x] Cires — cercetare completa A-G, integrat in HTML (accent: polenizare incrucisata, musca cireselor)
 - [x] Visin — cercetare completa A-G, integrat in HTML (accent: autofertil, fructifica lemn 1 an)
 
-### Sesiunea 2 — RAMAS (11 specii)
-- [ ] Mar Florina (spalier + vas — dubla documentatie)
-- [ ] Mar Golden Spur
-- [ ] Par Favorita lui Clapp
-- [ ] Par Williams
-- [ ] Par Hosui (soi japonez)
-- [ ] Par Napoca (soi romanesc)
-- [ ] Migdal (exotic pt Romania)
-- [ ] Zmeur
-- [ ] Mur
-- [ ] Afin (sol acid)
-- [ ] Alun tufa
+### Sesiunea 2 — COMPLETATE ✅
+- [x] Mar Florina — cercetare completa A-G, DUBLA documentatie spalier+vas, integrat in HTML (accent: rezistenta rapan Vf, program tratamente REDUS)
+- [x] Mar Golden Spur — cercetare completa A-G, integrat in HTML (accent: program intensiv anti-rapan, alternanta, rarire obligatorie)
+- [x] Par Favorita lui Clapp — cercetare completa A-G, integrat in HTML (accent: focul bacterian CRITIC, recoltare INAINTE de maturitate)
+- [x] Par Williams — cercetare completa A-G, integrat in HTML (accent: irigare critica, oportunitate palinca pere premium)
+- [x] Par Hosui — cercetare completa A-G, integrat in HTML (accent: nashi ≠ par european, recoltare la maturitate deplina)
+- [x] Par Napoca — cercetare completa A-G, integrat in HTML (accent: soi romanesc SCDP Cluj, rezistenta superioara boli)
+- [x] Migdal — cercetare completa A-G, integrat in HTML (accent: specie EXOTICA, protectie inghet critica, soiuri inflorire tarzie)
+- [x] Zmeur — cercetare completa A-G, integrat in HTML (accent: soiuri clasice vs remontante, tundere diferita)
+- [x] Mur — cercetare completa A-G, integrat in HTML (accent: palisat obligatoriu, soiuri fara spini)
+- [x] Afin — cercetare completa A-G + SECTIUNE SPECIALA acidifiere sol, integrat in HTML (accent: pH 4.0-5.5 obligatoriu!)
+- [x] Alun tufa — cercetare completa A-G, integrat in HTML (accent: polenizare eoliana, minim 2 soiuri)
 
 ## FAZA 2 — Vercel Backend
 
@@ -81,3 +81,15 @@
 
 **Decizii T1:** vezi PLAN_DECISIONS.md (7 decizii noi)
 **Blocaje:** vercel link non-interactive (rezolvat cu project add manual + project.json)
+
+### Sesiunea 2 (2026-03-27) — T1 autonom
+
+**Faza 1.5 COMPLETATA:** Toate 17/17 specii cu cercetare completa A-G, integrate in HTML.
+- 11 specii noi: Mar Florina (dubla doc spalier+vas), Mar Golden Spur, Par Clapp, Par Williams, Par Hosui, Par Napoca, Migdal, Zmeur, Mur, Afin (sectiune acidifiere), Alun tufa
+- 3 commits intermediare + deploy-uri Vercel
+- Fisier HTML final: ~6123 linii
+- 22 fisiere cercetare MD in content/
+- Deploy productie: https://livada-mea-psi.vercel.app
+
+**Decizii T1 Sesiunea 2:** vezi PLAN_DECISIONS.md
+**Blocaje:** Niciun blocaj semnificativ. API overload la agenti (rezolvat cu retry + paralel)

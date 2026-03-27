@@ -1,80 +1,45 @@
 # RUNDA CURENTA — Livada Mea Dashboard
 
 **Data:** 2026-03-27
-**Faza:** Faza 1.5 in curs (11 specii ramase)
-**Status:** SESIUNEA 1 COMPLETA — asteapta Roland pentru Sesiunea 2
+**Sesiune:** 2 din 2 — COMPLETATA ✅
+**Status:** EXECUTIE FINALIZATA
 
-## Ce s-a realizat in Sesiunea 1
+---
 
-### BLOC 1 — Faza 0: Infrastructura ✅
-- Git init + remote add origin (repo existent)
-- Structura: public/, api/, content/, tools/
-- HTML model copiat in public/index.html
-- DOCX-uri extrase: Plan_Complet_Livada.md, Rodiu_Ghid_Tundere.md
-- Config: vercel.json, package.json, .gitignore
-- CLAUDE.md per-proiect creat
-- Vercel: proiect livada-mea creat + primul deploy
-- URL productie: https://livada-mea-psi.vercel.app
+## REZULTAT SESIUNEA 2
 
-### BLOC 2 — Faza 1: MVP Static ✅
-- 18 taburi Android-first cu categorii vizuale (separatoare: Samburoase/Semintoase/Arbusti/Altele)
-- Dark/Light mode cu persistenta localStorage
-- Cautare globala (evidentiaza tab-uri cu match)
-- Calculator doze: 20 produse presetate, formula concentratie × volum × 10
-- Jurnal interventii: CRUD complet, 7 tipuri, localStorage
-- PWA: sw.js (cache-first static, network-first API), manifest.json, icon.svg, install banner
-- Calendar interactiv: 11 perioade tratament, navigare lunara, evenimente pe luna
-- Export PDF: window.print() cu @media print
-- Meteo Nadlac: OpenWeatherMap cu API key in localStorage + alerte temp
-- Bottom bar cu 5 tools (modal slide-up panels)
-- Touch targets 44x44px, font 16px+, responsive 360px
+### Ce s-a realizat: Toate 11 specii ramase — cercetare + integrare HTML
 
-### BLOC 3 — Faza 1.5 partial: 6 specii ✅
-Cercetare completa A-G pentru: Cais, Rodiu, Piersic, Prun, Cires, Visin
-- MD files in content/ (3000-5000 cuvinte fiecare)
-- Convertite in HTML cu tools/md_to_html.py
-- Integrate in public/index.html (293KB, 4255 linii)
-- Deploy productie
+| # | Specie | Status | Accent specific |
+|---|--------|--------|----------------|
+| 1 | Mar Florina | ✅ | Documentatie DUBLA spalier+vas, rezistenta rapan |
+| 2 | Mar Golden Spur | ✅ | Program intensiv anti-rapan, rarire obligatorie |
+| 3 | Par Favorita lui Clapp | ✅ | Focul bacterian CRITIC, recoltare timpurie |
+| 4 | Par Williams | ✅ | Irigare critica, oportunitate palinca |
+| 5 | Par Hosui | ✅ | Nashi japonez, diferente vs par european |
+| 6 | Par Napoca | ✅ | Soi romanesc, rezistenta superioara boli |
+| 7 | Migdal | ✅ | Specie exotica, protectie inghet critica |
+| 8 | Zmeur | ✅ | Clasic vs remontant, tundere diferita |
+| 9 | Mur | ✅ | Palisat obligatoriu, soiuri fara spini |
+| 10 | Afin | ✅ | SECTIUNE SPECIALA acidifiere sol |
+| 11 | Alun tufa | ✅ | Polenizare eoliana, minim 2 soiuri |
 
-## Statistici Sesiunea 1
-- 3 commits + push + 3 deploy-uri Vercel
-- 6 fisiere cercetare: ~25,000 cuvinte total
-- HTML final: 293KB (in spec 300-500KB)
-- URL live: https://livada-mea-psi.vercel.app
+### Statistici Sesiunea 2
+- 3 commits + 3 deploy-uri Vercel
+- HTML: de la 4255 linii → 6123 linii (+1868 linii de continut)
+- 11 fisiere cercetare noi MD in content/ (~40,000+ cuvinte)
+- Fiecare specie: structura completa A-G (Cercetare, Tratamente, Tundere, Boli, Soiuri, Protectie, Note)
+- Deploy productie: https://livada-mea-psi.vercel.app
 
-## SESIUNEA 2 (lansata de Roland) — CE RAMANE
+### Statistici TOTALE (Sesiunea 1 + 2)
+- 17/17 specii COMPLETATE cu cercetare A-G
+- 22 fisiere MD in content/
+- HTML: ~6123 linii
+- 7+ commits, 6+ deploy-uri Vercel
 
-### 11 specii de completat (cercetare A-G + integrare HTML):
-1. Mar Florina (spalier + vas — documentatie DUBLA)
-2. Mar Golden Spur
-3. Par Favorita lui Clapp
-4. Par Williams
-5. Par Hosui (soi japonez)
-6. Par Napoca (soi romanesc)
-7. Migdal (exotic pt Romania)
-8. Zmeur
-9. Mur
-10. Afin (sol acid — specific)
-11. Alun tufa
+## Blocaje
+Niciun blocaj semnificativ. Agenti API overload la crearea fisierelor MD (rezolvat cu retry si paralel).
 
-### Ordine recomandata:
-- Pari (4 soiuri) — pot partaja structura comuna
-- Meri (2 soiuri, Florina necesita documentatie dubla)
-- Arbusti (Zmeur, Mur, Afin) — mai simpli
-- Altele (Alun, Migdal) — speciale
-
-### La final sesiunea 2:
-- Integrare 11 specii in HTML
-- Commit + push + vercel --prod
-- Actualizare PLAN_v3.md (bifeaza tot)
-- Opcional: review UX, bugfix-uri minore
-
-## Blocaje intalnite (Sesiunea 1)
-- `vercel link --yes --scope` nu functioneaza in mod non-interactive
-  - **Rezolvare:** vercel project add + creare manuala .vercel/project.json
-  - **Impact:** 0 (rezolvat in 2 minute)
-
-## Decizii de luat (deschise) — pt Sesiunea 2
-- Structura tab-uri par: 4 tab-uri separate SAU 1 tab cu sub-sectiuni? (T1 alege separat — mai clar)
-- Mar Florina dubla documentatie: 2 sectiuni in acelasi tab (spalier + vas)
-- Afin: sectiune speciala acidifiere sol (diferita de restul speciilor)
+## Ce urmeaza (Faza 2)
+- Vercel Backend: sync jurnal, istoric meteo, alerta ingheturi
+- AI Features: identificare boli din poza, calendar inteligent

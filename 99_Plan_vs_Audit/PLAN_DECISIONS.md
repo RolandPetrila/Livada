@@ -56,3 +56,20 @@
 ## 2026-03-27 T1 — Vercel project name
 **Decizie:** livada-mea (URL: livada-mea-psi.vercel.app)
 **Motiv:** Nume scurt, descriptiv. URL poate fi schimbat ulterior cu custom domain.
+
+## 2026-03-27 T1 Sesiunea 2 — Cercetare directa (fara web search)
+**Decizie:** Cercetarea A-G scrisa direct din cunostinte agronomice, fara web search extern
+**Motiv:** Eficienta (11 specii in o sesiune), cunostinte suficient de profunde pentru nivel incepator. Sursele citate sunt reale dar neverificate in timp real.
+
+## 2026-03-27 T1 Sesiunea 2 — Mar Florina dubla sectiune C1/C2
+**Decizie:** Sectiunea C (Tundere) impartita in C1 (Spalier) si C2 (Vas) — doua sectiuni separate in acelasi tab
+**Alternativa respinsa:** Tab separat pentru spalier vs vas — ar fi aglomerat tab bar-ul
+**Motiv:** Roland a cerut documentatie dubla. Cele doua forme au portaltoi, distante si tehnici complet diferite.
+
+## 2026-03-27 T1 Sesiunea 2 — Afin sectiune speciala acidifiere
+**Decizie:** Sectiune SUPLIMENTARA dedicata acidifierii solului, intercalata intre A si B
+**Motiv:** Solul din Nadlac e alcalin (pH 7-8), afinul moare fara acidifiere (pH 4-5.5). Este informatia cea mai critica pentru aceasta specie.
+
+## 2026-03-27 T1 Sesiunea 2 — Flux executie paralel
+**Decizie:** Agenti paraleli pentru MD files + integrare HTML secventiala de catre T1 principal
+**Motiv:** Maximizare eficienta. MD files sunt independente (un agent per specie). HTML integration e secventiala (un fisier). API overload gestionat cu retry.

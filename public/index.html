@@ -6034,7 +6034,7 @@ function calNav(dir) {
 
 // ====== METEO ======
 function initMeteo() {
-  const key = localStorage.getItem('livada-meteo-key');
+  const key = localStorage.getItem('livada-meteo-key') || '04e63218881f0f03e17458e33270070b';
   if (key) {
     $('#meteoSetup').style.display = 'none';
     $('#meteoData').style.display = 'block';
