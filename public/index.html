@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a2e1a">
+<title>Livada Mea — Ghid Complet</title>
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTGl2YWRhIE1lYSIsInNob3J0X25hbWUiOiJMaXZhZGEiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzFhMmUxYSIsInRoZW1lX2NvbG9yIjoiIzFhMmUxYSIsImljb25zIjpbXX0=">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-deep: #0f1a0f;
+  --bg-card: #1a2e1a;
+  --bg-card-alt: #1f3520;
+  --bg-surface: #243b24;
+  --accent: #6abf69;
+  --accent-dim: #3d7a3d;
+  --accent-glow: #8adf89;
+  --text: #d4e4d4;
+  --text-dim: #8aaa8a;
+  --text-bright: #eaf5ea;
+  --warning: #e8a838;
+  --danger: #d4534a;
+  --info: #5a9fd4;
+  --border: #2a4a2a;
+  --radius: 12px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- HEADER ---- */
+.app-header {
+  background: linear-gradient(135deg, var(--bg-card) 0%, #0d1f0d 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px 12px;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.app-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: var(--accent-glow);
+  letter-spacing: 0.5px;
+}
+.app-title span { color: var(--text-dim); font-size: 0.75em; font-family: 'Source Sans 3', sans-serif; font-weight: 300; }
+.app-subtitle { color: var(--text-dim); font-size: 0.8rem; margin-top: 2px; }
+
+/* ---- TABS ---- */
+.tabs-wrapper {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 72px; z-index: 99;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs-wrapper::-webkit-scrollbar { display: none; }
+.tabs {
+  display: flex;
+  padding: 0 12px;
+  gap: 2px;
+  min-width: max-content;
+}
+.tab {
+  padding: 12px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  user-select: none;
+  position: relative;
+}
+.tab:hover { color: var(--text); background: rgba(106,191,105,0.05); }
+.tab.active {
+  color: var(--accent-glow);
+  border-bottom-color: var(--accent);
+  background: rgba(106,191,105,0.08);
+}
+.tab .tab-icon { margin-right: 6px; }
+
+/* ---- CONTENT ---- */
+.content { padding: 20px; max-width: 900px; margin: 0 auto; }
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ---- SECTIONS ---- */
+.section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: var(--accent-glow);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.section h3 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin: 20px 0 10px;
+}
+.section h4 {
+  font-size: 1rem;
+  color: var(--accent-dim);
+  margin: 16px 0 8px;
+  font-weight: 600;
+}
+.section p { margin-bottom: 12px; color: var(--text); }
+.section ul, .section ol { margin: 8px 0 16px 20px; }
+.section li { margin-bottom: 6px; color: var(--text); }
+.section li strong { color: var(--accent); }
+
+/* ---- ALERT BOXES ---- */
+.alert {
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: 0.9rem;
+  border-left: 4px solid;
+}
+.alert-success { background: rgba(106,191,105,0.1); border-color: var(--accent); }
+.alert-warning { background: rgba(232,168,56,0.1); border-color: var(--warning); }
+.alert-danger { background: rgba(212,83,74,0.1); border-color: var(--danger); }
+.alert-info { background: rgba(90,159,212,0.1); border-color: var(--info); }
+.alert strong { display: block; margin-bottom: 4px; }
+
+/* ---- TABLES ---- */
+.table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 8px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th {
+  background: var(--bg-surface);
+  color: var(--accent-glow);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--accent-dim);
+  white-space: nowrap;
+}
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+tr:hover td { background: rgba(106,191,105,0.05); }
+td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+
+/* ---- PLACEHOLDER TAB ---- */
+.placeholder {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-dim);
+}
+.placeholder-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+.placeholder h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text); margin-bottom: 8px; }
+.placeholder p { font-size: 0.9rem; max-width: 400px; margin: 0 auto; }
+
+/* ---- SEARCH (future) ---- */
+.search-bar {
+  display: flex; gap: 8px; margin-bottom: 20px;
+}
+.search-bar input {
+  flex: 1; padding: 10px 14px; border-radius: 8px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--text); font-size: 0.9rem; outline: none;
+  transition: border-color 0.2s;
+}
+.search-bar input:focus { border-color: var(--accent); }
+
+/* ---- COLLAPSIBLE ---- */
+.collapsible { cursor: pointer; user-select: none; }
+.collapsible::after { content: ' ▾'; font-size: 0.8em; color: var(--accent-dim); }
+.collapsible.collapsed::after { content: ' ▸'; }
+.collapse-content { overflow: hidden; transition: max-height 0.3s ease; }
+.collapse-content.hidden { max-height: 0 !important; }
+
+/* ---- INSTALL BANNER ---- */
+.install-banner {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(135deg, var(--bg-card), #0d1f0d);
+  border-top: 1px solid var(--accent-dim);
+  padding: 14px 20px;
+  display: none; align-items: center; justify-content: space-between;
+  z-index: 200;
+}
+.install-banner.show { display: flex; }
+.install-banner p { font-size: 0.85rem; color: var(--text); }
+.install-btn {
+  padding: 8px 20px; border: none; border-radius: 8px;
+  background: var(--accent); color: var(--bg-deep);
+  font-weight: 700; cursor: pointer; font-size: 0.85rem;
+}
+.dismiss-btn { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.2rem; margin-left: 12px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .content { padding: 12px; }
+  .section { padding: 16px; }
+  .section-title { font-size: 1.2rem; }
+  .app-title { font-size: 1.3rem; }
+  .tab { padding: 10px 14px; font-size: 0.8rem; }
+  table { font-size: 0.78rem; }
+  th, td { padding: 8px 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="app-title">🌳 Livada Mea <span>— Ghid Complet</span></div>
+  <div class="app-subtitle">100+ pomi • 5 specii • Zona Nădlac/Arad • Actualizat 2026</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <div class="tab active" data-tab="rodiu"><span class="tab-icon">🌿</span>Rodiu</div>
+    <div class="tab" data-tab="plan"><span class="tab-icon">📋</span>Plan Livadă</div>
+    <div class="tab" data-tab="piersic"><span class="tab-icon">🍑</span>Piersic</div>
+    <div class="tab" data-tab="cais"><span class="tab-icon">🟠</span>Cais</div>
+    <div class="tab" data-tab="prun"><span class="tab-icon">🫐</span>Prun</div>
+    <div class="tab" data-tab="mar"><span class="tab-icon">🍎</span>Măr</div>
+    <div class="tab" data-tab="par"><span class="tab-icon">🍐</span>Păr</div>
+  </div>
+</div>
+
+<!-- ============= TAB: RODIU ============= -->
+<div class="content">
+<div class="tab-content active" id="rodiu">
+
+<!-- Cercetare completă -->
+<div class="section">
+  <h2 class="section-title">Tunderea pomului tânăr de rodiu — Ghid complet</h2>
+  <p><em>Cercetare pe baza surselor: UGA Cooperative Extension, UC Agriculture & Natural Resources, Agrobiznes.ro, Horticultorul.ro, Verdena.ro, Lumea Satului</em></p>
+
+  <div class="alert alert-success">
+    <strong>✅ VERDICT</strong>
+    Structura pomului (3–4 tulpini de la bază) este bună pentru România. Nu este „tuns greșit", dar necesită formare activă: selecție tulpini, eliminare lăstari, modelare vază deschisă.
+  </div>
+
+  <h3>De ce forma de tufă (nu copac pe un singur trunchi)</h3>
+  <p>Rodiile (<em>Punica granatum</em>) sunt arbuști multi-tulpinali în mod natural. Antrenarea lor ca pomi pe un singur trunchi este o tehnică din livezile comerciale din California, Spania sau Israel — regiuni care rareori văd îngheț sever. În clima continentală a României, unde temperaturile iarna pot coborî sub <strong>−10°C până la −15°C</strong>, forma de tufă nu este doar preferată — este practic obligatorie.</p>
+  <p>Universitatea din Georgia precizează: cu tufe multi-trunchi, dacă înghețul deteriorează o parte, se elimină și se antrenează un lăstar viguros în loc, „fără pierdere semnificativă de producție". Sursele românești recomandă menținerea a <strong>4–5 tulpini principale</strong> cu coroană aerisită.</p>
+
+  <h4>Avantajele formei de tufă:</h4>
+  <ul>
+    <li><strong>Rezistență la îngheț:</strong> Dacă un trunchi moare, ceilalți supraviețuiesc și planta se recuperează fără pierderi de ani.</li>
+    <li><strong>Protecție de iarnă fezabilă:</strong> O tufă joasă (2–3m) poate fi îndoită la pământ și acoperită cu 15–20 cm pământ + crengi de brad.</li>
+    <li><strong>Reînnoire naturală:</strong> Lăstarii de la bază servesc ca „asigurare" — pot înlocui trunchiul deteriorat.</li>
+    <li><strong>Fructificare mai rapidă:</strong> Mai multe tulpini = mai mult lemn productiv, roade mai devreme.</li>
+  </ul>
+
+  <h3>Cum să tunzi corect — pas cu pas</h3>
+
+  <h4>Acum (primăvara, Anul 1–2)</h4>
+  <ol>
+    <li><strong>Selectează 3–5 tulpini principale:</strong> Alege cele mai viguroase, groase și bine spațiate. Dacă ai 3–4 sănătoase, păstrează-le pe toate.</li>
+    <li><strong>Elimină tulpinile slabe:</strong> Cele vizibil mai subțiri, slabe sau care se încrucișează — taie la nivelul solului.</li>
+    <li><strong>Verifică lemnul mort:</strong> Scară ușor coaja cu unghia. Verde = vie. Maro/uscat = moartă → tăiată.</li>
+    <li><strong>NU tunde nimic altceva în Anul 1:</strong> Lasă planta să-și dezvolte rădăcinile. Singura intervenție = eliminarea drajonilor de 3–4 ori pe sezon.</li>
+  </ol>
+
+  <h4>Pe parcursul primului sezon de vegetație</h4>
+  <p>Rodiile produc lăstari (drajoni) agresiv de la bază și rădăcini. <strong>Elimină-i regulat, de 3–4 ori pe sezon</strong>, altfel planta devine deasă cu zeci de tulpini subțiri. Păstrează doar cele 3–5 selectate.</p>
+
+  <h4>Tunderea structurală (iarna Anului 2)</h4>
+  <p>Cea mai importantă tundere vreodată:</p>
+  <ul>
+    <li><strong>Scurtează toate ramurile cu 1/4 până la 1/3</strong> din lungime, tăind deasupra unui mugure orientat spre exterior.</li>
+    <li><strong>Elimină ramurile care se încrucișează</strong> sau se freacă între ele.</li>
+    <li><strong>Păstrează 3–5 ramificații laterale</strong> pe fiecare tulpină principală — devin scheletul permanent.</li>
+    <li><strong>Scopul: formă de vază deschisă</strong> — centrul primește lumină și aer.</li>
+  </ul>
+
+  <h4>Anul 3+ — întreținere anuală</h4>
+  <p>Tundere ușoară: elimină lemnul mort, rărește creșterea interioară, continuă eliminarea drajonilor. <strong>Nu tăia niciodată mai mult de 1/3 din coroana totală.</strong> Rodiile fructifică pe lemnul de 2–3 ani — tunderea excesivă reduce recolta direct.</p>
+
+  <h3>Când să tunzi</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Perioadă</th><th>Acțiune</th><th>Detalii</th></tr>
+      <tr><td>Sf. iarnă / înc. primăvară</td><td><strong>Tundere structurală</strong></td><td>După ultimul îngheț, înainte de înmugurit. În România: martie–aprilie.</td></tr>
+      <tr><td>Vară (mai–sept.)</td><td><strong>Doar eliminare drajoni</strong></td><td>De 3–4 ori pe sezon. NU tăia ramuri productive.</td></tr>
+      <tr><td>Toamnă</td><td><strong>INTERZISĂ</strong></td><td>Stimulează creștere nouă care îngheață. Maxim curățare lemn mort.</td></tr>
+      <tr><td>Iarnă (repaus)</td><td><strong>Pregătire protecție</strong></td><td>Zeamă bordaleză 3%, mulț, protecție antigel.</td></tr>
+    </table>
+  </div>
+
+  <h3>5 greșeli frecvente de evitat</h3>
+  <div class="alert alert-danger">
+    <strong>1. Tundere excesivă</strong>
+    Nu tăia mai mult de 1/3. Rodiile nu sunt meri — au nevoie de mai puțină intervenție.
+  </div>
+  <div class="alert alert-danger">
+    <strong>2. Ignorarea drajonilor</strong>
+    Fără eliminare regulată → tufă deasă cu zeci de tulpini subțiri. Calitatea fructelor scade dramatic.
+  </div>
+  <div class="alert alert-warning">
+    <strong>3. Tăiere plată („topping")</strong>
+    Stimulează lăstari slabi, distruge structura fructificării. Scurtează selectiv la ramuri laterale.
+  </div>
+  <div class="alert alert-danger">
+    <strong>4. Tundere în sezonul greșit</strong>
+    Tunderea de toamnă stimulează creștere fragilă care îngheață iarna. Poate ucide plantele tinere.
+  </div>
+  <div class="alert alert-warning">
+    <strong>5. Eliminarea lemnului de 2–3 ani</strong>
+    Aici se formează fructele! Lasă ramificații laterale mature când scurtezi.
+  </div>
+
+  <h3>Gestionarea drajonilor: eliminare + strategie de reînnoire</h3>
+  <p>Consensul este clar: <strong>drajonii se elimină regulat</strong>. Fiecare lăstar lăsat divertește energie de la creșterea trunchiului și fructificare.</p>
+  <p>Totuși, la maturitate (după anul 4–5), permiteți 1–2 drajoni bine poziționați/an ca lemn de înlocuire. Mugurele de fruct produce doar 3–4 ani, apoi trunchiul vechi se taie la sol și tânărul îl înlocuiește. Acest ciclu de reînnoire este un avantaj major în clima rece — dacă gerul ucide un trunchi, un lăstar îl înlocuiește rapid.</p>
+
+  <h3>Protecție de iarnă — esențială în România</h3>
+  <p>Rodiul este o <em>specie sensibilă la ger</em> care suferă la temperaturi sub −10°C / −15°C.</p>
+
+  <h4>Metoda tradițională românească:</h4>
+  <ol>
+    <li>Aplică zeamă bordaleză 3% toamna contra bolilor fungice.</li>
+    <li>Mulțește zona rădăcinilor cu frunze uscate sau paie (15–20 cm).</li>
+    <li>Îndoaie tulpinile flexibile la pământ și fixează-le.</li>
+    <li>Acoperă cu 15–20 cm pământ + crengi de brad sau paie.</li>
+    <li>Primăvara — așteaptă temperaturi stabile pozitive. Tratează cu zeamă bordaleză 1%.</li>
+  </ol>
+
+  <h3>Soiuri recomandate pentru România</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Soi</th><th>Rezistență la frig</th><th>Observații</th></tr>
+      <tr><td>Salavatski</td><td>până la −24°C</td><td>Cel mai rezistent. Ideal pentru întreaga Românie.</td></tr>
+      <tr><td>Russian 26</td><td>până la −20°C</td><td>Bună rezistență, fructe de calitate.</td></tr>
+      <tr><td>Makedonia</td><td>până la −18°C</td><td>Creat pentru Europa de Sud-Est.</td></tr>
+      <tr><td>Wonderful</td><td>până la −12°C</td><td>Popular, dar necesită protecție suplimentară.</td></tr>
+    </table>
+  </div>
+
+  <h3>Concluzie</h3>
+  <p>Pomul de rodie cu 3–4 tulpini de la bază are structură bună. Pașii esențiali: <strong>păstrează cele 3 tulpini cele mai puternice</strong>, elimină toți lăstarii pe tot sezonul, așteaptă trecerea ultimului îngheț pentru tăieri, modelează vază deschisă cu tundere ușoară. O tufă bine întreținută poate fi productivă timp de decenii.</p>
+</div>
+
+</div><!-- /rodiu -->
+
+<!-- ============= TAB: PLAN LIVADĂ ============= -->
+<div class="tab-content" id="plan">
+
+<div class="section">
+  <h2 class="section-title">Partea I — Calendar Tratamente Fitosanitare</h2>
+  <p>Livadă mixtă, zona vest România. Doze ca concentrație (%) la 10L apă.</p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Perioadă</th><th>Fază fenologică</th><th>Fungicid</th><th>Insecticid</th><th>Note</th></tr>
+      <tr><td>Feb–Mar</td><td>Repaus vegetativ</td><td>Zeamă bordaleză 3% / Funguran OH 0.3%</td><td>Oleomin / Confidor Oil 1%</td><td>Toate speciile. T&gt;0°C.</td></tr>
+      <tr><td>15–31 Mar</td><td>Dezmugurire</td><td>Score 250 EC 0.02%</td><td>Mospilan 20 SG 0.03%</td><td>Piersic: anti-bășicare. Măr/păr: anti-răpăn.</td></tr>
+      <tr><td>1–10 Apr</td><td>Buton floral</td><td>Chorus 50 WG 0.03% + Captadin 0.2%</td><td>Mavrik 2F 0.02%</td><td>Mavrik = sigur pt albine.</td></tr>
+      <tr><td>10–25 Apr</td><td>Primele flori</td><td>Difcor / Score 0.02%</td><td>Decis 25 WG 0.003%</td><td>⚠️ NU stropiti dacă sunt albine!</td></tr>
+      <tr><td>Sc. petale</td><td>Scăderea petalelor</td><td>Switch 0.1% / Topsin 0.07%</td><td>Calypso 480 SC 0.02%</td><td>Anti-monilioză cais/piersic.</td></tr>
+      <tr><td>Mai</td><td>Fruct 5–10mm</td><td>Merpan 80 WDG 0.15% + Thiovit Jet 0.5%</td><td>Teppeki 0.015%</td><td>Rărire fructe piersic/măr!</td></tr>
+      <tr><td>Iunie</td><td>Fruct în creștere</td><td>Luna Experience 0.05% / Topsin 0.07%</td><td>Coragen 0.0175%</td><td>Viermele fructelor, ciuruire.</td></tr>
+      <tr><td>Iulie</td><td>Fruct pârgă</td><td>Switch 0.1% / Dithane 0.2%</td><td>Karate Zeon 0.015%</td><td>Monilioză fructe. Recoltat cais.</td></tr>
+      <tr><td>August</td><td>După recoltă</td><td>Topsin 0.07% + Captadin 0.2%</td><td>Karate Zeon 0.015%</td><td>Tăieri în verde post-recoltare.</td></tr>
+      <tr><td>Sept–Oct</td><td>Fructe măr/păr</td><td>Dithane 0.2%</td><td>—</td><td>Respectă pauza de securitate!</td></tr>
+      <tr><td>Noiembrie</td><td>După căderea frunzelor</td><td>Sulfat cupru 1–3%</td><td>—</td><td>Curățenie: adună frunze căzute.</td></tr>
+    </table>
+  </div>
+
+  <div class="alert alert-info">
+    <strong>⚡ Reguli cheie</strong>
+    Alternează substanțele active (evită rezistență) • Respectă pauza de securitate • Stropește dimineața/seara, fără vânt, T&lt;25°C • Adună frunze și fructe mumifiate (sursa #1 de infecție) • Bio alternativ: zeamă bordaleză + ulei horticol + Bt
+  </div>
+
+  <h3>Bolile principale pe specii</h3>
+  <ul>
+    <li><strong>Piersic:</strong> bășicarea frunzelor (cea mai importantă!), monilioza, ciuruirea, făinarea, molia vărgată</li>
+    <li><strong>Cais:</strong> monilioza lăstarilor și florilor (cea mai gravă!), ciuruirea, antracnoza</li>
+    <li><strong>Prun:</strong> monilioza, ciuruirea, pătarea roșie, viermele prunelor</li>
+    <li><strong>Măr:</strong> răpănul (Venturia), făinarea, focul bacterian, viermele merelor</li>
+    <li><strong>Păr:</strong> răpănul, focul bacterian (Erwinia), puricele melifer</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2 class="section-title">Partea II — Ghid Tundere și Formare Coroană</h2>
+
+  <div class="alert alert-warning">
+    <strong>📌 Pomii tăi au 4–7 ani</strong>
+    Sunt în tranziția de la formarea coroanei la tunderea de rodire. Greșelile de acum afectează producția pe următorii 10+ ani.
+  </div>
+
+  <h3>Principii generale</h3>
+  <ul>
+    <li><strong>Când:</strong> Tundere uscat = sf. februarie–înc. martie (T&gt;5°C). Verde = iunie–august.</li>
+    <li><strong>Regula de aur:</strong> NU tăia mai mult de 1/3 din coroana totală într-un sezon.</li>
+    <li><strong>Unelte:</strong> foarfece (&lt;2cm), fierăstrău (&gt;2cm). Dezinfectează cu alcool 70% între pomi.</li>
+    <li><strong>Tăieți la inel:</strong> fără cioturi! Se usucă → poartă de intrare boli.</li>
+    <li><strong>Deasupra mugurilor exteriori:</strong> direcționează creșterea spre exterior.</li>
+  </ul>
+
+  <h3>Forme de coroană pe specii</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Specie</th><th>Formă</th><th>Structură</th><th>Tundere rodire</th><th>Obs.</th></tr>
+      <tr><td>Piersic</td><td>Vas ameliorat</td><td>3–4 șarpante, 2.5–3m</td><td>Scurtare rod 1/3. Cep înlocuire.</td><td>Cea mai multă tundere. Rod pe lemn 1 an.</td></tr>
+      <tr><td>Cais</td><td>Vas ameliorat</td><td>3–4 șarpante, 2.5–3m</td><td>Rărire lăstari 15–20cm.</td><td>Mai ușoară. Atenție monilioză tăieturi.</td></tr>
+      <tr><td>Prun</td><td>Vas / Piramidă</td><td>3–4 șarpante, 2.5–3.5m</td><td>Rărire, scurtare 1/3.</td><td>Rod 3–5 ani. NU tunde excesiv.</td></tr>
+      <tr><td>Măr</td><td>Piramidă etajată</td><td>3 etaje × 3–4 șarp.</td><td>Ax central păstrat.</td><td>Rod pe lemn 2+ ani. Incl. 45–55°.</td></tr>
+      <tr><td>Păr</td><td>Piramidă etajată</td><td>3 etaje, ax central</td><td>Similar măr. Incl. 45–50°.</td><td>Creștere verticală. Rod 3–4 ani.</td></tr>
+    </table>
+  </div>
+
+  <h3>Piersic & Cais — detalii</h3>
+  <ul>
+    <li><strong>Vas ameliorat:</strong> 3–4 șarpante pe ax scurt, 10–12 cm distanță, subșarpante la 40–50 cm. Max 2.5–3m.</li>
+    <li><strong>Tundere rodire:</strong> ramuri mixte scurtate la 6–8 grupuri muguri. Cep înlocuire 2–3 muguri.</li>
+    <li><strong>Verde (vara):</strong> elimină lăstari verticali (lacomi), ciupește la 40 cm.</li>
+    <li><strong>Rărire fructe piersic:</strong> OBLIGATORIE! Un fruct la 15–20 cm. Altfel = fructe mici + monilioză.</li>
+    <li><strong>Cais:</strong> tundere ușoară, rărire lăstari 15–20cm. Mastic pe răni &gt;2cm (scurgere clei).</li>
+  </ul>
+
+  <h3>Prun — detalii</h3>
+  <ul>
+    <li>Vas ameliorat sau piramidă întreruptă</li>
+    <li>Ramuri de 1 an scurtate cu 1/3 (pe acestea rodește)</li>
+    <li>Rărire interior coroană, eliminare ramuri încrucișate</li>
+    <li>Tăieri vară: iunie–iulie, ramuri înghețate + lăstari lacomi</li>
+  </ul>
+
+  <h3>Măr & Păr — detalii</h3>
+  <ul>
+    <li>Piramidă etajată cu ax central, 3 etaje × 3–4 șarpante</li>
+    <li>Distanță între etaje: 80–100cm (măr), 70–90cm (păr)</li>
+    <li>Inclinație ramuri: 45–55° (măr), 45–50° (păr) — greutăți/sfori</li>
+    <li>NU tăia formațiuni rod tinere: pinteni, țepușe, burse, smicele</li>
+    <li>Rărire fructe măr: OBLIGATORIE. 1 fruct/inflorescență, la 15–20cm</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2 class="section-title">Partea III — Plan Anual de Îngrijire</h2>
+
+  <h3>Calendar lunar</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Lună</th><th>Lucrări principale</th><th>Lucrări secundare</th></tr>
+      <tr><td>Ian.</td><td>Verificare protecții antigel. Comandă produse fitosanitare.</td><td>Reparații unelte. Ascuțire foarfece.</td></tr>
+      <tr><td>Feb.</td><td>Tundere în uscat (T&gt;5°C). Văruire trunchi.</td><td>Primul tratament cupric când T&gt;0°C.</td></tr>
+      <tr><td>Mar.</td><td>Finalizare tundere. Fertilizare NPK la bază.</td><td>Al 2-lea tratament (dezmugurire). Capcane feromonale.</td></tr>
+      <tr><td>Apr.</td><td>Tratamente buton floral + înflorire. Rărire piersic.</td><td>Cosit iarbă. Irigare dacă e secetă.</td></tr>
+      <tr><td>Mai</td><td>Tratament fruct mic. Rărire fructe măr.</td><td>Ciupit lăstari (verde). Eliminare drajoni.</td></tr>
+      <tr><td>Iun.</td><td>Tratament vara I. Tăieri în verde.</td><td>Irigare. Monitorizare dăunători.</td></tr>
+      <tr><td>Iul.</td><td>Recoltat cais + piersici timpurii. Trat. vara II.</td><td>Tăieri după recoltare cais. Cosit.</td></tr>
+      <tr><td>Aug.</td><td>Recoltat piersic, prun timpuriu. Tăieri verde.</td><td>Tratament post-recoltare specii recoltate.</td></tr>
+      <tr><td>Sept.</td><td>Recoltat prun, mere, pere timpurii.</td><td>Ultimul tratament măr/păr (respectă pauza!).</td></tr>
+      <tr><td>Oct.</td><td>Recoltat mere/pere tardive. Adunare frunze.</td><td>Pregătire protecție iarnă pomi tineri.</td></tr>
+      <tr><td>Nov.</td><td>Tratament cupric după căderea frunzelor.</td><td>Văruit trunchi. Mulț la bază.</td></tr>
+      <tr><td>Dec.</td><td>Verificare tutori, legături. Repaus.</td><td>Planificare sezon următor.</td></tr>
+    </table>
+  </div>
+
+  <h3>Fertilizare</h3>
+  <ul>
+    <li><strong>Martie:</strong> NPK 16-16-16 sau 20-20-20 — 100–150g/pom, îngropat, urmat de irigare</li>
+    <li><strong>Mai–Iunie:</strong> Foliar (Fertitell, Cropmax, Atonik) adăugat în soluția de stropire</li>
+    <li><strong>Septembrie:</strong> K + P (fără azot!) — pregătește lemnul pentru iarnă</li>
+    <li><strong>Toamna:</strong> Gunoi compostat 5–10 kg/pom, înțepat ușor la bază</li>
+  </ul>
+
+  <h3>Irigare</h3>
+  <ul>
+    <li><strong>Minim:</strong> 20–30 L/pom, de 2–3 ori/săptămână în secetă</li>
+    <li><strong>Ideal:</strong> Sistem picurare (−50% apă, previne boli foliare)</li>
+    <li><strong>STOP:</strong> Cu 2–3 săptămâni înainte de recoltare (concentrare zaharuri)</li>
+  </ul>
+
+  <h3>Protecție de iarnă</h3>
+  <ul>
+    <li><strong>Văruire trunchi:</strong> var stins + sulfat cupru contra îngheț-dezgheț + dăunători</li>
+    <li><strong>Mulț la bază:</strong> 10–15 cm paie/frunze uscate = protecție rădăcini</li>
+    <li><strong>Piersici tineri:</strong> agrotextil pe trunchi dacă se prognosează sub −15°C</li>
+  </ul>
+
+  <h3>Cosit și întreținere sol</h3>
+  <ul>
+    <li>Cosit 4–6 ori/sezon. Max 15–20 cm înălțime iarbă.</li>
+    <li>Iarba cosită = mulț pe loc (nutrienți + umiditate).</li>
+    <li>Sub coroană: curat de buruieni pe 1m de fiecare parte a trunchiului.</li>
+  </ul>
+
+  <p style="margin-top:20px;color:var(--text-dim);font-size:0.85rem;"><em>Surse: Agrointel.ro (ing. Marius Roman), AgroMentor.ro, Agrobiznes.md, CasaPlant.ro, Lumea Satului, Revista Ferma, Magazin Agricover, Paradis Verde / Zdravan.ro</em></p>
+</div>
+
+</div><!-- /plan -->
+
+<!-- ============= TAB: PIERSIC ============= -->
+<div class="tab-content" id="piersic">
+<div class="section">
+  <div class="placeholder">
+    <div class="placeholder-icon">🍑</div>
+    <h3>Piersic — Ghid Complet</h3>
+    <p>Documentația detaliată pentru piersic va fi generată după ce trimiți lista completă cu soiurile din livadă. Va include: cercetare completă, calendar tratamente specific, ghid tundere, boli și dăunători, soiuri.</p>
+    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
+      <strong>📋 Conținut planificat:</strong>
+      <br>• Cercetare detaliată (traducere RO)
+      <br>• Bășicarea frunzelor — prevenție și tratament
+      <br>• Tundere vas ameliorat — an cu an
+      <br>• Calendar tratamente specific piersic
+      <br>• Rărirea fructelor — tehnica corectă
+      <br>• Soiuri recomandate zona Arad
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============= TAB: CAIS ============= -->
+<div class="tab-content" id="cais">
+<div class="section">
+  <div class="placeholder">
+    <div class="placeholder-icon">🟠</div>
+    <h3>Cais — Ghid Complet</h3>
+    <p>Documentația detaliată pentru cais va fi generată. Va include cercetare completă, calendar tratamente, ghid tundere, boli specifice (monilioza!), soiuri.</p>
+    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
+      <strong>📋 Conținut planificat:</strong>
+      <br>• Cercetare detaliată (traducere RO)
+      <br>• Monilioza lăstarilor — principala amenințare
+      <br>• Tundere vas ameliorat — specific cais
+      <br>• Rărirea fructelor și suportul ramurilor
+      <br>• Protecție brume târzii
+      <br>• Soiuri recomandate zona Arad
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============= TAB: PRUN ============= -->
+<div class="tab-content" id="prun">
+<div class="section">
+  <div class="placeholder">
+    <div class="placeholder-icon">🫐</div>
+    <h3>Prun — Ghid Complet</h3>
+    <p>Documentația detaliată pentru prun va fi generată. Include cercetare, tratamente, tundere, boli, soiuri.</p>
+    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
+      <strong>📋 Conținut planificat:</strong>
+      <br>• Cercetare detaliată (traducere RO)
+      <br>• Coroana vas ameliorat la prun
+      <br>• Calendar tratamente specific prun
+      <br>• Monilioza și ciuruirea frunzelor
+      <br>• Viermele prunelor — combatere
+      <br>• Soiuri românești tradiționale
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============= TAB: MĂR ============= -->
+<div class="tab-content" id="mar">
+<div class="section">
+  <div class="placeholder">
+    <div class="placeholder-icon">🍎</div>
+    <h3>Măr — Ghid Complet</h3>
+    <p>Documentația detaliată pentru măr va fi generată. Include cercetare, tratamente, tundere piramidă etajată, boli, soiuri.</p>
+    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
+      <strong>📋 Conținut planificat:</strong>
+      <br>• Cercetare detaliată (traducere RO)
+      <br>• Piramida etajată — formare an cu an
+      <br>• Răpănul (Venturia) — tratamente
+      <br>• Focul bacterian — identificare și acțiune
+      <br>• Rărirea fructelor — obligatorie
+      <br>• Soiuri recomandate zona vest
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============= TAB: PĂR ============= -->
+<div class="tab-content" id="par">
+<div class="section">
+  <div class="placeholder">
+    <div class="placeholder-icon">🍐</div>
+    <h3>Păr — Ghid Complet</h3>
+    <p>Documentația detaliată pentru păr va fi generată. Include cercetare, tratamente, tundere, boli (focul bacterian!), soiuri.</p>
+    <div class="alert alert-info" style="text-align:left;margin-top:20px;">
+      <strong>📋 Conținut planificat:</strong>
+      <br>• Cercetare detaliată (traducere RO)
+      <br>• Piramida etajată cu ax central
+      <br>• Focul bacterian (Erwinia) — amenințare majoră
+      <br>• Puricele melifer — combatere
+      <br>• Calendar tratamente specific păr
+      <br>• Soiuri românești performante
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /content -->
+
+<!-- INSTALL BANNER -->
+<div class="install-banner" id="installBanner">
+  <p>📱 Instalează <strong>Livada Mea</strong> ca aplicație</p>
+  <div>
+    <button class="install-btn" id="installBtn">Instalează</button>
+    <button class="dismiss-btn" id="dismissBtn">✕</button>
+  </div>
+</div>
+
+<script>
+// ---- TAB SWITCHING ----
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// ---- COLLAPSIBLE SECTIONS ----
+document.querySelectorAll('.collapsible').forEach(el => {
+  el.addEventListener('click', () => {
+    el.classList.toggle('collapsed');
+    const content = el.nextElementSibling;
+    if (content && content.classList.contains('collapse-content')) {
+      content.classList.toggle('hidden');
+    }
+  });
+});
+
+// ---- PWA INSTALL ----
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').classList.add('show');
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    document.getElementById('installBanner').classList.remove('show');
+  }
+});
+
+document.getElementById('dismissBtn').addEventListener('click', () => {
+  document.getElementById('installBanner').classList.remove('show');
+});
+
+// ---- SERVICE WORKER REGISTRATION (inline for single-file PWA) ----
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE = 'livada-v1';
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/'])));
+      self.skipWaiting();
+    });
+    self.addEventListener('fetch', e => {
+      e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+</script>
+</body>
+</html>
