@@ -25,7 +25,10 @@ export default async function handler(req) {
   try {
     // Un singur fetch — Open-Meteo, gratuit, fara API key
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&hourly=temperature_2m,precipitation,relative_humidity_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&timezone=Europe/Bucharest&forecast_days=5`;
-    const res = await fetch(url);
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
     if (!res.ok) throw new Error('Open-Meteo API error: ' + res.status);
     const data = await res.json();
 

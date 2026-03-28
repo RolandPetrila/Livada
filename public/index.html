@@ -6608,7 +6608,7 @@ async function submitDiagnose(input) {
     var fd = new FormData();
     fd.append('image', file);
     fd.append('species', SPECIES[activeSpeciesId] || activeSpeciesId);
-    var res = await authFetch('/api/diagnose', { method: 'POST', body: fd }, 30000);
+    var res = await authFetch('/api/diagnose', { method: 'POST', body: fd }, 65000);
     if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
     document.getElementById('diagLoading').style.display = 'none';
@@ -6619,7 +6619,7 @@ async function submitDiagnose(input) {
   } catch(e) {
     document.getElementById('diagLoading').style.display = 'none';
     var r = document.getElementById('diagResult');
-    r.textContent = navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.';
+    r.textContent = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
     r.style.display = 'block';
   }
   input.value = '';
@@ -6646,7 +6646,7 @@ async function submitAsk() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question: question, species: SPECIES[activeSpeciesId] || activeSpeciesId, context: context })
-    }, 30000);
+    }, 65000);
     if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
     document.getElementById('askLoading').style.display = 'none';
@@ -6657,7 +6657,7 @@ async function submitAsk() {
   } catch(e) {
     document.getElementById('askLoading').style.display = 'none';
     var r2 = document.getElementById('askResult');
-    r2.textContent = 'Eroare: ' + e.message;
+    r2.textContent = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : ('Eroare: ' + e.message);
     r2.style.display = 'block';
   }
 }
@@ -6835,7 +6835,7 @@ async function generateReport() {
     var res = await authFetch('/api/report', {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ localJournal: localJournal })
-    }, 30000);
+    }, 65000);
     if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
     loading.style.display = 'none'; btn.disabled = false;
@@ -6847,7 +6847,7 @@ async function generateReport() {
     result.style.display = 'block';
   } catch(e) {
     loading.style.display = 'none'; btn.disabled = false;
-    result.textContent = navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.';
+    result.textContent = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
     result.style.display = 'block';
   }
 }

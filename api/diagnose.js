@@ -67,32 +67,30 @@ Raspunde STRUCTURAT in romana:
 
 Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat.`;
 
-    const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                { text: prompt },
-                {
-                  inline_data: {
-                    mime_type: file.type || 'image/jpeg',
-                    data: base64,
-                  },
-                },
-              ],
-            },
-          ],
-          generationConfig: {
-            maxOutputTokens: 1024,
-            temperature: 0.3,
-          },
-        }),
+    const controller = new AbortController();
+    const fetchTimer = setTimeout(() => controller.abort(), 25000);
+    let geminiRes;
+    try {
+      geminiRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: file.type || 'image/jpeg', data: base64 } }] }],
+            generationConfig: { maxOutputTokens: 1024, temperature: 0.3 },
+          }),
+          signal: controller.signal,
+        }
+      );
+      clearTimeout(fetchTimer);
+    } catch (fetchErr) {
+      clearTimeout(fetchTimer);
+      if (fetchErr.name === 'AbortError') {
+        return Response.json({ error: 'Serviciul AI nu a raspuns in timp util. Incearca din nou.' }, { status: 504, headers: corsHeaders(req) });
       }
-    );
+      throw fetchErr;
+    }
 
     if (!geminiRes.ok) {
       const errBody = await geminiRes.text();

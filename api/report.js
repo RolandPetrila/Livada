@@ -49,14 +49,15 @@ export default async function handler(req) {
       }
     } catch {}
 
-    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${GROQ_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+    const controller = new AbortController();
+    const fetchTimer = setTimeout(() => controller.abort(), 25000);
+    let groqRes;
+    try {
+      groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${GROQ_KEY}` },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
         messages: [
           {
             role: 'system',
@@ -83,7 +84,16 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
         max_tokens: 2048,
         temperature: 0.4,
       }),
+      signal: controller.signal,
     });
+    clearTimeout(fetchTimer);
+    } catch (fetchErr) {
+      clearTimeout(fetchTimer);
+      if (fetchErr.name === 'AbortError') {
+        return Response.json({ error: 'Serviciul AI nu a raspuns in timp util. Incearca din nou.' }, { status: 504, headers: corsHeaders(req) });
+      }
+      throw fetchErr;
+    }
 
     if (!groqRes.ok) {
       throw new Error('Groq API error: ' + groqRes.status);

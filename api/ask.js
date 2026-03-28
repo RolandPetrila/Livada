@@ -43,32 +43,31 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
       ? `Documentatie de referinta pentru ${species}:\n${ctx}\n\n---\nIntrebarea mea: ${question}`
       : question;
 
-    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userMsg },
-        ],
-        max_tokens: 1024,
-        temperature: 0.3,
-      }),
-    });
-
-    if (!groqRes.ok) {
-      const errBody = await groqRes.text();
-      throw new Error(`Groq API: ${groqRes.status}`);
+    const controller = new AbortController();
+    const fetchTimer = setTimeout(() => controller.abort(), 25000);
+    try {
+      const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
+          max_tokens: 1024, temperature: 0.3,
+        }),
+        signal: controller.signal,
+      });
+      clearTimeout(fetchTimer);
+      if (!groqRes.ok) throw new Error(`Groq API: ${groqRes.status}`);
+      const result = await groqRes.json();
+      const answer = result.choices?.[0]?.message?.content || 'Nu am putut genera un raspuns.';
+      return Response.json({ answer }, { headers: corsHeaders(req) });
+    } catch (fetchErr) {
+      clearTimeout(fetchTimer);
+      if (fetchErr.name === 'AbortError') {
+        return Response.json({ error: 'Serviciul AI nu a raspuns in timp util. Incearca din nou.' }, { status: 504, headers: corsHeaders(req) });
+      }
+      throw fetchErr;
     }
-
-    const result = await groqRes.json();
-    const answer = result.choices?.[0]?.message?.content || 'Nu am putut genera un raspuns. Incearca din nou.';
-
-    return Response.json({ answer }, { headers: corsHeaders(req) });
   } catch (err) {
     console.error('API ask error:', err);
     return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: corsHeaders(req) });
