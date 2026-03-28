@@ -1,5 +1,7 @@
 import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
+export const config = { maxDuration: 60 };
+
 function uint8ToBase64(uint8) {
   const CHUNK = 8192;
   let binary = '';
