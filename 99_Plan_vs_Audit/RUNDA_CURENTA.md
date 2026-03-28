@@ -1,33 +1,36 @@
 # RUNDA CURENTA — Livada Mea Dashboard
 
-**Data:** 2026-03-27
-**Sesiune:** 6 — Quick Wins /improve runda 2
+**Data:** 2026-03-28
+**Sesiune:** 7 — Migrare Open-Meteo + Features Faza 4
 **Status:** EXECUTIE FINALIZATA
 
 ---
 
-## REZULTAT — Toate 4 fix-uri COMPLETATE
+## REZULTAT
 
-### 1. Vercel Speed Insights ✅
-- Script defer adaugat inainte de `</body>`
-- NOTA: Enable din Vercel Dashboard → Speed Insights (actiune manuala Roland)
+### PARTEA A — Migrare Open-Meteo ✅
+- api/meteo-cron.js: rescriere completa — un singur fetch Open-Meteo (gratuit, fara API key)
+- Frontend: sterge API key setup complet, initMeteo() apeleaza direct
+- WMO_CODES + wmoEmoji() definite o singura data in JS
+- sw.js: referinta actualizata
+- Format Redis IDENTIC — meteo-history si calendar neschimbate
+- OPENWEATHER_API_KEY nu mai e folosit
 
-### 2. DOMPurify 3.x ✅
-- CDN defer inainte de `</body>`
-- sanitizeAI() foloseste DOMPurify.sanitize() cu ALLOWED_TAGS whitelist
-- Fallback offline: escapeHtml() cu regex markdown (metoda veche)
+### PARTEA B — Features Faza 4 ✅
+| Feature | Status |
+|---------|--------|
+| B1 Dashboard "Ce fac azi?" | ✅ Tab default: sfatul lunii, alerte, meteo rapid, actiuni |
+| B2 Alerte per specie | ✅ FROST_SENSITIVITY 17 specii, afisare in tab Azi |
+| B3 Backup & Restore | ✅ Export/import localStorage, exclude tokens |
+| B4 Print fisa teren | ✅ window.open() + print CSS A4 minimal |
+| B5 Checklist stropire | ✅ 6 checkboxuri, salvare automata jurnal |
+| B6 Jurnal editare+filtre | ✅ Edit inline, filtru tip, paginare 15/pag |
+| B7 Export CSV + clipboard | ✅ CSV download + copiere text |
+| B8 Tracking recolta | ✅ Campuri specie + kg la tip "recoltare" |
 
-### 3. @vercel/blob 2.3.2 ✅
-- Upgrade de la 0.27 la 2.3.2 (major version)
-- API compatibil — put, list, del exportate identic
-- 0 vulnerabilitati npm
+### Stats
+- HTML: 6734 → 7062 linii (+328, sub target 8500)
+- 2 commits: migrare Open-Meteo + Faza 4 features
+- Deploy: https://livada-mea-psi.vercel.app
 
-### 4. Curatare dead code ✅
-- Sters tools/html_output/ (6 HTML, 240KB)
-- Sters 3 MD duplicat din root
-- .gitignore: +*.png, *.jpeg, *.jpg, *.docx, .claude/, tools/html_output/
-- -4512 linii din repo
-
-### Deploy: https://livada-mea-psi.vercel.app
-### Commits: 2 (chore: cleanup separat + feat: Speed Insights + DOMPurify + Blob)
 ### Blocaje: Niciun blocaj
