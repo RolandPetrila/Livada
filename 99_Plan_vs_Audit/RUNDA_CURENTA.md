@@ -1,35 +1,30 @@
 # RUNDA CURENTA — Livada Mea Dashboard
 
 **Data:** 2026-03-28
-**Sesiune:** 8 (continuare) — Fix definitiv AI timeout
+**Sesiune:** 9 — Spray Score + Prognoza + Securitate + UX
 **Status:** EXECUTIE FINALIZATA
 
 ---
 
-## REZULTAT
+## REZULTAT — Toate 10 imbunatatiri COMPLETE
 
-Fix definitiv "signal is aborted without reason" implementat conform Audit #9.
+### BLOC A — Securitate ✅
+- A1: DOMPurify mutat inainte de script inline (loaded sync)
+- A2: escapeHtml duplicat sters
+- A3: CSP header complet in vercel.json
 
-### Timeout chain corect:
-```
-Backend AbortController:  25s → eroare JSON clean
-Vercel maxDuration:       60s → safety net
-Frontend AbortController: 65s → asteapta raspunsul backend
-```
+### BLOC B — Spray Score + Prognoza ✅
+- B1: Prognoza 5 zile cu WMO emoji in Meteo modal (daily forecast)
+- B2: Dashboard Azi cu spray score 0-100, next treatment din TREATMENTS_CAL, prognoza 3 zile cu spray label
+- B3: Promise.allSettled pt fetch-uri paralele pe Dashboard
 
-### Fix-uri aplicate:
-| # | Fix | Fisiere |
-|---|-----|---------|
-| 1 | Backend AbortController 25s | ask.js, diagnose.js, report.js |
-| 2 | Backend AbortController 8s | meteo-cron.js |
-| 3 | Vercel maxDuration 60s | vercel.json (4 functii) |
-| 4 | Frontend timeout 65s | index.html (3 AI calls) |
-| 5 | Model stabil llama-3.3-70b-versatile | ask.js, report.js |
-| 6 | AbortError mesaj user-friendly | index.html (3 catch-uri) |
+### BLOC C — UX ✅
+- C1: Offline banner + dezactivare butoane AI
+- C2: Modal Escape key + focus trap Tab/Shift+Tab
+- C3: Calculator volum total per numar pomi (nPomi x lPerPom)
+- C4: Global error handler cu toast discret 4s
 
-### Actiune manuala Roland (FIX 7):
-Provisioneaza Upstash Redis din Vercel Dashboard → Storage → Create KV.
-Fara Redis: frost-alert, journal sync, meteo-history, raport = nefunctionale.
-
-### Deploy: https://livada-mea-psi.vercel.app
-### Blocaje: Niciun blocaj
+### Stats
+- HTML: 7062 → 7214 linii (+152)
+- Deploy: https://livada-mea-psi.vercel.app
+- Blocaje: Niciun blocaj
