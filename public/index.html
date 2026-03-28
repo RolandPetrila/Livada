@@ -355,6 +355,11 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
   th { background: #e8e8e8; color: #333; }
 }
 
+/* ====== CHECKLIST ====== */
+.ck-item { display: flex; align-items: center; gap: 10px; padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.88rem; cursor: pointer; min-height: 44px; }
+.ck-item:last-of-type { border-bottom: none; }
+.ck-box { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--accent); }
+
 /* ====== SKIP LINK ====== */
 .skip-link { position: absolute; top: -40px; left: 0; background: var(--accent); padding: 8px 16px; color: #fff; z-index: 1000; text-decoration: none; font-size: 0.9rem; }
 .skip-link:focus { top: 0; }
@@ -471,7 +476,8 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <nav class="tabs-wrapper" id="tabsWrapper" role="tablist">
   <div class="tabs" id="tabsBar">
     <span class="tab-sep">&#128203;</span>
-    <div class="tab active" data-tab="plan-livada"><span class="tab-icon">&#128203;</span>Plan Livad&#259;</div>
+    <div class="tab active" data-tab="azi"><span class="tab-icon">&#127793;</span>Azi</div>
+    <div class="tab" data-tab="plan-livada"><span class="tab-icon">&#128203;</span>Plan Livad&#259;</div>
 
     <span class="tab-sep">S&#226;mburoase</span>
     <div class="tab" data-tab="cires"><span class="tab-icon">&#127826;</span>Cire&#537;</div>
@@ -504,7 +510,48 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <main class="content" id="content">
 
 <!-- ==================== TAB: PLAN LIVADA ==================== -->
-<div class="tab-content active" id="plan-livada">
+<div class="tab-content active" id="azi">
+<div class="section">
+  <h2 class="section-title" style="cursor:default;">&#127793; Ce fac azi?</h2>
+  <div class="section-body" id="sfatulLunii"></div>
+</div>
+<div class="section">
+  <h2 class="section-title" style="cursor:default;">&#9888;&#65039; Alerte active</h2>
+  <div class="section-body" id="alerteAzi">
+    <p style="color:var(--text-dim);">Se verific&#259;...</p>
+  </div>
+</div>
+<div class="section">
+  <h2 class="section-title" style="cursor:default;">&#127780;&#65039; Meteo rapid</h2>
+  <div class="section-body" id="meteoAzi">
+    <p style="color:var(--text-dim);">Se &#238;ncarc&#259;...</p>
+  </div>
+</div>
+<div class="section">
+  <h2 class="section-title" style="cursor:default;">&#9889; Ac&#539;iuni rapide</h2>
+  <div class="section-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <button class="sp-tool-btn" style="justify-content:center;" onclick="openModal('jurnal')"><span class="sti">&#128221;</span> + Interven&#539;ie</button>
+      <button class="sp-tool-btn" style="justify-content:center;" onclick="openModal('calendar')"><span class="sti">&#128197;</span> Calendar</button>
+      <button class="sp-tool-btn" style="justify-content:center;" onclick="openModal('meteo')"><span class="sti">&#127780;</span> Meteo detaliat</button>
+      <button class="sp-tool-btn" style="justify-content:center;" onclick="openModal('calculator')"><span class="sti">&#129518;</span> Calculator doze</button>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <h2 class="section-title" style="cursor:default;">&#9881;&#65039; Set&#259;ri rapide</h2>
+  <div class="section-body">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="sp-tool-btn" onclick="backupData()"><span class="sti">&#128229;</span> Backup date</button>
+      <button class="sp-tool-btn" onclick="document.getElementById('restoreFile').click()"><span class="sti">&#128228;</span> Restaurare</button>
+      <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(this)">
+      <button class="sp-tool-btn" onclick="showTokenSetup()"><span class="sti">&#128273;</span> Token API</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="tab-content" id="plan-livada">
 
 <div class="section">
   <h2 class="section-title">Partea I — Calendar Tratamente Fitosanitare</h2>
@@ -5773,16 +5820,48 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
         <option value="altele">&#128204; Altele</option>
       </select>
 
+      <div id="recoltaFields" style="display:none;margin-bottom:8px;">
+        <label for="jurnalSpecie">Specie</label>
+        <select id="jurnalSpecie" style="margin-bottom:6px;">
+          <option value="">Selecteaz&#259;...</option>
+          <option value="cires">Cire&#537;</option><option value="visin">Vi&#537;in</option>
+          <option value="cais">Cais</option><option value="piersic">Piersic</option>
+          <option value="prun">Prun</option><option value="migdal">Migdal</option>
+          <option value="par">P&#259;r</option><option value="mar">M&#259;r</option>
+          <option value="zmeur">Zmeur</option><option value="mur">Mur</option>
+          <option value="afin">Afin</option><option value="alun">Alun</option>
+          <option value="rodiu">Rodiu</option>
+        </select>
+        <label for="jurnalKg">Cantitate (kg)</label>
+        <input type="number" id="jurnalKg" placeholder="0" min="0" step="0.1">
+      </div>
       <label for="jurnalNote">Descriere</label>
       <textarea id="jurnalNote" placeholder="Ce ai f&#259;cut, la ce specii, produse folosite..."></textarea>
 
       <button class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="addJurnalEntry()">Adaug&#259; &#238;n jurnal</button>
 
-      <div style="display:flex;gap:8px;margin-top:16px;">
-        <h3 style="color:var(--accent);flex:1;">Istoric interven&#539;ii</h3>
-        <button class="btn btn-secondary" style="padding:4px 12px;font-size:0.75rem;" onclick="exportJurnal()">&#128229; Export JSON</button>
+      <div style="margin-top:16px;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <h3 style="color:var(--accent);flex:1;margin:0;">Istoric</h3>
+          <select id="jurnalFilter" onchange="renderJurnal()" style="font-size:0.75rem;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text);">
+            <option value="">Toate tipurile</option>
+            <option value="tratament">Tratament</option>
+            <option value="tundere">Tundere</option>
+            <option value="fertilizare">Fertilizare</option>
+            <option value="irigare">Irigare</option>
+            <option value="recoltare">Recoltare</option>
+            <option value="observatie">Observatie</option>
+            <option value="altele">Altele</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.72rem;" onclick="exportJurnal()">JSON</button>
+          <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.72rem;" onclick="exportJurnalCSV()">CSV</button>
+          <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.72rem;" onclick="copyJurnalClipboard()">&#128203; Copiaz&#259;</button>
+        </div>
       </div>
       <div id="jurnalList"></div>
+      <div id="jurnalPager" style="display:flex;justify-content:center;gap:8px;margin-top:12px;"></div>
     </div>
   </div>
 </div>
@@ -6061,16 +6140,28 @@ function getJurnalEntries() {
 function saveJurnalEntries(entries) {
   localStorage.setItem('livada-jurnal', JSON.stringify(entries));
 }
+// Toggle recolta fields
+document.getElementById('jurnalType')?.addEventListener('change', function() {
+  var rf = document.getElementById('recoltaFields');
+  if (rf) rf.style.display = this.value === 'recoltare' ? 'block' : 'none';
+});
 function addJurnalEntry() {
-  const date = $('#jurnalDate').value;
-  const type = $('#jurnalType').value;
-  const note = $('#jurnalNote').value.trim();
+  var date = document.getElementById('jurnalDate').value;
+  var type = document.getElementById('jurnalType').value;
+  var note = document.getElementById('jurnalNote').value.trim();
   if (!date || !note) return;
-
-  const entries = getJurnalEntries();
-  entries.unshift({ id: Date.now(), date, type, note });
+  var entry = { id: Date.now(), date: date, type: type, note: note };
+  if (type === 'recoltare') {
+    var sp = document.getElementById('jurnalSpecie')?.value;
+    var kg = parseFloat(document.getElementById('jurnalKg')?.value) || 0;
+    if (sp) entry.species = sp;
+    if (kg > 0) entry.kg = kg;
+  }
+  var entries = getJurnalEntries();
+  entries.unshift(entry);
   saveJurnalEntries(entries);
-  $('#jurnalNote').value = '';
+  document.getElementById('jurnalNote').value = '';
+  if (document.getElementById('jurnalKg')) document.getElementById('jurnalKg').value = '';
   renderJurnal();
   syncJournal();
 }
@@ -6080,29 +6171,77 @@ function deleteJurnalEntry(id) {
   renderJurnal();
   syncDeleteJournal(id);
 }
+var jurnalPage = 0;
+var JURNAL_PER_PAGE = 15;
 function renderJurnal() {
-  const list = $('#jurnalList');
-  const entries = getJurnalEntries();
+  var list = document.getElementById('jurnalList');
+  var pager = document.getElementById('jurnalPager');
+  var filter = document.getElementById('jurnalFilter');
+  var filterVal = filter ? filter.value : '';
+  var all = getJurnalEntries();
+  var entries = filterVal ? all.filter(function(e){return e.type===filterVal;}) : all;
   if (entries.length === 0) {
-    list.innerHTML = '<div class="jurnal-empty">Nicio interventie inregistrata.<br>Adauga prima interventie mai sus.</div>';
+    list.innerHTML = '<div class="jurnal-empty">Nicio interventie' + (filterVal?' de acest tip':'') + '.</div>';
+    if (pager) pager.innerHTML = '';
     return;
   }
-  const typeLabels = {
-    tratament: '\uD83D\uDCA7 Tratament', tundere: '\u2702\uFE0F Tundere',
-    fertilizare: '\uD83C\uDF31 Fertilizare', irigare: '\uD83D\uDCA7 Irigare',
-    recoltare: '\uD83C\uDF4E Recoltare', observatie: '\uD83D\uDC41\uFE0F Observatie',
-    altele: '\uD83D\uDCCC Altele'
+  var typeLabels = {
+    tratament:'\uD83D\uDCA7 Tratament',tundere:'\u2702\uFE0F Tundere',
+    fertilizare:'\uD83C\uDF31 Fertilizare',irigare:'\uD83D\uDCA7 Irigare',
+    recoltare:'\uD83C\uDF4E Recoltare',observatie:'\uD83D\uDC41\uFE0F Observatie',
+    altele:'\uD83D\uDCCC Altele'
   };
-  list.innerHTML = entries.map(e => `
-    <div class="jurnal-entry">
-      <span class="je-date">${e.date}</span>
-      <span class="je-type">${typeLabels[e.type] || e.type}</span>
-      <div class="je-text">${escapeHtml(e.note)}</div>
-      <div class="je-actions">
-        <button class="btn btn-danger" style="padding:4px 12px;font-size:0.75rem;" onclick="deleteJurnalEntry(${e.id})">Sterge</button>
-      </div>
-    </div>
-  `).join('');
+  var pages = Math.ceil(entries.length / JURNAL_PER_PAGE);
+  if (jurnalPage >= pages) jurnalPage = pages - 1;
+  var start = jurnalPage * JURNAL_PER_PAGE;
+  var slice = entries.slice(start, start + JURNAL_PER_PAGE);
+  list.innerHTML = slice.map(function(e) {
+    return '<div class="jurnal-entry" data-id="' + e.id + '">' +
+      '<span class="je-date">' + escapeHtml(e.date) + '</span>' +
+      '<span class="je-type">' + (typeLabels[e.type]||e.type) + '</span>' +
+      '<div class="je-text">' + escapeHtml(e.note) + '</div>' +
+      '<div class="je-actions">' +
+        '<button class="btn btn-secondary" style="padding:3px 10px;font-size:0.72rem;" onclick="editJurnalEntry(' + e.id + ')">Edit</button> ' +
+        '<button class="btn btn-danger" style="padding:3px 10px;font-size:0.72rem;" onclick="deleteJurnalEntry(' + e.id + ')">Sterge</button>' +
+      '</div></div>';
+  }).join('');
+  // Pager
+  if (pager && pages > 1) {
+    var ph = '';
+    if (jurnalPage > 0) ph += '<button class="btn btn-secondary" style="padding:4px 10px;font-size:0.75rem;" onclick="jurnalPage--;renderJurnal();">\u2190</button>';
+    ph += '<span style="font-size:0.75rem;color:var(--text-dim);padding:4px 8px;">' + (jurnalPage+1) + '/' + pages + ' (' + entries.length + ')</span>';
+    if (jurnalPage < pages-1) ph += '<button class="btn btn-secondary" style="padding:4px 10px;font-size:0.75rem;" onclick="jurnalPage++;renderJurnal();">\u2192</button>';
+    pager.innerHTML = ph;
+  } else if (pager) { pager.innerHTML = ''; }
+}
+function editJurnalEntry(id) {
+  var entries = getJurnalEntries();
+  var e = entries.find(function(x){return x.id===id;});
+  if (!e) return;
+  var newNote = prompt('Editeaza nota:', e.note);
+  if (newNote === null) return;
+  e.note = newNote.trim();
+  saveJurnalEntries(entries);
+  renderJurnal();
+  syncJournal();
+}
+function exportJurnalCSV() {
+  var entries = getJurnalEntries();
+  if (!entries.length) { alert('Jurnal gol.'); return; }
+  var csv = 'Data,Tip,Nota\n' + entries.map(function(e) {
+    return e.date + ',' + e.type + ',"' + (e.note||'').replace(/"/g,'""') + '"';
+  }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'jurnal-livada-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function copyJurnalClipboard() {
+  var entries = getJurnalEntries();
+  if (!entries.length) { alert('Jurnal gol.'); return; }
+  var text = entries.map(function(e){ return e.date + ' [' + e.type + '] ' + e.note; }).join('\n');
+  navigator.clipboard.writeText(text).then(function(){ alert('Copiat!'); }).catch(function(){ alert('Eroare la copiere.'); });
 }
 function escapeHtml(s) {
   const d = document.createElement('div');
@@ -6369,6 +6508,8 @@ function injectSpeciesTools(tabId) {
     '<button class="sp-tool-btn" onclick="openDiagnoseModal()"><span class="sti">\uD83D\uDCF8</span> Diagnostic AI</button>' +
     '<button class="sp-tool-btn" onclick="openAskModal()"><span class="sti">\uD83D\uDCAC</span> \u00CEntreab\u0103 AI</button>' +
     '<button class="sp-tool-btn" onclick="openGalleryModal()"><span class="sti">\uD83D\uDDBC\uFE0F</span> Galerie foto</button>' +
+    '<button class="sp-tool-btn" onclick="openChecklist()"><span class="sti">\u2705</span> Checklist stropire</button>' +
+    '<button class="sp-tool-btn" onclick="printFisa()"><span class="sti">\uD83D\uDDA8\uFE0F</span> Print fi\u0219a</button>' +
     '</div>';
   tc.insertBefore(div, tc.firstChild);
 }
@@ -6711,10 +6852,202 @@ async function generateReport() {
   }
 }
 
+// ====== FROST SENSITIVITY (B2) ======
+var FROST_SENSITIVITY = {
+  'cais':{limit:-1,label:'Foarte sensibil'},
+  'piersic':{limit:-1,label:'Foarte sensibil'},
+  'migdal':{limit:-2,label:'Foarte sensibil'},
+  'rodiu':{limit:-5,label:'Extrem de sensibil'},
+  'cires':{limit:-3,label:'Sensibil'},
+  'visin':{limit:-4,label:'Moderat sensibil'},
+  'prun':{limit:-4,label:'Moderat sensibil'},
+  'par-clapp':{limit:-4,label:'Moderat sensibil'},
+  'par-williams':{limit:-4,label:'Moderat sensibil'},
+  'par-hosui':{limit:-4,label:'Moderat sensibil'},
+  'par-napoca':{limit:-4,label:'Moderat sensibil'},
+  'mar-florina':{limit:-5,label:'Moderat rezistent'},
+  'mar-golden':{limit:-5,label:'Moderat rezistent'},
+  'zmeur':{limit:-6,label:'Rezistent'},
+  'mur':{limit:-6,label:'Rezistent'},
+  'afin':{limit:-8,label:'Rezistent'},
+  'alun':{limit:-10,label:'Foarte rezistent'}
+};
+
+// ====== SFATUL LUNII (B1-A) ======
+var SFAT_LUNA = [
+  'Repaus vegetativ. Verific\u0103 protec\u021Bia la \u00EEnghe\u021B, planific\u0103 t\u0103ierile.',
+  'Repaus vegetativ. Verific\u0103 protec\u021Bia la \u00EEnghe\u021B, planific\u0103 t\u0103ierile.',
+  '\u00CEncepe sezonul! Tundere, primul tratament cu cupru.',
+  'Aten\u021Bie \u00EEnghe\u021B t\u00E2rziu! NU stropi pe flori deschise.',
+  'Tratamente post-\u00EEnflorire. R\u0103rire fructe.',
+  'Stropiri preventive. Irigare. Monitorizare boli.',
+  'Stropiri preventive. Irigare. Monitorizare boli.',
+  'Recolt\u0103! Preg\u0103tire tratamente de toamn\u0103.',
+  'Recolt\u0103! Preg\u0103tire tratamente de toamn\u0103.',
+  'Tratament cupru dup\u0103 c\u0103derea frunzelor. Protec\u021Bie iarn\u0103.',
+  'Tratament cupru dup\u0103 c\u0103derea frunzelor. Protec\u021Bie iarn\u0103.',
+  'Repaus. Comand\u0103 produse pentru prim\u0103var\u0103.'
+];
+
+// ====== DASHBOARD AZI (B1) ======
+async function initDashboardAzi() {
+  // A. Sfatul lunii
+  var m = new Date().getMonth();
+  var sfat = document.getElementById('sfatulLunii');
+  if (sfat) sfat.innerHTML = '<p style="font-size:0.92rem;">' + SFAT_LUNA[m] + '</p>';
+
+  // B. Alerte active (frost + disease + per specie)
+  var alerteEl = document.getElementById('alerteAzi');
+  if (!alerteEl) return;
+  var html = '';
+  try {
+    var res = await fetchWithTimeout('/api/frost-alert', {}, 5000);
+    if (res.ok) {
+      var data = await res.json();
+      if (data.frost && data.frost.active) {
+        html += '<div class="alert alert-danger">\u2744\uFE0F ' + escapeHtml(data.frost.message) + '</div>';
+        // Per-species alerts
+        var affected = [];
+        for (var sp in FROST_SENSITIVITY) {
+          if (data.frost.minTemp <= FROST_SENSITIVITY[sp].limit) {
+            affected.push(SPECIES[sp] + ' (' + FROST_SENSITIVITY[sp].label + ', limit ' + FROST_SENSITIVITY[sp].limit + '\u00B0C)');
+          }
+        }
+        if (affected.length > 0) {
+          html += '<div class="alert alert-warning" style="margin-top:8px;">\uD83C\uDF3F <strong>Specii afectate:</strong> ' + affected.join(', ') + '</div>';
+        }
+      }
+      if (data.disease && data.disease.active) {
+        html += '<div class="alert alert-warning" style="margin-top:8px;">\u26A0\uFE0F ' + escapeHtml(data.disease.message) + '</div>';
+      }
+      if (!data.frost?.active && !data.disease?.active) {
+        html = '<p style="color:var(--accent);">\u2705 Nicio alert\u0103 activ\u0103. Totul e \u00EEn regul\u0103!</p>';
+      }
+    }
+  } catch(e) { html = '<p style="color:var(--text-dim);">Alertele necesit\u0103 conexiune la internet.</p>'; }
+  alerteEl.innerHTML = html;
+
+  // C. Meteo rapid
+  var meteoEl = document.getElementById('meteoAzi');
+  if (!meteoEl) return;
+  try {
+    var mres = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=46.17&longitude=20.75&current=temperature_2m,weather_code,wind_speed_10m&timezone=Europe/Bucharest', {}, 8000);
+    if (mres.ok) {
+      var md = await mres.json();
+      var cc = md.current;
+      meteoEl.innerHTML = '<div style="display:flex;align-items:center;gap:12px;">' +
+        '<span style="font-size:36px;">' + wmoEmoji(cc.weather_code) + '</span>' +
+        '<span style="font-size:1.4rem;font-weight:600;">' + Math.round(cc.temperature_2m) + '\u00B0C</span>' +
+        '<span style="color:var(--text-dim);">' + (WMO_CODES[cc.weather_code]||'') + ' \u2022 ' + Math.round(cc.wind_speed_10m) + ' km/h</span>' +
+        '</div>';
+    }
+  } catch(e) { meteoEl.innerHTML = '<p style="color:var(--text-dim);">Offline</p>'; }
+}
+
+// ====== BACKUP & RESTORE (B3) ======
+function backupData() {
+  var backup = {};
+  for (var i = 0; i < localStorage.length; i++) {
+    var k = localStorage.key(i);
+    if (k.startsWith('livada-') && !k.includes('token') && !k.includes('key')) {
+      backup[k] = localStorage.getItem(k);
+    }
+  }
+  var blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'livada-backup-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function restoreData(input) {
+  var file = input.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = JSON.parse(e.target.result);
+      var keys = Object.keys(data).filter(function(k) { return k.startsWith('livada-'); });
+      if (keys.length === 0) { alert('Fisier invalid.'); return; }
+      if (!confirm('Restaurez ' + keys.length + ' chei? Datele curente vor fi suprascrise.')) return;
+      keys.forEach(function(k) { localStorage.setItem(k, data[k]); });
+      alert('Restaurare completa! ' + keys.length + ' chei restaurate.');
+      location.reload();
+    } catch(err) { alert('Eroare: fisier JSON invalid.'); }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+// ====== CHECKLIST PRE-STROPIRE (B5) ======
+function openChecklist() {
+  var overlay = document.getElementById('modal-checklist');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'modal-checklist';
+    overlay.className = 'modal-overlay';
+    overlay.setAttribute('role','dialog');
+    overlay.setAttribute('aria-modal','true');
+    overlay.innerHTML = '<div class="modal"><div class="modal-header">' +
+      '<h2>\u2705 Checklist pre-stropire</h2>' +
+      '<button class="modal-close" aria-label="Inchide" onclick="closeModal(\'checklist\')">\u2715</button></div>' +
+      '<div class="modal-body">' +
+      '<p style="margin-bottom:12px;color:var(--text-dim);">Verific\u0103 toate punctele \u00EEnainte de stropire:</p>' +
+      '<label class="ck-item"><input type="checkbox" class="ck-box"> Meteo verificat (f\u0103r\u0103 ploaie 4-6h)</label>' +
+      '<label class="ck-item"><input type="checkbox" class="ck-box"> V\u00E2nt sub 15 km/h</label>' +
+      '<label class="ck-item"><input type="checkbox" class="ck-box"> Echipament protec\u021Bie (m\u0103nu\u0219i, masc\u0103, ochelari)</label>' +
+      '<label class="ck-item"><input type="checkbox" class="ck-box"> Doze calculate corect (folosit calculatorul)</label>' +
+      '<label class="ck-item"><input type="checkbox" class="ck-box"> Pomii nu au flori deschise (dac\u0103 e primavar\u0103)</label>' +
+      '<label class="ck-item"><input type="checkbox" class="ck-box"> Solu\u021Bie preparat\u0103 corect (\u00EEn ordinea indicat\u0103)</label>' +
+      '<button class="btn btn-primary" id="ckStartBtn" style="width:100%;margin-top:16px;" disabled onclick="startStropire()">Toate bifate \u2192 \u00CEncepe stropirea</button>' +
+      '</div></div>';
+    document.body.appendChild(overlay);
+    overlay.querySelectorAll('.ck-box').forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        var all = overlay.querySelectorAll('.ck-box');
+        var allChecked = Array.from(all).every(function(c){return c.checked;});
+        document.getElementById('ckStartBtn').disabled = !allChecked;
+      });
+    });
+  }
+  overlay.querySelectorAll('.ck-box').forEach(function(cb){cb.checked=false;});
+  document.getElementById('ckStartBtn').disabled = true;
+  openModal('checklist');
+}
+function startStropire() {
+  var note = prompt('Ce tratament aplici? (produse, doze, specii)');
+  if (!note) return;
+  var entries = getJurnalEntries();
+  entries.unshift({id:Date.now(),date:new Date().toISOString().split('T')[0],type:'Tratament',note:note});
+  saveJurnalEntries(entries);
+  syncJournal();
+  closeModal('checklist');
+  alert('Tratament \u00EEnregistrat \u00EEn jurnal!');
+}
+
+// ====== PRINT FISA TEREN (B4) ======
+function printFisa() {
+  var name = SPECIES[activeSpeciesId] || 'Plan Livada';
+  var content = document.getElementById(activeSpeciesId);
+  if (!content) return;
+  var win = window.open('','','width=800,height=600');
+  win.document.write('<html><head><title>Fi\u0219a ' + name + '</title>' +
+    '<style>body{font-family:sans-serif;padding:20px;font-size:12px;line-height:1.5;}h2{color:#2d5016;border-bottom:2px solid #2d5016;padding-bottom:4px;}table{width:100%;border-collapse:collapse;margin:8px 0;}th,td{border:1px solid #ccc;padding:4px 6px;text-align:left;font-size:11px;}th{background:#f0f0f0;}.sp-tools,.section-title{cursor:default;}.alert{border:1px solid #ccc;padding:8px;margin:6px 0;border-radius:4px;}@media print{body{padding:10px;}}</style>' +
+    '</head><body><h1>Fi\u0219a Teren: ' + escapeHtml(name) + '</h1><p>Data: ' + new Date().toLocaleDateString('ro-RO') + '</p><hr>' +
+    content.innerHTML + '</body></html>');
+  win.document.close();
+  win.print();
+}
+
 // ====== INIT NEW FEATURES ======
 (function initNewFeatures() {
-  // Inject tools for default tab
-  injectSpeciesTools('plan-livada');
+  // Inject tools for default tab + init dashboard Azi
+  injectSpeciesTools('azi');
+  initDashboardAzi();
+
+  // Tab switch — also init Azi when switching to it
+  document.addEventListener('click', function(e) {
+    var tab = e.target.closest('.tab[data-tab="azi"]');
+    if (tab) setTimeout(initDashboardAzi, 50);
+  });
   // Check alerts
   setTimeout(checkAlerts, 1500);
   // Sync journal after short delay
