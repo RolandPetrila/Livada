@@ -1,36 +1,35 @@
 # RUNDA CURENTA — Livada Mea Dashboard
 
 **Data:** 2026-03-28
-**Sesiune:** 7 — Migrare Open-Meteo + Features Faza 4
+**Sesiune:** 8 (continuare) — Fix definitiv AI timeout
 **Status:** EXECUTIE FINALIZATA
 
 ---
 
 ## REZULTAT
 
-### PARTEA A — Migrare Open-Meteo ✅
-- api/meteo-cron.js: rescriere completa — un singur fetch Open-Meteo (gratuit, fara API key)
-- Frontend: sterge API key setup complet, initMeteo() apeleaza direct
-- WMO_CODES + wmoEmoji() definite o singura data in JS
-- sw.js: referinta actualizata
-- Format Redis IDENTIC — meteo-history si calendar neschimbate
-- OPENWEATHER_API_KEY nu mai e folosit
+Fix definitiv "signal is aborted without reason" implementat conform Audit #9.
 
-### PARTEA B — Features Faza 4 ✅
-| Feature | Status |
-|---------|--------|
-| B1 Dashboard "Ce fac azi?" | ✅ Tab default: sfatul lunii, alerte, meteo rapid, actiuni |
-| B2 Alerte per specie | ✅ FROST_SENSITIVITY 17 specii, afisare in tab Azi |
-| B3 Backup & Restore | ✅ Export/import localStorage, exclude tokens |
-| B4 Print fisa teren | ✅ window.open() + print CSS A4 minimal |
-| B5 Checklist stropire | ✅ 6 checkboxuri, salvare automata jurnal |
-| B6 Jurnal editare+filtre | ✅ Edit inline, filtru tip, paginare 15/pag |
-| B7 Export CSV + clipboard | ✅ CSV download + copiere text |
-| B8 Tracking recolta | ✅ Campuri specie + kg la tip "recoltare" |
+### Timeout chain corect:
+```
+Backend AbortController:  25s → eroare JSON clean
+Vercel maxDuration:       60s → safety net
+Frontend AbortController: 65s → asteapta raspunsul backend
+```
 
-### Stats
-- HTML: 6734 → 7062 linii (+328, sub target 8500)
-- 2 commits: migrare Open-Meteo + Faza 4 features
-- Deploy: https://livada-mea-psi.vercel.app
+### Fix-uri aplicate:
+| # | Fix | Fisiere |
+|---|-----|---------|
+| 1 | Backend AbortController 25s | ask.js, diagnose.js, report.js |
+| 2 | Backend AbortController 8s | meteo-cron.js |
+| 3 | Vercel maxDuration 60s | vercel.json (4 functii) |
+| 4 | Frontend timeout 65s | index.html (3 AI calls) |
+| 5 | Model stabil llama-3.3-70b-versatile | ask.js, report.js |
+| 6 | AbortError mesaj user-friendly | index.html (3 catch-uri) |
 
+### Actiune manuala Roland (FIX 7):
+Provisioneaza Upstash Redis din Vercel Dashboard → Storage → Create KV.
+Fara Redis: frost-alert, journal sync, meteo-history, raport = nefunctionale.
+
+### Deploy: https://livada-mea-psi.vercel.app
 ### Blocaje: Niciun blocaj
