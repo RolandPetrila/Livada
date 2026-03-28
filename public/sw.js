@@ -33,7 +33,7 @@ self.addEventListener('fetch', event => {
   const url = event.request.url;
 
   // Network-first for API calls
-  if (url.includes('/api/') || url.includes('api.openweathermap')) {
+  if (url.includes('/api/') || url.includes('api.open-meteo.com')) {
     event.respondWith(
       fetch(event.request).catch(() => caches.match(event.request))
     );

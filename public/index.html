@@ -5814,16 +5814,9 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
       <button class="modal-close" aria-label="Inchide" onclick="closeModal('meteo')">&#10005;</button>
     </div>
     <div class="modal-body" id="meteoBody">
-      <div class="meteo-setup" id="meteoSetup">
-        <p>Pentru meteo live, ai nevoie de un API key gratuit de la OpenWeatherMap.</p>
-        <label for="meteoKey">API Key OpenWeatherMap</label>
-        <input type="text" id="meteoKey" placeholder="Introdu API key-ul t&#259;u">
-        <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="saveMeteoKey()">Salveaz&#259; &#537;i &#238;ncarc&#259; meteo</button>
-        <p style="margin-top:12px;font-size:0.8rem;color:var(--text-dim);">
-          Ob&#539;ine gratuit de la <strong>openweathermap.org/appid</strong> &#8594; Sign Up &#8594; API Keys
-        </p>
+      <div id="meteoData">
+        <p style="text-align:center;color:var(--text-dim);">Se &#238;ncarc&#259;...</p>
       </div>
-      <div id="meteoData" style="display:none;"></div>
       <div id="meteoHistory"></div>
     </div>
   </div>
@@ -6197,61 +6190,63 @@ function calNav(dir) {
   renderCalendar();
 }
 
-// ====== METEO ======
-function initMeteo() {
-  const key = localStorage.getItem('livada-meteo-key');
-  if (key) {
-    $('#meteoSetup').style.display = 'none';
-    $('#meteoData').style.display = 'block';
-    fetchMeteo(key);
-  } else {
-    $('#meteoSetup').style.display = 'block';
-    $('#meteoData').style.display = 'none';
-  }
+// ====== WMO CODES (Open-Meteo) ======
+var WMO_CODES = {
+  0:'Cer senin',1:'Predominant senin',2:'Partial innorat',3:'Innorat',
+  45:'Ceata',48:'Ceata cu chiciura',51:'Burinta usoara',53:'Burinta moderata',55:'Burinta densa',
+  61:'Ploaie usoara',63:'Ploaie moderata',65:'Ploaie puternica',
+  66:'Ploaie inghetata usoara',67:'Ploaie inghetata puternica',
+  71:'Ninsoare usoara',73:'Ninsoare moderata',75:'Ninsoare puternica',77:'Granule de zapada',
+  80:'Averse usoare',81:'Averse moderate',82:'Averse violente',
+  85:'Ninsoare usoara',86:'Ninsoare puternica',95:'Furtuna',96:'Furtuna cu grindina',99:'Furtuna cu grindina'
+};
+function wmoEmoji(code) {
+  if (code === 0) return '\u2600\uFE0F';
+  if (code <= 3) return '\u26C5';
+  if (code <= 48) return '\uD83C\uDF2B\uFE0F';
+  if (code <= 55) return '\uD83C\uDF26\uFE0F';
+  if (code <= 67) return '\uD83C\uDF27\uFE0F';
+  if (code <= 77) return '\uD83C\uDF28\uFE0F';
+  if (code <= 82) return '\uD83C\uDF27\uFE0F';
+  if (code >= 95) return '\u26C8\uFE0F';
+  return '\uD83C\uDF24\uFE0F';
 }
-function saveMeteoKey() {
-  const key = $('#meteoKey').value.trim();
-  if (!key) return;
-  localStorage.setItem('livada-meteo-key', key);
-  initMeteo();
-}
-async function fetchMeteo(key) {
-  const data = $('#meteoData');
-  data.innerHTML = '<p style="text-align:center;color:var(--text-dim);">Se \u00eencarc\u0103...</p>';
-  try {
-    const res = await fetchWithTimeout(`https://api.openweathermap.org/data/2.5/weather?lat=46.17&lon=20.75&units=metric&lang=ro&appid=${key}`, {}, 10000);
-    if (!res.ok) throw new Error('API error ' + res.status);
-    const w = await res.json();
 
-    const icon = w.weather[0].icon;
-    const alertHtml = w.main.temp <= 0
-      ? '<div class="alert alert-danger meteo-alert"><strong>\u26A0\uFE0F Temperaturi negative!</strong> Verific\u0103 protec\u021bia pomilor sensibili (rodiu, piersic).</div>'
-      : w.main.temp >= 30
+// ====== METEO (Open-Meteo — gratuit, fara API key) ======
+function initMeteo() { fetchMeteo(); }
+
+async function fetchMeteo() {
+  var el = document.getElementById('meteoData');
+  el.innerHTML = '<p style="text-align:center;color:var(--text-dim);">Se \u00eencarc\u0103...</p>';
+  try {
+    var res = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=46.17&longitude=20.75&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&timezone=Europe/Bucharest', {}, 10000);
+    if (!res.ok) throw new Error('Open-Meteo error ' + res.status);
+    var d = await res.json();
+    var c = d.current;
+    var code = c.weather_code;
+    var desc = WMO_CODES[code] || 'Necunoscut';
+    var emoji = wmoEmoji(code);
+    var alertHtml = c.temperature_2m <= 0
+      ? '<div class="alert alert-danger meteo-alert"><strong>\u26A0\uFE0F Temperaturi negative!</strong> Verific\u0103 protec\u021bia pomilor sensibili.</div>'
+      : c.temperature_2m >= 30
       ? '<div class="alert alert-warning meteo-alert"><strong>\u2600\uFE0F C\u0103ldur\u0103 excesiv\u0103!</strong> Verific\u0103 irigarea.</div>'
       : '';
 
-    data.innerHTML = `
-      <div class="meteo-card">
-        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${w.weather[0].description}" style="width:80px;height:80px;">
-        <div class="meteo-temp">${Math.round(w.main.temp)}\u00B0C</div>
-        <div class="meteo-desc">${w.weather[0].description}</div>
-        <div class="meteo-details">
-          <span>\uD83C\uDF21\uFE0F Sim\u021bit: ${Math.round(w.main.feels_like)}\u00B0C</span>
-          <span>\uD83D\uDCA7 Umiditate: ${w.main.humidity}%</span>
-          <span>\uD83C\uDF2C\uFE0F V\u00E2nt: ${Math.round(w.wind.speed * 3.6)} km/h</span>
-        </div>
-      </div>
-      ${alertHtml}
-      <p style="margin-top:12px;font-size:0.78rem;color:var(--text-dim);text-align:center;">
-        N\u0103dlac, Arad &bull; Actualizat: ${new Date().toLocaleTimeString('ro-RO')}
-      </p>
-      <button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="localStorage.removeItem('livada-meteo-key');initMeteo();">Schimb\u0103 API Key</button>
-    `;
+    el.innerHTML = '<div class="meteo-card">' +
+      '<div style="font-size:60px;line-height:1;">' + emoji + '</div>' +
+      '<div class="meteo-temp">' + Math.round(c.temperature_2m) + '\u00B0C</div>' +
+      '<div class="meteo-desc">' + escapeHtml(desc) + '</div>' +
+      '<div class="meteo-details">' +
+        '<span>\uD83C\uDF21\uFE0F Sim\u021bit: ' + Math.round(c.apparent_temperature) + '\u00B0C</span>' +
+        '<span>\uD83D\uDCA7 Umiditate: ' + c.relative_humidity_2m + '%</span>' +
+        '<span>\uD83C\uDF2C\uFE0F V\u00E2nt: ' + Math.round(c.wind_speed_10m) + ' km/h</span>' +
+        (c.precipitation > 0 ? '<span>\uD83C\uDF27\uFE0F Precipita\u021Bii: ' + c.precipitation + ' mm</span>' : '') +
+      '</div></div>' + alertHtml +
+      '<p style="margin-top:12px;font-size:0.78rem;color:var(--text-dim);text-align:center;">N\u0103dlac, Arad \u2022 Actualizat: ' + new Date().toLocaleTimeString('ro-RO') + '</p>' +
+      '<button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="fetchMeteo()">Re\u00eencarc\u0103 meteo</button>';
   } catch (err) {
-    data.innerHTML = `
-      <div class="alert alert-danger"><strong>Eroare meteo</strong> ${err.message}. Verific\u0103 API key-ul sau conexiunea.</div>
-      <button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="localStorage.removeItem('livada-meteo-key');initMeteo();">Reseteaz\u0103 API Key</button>
-    `;
+    el.innerHTML = '<div class="alert alert-danger"><strong>Eroare meteo:</strong> ' + escapeHtml(err.message) + '</div>' +
+      '<button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="fetchMeteo()">Re\u00eencarc\u0103</button>';
   }
 }
 
