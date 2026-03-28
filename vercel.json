@@ -1,6 +1,11 @@
 {
   "buildCommand": null,
   "outputDirectory": "public",
+  "functions": {
+    "api/ask.js": { "maxDuration": 30 },
+    "api/diagnose.js": { "maxDuration": 30 },
+    "api/report.js": { "maxDuration": 30 }
+  },
   "crons": [
     {
       "path": "/api/meteo-cron",
