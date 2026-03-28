@@ -67,10 +67,47 @@
 - [x] 3.4 Raport anual (api/report.js, Groq, combina jurnal+meteo, genereaza raport structurat)
 - [ ] 3.5 Multi-user (optional — SARIT)
 
-### API Keys Faza 3 (setate ca env vars pe Vercel):
+### API Keys (setate ca env vars pe Vercel):
 - Gemini Vision: GOOGLE_AI_API_KEY
 - Groq (text/rezumate): GROQ_API_KEY
-- Meteo: OPENWEATHER_API_KEY
+- Meteo: Open-Meteo (GRATUIT, fara key)
+
+## FAZA 4 — Migrare + Features Noi ✅ COMPLET
+
+- [x] 4.0 Migrare OpenWeatherMap → Open-Meteo (gratuit permanent, fara API key)
+- [x] 4.1 Dashboard "Ce fac azi?" — tab default cu sfatul lunii, alerte, meteo rapid, actiuni
+- [x] 4.2 Alerte inteligente per specie (FROST_SENSITIVITY 17 specii cu praguri temp)
+- [x] 4.3 Backup & Restore (export/import localStorage)
+- [x] 4.4 Print fisa teren A4
+- [x] 4.5 Checklist pre-stropire (6 checkboxuri + salvare jurnal)
+- [x] 4.6 Jurnal editare + filtre + paginare
+- [x] 4.7 Export jurnal CSV + copiere clipboard
+- [x] 4.8 Tracking recolta per specie/an (campuri specie + kg)
+
+## FAZA 4 — Migrare Open-Meteo + Features Noi (selectie T3 din RAPORT_RECOMANDARI)
+
+### Sesiunea 7 — Migrare API Meteo
+- [ ] 4.0 Migrare OpenWeatherMap → Open-Meteo (fara API key, gratuit permanent, forecast 16 zile)
+  - api/meteo-cron.js: rescriere completa (un singur fetch Open-Meteo, format nou)
+  - public/index.html: sterge meteoSetup/saveMeteoKey, rescriere fetchMeteo(), WMO codes
+  - public/sw.js: update URL pattern cache
+  - Sterge: dependenta OPENWEATHER_API_KEY
+
+### Sesiunea 7 — Bloc 1 OBLIGATORIU
+- [ ] 4.1 Dashboard Sezonier "Ce fac azi?" (tab default, sfat lunar, alerte, meteo rapid, actiuni rapide)
+- [ ] 4.2 Alerte inteligente per specie (tabel sensibilitate inghet, recomandari, buton "Am actionat" → jurnal)
+- [ ] 4.3 Backup & Restore complet (export/import JSON toate datele localStorage)
+- [ ] 4.4 Print mode fisa teren A4 per specie (window.open + print CSS)
+- [ ] 4.5 Checklist pre-stropire (safety checklist cu 6 items, logare in jurnal la final)
+
+### Sesiunea 7 — Bloc 2 BONUS (daca T1 mai are context)
+- [ ] 4.6 Jurnal: editare in-place, filtre tip/luna, paginare 50
+- [ ] 4.7 Export jurnal multi-format (CSV pt Excel, text pt clipboard/WhatsApp)
+- [ ] 4.8 Tracking recolta per specie/an (formular, localStorage, vizualizare bar chart CSS)
+
+### Sesiune viitoare (optional)
+- [ ] 4.9 Remindere tratamente cu fereastra optima stropire (prognoza Open-Meteo + spray score)
+- [ ] 4.10 Calculator mixturi simplificat (2-3 produse, verificare compatibilitate)
 
 ---
 
@@ -120,3 +157,16 @@
 **Decizii T1 Sesiunea 3:** vezi PLAN_DECISIONS.md
 **Blocaje:** Edge Runtime incompatibil cu undici (rezolvat cu Node.js runtime). KV/Blob necesita provisionare manuala din Vercel Dashboard.
 **Deploy:** https://livada-mea-psi.vercel.app
+
+### Sesiunea 7 (2026-03-28) — T1 autonom
+**Faza 4 Migrare + Features:** COMPLET
+- Migrare OpenWeatherMap → Open-Meteo (fara API key, gratuit permanent)
+- 8 features noi: Dashboard "Ce fac azi?", Alerte per specie, Backup/Restore, Print fisa, Checklist stropire, Jurnal editare+filtre, Export CSV+text, Tracking recolta
+- HTML: 6734 → 7062 linii (+328)
+- Deploy: https://livada-mea-psi.vercel.app
+
+### Sesiunea 8 (2026-03-28) — T1 autonom
+**Bug fix AI timeout:** COMPLET
+- vercel.json: maxDuration 30s pe ask.js, diagnose.js, report.js
+- Frontend: authFetch timeout 30s pentru AI calls
+- Cauza: Vercel Hobby default 10s + frontend default 15s = AI calls timeout-au
