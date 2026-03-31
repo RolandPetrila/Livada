@@ -367,6 +367,12 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 /* ====== TOAST ====== */
 .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: var(--bg-card); border: 1px solid var(--danger); color: var(--text); padding: 10px 20px; border-radius: 8px; font-size: 0.8rem; z-index: 500; animation: fadeIn 0.3s ease; max-width: 90%; }
 
+/* ====== JURNAL EDIT ====== */
+.je-edit-area { width:100%; padding:8px; border-radius:6px; background:var(--bg-card); border:1px solid var(--accent); color:var(--text); font-size:0.85rem; font-family:inherit; resize:vertical; }
+/* ====== CALENDAR JOURNAL DOT ====== */
+.cal-j-dot { display:block; width:4px; height:4px; background:var(--warning); border-radius:50%; margin:2px auto 0; }
+.cal-day[onclick] { cursor:pointer; } .cal-day[onclick]:hover { background:rgba(232,168,56,0.15); }
+
 /* ====== CHECKLIST ====== */
 .ck-item { display: flex; align-items: center; gap: 10px; padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.88rem; cursor: pointer; min-height: 44px; }
 .ck-item:last-of-type { border-bottom: none; }
@@ -562,6 +568,7 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
       <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(this)">
       <button class="sp-tool-btn" onclick="showTokenSetup()"><span class="sti">&#128273;</span> Token API</button>
     </div>
+    <div id="backupReminder" style="margin-top:12px;"></div>
   </div>
 </div>
 </div>
@@ -703,6 +710,10 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
   </ul>
   <p style="margin-top:16px;color:var(--text-dim);font-size:0.82rem;"><em>Surse: Agrointel.ro, AgroMentor.ro, Agrobiznes.md, CasaPlant.ro, Lumea Satului, Revista Ferma, Magazin Agricover, Paradis Verde</em></p>
   </div>
+</div>
+<div class="section">
+  <h2 class="section-title" style="cursor:default;">&#127822; Recolt&#259;</h2>
+  <div class="section-body" id="recoltaSummary"></div>
 </div>
 </div><!-- /plan-livada -->
 
@@ -6008,6 +6019,7 @@ $$('.tab[data-tab]').forEach(function(tab) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     injectSpeciesTools(tab.dataset.tab);
+    if (searchInput.value.trim().length >= 2) highlightInActiveTab(searchInput.value.trim());
   });
 });
 $$('.tab-content').forEach(function(tc) { tc.setAttribute('role', 'tabpanel'); });
@@ -6060,40 +6072,57 @@ searchInput.addEventListener('input', () => {
   searchTimeout = setTimeout(doSearch, 300);
 });
 
-function doSearch() {
-  const q = searchInput.value.trim().toLowerCase();
-  // Clear previous highlights
-  $$('mark.search-hl').forEach(m => {
-    const parent = m.parentNode;
-    parent.replaceChild(document.createTextNode(m.textContent), m);
-    parent.normalize();
+function clearSearchHighlights() {
+  $$('mark.search-hl').forEach(function(m) {
+    var p = m.parentNode;
+    p.replaceChild(document.createTextNode(m.textContent), m);
+    p.normalize();
   });
-  $$('.tab').forEach(t => t.classList.remove('search-match'));
-
+}
+function highlightInActiveTab(query) {
+  clearSearchHighlights();
+  if (!query || query.length < 2) return;
+  var active = document.querySelector('.tab-content.active');
+  if (!active) return;
+  var walker = document.createTreeWalker(active, NodeFilter.SHOW_TEXT);
+  var toReplace = [];
+  while (walker.nextNode()) {
+    var node = walker.currentNode;
+    var idx = node.textContent.toLowerCase().indexOf(query.toLowerCase());
+    if (idx >= 0) toReplace.push({ node: node, index: idx, length: query.length });
+  }
+  toReplace.reverse().forEach(function(item) {
+    var mark = document.createElement('mark');
+    mark.className = 'search-hl';
+    var range = document.createRange();
+    range.setStart(item.node, item.index);
+    range.setEnd(item.node, item.index + item.length);
+    range.surroundContents(mark);
+  });
+  var first = active.querySelector('mark.search-hl');
+  if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function doSearch() {
+  var q = searchInput.value.trim().toLowerCase();
+  clearSearchHighlights();
+  $$('.tab').forEach(function(t) { t.classList.remove('search-match'); });
   if (q.length < 2) { searchCount.textContent = ''; return; }
-
-  let totalMatches = 0;
-  $$('.tab-content').forEach(tc => {
-    const text = tc.textContent.toLowerCase();
-    if (text.includes(q)) {
+  var totalMatches = 0;
+  $$('.tab-content').forEach(function(tc) {
+    if (tc.textContent.toLowerCase().includes(q)) {
       totalMatches++;
-      // Mark matching tab
-      const tabBtn = document.querySelector(`.tab[data-tab="${tc.id}"]`);
+      var tabBtn = document.querySelector('.tab[data-tab="' + tc.id + '"]');
       if (tabBtn) tabBtn.classList.add('search-match');
     }
   });
-  searchCount.textContent = totalMatches > 0 ? `${totalMatches} tab${totalMatches > 1 ? 'uri' : ''}` : 'Nimic gasit';
+  searchCount.textContent = totalMatches > 0 ? totalMatches + ' tab' + (totalMatches > 1 ? 'uri' : '') : 'Nimic gasit';
+  highlightInActiveTab(q);
 }
-
 function clearSearch() {
   searchInput.value = '';
   searchCount.textContent = '';
-  $$('.tab').forEach(t => t.classList.remove('search-match'));
-  $$('mark.search-hl').forEach(m => {
-    const parent = m.parentNode;
-    parent.replaceChild(document.createTextNode(m.textContent), m);
-    parent.normalize();
-  });
+  $$('.tab').forEach(function(t) { t.classList.remove('search-match'); });
+  clearSearchHighlights();
 }
 
 // ====== MODALS ======
@@ -6257,12 +6286,26 @@ function editJurnalEntry(id) {
   var entries = getJurnalEntries();
   var e = entries.find(function(x){return x.id===id;});
   if (!e) return;
-  var newNote = prompt('Editeaza nota:', e.note);
-  if (newNote === null) return;
-  e.note = newNote.trim();
-  saveJurnalEntries(entries);
+  var entryEl = document.querySelector('.jurnal-entry[data-id="' + id + '"]');
+  if (!entryEl) return;
+  var textEl = entryEl.querySelector('.je-text');
+  if (!textEl || textEl.dataset.editing) return;
+  textEl.dataset.editing = 'true';
+  textEl.innerHTML = '<textarea class="je-edit-area" rows="3">' + escapeHtml(e.note) + '</textarea>' +
+    '<div style="display:flex;gap:6px;margin-top:6px;">' +
+    '<button class="btn btn-primary" style="padding:4px 12px;font-size:0.75rem;" onclick="saveJurnalEdit(' + id + ')">Salveaz\u0103</button>' +
+    '<button class="btn btn-secondary" style="padding:4px 12px;font-size:0.75rem;" onclick="renderJurnal()">Anuleaz\u0103</button></div>';
+  var ta = textEl.querySelector('textarea');
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+}
+function saveJurnalEdit(id) {
+  var ta = document.querySelector('.jurnal-entry[data-id="' + id + '"] .je-edit-area');
+  if (!ta || !ta.value.trim()) return;
+  var entries = getJurnalEntries();
+  var e = entries.find(function(x){return x.id===id;});
+  if (e) { e.note = ta.value.trim(); saveJurnalEntries(entries); syncJournal(); }
   renderJurnal();
-  syncJournal();
 }
 function exportJurnalCSV() {
   var entries = getJurnalEntries();
@@ -6331,19 +6374,33 @@ function renderCalendar() {
   // Empty cells
   for (let i = 0; i < startOffset; i++) html += '<div class="cal-day empty"></div>';
 
+  // Journal entries for this month
+  var jEntries = getJurnalEntries();
+  var yearMonth = calYear + '-' + String(calMonth + 1).padStart(2, '0');
+  var jByDay = {};
+  jEntries.forEach(function(e) {
+    if (e.date && e.date.startsWith(yearMonth)) {
+      var day = parseInt(e.date.split('-')[2]);
+      if (!jByDay[day]) jByDay[day] = [];
+      jByDay[day].push(e);
+    }
+  });
+
   // Day cells
-  const monthNum = calMonth + 1; // 1-indexed
+  const monthNum = calMonth + 1;
   for (let d = 1; d <= daysInMonth; d++) {
     const isToday = d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear();
     const hasEvent = TREATMENTS_CAL.some(t => {
-      const from = t.m1;
-      const to = t.m2;
+      const from = t.m1, to = t.m2;
       if (monthNum < from || monthNum > to) return false;
       if (monthNum === from && t.d1 && d < t.d1) return false;
       if (monthNum === to && t.d2 && d > t.d2) return false;
       return true;
     });
-    html += `<div class="cal-day${isToday ? ' today' : ''}${hasEvent ? ' has-event' : ''}">${d}</div>`;
+    var hasJ = !!jByDay[d];
+    html += '<div class="cal-day' + (isToday ? ' today' : '') + (hasEvent ? ' has-event' : '') + '"' +
+      (hasJ ? ' onclick="showDayJournal(' + d + ')"' : '') + '>' + d +
+      (hasJ ? '<span class="cal-j-dot"></span>' : '') + '</div>';
   }
   grid.innerHTML = html;
 
@@ -6361,6 +6418,42 @@ function calNav(dir) {
   if (calMonth < 0) { calMonth = 11; calYear--; }
   if (calMonth > 11) { calMonth = 0; calYear++; }
   renderCalendar();
+}
+
+// ====== RECOLTA SUMMARY ======
+function renderRecoltaSummary() {
+  var el = document.getElementById('recoltaSummary');
+  if (!el) return;
+  var year = new Date().getFullYear();
+  var entries = getJurnalEntries().filter(function(e) { return e.type === 'recoltare' && e.date && e.date.startsWith(String(year)) && e.kg > 0; });
+  if (entries.length === 0) {
+    el.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:16px;">Nicio recolt\u0103 \u00EEnregistrat\u0103 \u00EEn ' + year + '. Adaug\u0103 din Jurnal (tip: Recoltare).</p>';
+    return;
+  }
+  var bySpecies = {};
+  entries.forEach(function(e) { var sp = e.species || 'necunoscut'; if (!bySpecies[sp]) bySpecies[sp] = {kg:0,count:0}; bySpecies[sp].kg += e.kg; bySpecies[sp].count++; });
+  var totalKg = 0;
+  var rows = Object.entries(bySpecies).sort(function(a,b){return b[1].kg-a[1].kg;}).map(function(p) {
+    totalKg += p[1].kg;
+    var name = SPECIES[p[0]] || p[0].charAt(0).toUpperCase() + p[0].slice(1);
+    return '<tr><td>' + escapeHtml(name) + '</td><td style="text-align:right;">' + p[1].kg.toFixed(1) + '</td><td style="text-align:right;">' + p[1].count + '</td></tr>';
+  }).join('');
+  el.innerHTML = '<div class="table-wrap"><table><tr><th>Specie</th><th style="text-align:right;">Kg total</th><th style="text-align:right;">Recolt\u0103ri</th></tr>' +
+    rows + '<tr style="font-weight:700;border-top:2px solid var(--accent);"><td>TOTAL ' + year + '</td><td style="text-align:right;">' + totalKg.toFixed(1) + ' kg</td><td style="text-align:right;">' + entries.length + '</td></tr></table></div>';
+}
+
+// ====== CALENDAR JOURNAL OVERLAY ======
+function showDayJournal(day) {
+  var monthStr = String(calMonth + 1).padStart(2, '0');
+  var dateStr = calYear + '-' + monthStr + '-' + String(day).padStart(2, '0');
+  var entries = getJurnalEntries().filter(function(e) { return e.date === dateStr; });
+  var events = document.getElementById('calEvents');
+  if (!events || entries.length === 0) return;
+  var typeLabels = {tratament:'\uD83D\uDCA7',tundere:'\u2702\uFE0F',fertilizare:'\uD83C\uDF31',irigare:'\uD83D\uDCA7',recoltare:'\uD83C\uDF4E',observatie:'\uD83D\uDC41\uFE0F',altele:'\uD83D\uDCCC'};
+  events.innerHTML += '<h4 style="color:var(--warning);margin:16px 0 8px;">\uD83D\uDCDD Interven\u021Bii pe ' + dateStr + ':</h4>' +
+    entries.map(function(e) {
+      return '<div class="cal-event-item" style="border-color:var(--warning);"><strong>' + (typeLabels[e.type]||'\uD83D\uDCCC') + ' ' + escapeHtml(e.type) + '</strong><br>' + escapeHtml(e.note) + '</div>';
+    }).join('');
 }
 
 // ====== WMO CODES (Open-Meteo) ======
@@ -6553,7 +6646,7 @@ function injectSpeciesTools(tabId) {
   if (prev) prev.remove();
   activeSpeciesId = tabId;
 
-  if (tabId === 'plan-livada') { injectReportButton(); return; }
+  if (tabId === 'plan-livada') { injectReportButton(); renderRecoltaSummary(); return; }
   if (!SPECIES[tabId]) return;
 
   const tc = document.getElementById(tabId);
@@ -7052,6 +7145,8 @@ async function initDashboardAzi() {
       }
     } else { meteoEl.innerHTML = '<p style="color:var(--text-dim);">Offline</p>'; }
   }
+  // Backup reminder
+  checkBackupReminder();
 }
 
 // ====== BACKUP & RESTORE (B3) ======
@@ -7068,6 +7163,25 @@ function backupData() {
   a.href = URL.createObjectURL(blob);
   a.download = 'livada-backup-' + new Date().toISOString().split('T')[0] + '.json';
   a.click(); URL.revokeObjectURL(a.href);
+  localStorage.setItem('livada-last-backup', String(Date.now()));
+  localStorage.setItem('livada-entries-at-backup', String(getJurnalEntries().length));
+}
+function checkBackupReminder() {
+  var lastBackup = parseInt(localStorage.getItem('livada-last-backup') || '0');
+  var entriesAtBackup = parseInt(localStorage.getItem('livada-entries-at-backup') || '0');
+  var currentEntries = getJurnalEntries().length;
+  var daysSince = lastBackup ? Math.floor((Date.now() - lastBackup) / 86400000) : 999;
+  var newEntries = currentEntries - entriesAtBackup;
+  if (daysSince > 7 || newEntries >= 10) {
+    var el = document.getElementById('backupReminder');
+    if (el) {
+      var msg = daysSince > 30 ? 'Nu ai f\u0103cut niciodat\u0103 backup!' : 'Ultimul backup: acum ' + daysSince + ' zile' + (newEntries > 0 ? ' (' + newEntries + ' interven\u021Bii noi)' : '');
+      el.innerHTML = '<div class="alert alert-warning"><strong>\uD83D\uDCBE Backup recomandat</strong> ' + msg +
+        '<div style="display:flex;gap:8px;margin-top:8px;">' +
+        '<button class="btn btn-primary" style="padding:4px 12px;font-size:0.75rem;" onclick="backupData();this.closest(\'.alert\').style.display=\'none\';">Backup acum</button>' +
+        '<button class="btn btn-secondary" style="padding:4px 12px;font-size:0.75rem;" onclick="this.closest(\'.alert\').style.display=\'none\';">Mai t\u00E2rziu</button></div></div>';
+    }
+  }
 }
 function restoreData(input) {
   var file = input.files[0]; if (!file) return;
@@ -7138,13 +7252,23 @@ function printFisa() {
   var name = SPECIES[activeSpeciesId] || 'Plan Livada';
   var content = document.getElementById(activeSpeciesId);
   if (!content) return;
+  var clone = content.cloneNode(true);
+  clone.querySelectorAll('#sp-tools-section, #report-section, .sp-tools, button, input, select, textarea, .ai-load, .ai-res, .gal-upload, .gal-grid, .sync-badge, [onclick]').forEach(function(el) { el.remove(); });
   var win = window.open('','','width=800,height=600');
-  win.document.write('<html><head><title>Fi\u0219a ' + name + '</title>' +
-    '<style>body{font-family:sans-serif;padding:20px;font-size:12px;line-height:1.5;}h2{color:#2d5016;border-bottom:2px solid #2d5016;padding-bottom:4px;}table{width:100%;border-collapse:collapse;margin:8px 0;}th,td{border:1px solid #ccc;padding:4px 6px;text-align:left;font-size:11px;}th{background:#f0f0f0;}.sp-tools,.section-title{cursor:default;}.alert{border:1px solid #ccc;padding:8px;margin:6px 0;border-radius:4px;}@media print{body{padding:10px;}}</style>' +
-    '</head><body><h1>Fi\u0219a Teren: ' + escapeHtml(name) + '</h1><p>Data: ' + new Date().toLocaleDateString('ro-RO') + '</p><hr>' +
-    content.innerHTML + '</body></html>');
+  win.document.write('<!DOCTYPE html><html><head><title>Fi\u0219a ' + escapeHtml(name) + '</title>' +
+    '<style>body{font-family:Arial,Helvetica,sans-serif;padding:24px;font-size:12px;line-height:1.6;color:#222;}' +
+    'h1{color:#2d5016;font-size:18px;border-bottom:2px solid #2d5016;padding-bottom:6px;margin-bottom:4px;}' +
+    '.print-meta{color:#666;font-size:10px;margin-bottom:20px;border-bottom:1px solid #ddd;padding-bottom:8px;}' +
+    'h2{color:#2d5016;font-size:14px;margin-top:18px;border-bottom:1px solid #ccc;padding-bottom:4px;}' +
+    'h3{color:#3a7a3a;font-size:12px;margin-top:14px;}table{width:100%;border-collapse:collapse;margin:8px 0;page-break-inside:avoid;}' +
+    'th,td{border:1px solid #bbb;padding:4px 6px;text-align:left;font-size:10px;}th{background:#e8e8e8;}' +
+    'tr:nth-child(even) td{background:#f8f8f8;}.alert{border:1px solid #ccc;padding:8px;margin:8px 0;border-radius:4px;font-size:11px;background:#f5f5f5;}' +
+    'strong{color:#2d5016;}@media print{body{padding:10px;}}</style></head><body>' +
+    '<h1>Fi\u0219a Teren: ' + escapeHtml(name) + '</h1>' +
+    '<div class="print-meta">Data: ' + new Date().toLocaleDateString('ro-RO') + ' \u2022 Loca\u021Bie: N\u0103dlac, jud. Arad \u2022 Livada Mea Dashboard</div>' +
+    clone.innerHTML + '</body></html>');
   win.document.close();
-  win.print();
+  setTimeout(function() { win.print(); }, 300);
 }
 
 // ====== OFFLINE INDICATOR (C1) ======
