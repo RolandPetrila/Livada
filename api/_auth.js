@@ -43,6 +43,15 @@ export function checkAuth(req) {
 const rateLimitMap = new Map();
 const RATE_WINDOW = 60_000;
 const RATE_MAX = 10;
+const RATE_CLEANUP_INTERVAL = 5 * 60_000;
+
+// Cleanup expired entries to prevent memory leak
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitMap) {
+    if (now > entry.reset) rateLimitMap.delete(ip);
+  }
+}, RATE_CLEANUP_INTERVAL);
 
 export function rateLimit(req) {
   const ip = (getHeader(req, 'x-forwarded-for') || 'unknown').split(',')[0].trim();

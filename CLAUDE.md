@@ -6,7 +6,7 @@ Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, ju
 
 ## Arhitectura
 - **Frontend**: Single HTML file (`public/index.html`) — tot inline (CSS, JS, date)
-- **Backend**: Vercel API routes (`api/`) — doar features avansate (Faza 2+)
+- **Backend**: Vercel API routes (`api/`) — Full features Faza 5 (Dashboard, AI, Monitoring)
 - **Hosting**: Vercel (auto-deploy la push)
 - **Repo**: https://github.com/RolandPetrila/Livada.git
 

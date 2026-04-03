@@ -1,5 +1,5 @@
 import { Redis } from '@upstash/redis';
-import { corsHeaders, handleOptions, checkAuth } from './_auth.js';
+import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
 const KEY = 'livada:journal';
 
@@ -8,6 +8,8 @@ export default async function handler(req) {
 
   const authErr = checkAuth(req);
   if (authErr) return authErr;
+  const limitErr = rateLimit(req);
+  if (limitErr) return limitErr;
 
   const hdrs = corsHeaders(req);
 
@@ -59,6 +61,7 @@ export default async function handler(req) {
         { status: 503, headers: hdrs }
       );
     }
-    return Response.json({ error: msg }, { status: 500, headers: hdrs });
+    console.error('API journal error:', msg);
+    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: hdrs });
   }
 }

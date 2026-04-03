@@ -6003,6 +6003,16 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
+// ====== CONSTANTS ======
+var DEBOUNCE_SEARCH_MS = 300;
+var TOAST_DURATION_MS = 4000;
+var INIT_ALERTS_DELAY_MS = 1500;
+var INIT_SYNC_DELAY_MS = 3000;
+var MODAL_FOCUS_DELAY_MS = 100;
+var CAL_NAV_DEBOUNCE_MS = 80;
+var LIVADA_LAT = 46.17;
+var LIVADA_LON = 20.75;
+
 // ====== TAB SWITCHING ======
 $$('.tab[data-tab]').forEach(function(tab) {
   tab.setAttribute('role', 'tab');
@@ -6069,7 +6079,7 @@ btnSearch.addEventListener('click', () => {
 let searchTimeout;
 searchInput.addEventListener('input', () => {
   clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(doSearch, 300);
+  searchTimeout = setTimeout(doSearch, DEBOUNCE_SEARCH_MS);
 });
 
 function clearSearchHighlights() {
@@ -6214,30 +6224,38 @@ document.getElementById('jurnalType')?.addEventListener('change', function() {
   if (rf) rf.style.display = this.value === 'recoltare' ? 'block' : 'none';
 });
 function addJurnalEntry() {
-  var date = document.getElementById('jurnalDate').value;
-  var type = document.getElementById('jurnalType').value;
-  var note = document.getElementById('jurnalNote').value.trim();
-  if (!date || !note) return;
-  var entry = { id: Date.now(), date: date, type: type, note: note };
-  if (type === 'recoltare') {
-    var sp = document.getElementById('jurnalSpecie')?.value;
-    var kg = parseFloat(document.getElementById('jurnalKg')?.value) || 0;
-    if (sp) entry.species = sp;
-    if (kg > 0) entry.kg = kg;
+  try {
+    var date = document.getElementById('jurnalDate').value;
+    var type = document.getElementById('jurnalType').value;
+    var note = document.getElementById('jurnalNote').value.trim();
+    if (!date || !note) { showToast('Completeaza data si nota.'); return; }
+    var entry = { id: Date.now(), date: date, type: type, note: note };
+    if (type === 'recoltare') {
+      var sp = document.getElementById('jurnalSpecie')?.value;
+      var kg = parseFloat(document.getElementById('jurnalKg')?.value) || 0;
+      if (sp) entry.species = sp;
+      if (kg > 0) entry.kg = kg;
+    }
+    var entries = getJurnalEntries();
+    entries.unshift(entry);
+    saveJurnalEntries(entries);
+    document.getElementById('jurnalNote').value = '';
+    if (document.getElementById('jurnalKg')) document.getElementById('jurnalKg').value = '';
+    renderJurnal();
+    syncJournal().catch(function(e) { console.error('syncJournal:', e); });
+  } catch (err) {
+    showToast('Eroare la salvare: ' + err.message);
   }
-  var entries = getJurnalEntries();
-  entries.unshift(entry);
-  saveJurnalEntries(entries);
-  document.getElementById('jurnalNote').value = '';
-  if (document.getElementById('jurnalKg')) document.getElementById('jurnalKg').value = '';
-  renderJurnal();
-  syncJournal();
 }
 function deleteJurnalEntry(id) {
-  const entries = getJurnalEntries().filter(e => e.id !== id);
-  saveJurnalEntries(entries);
-  renderJurnal();
-  syncDeleteJournal(id);
+  try {
+    var entries = getJurnalEntries().filter(function(e) { return e.id !== id; });
+    saveJurnalEntries(entries);
+    renderJurnal();
+    syncDeleteJournal(id);
+  } catch (err) {
+    showToast('Eroare la stergere: ' + err.message);
+  }
 }
 var jurnalPage = 0;
 var JURNAL_PER_PAGE = 15;
@@ -6413,11 +6431,15 @@ function renderCalendar() {
     events.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:20px;">Niciun tratament planificat luna aceasta.</p>';
   }
 }
+var _calNavTimer;
 function calNav(dir) {
-  calMonth += dir;
-  if (calMonth < 0) { calMonth = 11; calYear--; }
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  renderCalendar();
+  clearTimeout(_calNavTimer);
+  _calNavTimer = setTimeout(function() {
+    calMonth += dir;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  }, CAL_NAV_DEBOUNCE_MS);
 }
 
 // ====== RECOLTA SUMMARY ======
@@ -6485,7 +6507,7 @@ async function fetchMeteo() {
   var el = document.getElementById('meteoData');
   el.innerHTML = '<p style="text-align:center;color:var(--text-dim);">Se \u00eencarc\u0103...</p>';
   try {
-    var res = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=46.17&longitude=20.75&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&timezone=Europe/Bucharest&forecast_days=5', {}, 10000);
+    var res = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=' + LIVADA_LAT + '&longitude=' + LIVADA_LON + '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&timezone=Europe/Bucharest&forecast_days=5', {}, 10000);
     if (!res.ok) throw new Error('Open-Meteo error ' + res.status);
     var d = await res.json();
     var c = d.current;
@@ -7088,7 +7110,7 @@ async function initDashboardAzi() {
   // B3: Fetch-uri PARALELE
   var [alertRes, meteoRes] = await Promise.allSettled([
     navigator.onLine ? fetchWithTimeout('/api/frost-alert', {}, 5000) : Promise.reject('offline'),
-    navigator.onLine ? fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=46.17&longitude=20.75&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,weather_code&timezone=Europe/Bucharest&forecast_days=3', {}, 8000) : Promise.reject('offline')
+    navigator.onLine ? fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=' + LIVADA_LAT + '&longitude=' + LIVADA_LON + '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,weather_code&timezone=Europe/Bucharest&forecast_days=3', {}, 8000) : Promise.reject('offline')
   ]);
 
   // B. Alerte
@@ -7306,7 +7328,7 @@ function showToast(msg) {
   t.className = 'toast';
   t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(function() { t.remove(); }, 4000);
+  setTimeout(function() { t.remove(); }, TOAST_DURATION_MS);
 }
 window.addEventListener('unhandledrejection', function(e) {
   console.error('Unhandled:', e.reason);
@@ -7326,11 +7348,9 @@ window.addEventListener('unhandledrejection', function(e) {
     if (tab) setTimeout(initDashboardAzi, 50);
   });
   // Check alerts
-  setTimeout(checkAlerts, 1500);
+  setTimeout(function() { checkAlerts().catch(function(e) { console.error('checkAlerts init:', e); }); }, INIT_ALERTS_DELAY_MS);
   // Sync journal after short delay
-  setTimeout(syncJournal, 3000);
-  // Re-sync on reconnect
-  window.addEventListener('online', function() { syncJournal(); checkAlerts(); });
+  setTimeout(function() { syncJournal().catch(function(e) { console.error('syncJournal init:', e); }); }, INIT_SYNC_DELAY_MS);
 })();
 </script>
 <script defer src="https://va.vercel-scripts.com/v1/speed-insights/script.js"></script>

@@ -31,7 +31,7 @@ export default async function handler(req) {
   try {
     const formData = await req.formData();
     const file = formData.get('image');
-    const species = formData.get('species') || 'necunoscut';
+    const species = (formData.get('species') || 'necunoscut').replace(/[^a-zA-Z0-9\s_-]/g, '').substring(0, 100);
 
     if (!file) {
       return Response.json({ error: 'Nicio imagine selectata' }, { status: 400, headers: corsHeaders(req) });
@@ -74,10 +74,10 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     let geminiRes;
     try {
       geminiRes = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: file.type || 'image/jpeg', data: base64 } }] }],
             generationConfig: { maxOutputTokens: 1024, temperature: 0.3 },
@@ -96,7 +96,8 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
 
     if (!geminiRes.ok) {
       const errBody = await geminiRes.text();
-      throw new Error(`Gemini API: ${geminiRes.status} — ${errBody.substring(0, 200)}`);
+      console.error(`Gemini API error: ${geminiRes.status} — ${errBody.substring(0, 200)}`);
+      throw new Error('Serviciul AI a returnat o eroare. Incearca din nou.');
     }
 
     const result = await geminiRes.json();

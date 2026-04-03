@@ -47,7 +47,7 @@ export default async function handler(req) {
     try {
       const body = await req.json();
       if (body.localJournal) {
-        localJournal = '\n\nJurnal local (din dispozitiv):\n' + body.localJournal;
+        localJournal = '\n\nJurnal local (din dispozitiv):\n' + String(body.localJournal).substring(0, 5000);
       }
     } catch {}
 

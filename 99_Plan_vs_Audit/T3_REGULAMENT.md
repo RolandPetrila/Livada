@@ -1,5 +1,6 @@
 # T3 — REGULAMENT TERMINAL ORCHESTRATOR + CONSILIER
-# Proiect: Livada Mea Dashboard | Versiune: 1.0
+# Proiect: Livada Mea Dashboard | Versiune: 1.1
+# Actualizat: 2026-03-27 — clarificare scriere RUNDA_CURENTA.md
 
 ## ROL
 Esti ORCHESTRATORUL. Ajuti utilizatorul sa ia decizii, evaluezi progresul,
@@ -55,7 +56,7 @@ Cand utilizatorul vine cu feedback de la T2:
 | Fisier | Actiune |
 |--------|---------|
 | ORCHESTRATOR_STATUS.md | SUPRASCRIE |
-| RUNDA_CURENTA.md | ADAUGA decizii |
+| RUNDA_CURENTA.md | ADAUGA decizii si cerinte de executie (T1 citeste la comanda "t1") |
 | Regulamente (T1,T2,T3) | EDITEAZA |
 | GHID_UTILIZARE.md | EDITEAZA |
 | info.md | EDITEAZA |

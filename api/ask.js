@@ -41,9 +41,10 @@ Reguli:
 
 Specia curenta: ${species || 'general (toate speciile)'}`;
 
+    const safeQuestion = question.trim().substring(0, 2000);
     const userMsg = ctx
-      ? `Documentatie de referinta pentru ${species}:\n${ctx}\n\n---\nIntrebarea mea: ${question}`
-      : question;
+      ? `Documentatie de referinta pentru ${species}:\n${ctx}\n\n---\nIntrebarea pomicultorului: ${safeQuestion}`
+      : `Intrebarea pomicultorului: ${safeQuestion}`;
 
     const controller = new AbortController();
     const fetchTimer = setTimeout(() => controller.abort(), 25000);

@@ -1,6 +1,8 @@
 import { put, list, del } from '@vercel/blob';
 import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
+export const config = { maxDuration: 60 };
+
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
 
@@ -90,6 +92,7 @@ export default async function handler(req) {
         { status: 503, headers: corsHeaders(req) }
       );
     }
-    return Response.json({ error: msg }, { status: 500, headers: corsHeaders(req) });
+    console.error('API photos error:', msg);
+    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: corsHeaders(req) });
   }
 }

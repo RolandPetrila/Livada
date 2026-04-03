@@ -9,6 +9,10 @@ Thumbs.db
 *.png
 *.jpeg
 *.jpg
+*.webp
+*.gif
+*.bmp
 *.docx
+Livada_Mea_Dashboard.html
 .claude/
 tools/html_output/

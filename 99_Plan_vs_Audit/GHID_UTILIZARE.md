@@ -30,7 +30,7 @@
 
 | Comanda | Unde o scrii | Ce face |
 |---------|-------------|---------|
-| `t1` | In T1 | T1 citeste feedback de la T2 si decizii de la T3 |
+| `t1` | In T1 | T1 citeste feedback T2 + decizii/cerinte T3 + stare plan, apoi executa |
 | `t2` | In T2 | T2 auditeaza tot si scrie feedback |
 | `t3` | In T3 | T3 ajuta cu decizii si coordonare |
 
@@ -45,12 +45,14 @@ Citeste urmatoarele fisiere si urmeaza regulamentul:
 2. 99_Plan_vs_Audit/info.md
 3. 99_Plan_vs_Audit/PLAN_v3.md
 4. 99_Plan_vs_Audit/RUNDA_CURENTA.md
+5. 99_Plan_vs_Audit/PLAN_DECISIONS.md
 
 Esti T1 — terminalul de PLAN si EXECUTIE. Rolul tau: implementezi features, scrii cod, faci deploy.
 Mod executie: AUTONOM — implementeaza conform planului, intreaba doar la decizii majore.
 Prioritati: Android-first, offline-first, romana 100%, zero costuri.
 
-Incepe cu ce scrie in RUNDA_CURENTA.md (sectiunea "Ce urmeaza").
+Incepe cu ce scrie in RUNDA_CURENTA.md.
+Dupa initializare, comanda "t1" = sync cu T2/T3 + executie.
 ```
 
 ### TERMINAL 2 — Audit
@@ -96,14 +98,15 @@ ETAPA 3: Audit
 Roland deschide T2, scrie "t2"
 T2 citeste RUNDA_CURENTA.md + cod sursa, scrie AUDIT_FEEDBACK.md
 
-ETAPA 4: Integrare feedback
+ETAPA 4: Integrare feedback + decizii
 Roland merge la T1, scrie "t1"
-T1 citeste AUDIT_FEEDBACK.md, integreaza sugestiile
+T1 citeste AUDIT_FEEDBACK.md + RUNDA_CURENTA.md + PLAN_v3.md
+T1 integreaza feedback T2 + cerinte/decizii T3, apoi executa
 
-ETAPA 5: Decizii
-Daca Roland are nevoie de ajutor → merge la T3, scrie "t3"
-T3 ajuta, scrie decizia in RUNDA_CURENTA.md
-Roland merge la T1, scrie "t1" → T1 citeste decizia automat
+ETAPA 5: Decizii (optional, cand e nevoie)
+Roland merge la T3, scrie "t3"
+T3 ajuta, scrie decizia/cerinta in RUNDA_CURENTA.md
+Roland merge la T1, scrie "t1" → T1 citeste si executa automat
 
 ETAPA 6: Deploy
 Dupa fiecare sprint finalizat: T1 face commit + push + vercel --prod

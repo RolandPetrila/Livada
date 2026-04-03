@@ -109,6 +109,36 @@
 - [ ] 4.9 Remindere tratamente cu fereastra optima stropire (prognoza Open-Meteo + spray score)
 - [ ] 4.10 Calculator mixturi simplificat (2-3 produse, verificare compatibilitate)
 
+## FAZA 5 — Polish & Imbunatatiri (selectie din RECOMANDARI_IMBUNATATIRI v2)
+
+### Sesiunea 9 — Spray Score + Prognoza + Securitate + UX ✅ COMPLET
+- [x] 5.1 Fix DOMPurify timing (muta inainte de script inline)
+- [x] 5.2 Elimina escapeHtml dublu (sterge prima definitie)
+- [x] 5.3 CSP header in vercel.json
+- [x] 5.4 Prognoza 5 zile in modalul Meteo (daily forecast Open-Meteo)
+- [x] 5.5 Dashboard Azi: spray score 0-100 + prognoza 3 zile + urmatorul tratament
+- [x] 5.6 Fetch-uri paralele Dashboard (Promise.allSettled)
+- [x] 5.7 Offline indicator banner + dezactivare butoane AI
+- [x] 5.8 Modal Escape key + focus trap
+- [x] 5.9 Calculator volum total per numar pomi
+- [x] 5.10 Global error handler (toast discret)
+
+### Sesiunea 10 — UX Improvements ✅ COMPLET
+- [x] 5.11 Cautare cu highlight in text + navigare la rezultat
+- [x] 5.12 Jurnal editare inline (inlocuire prompt())
+- [x] 5.13 Calendar cu overlay interventii jurnal
+- [x] 5.14 Recolta sumar vizual per specie/an
+- [x] 5.15 Auto-backup reminder (7 zile / 10 interventii)
+- [x] 5.16 Print curatare HTML (sterge butoane, CSS dedicat)
+
+### Sesiunea 11 — Strategic (planificata)
+- [ ] 5.17 Rate limiter persistent Redis
+- [ ] 5.18 SW update notification
+- [ ] 5.19 Istoric AI salvat (localStorage, max 20)
+- [ ] 5.20 Sync timestamp vizibil
+- [ ] 5.21 Monitorizare localStorage usage
+- [ ] 5.22 Cron health check in Dashboard
+
 ---
 
 ## RAPOARTE EXECUTIE
@@ -170,3 +200,13 @@
 - vercel.json: maxDuration 30s pe ask.js, diagnose.js, report.js
 - Frontend: authFetch timeout 30s pentru AI calls
 - Cauza: Vercel Hobby default 10s + frontend default 15s = AI calls timeout-au
+
+### Sesiunea 9 (2026-03-29) — T1 autonom
+**Faza 5 — Spray Score + Prognoza + Securitate + UX:** COMPLET (10/10 items)
+- Securitate: DOMPurify timing fix, escapeHtml dedup, CSP header
+- Spray Score: calculateSprayScore() 0-100, getNextTreatment(), prognoza 3 zile in Dashboard Azi
+- Meteo: Prognoza 5 zile cu WMO emoji in modal Meteo (daily forecast Open-Meteo)
+- Performance: Promise.allSettled pentru fetch-uri paralele Dashboard
+- UX: Offline banner, Modal Escape+focus trap, Calculator volum total per nr pomi, Error handler toast
+- HTML: 7062 → 7214 linii (+152)
+- Deploy: https://livada-mea-psi.vercel.app
