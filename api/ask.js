@@ -3,6 +3,8 @@ import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 export const config = { maxDuration: 60 };
 
 export default async function handler(req) {
+  console.log('[ask] start', req.method);
+
   if (req.method === 'OPTIONS') return handleOptions(req);
 
   if (req.method !== 'POST') {
@@ -16,6 +18,7 @@ export default async function handler(req) {
 
   const API_KEY = process.env.GROQ_API_KEY;
   if (!API_KEY) {
+    console.error('[ask] GROQ_API_KEY lipsa');
     return Response.json({ error: 'GROQ_API_KEY lipsa' }, { status: 500, headers: corsHeaders(req) });
   }
 
@@ -52,11 +55,12 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
     ? `Documentatie de referinta pentru ${species}:\n${ctx}\n\n---\nIntrebarea pomicultorului: ${safeQuestion}`
     : `Intrebarea pomicultorului: ${safeQuestion}`;
 
-  const controller = new AbortController();
-  const fetchTimer = setTimeout(() => controller.abort(), 50000);
+  console.log('[ask] trimit cerere Groq, intrebare lungime:', safeQuestion.length);
 
   try {
-    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    // Promise.race in loc de AbortController — functioneaza chiar si cand
+    // fetch() nu raspunde la semnale de abort (hang la nivel TCP/TLS)
+    const fetchPromise = fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` },
       body: JSON.stringify({
@@ -65,13 +69,18 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
         max_tokens: 1024,
         temperature: 0.3,
       }),
-      signal: controller.signal,
     });
-    clearTimeout(fetchTimer);
+
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('GROQ_TIMEOUT')), 50000)
+    );
+
+    const groqRes = await Promise.race([fetchPromise, timeoutPromise]);
+    console.log('[ask] Groq status:', groqRes.status);
 
     if (!groqRes.ok) {
       const errText = await groqRes.text().catch(() => '');
-      console.error('Groq API error:', groqRes.status, errText.substring(0, 200));
+      console.error('[ask] Groq eroare:', groqRes.status, errText.substring(0, 200));
       if (groqRes.status === 429) {
         return Response.json(
           { error: 'AI suprasolicitat. Incearca din nou in cateva secunde.' },
@@ -86,12 +95,12 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
 
     const result = await groqRes.json();
     const answer = result.choices?.[0]?.message?.content || 'Nu am putut genera un raspuns.';
+    console.log('[ask] raspuns primit, lungime:', answer.length);
     return Response.json({ answer }, { headers: corsHeaders(req) });
 
   } catch (err) {
-    clearTimeout(fetchTimer);
-    console.error('API ask error:', err?.name, err?.message);
-    if (err?.name === 'AbortError') {
+    console.error('[ask] eroare:', err?.name, err?.message);
+    if (err?.message === 'GROQ_TIMEOUT' || err?.name === 'AbortError') {
       return Response.json(
         { error: 'AI-ul raspunde lent. Incearca din nou in cateva secunde.' },
         { status: 503, headers: corsHeaders(req) }
