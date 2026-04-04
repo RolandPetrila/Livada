@@ -10132,49 +10132,46 @@ function openDiagnoseModal() {
 // Reduce dimensiunea si calitatea pana cand fisierul incape sub limita
 function compressDiagnoseImage(file) {
   return new Promise(function(resolve, reject) {
-    var MAX_BYTES = 3 * 1024 * 1024; // 3MB — sigur sub limita Vercel Edge de 4MB
-    var img = new Image();
-    var url = URL.createObjectURL(file);
-    img.onload = function() {
-      URL.revokeObjectURL(url);
-      var origW = img.naturalWidth || img.width;
-      var origH = img.naturalHeight || img.height;
-      // Incearca mai multe combinatii maxPx/quality pana gaseste una < 3MB
-      var attempts = [
-        { px: 1600, q: 0.82 },
-        { px: 1280, q: 0.75 },
-        { px: 1024, q: 0.70 },
-        { px: 800,  q: 0.65 },
-        { px: 640,  q: 0.60 }
-      ];
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      for (var i = 0; i < attempts.length; i++) {
-        var a = attempts[i];
-        var scale = Math.min(a.px / origW, a.px / origH, 1);
-        canvas.width  = Math.max(1, Math.round(origW * scale));
-        canvas.height = Math.max(1, Math.round(origH * scale));
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        var dataUrl = canvas.toDataURL('image/jpeg', a.q);
-        // Converteste dataUrl -> Blob
-        var byteStr = atob(dataUrl.split(',')[1]);
-        var bytes = new Uint8Array(byteStr.length);
-        for (var j = 0; j < byteStr.length; j++) bytes[j] = byteStr.charCodeAt(j);
-        var blob = new Blob([bytes], { type: 'image/jpeg' });
-        if (blob.size <= MAX_BYTES) {
-          resolve({ blob: blob, compressed: true, size: blob.size, px: canvas.width + 'x' + canvas.height });
-          return;
+    var MAX_BYTES = 3 * 1024 * 1024;
+    // Foloseste FileReader + data: URL — evita blob: URL blocat de CSP
+    var reader = new FileReader();
+    reader.onerror = function() { reject(new Error('Nu am putut citi imaginea.')); };
+    reader.onload = function(ev) {
+      var img = new Image();
+      img.onerror = function() { reject(new Error('Format imagine invalid. Foloseste JPEG sau PNG.')); };
+      img.onload = function() {
+        var origW = img.naturalWidth || img.width;
+        var origH = img.naturalHeight || img.height;
+        var attempts = [
+          { px: 1600, q: 0.82 },
+          { px: 1280, q: 0.75 },
+          { px: 1024, q: 0.70 },
+          { px: 800,  q: 0.65 },
+          { px: 640,  q: 0.60 }
+        ];
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        var blob, pxLabel;
+        for (var i = 0; i < attempts.length; i++) {
+          var a = attempts[i];
+          var scale = Math.min(a.px / origW, a.px / origH, 1);
+          canvas.width  = Math.max(1, Math.round(origW * scale));
+          canvas.height = Math.max(1, Math.round(origH * scale));
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          var dataUrl = canvas.toDataURL('image/jpeg', a.q);
+          var byteStr = atob(dataUrl.split(',')[1]);
+          var bytes = new Uint8Array(byteStr.length);
+          for (var j = 0; j < byteStr.length; j++) bytes[j] = byteStr.charCodeAt(j);
+          blob = new Blob([bytes], { type: 'image/jpeg' });
+          pxLabel = canvas.width + 'x' + canvas.height;
+          if (blob.size <= MAX_BYTES) break;
         }
-      }
-      // Daca nicio varianta nu e suficient de mica (imagine foarte complexa), returneaza cea mai mica
-      resolve({ blob: blob, compressed: true, size: blob.size, px: canvas.width + 'x' + canvas.height });
+        resolve({ blob: blob, size: blob.size, px: pxLabel });
+      };
+      img.src = ev.target.result; // data: URL — permis de CSP
     };
-    img.onerror = function() {
-      URL.revokeObjectURL(url);
-      reject(new Error('Nu am putut citi imaginea. Incearca un alt format (JPEG, PNG).'));
-    };
-    img.src = url;
+    reader.readAsDataURL(file);
   });
 }
 
