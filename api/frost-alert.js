@@ -1,6 +1,11 @@
 import { Redis } from '@upstash/redis';
 import { corsHeaders, handleOptions, rateLimit } from './_auth.js';
 
+const withTimeout = (p, ms) => Promise.race([
+  p,
+  new Promise((_, reject) => setTimeout(() => reject(new Error('Redis timeout')), ms)),
+]);
+
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
   const rlErr = rateLimit(req);
@@ -8,15 +13,20 @@ export default async function handler(req) {
 
   try {
     const kv = Redis.fromEnv();
-    const frost = (await kv.get('livada:frost-alert')) || { active: false };
-    const disease = (await kv.get('livada:disease-risk')) || { active: false };
+    const [frost, disease] = await Promise.all([
+      withTimeout(kv.get('livada:frost-alert'), 5000).catch(() => null),
+      withTimeout(kv.get('livada:disease-risk'), 5000).catch(() => null),
+    ]);
 
-    return Response.json({ frost, disease }, { headers: { ...corsHeaders(req), 'Cache-Control': 'public, max-age=300' } });
+    return Response.json(
+      { frost: frost || { active: false }, disease: disease || { active: false } },
+      { headers: { ...corsHeaders(req), 'Cache-Control': 'public, max-age=300' } }
+    );
   } catch (err) {
-    // Graceful fallback when KV not provisioned
-    return Response.json({
-      frost: { active: false },
-      disease: { active: false },
-    }, { headers: corsHeaders(req) });
+    // Graceful fallback when KV not provisioned or unavailable
+    return Response.json(
+      { frost: { active: false }, disease: { active: false } },
+      { headers: corsHeaders(req) }
+    );
   }
 }

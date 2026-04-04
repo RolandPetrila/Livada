@@ -3,6 +3,11 @@ import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
 const KEY = 'livada:journal';
 
+const withTimeout = (p, ms) => Promise.race([
+  p,
+  new Promise((_, reject) => setTimeout(() => reject(new Error('Redis timeout')), ms)),
+]);
+
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
 
@@ -17,13 +22,13 @@ export default async function handler(req) {
     const kv = Redis.fromEnv();
 
     if (req.method === 'GET') {
-      const entries = (await kv.get(KEY)) || [];
+      const entries = await withTimeout(kv.get(KEY), 5000).catch(() => null) || [];
       return Response.json(entries, { headers: hdrs });
     }
 
     if (req.method === 'POST') {
       const body = await req.json();
-      const stored = (await kv.get(KEY)) || [];
+      const stored = await withTimeout(kv.get(KEY), 5000).catch(() => null) || [];
       const incoming = Array.isArray(body) ? body : [body];
 
       const map = new Map();
@@ -40,7 +45,7 @@ export default async function handler(req) {
       }
       const merged = [...map.values()].sort((a, b) => b.id - a.id);
 
-      await kv.set(KEY, merged);
+      await withTimeout(kv.set(KEY, merged), 5000);
       return Response.json({ ok: true, count: merged.length }, { headers: hdrs });
     }
 
@@ -53,18 +58,18 @@ export default async function handler(req) {
       if (!Number.isFinite(id)) {
         return Response.json({ error: 'ID invalid' }, { status: 400, headers: hdrs });
       }
-      const stored = (await kv.get(KEY)) || [];
+      const stored = await withTimeout(kv.get(KEY), 5000).catch(() => null) || [];
       const filtered = stored.filter(e => e.id !== id);
-      await kv.set(KEY, filtered);
+      await withTimeout(kv.set(KEY, filtered), 5000);
       return Response.json({ ok: true, count: filtered.length }, { headers: hdrs });
     }
 
     return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: hdrs });
   } catch (err) {
     const msg = err.message || String(err);
-    if (msg.includes('UPSTASH') || msg.includes('Missing') || msg.includes('ERR')) {
+    if (msg.includes('UPSTASH') || msg.includes('Missing') || msg.includes('ERR') || msg.includes('timeout')) {
       return Response.json(
-        { error: 'Vercel KV nu este configurat. Provisioneaza un KV store din Vercel Dashboard → Storage.' },
+        { error: 'Serviciul de stocare indisponibil temporar. Incearca din nou.' },
         { status: 503, headers: hdrs }
       );
     }
