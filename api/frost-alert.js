@@ -1,8 +1,10 @@
 import { Redis } from '@upstash/redis';
-import { corsHeaders, handleOptions } from './_auth.js';
+import { corsHeaders, handleOptions, rateLimit } from './_auth.js';
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
+  const rlErr = rateLimit(req);
+  if (rlErr) return rlErr;
 
   try {
     const kv = Redis.fromEnv();

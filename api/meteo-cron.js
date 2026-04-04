@@ -17,6 +17,15 @@ const WMO_CODES = {
 };
 
 export default async function handler(req) {
+  // Verificare CRON_SECRET — previne triggerare manuala neautorizata
+  const cronSecret = process.env.CRON_SECRET;
+  if (cronSecret) {
+    const auth = req.headers?.get?.('authorization') || req.headers?.['authorization'] || '';
+    if (auth !== `Bearer ${cronSecret}`) {
+      return Response.json({ error: 'Neautorizat' }, { status: 401 });
+    }
+  }
+
   let kv;
   try { kv = Redis.fromEnv(); } catch (err) {
     return Response.json({ error: 'Redis nu este configurat' }, { status: 503 });
@@ -109,6 +118,7 @@ export default async function handler(req) {
     });
   } catch (err) {
     try { await kv.set('livada:cron:last-run', { success: false, error: err.message, timestamp: Date.now() }); } catch {}
-    return Response.json({ error: err.message }, { status: 500 });
+    console.error('meteo-cron error:', err);
+    return Response.json({ error: 'Eroare interna server' }, { status: 500 });
   }
 }

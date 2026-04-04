@@ -2,7 +2,7 @@
 
 ## Proiect
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
-100+ pomi, 17 specii/soiuri, proprietar Roland Petrila.
+100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
 ## Arhitectura
 - **Frontend**: Single HTML file (`public/index.html`) — tot inline (CSS, JS, date)
@@ -38,9 +38,10 @@ tools/           — Scripturi utilitare
 git add [fisiere] && git commit -m "feat: ..." && git push origin main && vercel --prod
 ```
 
-## Specii (17 + 1 general)
+## Specii (20 + 1 general)
 Cires, Visin, Cais, Piersic, Prun, Migdal, Par Clapp, Par Williams,
-Par Hosui, Par Napoca, Mar Florina, Mar Golden Spur, Alun, Zmeur, Mur, Afin, Rodiu
+Par Hosui, Par Napoca, Mar Florina, Mar Golden Spur, Alun, Zmeur, Zmeur Galben Remontant,
+Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 + Plan Livada (general)
 
 ## Continut per specie — Structura A-G

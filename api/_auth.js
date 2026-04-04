@@ -29,7 +29,10 @@ export function handleOptions(req) {
 
 export function checkAuth(req) {
   const token = process.env.LIVADA_API_TOKEN;
-  if (!token) return null;
+  if (!token) return Response.json(
+    { error: 'Server misconfigured — LIVADA_API_TOKEN lipsa.' },
+    { status: 403, headers: corsHeaders(req) }
+  );
 
   const provided = getHeader(req, 'x-livada-token');
   if (provided === token) return null;
@@ -43,19 +46,15 @@ export function checkAuth(req) {
 const rateLimitMap = new Map();
 const RATE_WINDOW = 60_000;
 const RATE_MAX = 10;
-const RATE_CLEANUP_INTERVAL = 5 * 60_000;
-
-// Cleanup expired entries to prevent memory leak
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, entry] of rateLimitMap) {
-    if (now > entry.reset) rateLimitMap.delete(ip);
-  }
-}, RATE_CLEANUP_INTERVAL);
-
 export function rateLimit(req) {
-  const ip = (getHeader(req, 'x-forwarded-for') || 'unknown').split(',')[0].trim();
+  const ip = getHeader(req, 'x-real-ip') || (getHeader(req, 'x-forwarded-for') || 'unknown').split(',').pop().trim();
   const now = Date.now();
+
+  // Lazy cleanup: sterge entries expirate
+  for (const [key, val] of rateLimitMap) {
+    if (now > val.reset) rateLimitMap.delete(key);
+  }
+
   const entry = rateLimitMap.get(ip);
 
   if (!entry || now > entry.reset) {

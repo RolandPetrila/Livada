@@ -45,7 +45,14 @@ export default async function handler(req) {
     }
 
     if (req.method === 'DELETE') {
-      const { id } = await req.json();
+      let body;
+      try { body = await req.json(); } catch {
+        return Response.json({ error: 'Body invalid' }, { status: 400, headers: hdrs });
+      }
+      const id = Number(body.id);
+      if (!Number.isFinite(id)) {
+        return Response.json({ error: 'ID invalid' }, { status: 400, headers: hdrs });
+      }
       const stored = (await kv.get(KEY)) || [];
       const filtered = stored.filter(e => e.id !== id);
       await kv.set(KEY, filtered);

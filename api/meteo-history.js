@@ -1,8 +1,10 @@
 import { Redis } from '@upstash/redis';
-import { corsHeaders, handleOptions } from './_auth.js';
+import { corsHeaders, handleOptions, rateLimit } from './_auth.js';
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
+  const rlErr = rateLimit(req);
+  if (rlErr) return rlErr;
 
   try {
     const kv = Redis.fromEnv();
@@ -21,6 +23,7 @@ export default async function handler(req) {
     if (err.message?.includes('UPSTASH') || err.message?.includes('Missing')) {
       return Response.json({ error: 'KV nu este configurat' }, { status: 503, headers: corsHeaders(req) });
     }
-    return Response.json({ error: err.message }, { status: 500, headers: corsHeaders(req) });
+    console.error('meteo-history error:', err);
+    return Response.json({ error: 'Eroare interna server' }, { status: 500, headers: corsHeaders(req) });
   }
 }

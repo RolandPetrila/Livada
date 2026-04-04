@@ -7,8 +7,10 @@ export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
 
   try {
-    // GET — list photos (optionally filtered by species) — public, read-only
+    // GET — list photos (optionally filtered by species) — public, rate-limited
     if (req.method === 'GET') {
+      const rlErr = rateLimit(req);
+      if (rlErr) return rlErr;
       const url = new URL(req.url);
       const rawSpecies = (url.searchParams.get('species') || '').replace(/[^a-zA-Z0-9_-]/g, '');
       const prefix = rawSpecies ? `livada/photos/${rawSpecies}/` : 'livada/photos/';
@@ -59,7 +61,9 @@ export default async function handler(req) {
       }
 
       const timestamp = Date.now();
-      const ext = file.name?.split('.').pop() || 'jpg';
+      const allowedExt = ['jpg', 'jpeg', 'png', 'webp', 'heic'];
+      let ext = (file.name?.split('.').pop() || 'jpg').toLowerCase();
+      if (!allowedExt.includes(ext)) ext = 'jpg';
       const pathname = `livada/photos/${species}/${timestamp}.${ext}`;
 
       const blob = await put(pathname, file, {
@@ -75,9 +79,16 @@ export default async function handler(req) {
 
     // DELETE — remove a photo
     if (req.method === 'DELETE') {
-      const { url } = await req.json();
+      let body;
+      try { body = await req.json(); } catch {
+        return Response.json({ error: 'Body invalid' }, { status: 400, headers: corsHeaders(req) });
+      }
+      const { url } = body;
       if (!url) {
         return Response.json({ error: 'URL lipsa' }, { status: 400, headers: corsHeaders(req) });
+      }
+      if (!url.includes('.public.blob.vercel-storage.com/livada/photos/')) {
+        return Response.json({ error: 'URL invalid — nu apartine acestui proiect' }, { status: 400, headers: corsHeaders(req) });
       }
       await del(url);
       return Response.json({ ok: true }, { headers: corsHeaders(req) });
