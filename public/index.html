@@ -10131,41 +10131,39 @@ function openDiagnoseModal() {
 async function submitDiagnose(input) {
   var file = input.files[0]; if (!file) return;
 
-  // Verificare dimensiune inainte de upload (limita Vercel: 4.5MB)
-  if (file.size > 4 * 1024 * 1024) {
-    var r = document.getElementById('diagResult');
-    r.textContent = 'Imaginea este prea mare (' + (file.size / 1024 / 1024).toFixed(1) + 'MB). Alege o poza sub 4MB.';
-    r.style.display = 'block';
-    document.getElementById('diagCopyRow').style.display = 'block';
-    input.value = '';
-    return;
-  }
+  document.getElementById('diagLoading').style.display = 'block';
+  document.getElementById('diagResult').style.display = 'none';
 
+  // Comprima automat (max 1600px, quality 0.82) — orice poza functioneaza
+  var compressed = await compressImage(file, 1600, 0.82);
+  var uploadFile = new File([compressed], 'photo.jpg', { type: 'image/jpeg' });
+  var wasCompressed = uploadFile.size < file.size;
+
+  // Previzualizare (din fisierul original, arata mai bine)
   var reader = new FileReader();
   reader.onload = function(e) {
     document.getElementById('diagImg').src = e.target.result;
     document.getElementById('diagPreview').style.display = 'block';
   };
   reader.readAsDataURL(file);
-  document.getElementById('diagLoading').style.display = 'block';
-  document.getElementById('diagResult').style.display = 'none';
+
   try {
     var fd = new FormData();
-    fd.append('image', file);
+    fd.append('image', uploadFile, 'photo.jpg');
     fd.append('species', SPECIES[activeSpeciesId] || activeSpeciesId);
     var res = await authFetch('/api/diagnose', { method: 'POST', body: fd }, 65000);
-    // Raspunsul poate fi non-JSON daca Vercel respinge cererea (413 etc.)
     var rawText = await res.text();
     var data;
     try { data = JSON.parse(rawText); } catch(_) {
-      if (res.status === 413) throw new Error('Imaginea este prea mare pentru server. Alege o poza mai mica.');
+      if (res.status === 413) throw new Error('Imaginea este prea mare chiar si dupa comprimare. Incearca o poza diferita.');
       throw new Error('Eroare server (' + res.status + '): ' + rawText.substring(0, 80));
     }
     if (!res.ok) throw new Error(data.error || 'Eroare server (' + res.status + ')');
     document.getElementById('diagLoading').style.display = 'none';
     var resultEl = document.getElementById('diagResult');
+    var prefix = wasCompressed ? '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poza comprimata automat (' + (uploadFile.size/1024).toFixed(0) + 'KB)</p>' : '';
     if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; }
-    else { resultEl.innerHTML = sanitizeAI(data.diagnosis || ''); }
+    else { resultEl.innerHTML = prefix + sanitizeAI(data.diagnosis || ''); }
     resultEl.style.display = 'block';
     document.getElementById('diagCopyRow').style.display = 'block';
   } catch(e) {
