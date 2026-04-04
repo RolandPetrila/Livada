@@ -6,33 +6,28 @@ const URLS_TO_CACHE = [
   '/icon.svg'
 ];
 
-// Google Fonts cache (IMP-1: offline fonts)
 const FONT_CACHE = 'livada-fonts-v1';
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(URLS_TO_CACHE))
-      .then(() => self.skipWaiting()) // skipWaiting DUPA ce cache-ul e populat
+      .then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys =>
-        Promise.all(
-          keys
-            .filter(k => k !== CACHE_NAME && k !== FONT_CACHE)
-            .map(k => caches.delete(k))
-        )
-      )
+      .then(keys => Promise.all(
+        keys.filter(k => k !== CACHE_NAME && k !== FONT_CACHE).map(k => caches.delete(k))
+      ))
       .then(() => self.clients.claim())
       .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
-      .then(clients => {
-        // Notifica toate paginile deschise sa se reIncarce cu versiunea noua
-        clients.forEach(client => client.postMessage({ type: 'SW_UPDATED' }));
-      })
+      .then(clients => Promise.all(
+        // Forteaza reload pe toate paginile deschise — nu depinde de listener in HTML
+        clients.map(client => client.navigate(client.url))
+      ))
   );
 });
 
@@ -47,7 +42,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first pentru Google Fonts (long-lived)
+  // Cache-first pentru Google Fonts
   if (url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com')) {
     event.respondWith(
       caches.match(event.request).then(cached => {
@@ -62,7 +57,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Network-first pentru navigare HTML — versiune proaspata dupa fiecare deploy
+  // Network-first pentru navigare HTML
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).then(response => {
@@ -74,7 +69,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first cu fallback network pentru alte assets statice
+  // Cache-first cu fallback pentru alte assets
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
