@@ -55,15 +55,27 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Stale-while-revalidate for static assets
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      const fetched = fetch(event.request).then(response => {
+  // Network-first for HTML navigation — garanteaza continut proaspat dupa deploy
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).then(response => {
         const clone = response.clone();
         caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         return response;
-      }).catch(() => cached);
-      return cached || fetched;
+      }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache-first for other static assets (icons, manifest)
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+      return fetch(event.request).then(response => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        return response;
+      });
     })
   );
 });
