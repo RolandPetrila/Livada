@@ -70,13 +70,11 @@ export default async function handler(req) {
     return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: hdrs });
   } catch (err) {
     const msg = err.message || String(err);
-    if (msg.includes('UPSTASH') || msg.includes('Missing') || msg.includes('ERR') || msg.includes('timeout')) {
-      return Response.json(
-        { error: 'Serviciul de stocare indisponibil temporar. Incearca din nou.' },
-        { status: 503, headers: hdrs }
-      );
-    }
     console.error('API journal error:', msg);
-    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: hdrs });
+    // Orice eroare Redis (URL invalid, timeout, ERR, etc.) → 503 graceful
+    return Response.json(
+      { error: 'Serviciul de stocare indisponibil temporar. Incearca din nou.' },
+      { status: 503, headers: hdrs }
+    );
   }
 }
