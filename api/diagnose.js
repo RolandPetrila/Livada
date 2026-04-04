@@ -1,6 +1,7 @@
 import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
-export const config = { maxDuration: 60 };
+export const runtime = 'edge';
+export const config = { maxDuration: 30 };
 
 function uint8ToBase64(uint8) {
   const CHUNK = 8192;

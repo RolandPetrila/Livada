@@ -10130,6 +10130,17 @@ function openDiagnoseModal() {
 }
 async function submitDiagnose(input) {
   var file = input.files[0]; if (!file) return;
+
+  // Verificare dimensiune inainte de upload (limita Vercel: 4.5MB)
+  if (file.size > 4 * 1024 * 1024) {
+    var r = document.getElementById('diagResult');
+    r.textContent = 'Imaginea este prea mare (' + (file.size / 1024 / 1024).toFixed(1) + 'MB). Alege o poza sub 4MB.';
+    r.style.display = 'block';
+    document.getElementById('diagCopyRow').style.display = 'block';
+    input.value = '';
+    return;
+  }
+
   var reader = new FileReader();
   reader.onload = function(e) {
     document.getElementById('diagImg').src = e.target.result;
@@ -10143,7 +10154,13 @@ async function submitDiagnose(input) {
     fd.append('image', file);
     fd.append('species', SPECIES[activeSpeciesId] || activeSpeciesId);
     var res = await authFetch('/api/diagnose', { method: 'POST', body: fd }, 65000);
-    var data = await res.json();
+    // Raspunsul poate fi non-JSON daca Vercel respinge cererea (413 etc.)
+    var rawText = await res.text();
+    var data;
+    try { data = JSON.parse(rawText); } catch(_) {
+      if (res.status === 413) throw new Error('Imaginea este prea mare pentru server. Alege o poza mai mica.');
+      throw new Error('Eroare server (' + res.status + '): ' + rawText.substring(0, 80));
+    }
     if (!res.ok) throw new Error(data.error || 'Eroare server (' + res.status + ')');
     document.getElementById('diagLoading').style.display = 'none';
     var resultEl = document.getElementById('diagResult');
