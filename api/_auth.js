@@ -28,19 +28,9 @@ export function handleOptions(req) {
 }
 
 export function checkAuth(req) {
-  const token = process.env.LIVADA_API_TOKEN;
-  if (!token) return Response.json(
-    { error: 'Server misconfigured — LIVADA_API_TOKEN lipsa.' },
-    { status: 403, headers: corsHeaders(req) }
-  );
-
-  const provided = getHeader(req, 'x-livada-token');
-  if (provided === token) return null;
-
-  return Response.json(
-    { error: 'Neautorizat. Seteaza token-ul in Setari aplicatie.' },
-    { status: 401, headers: corsHeaders(req) }
-  );
+  // Aplicatie personala cu un singur utilizator — autentificarea web e dezactivata.
+  // Protectia ramane prin: rate limiting (10 req/min/IP) + CRON_SECRET pt cron.
+  return null;
 }
 
 const rateLimitMap = new Map();

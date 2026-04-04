@@ -9280,13 +9280,6 @@ function openDiagnoseModal() {
 }
 async function submitDiagnose(input) {
   var file = input.files[0]; if (!file) return;
-  if (!getLivadaToken()) {
-    var r = document.getElementById('diagResult');
-    r.textContent = 'Token API nelipsa. Seteaza-l din Setari (\u2699\uFE0F) sau butonul Token API.';
-    r.style.display = 'block';
-    input.value = '';
-    return;
-  }
   var reader = new FileReader();
   reader.onload = function(e) {
     document.getElementById('diagImg').src = e.target.result;
@@ -9327,12 +9320,6 @@ function openAskModal() {
 async function submitAsk() {
   var question = document.getElementById('askInput').value.trim();
   if (!question) return;
-  if (!getLivadaToken()) {
-    var r = document.getElementById('askResult');
-    r.textContent = 'Token API lipseste. Seteaza-l din Setari (\u2699\uFE0F) \u2192 Token API.';
-    r.style.display = 'block';
-    return;
-  }
   if (!navigator.onLine) { alert('Offline! Folose\u0219te c\u0103utarea din header (\uD83D\uDD0D) pentru c\u0103utare local\u0103.'); return; }
   document.getElementById('askLoading').style.display = 'block';
   document.getElementById('askResult').style.display = 'none';
