@@ -2,10 +2,9 @@
   "buildCommand": null,
   "outputDirectory": "public",
   "functions": {
-    "api/ask.js": { "maxDuration": 60 },
-    "api/diagnose.js": { "maxDuration": 60 },
-    "api/report.js": { "maxDuration": 60 },
-    "api/meteo-cron.js": { "maxDuration": 60 }
+    "api/diagnose.js": { "maxDuration": 10 },
+    "api/report.js": { "maxDuration": 10 },
+    "api/meteo-cron.js": { "maxDuration": 10 }
   },
   "crons": [
     {
