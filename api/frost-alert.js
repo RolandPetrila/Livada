@@ -1,6 +1,9 @@
 import { Redis } from '@upstash/redis';
 import { corsHeaders, handleOptions, rateLimit } from './_auth.js';
 
+// Edge Runtime: raspunsul e trimis imediat, fetch-ul Redis background e abandonat
+export const config = { runtime: 'edge' };
+
 const withTimeout = (p, ms) => Promise.race([
   p,
   new Promise((_, reject) => setTimeout(() => reject(new Error('Redis timeout')), ms)),

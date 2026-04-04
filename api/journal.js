@@ -1,6 +1,9 @@
 import { Redis } from '@upstash/redis';
 import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
+// Edge Runtime: raspunsul e trimis imediat, fetch-ul Redis background e abandonat
+export const config = { runtime: 'edge' };
+
 const KEY = 'livada:journal';
 
 const withTimeout = (p, ms) => Promise.race([
