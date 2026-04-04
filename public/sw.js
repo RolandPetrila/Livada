@@ -11,28 +11,35 @@ const FONT_CACHE = 'livada-fonts-v1';
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE))
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(URLS_TO_CACHE))
+      .then(() => self.skipWaiting()) // skipWaiting DUPA ce cache-ul e populat
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(k => k !== CACHE_NAME && k !== FONT_CACHE)
-          .map(k => caches.delete(k))
+    caches.keys()
+      .then(keys =>
+        Promise.all(
+          keys
+            .filter(k => k !== CACHE_NAME && k !== FONT_CACHE)
+            .map(k => caches.delete(k))
+        )
       )
-    )
+      .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+      .then(clients => {
+        // Notifica toate paginile deschise sa se reIncarce cu versiunea noua
+        clients.forEach(client => client.postMessage({ type: 'SW_UPDATED' }));
+      })
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
   const url = event.request.url;
 
-  // Network-first for API calls
+  // Network-first pentru API calls
   if (url.includes('/api/') || url.includes('api.open-meteo.com')) {
     event.respondWith(
       fetch(event.request).catch(() => caches.match(event.request))
@@ -40,7 +47,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first for Google Fonts (long-lived)
+  // Cache-first pentru Google Fonts (long-lived)
   if (url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com')) {
     event.respondWith(
       caches.match(event.request).then(cached => {
@@ -55,7 +62,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Network-first for HTML navigation — garanteaza continut proaspat dupa deploy
+  // Network-first pentru navigare HTML — versiune proaspata dupa fiecare deploy
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).then(response => {
@@ -67,7 +74,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first for other static assets (icons, manifest)
+  // Cache-first cu fallback network pentru alte assets statice
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;

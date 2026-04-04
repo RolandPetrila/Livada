@@ -8992,6 +8992,13 @@ function showAppInfo() {
 }
 
 if ('serviceWorker' in navigator) {
+  // Asculta mesajul SW_UPDATED — reIncarca automat la versiune noua
+  navigator.serviceWorker.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'SW_UPDATED') {
+      window.location.reload();
+    }
+  });
+
   navigator.serviceWorker.register('/sw.js').then(function(reg) {
     reg.addEventListener('updatefound', function() {
       var newWorker = reg.installing;
