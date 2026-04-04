@@ -465,12 +465,12 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <header class="app-header">
   <div class="header-left">
     <div class="app-title">&#127795; Livada Mea <span>— Ghid Complet</span></div>
-    <div class="app-subtitle">100+ pomi &bull; 17 specii &bull; Zona N&#259;dlac/Arad &bull; 2026</div>
+    <div class="app-subtitle">100+ pomi &bull; 20 specii &bull; Zona N&#259;dlac/Arad &bull; <span id="appVersionBadge" style="color:var(--accent);cursor:pointer;" title="Info versiune" onclick="showAppInfo()"></span></div>
   </div>
   <div class="header-actions">
     <button class="icon-btn" id="btnSearch" title="Cautare" aria-label="Cautare">&#128269;</button>
     <button class="icon-btn" id="btnTheme" title="Schimba tema" aria-label="Schimba tema">&#9790;</button>
-    <button class="icon-btn" onclick="showTokenSetup()" title="Set&#259;ri API" aria-label="Setari API">&#9881;</button>
+    <button class="icon-btn" onclick="showAppInfo()" title="Info versiune" aria-label="Info versiune">&#9432;</button>
   </div>
 </header>
 
@@ -8969,9 +8969,42 @@ $('#dismissBtn').addEventListener('click', () => {
   $('#installBanner').classList.remove('show');
 });
 
-// Service Worker Registration
+// ====== VERSIUNE + SERVICE WORKER ======
+const APP_BUILD = '2026-04-04 21:30';
+(function() {
+  var el = document.getElementById('appVersionBadge');
+  if (el) el.textContent = 'v' + APP_BUILD.split(' ')[0];
+})();
+
+function showUpdateToast() {
+  var existing = document.getElementById('update-toast');
+  if (existing) return;
+  var t = document.createElement('div');
+  t.id = 'update-toast';
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:14px 20px;border-radius:10px;z-index:9000;cursor:pointer;font-size:0.9rem;box-shadow:0 4px 16px rgba(0,0,0,0.4);text-align:center;white-space:nowrap;';
+  t.innerHTML = '\uD83D\uDD04 Versiune nou\u0103 disponibil\u0103 \u2014 <strong>Apas\u0103 pentru actualizare</strong>';
+  t.addEventListener('click', function() { window.location.reload(true); });
+  document.body.appendChild(t);
+}
+
+function showAppInfo() {
+  alert('Livada Mea Dashboard\nVersiune: ' + APP_BUILD + '\n\nDeploy: Vercel (livada-mea-psi.vercel.app)\nAI: Groq llama-3.3-70b + Gemini 2.5-flash\nMeteo: Open-Meteo\n\nDaca aplicatia pare veche, da refresh sau sterge cache-ul browserului.');
+}
+
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
+  navigator.serviceWorker.register('/sw.js').then(function(reg) {
+    reg.addEventListener('updatefound', function() {
+      var newWorker = reg.installing;
+      if (!newWorker) return;
+      newWorker.addEventListener('statechange', function() {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          showUpdateToast();
+        }
+      });
+    });
+    // Verifica update la fiecare deschidere a app-ului
+    reg.update().catch(function() {});
+  }).catch(function() {});
 }
 
 // iOS PWA Install Instructions (IMP-6)

@@ -70,7 +70,7 @@ Raspunde STRUCTURAT in romana:
 Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat.`;
 
     const controller = new AbortController();
-    const fetchTimer = setTimeout(() => controller.abort(), 25000);
+    const fetchTimer = setTimeout(() => controller.abort(), 55000);
     let geminiRes;
     try {
       geminiRes = await fetch(

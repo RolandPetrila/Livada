@@ -47,7 +47,7 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
       : `Intrebarea pomicultorului: ${safeQuestion}`;
 
     const controller = new AbortController();
-    const fetchTimer = setTimeout(() => controller.abort(), 25000);
+    const fetchTimer = setTimeout(() => controller.abort(), 55000);
     try {
       const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',

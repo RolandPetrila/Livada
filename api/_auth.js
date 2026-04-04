@@ -35,7 +35,7 @@ export function checkAuth(req) {
 
 const rateLimitMap = new Map();
 const RATE_WINDOW = 60_000;
-const RATE_MAX = 10;
+const RATE_MAX = 300; // aplicatie personala (Roland + parinti) — 300 req/min per IP
 export function rateLimit(req) {
   const ip = getHeader(req, 'x-real-ip') || (getHeader(req, 'x-forwarded-for') || 'unknown').split(',').pop().trim();
   const now = Date.now();
