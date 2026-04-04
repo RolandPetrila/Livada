@@ -71,7 +71,7 @@ Raspunde STRUCTURAT in romana:
 Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat.`;
 
     const controller = new AbortController();
-    const fetchTimer = setTimeout(() => controller.abort(), 55000);
+    const fetchTimer = setTimeout(() => controller.abort(), 25000); // Edge Runtime max 30s
     let geminiRes;
     try {
       geminiRes = await fetch(
@@ -81,7 +81,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
           headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: file.type || 'image/jpeg', data: base64 } }] }],
-            generationConfig: { maxOutputTokens: 8192, temperature: 0.3 },
+            generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
           }),
           signal: controller.signal,
         }
@@ -90,7 +90,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     } catch (fetchErr) {
       clearTimeout(fetchTimer);
       if (fetchErr.name === 'AbortError') {
-        return Response.json({ error: 'Serviciul AI nu a raspuns in timp util. Incearca din nou.' }, { status: 504, headers: corsHeaders(req) });
+        return Response.json({ error: 'Analiza AI a durat prea mult. Incearca din nou.' }, { status: 504, headers: corsHeaders(req) });
       }
       throw fetchErr;
     }
