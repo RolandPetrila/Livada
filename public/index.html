@@ -10128,18 +10128,63 @@ function openDiagnoseModal() {
   document.getElementById('diagCopyRow').style.display = 'none';
   openModal('diagnose');
 }
+// Comprimare robusta pentru diagnoza — foloseste toDataURL (synchronous, functioneaza pe orice browser/telefon)
+// Reduce dimensiunea si calitatea pana cand fisierul incape sub limita
+function compressDiagnoseImage(file) {
+  return new Promise(function(resolve, reject) {
+    var MAX_BYTES = 3 * 1024 * 1024; // 3MB — sigur sub limita Vercel Edge de 4MB
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function() {
+      URL.revokeObjectURL(url);
+      var origW = img.naturalWidth || img.width;
+      var origH = img.naturalHeight || img.height;
+      // Incearca mai multe combinatii maxPx/quality pana gaseste una < 3MB
+      var attempts = [
+        { px: 1600, q: 0.82 },
+        { px: 1280, q: 0.75 },
+        { px: 1024, q: 0.70 },
+        { px: 800,  q: 0.65 },
+        { px: 640,  q: 0.60 }
+      ];
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      for (var i = 0; i < attempts.length; i++) {
+        var a = attempts[i];
+        var scale = Math.min(a.px / origW, a.px / origH, 1);
+        canvas.width  = Math.max(1, Math.round(origW * scale));
+        canvas.height = Math.max(1, Math.round(origH * scale));
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var dataUrl = canvas.toDataURL('image/jpeg', a.q);
+        // Converteste dataUrl -> Blob
+        var byteStr = atob(dataUrl.split(',')[1]);
+        var bytes = new Uint8Array(byteStr.length);
+        for (var j = 0; j < byteStr.length; j++) bytes[j] = byteStr.charCodeAt(j);
+        var blob = new Blob([bytes], { type: 'image/jpeg' });
+        if (blob.size <= MAX_BYTES) {
+          resolve({ blob: blob, compressed: true, size: blob.size, px: canvas.width + 'x' + canvas.height });
+          return;
+        }
+      }
+      // Daca nicio varianta nu e suficient de mica (imagine foarte complexa), returneaza cea mai mica
+      resolve({ blob: blob, compressed: true, size: blob.size, px: canvas.width + 'x' + canvas.height });
+    };
+    img.onerror = function() {
+      URL.revokeObjectURL(url);
+      reject(new Error('Nu am putut citi imaginea. Incearca un alt format (JPEG, PNG).'));
+    };
+    img.src = url;
+  });
+}
+
 async function submitDiagnose(input) {
   var file = input.files[0]; if (!file) return;
 
   document.getElementById('diagLoading').style.display = 'block';
   document.getElementById('diagResult').style.display = 'none';
 
-  // Comprima automat (max 1600px, quality 0.82) — orice poza functioneaza
-  var compressed = await compressImage(file, 1600, 0.82);
-  var uploadFile = new File([compressed], 'photo.jpg', { type: 'image/jpeg' });
-  var wasCompressed = uploadFile.size < file.size;
-
-  // Previzualizare (din fisierul original, arata mai bine)
+  // Previzualizare imediata din fisierul original
   var reader = new FileReader();
   reader.onload = function(e) {
     document.getElementById('diagImg').src = e.target.result;
@@ -10148,6 +10193,10 @@ async function submitDiagnose(input) {
   reader.readAsDataURL(file);
 
   try {
+    // Comprima intotdeauna — robust, functioneaza pe orice telefon
+    var result = await compressDiagnoseImage(file);
+    var uploadFile = new File([result.blob], 'photo.jpg', { type: 'image/jpeg' });
+
     var fd = new FormData();
     fd.append('image', uploadFile, 'photo.jpg');
     fd.append('species', SPECIES[activeSpeciesId] || activeSpeciesId);
@@ -10155,13 +10204,13 @@ async function submitDiagnose(input) {
     var rawText = await res.text();
     var data;
     try { data = JSON.parse(rawText); } catch(_) {
-      if (res.status === 413) throw new Error('Imaginea este prea mare chiar si dupa comprimare. Incearca o poza diferita.');
-      throw new Error('Eroare server (' + res.status + '): ' + rawText.substring(0, 80));
+      if (res.status === 413) throw new Error('Imaginea nu a putut fi trimisa (' + (uploadFile.size/1024/1024).toFixed(1) + 'MB). Contacteaza suportul.');
+      throw new Error('Eroare server (' + res.status + ')');
     }
     if (!res.ok) throw new Error(data.error || 'Eroare server (' + res.status + ')');
     document.getElementById('diagLoading').style.display = 'none';
     var resultEl = document.getElementById('diagResult');
-    var prefix = wasCompressed ? '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poza comprimata automat (' + (uploadFile.size/1024).toFixed(0) + 'KB)</p>' : '';
+    var prefix = '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poza comprimata automat: ' + (uploadFile.size/1024).toFixed(0) + 'KB (' + result.px + ')</p>';
     if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; }
     else { resultEl.innerHTML = prefix + sanitizeAI(data.diagnosis || ''); }
     resultEl.style.display = 'block';
