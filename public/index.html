@@ -8723,6 +8723,12 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
         </optgroup>
         <optgroup label="🌿 Bio / Ecologic (fara chimicale)">
           <option value="0.5" data-unit="g">Bicarbonat sodiu 0.5% (anti-fainare)</option>
+          <option value="0.04" data-unit="ml">Serenade ASO 0.04% (Bacillus subtilis)</option>
+        </optgroup>
+        <optgroup label="🌱 Nutrienti / Corectori sol">
+          <option value="0.2" data-unit="g">Chelatii fier EDDHA 0.2% (pentru afin)</option>
+          <option value="2" data-unit="g">Zeama sulfocalcica 2% (repaus vegetativ)</option>
+          <option value="0.05" data-unit="g">Delan 700 WDG 0.05% (rapan mar/par)</option>
         </optgroup>
       </select>
       <div class="prod-desc" id="prodDesc"></div>
@@ -9319,6 +9325,10 @@ var CALC_PROD_DESC = {
   'Coragen 20 SC 0.0175%': '<strong>Insecticid biologic (clorantraniliprol) — selectiv \u0219i sigur.</strong> Contra viermilor fructelor, omizilor. Nu afecteaz\u0103 albinele. Actiune lent\u0103 (24-48h) dar efect lung. <em>Pauz\u0103: 7 zile.</em>',
   'Laser 240 SC 0.04% (spinosad)': '<strong>Insecticid biologic (spinosad) contra mu\u015etii cire\u015eelor \u0219i Drosophilei.</strong> Derivat natural din bacterii de sol. Eficient contra mu\u015ecu\u021bei de o\u021bet (Drosophila suzukii) care atac\u0103 zmeurul, murul, afinul. Sigur dup\u0103 uscare. <em>Pauz\u0103: 3-7 zile.</em>',
   'Bicarbonat sodiu 0.5% (anti-fainare)': '<strong>Fungicid bio — bicarbonat de sodiu din buc\u0103t\u0103rie!</strong> Concentratie: 5g (o lingurit\u0103) la 1L ap\u0103. Preventiv contra f\u0103in\u0103rii \u0219i mucegaiurilor superficiale. Sigur, f\u0103r\u0103 timp de pauz\u0103, ieftin. Bun pentru zmeur, mur, afin \u00een agricultur\u0103 bio.',
+  'Serenade ASO 0.04% (Bacillus subtilis)': '<strong>Fungicid \u0219i bactericid BIO (Bacillus subtilis).</strong> Derivat natural din bacterii de sol. Impotriva putregaiului cenusiu (botrytis), moniliozei, bacteriozelor. Sigur pentru oameni, albine, mediu. Fara pauz\u0103 recoltare. Ideal pentru afin, zmeur, mur. Eficacitate mai mic\u0103 dec\u00e2t chimicalele dar perfect ca alternativ\u0103 bio.',
+  'Chelatii fier EDDHA 0.2% (pentru afin)': '<strong>Corector de carent\u0103 de fier — ESENTIAL pentru afin pe sol alcalin!</strong> Afinul pe sol cu pH peste 6.0 nu poate absorbi fierul \u0219i \u00eeng\u0103lbene\u015fte (cloroz\u0103 ferica). Chelatii EDDHA sunt singura form\u0103 de fier absorbit la pH ridicat. Aplicare: udare la r\u0103d\u0103cin\u0103 (20-30g/plant\u0103). NU substitut pentru acidifierea solului!',
+  'Zeama sulfocalcica 2% (repaus vegetativ)': '<strong>Insecto-fungicid natural (polisulfuri de calciu) — tratament de iarn\u0103.</strong> Omorar\u0103 ou\u0103le de acarieni, cochenil\u0103, p\u0103duchele din San Jose. Eficient \u0219i contra ciupercilor de scoart\u0103. Se aplic\u0103 NUMAI \u00een repaus total (feb-mar, \u00eenainte de umflarea mugurilor). La temperaturi pozitive, pe lemn gol. Pauza: nu se aplic\u0103 \u00een sezon.',
+  'Delan 700 WDG 0.05% (rapan mar/par)': '<strong>Fungicid de contact (ditianon) specific contra r\u0103p\u0103nului la m\u0103r \u0219i par.</strong> Formeaz\u0103 un strat protector de lung\u0103 durat\u0103, rezistent la ploaie. Ideal \u00een combina\u021Bie cu fungicide sistemice (Score, Topsin). Eficient preventiv. <em>Pauz\u0103: 14 zile.</em>',
 };
 
 function updateCalcConc() {
