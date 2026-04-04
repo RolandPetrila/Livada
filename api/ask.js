@@ -12,20 +12,26 @@ export default async function handler(req) {
   }
 
   const authErr = checkAuth(req);
+  console.log('[ask] auth done');
   if (authErr) return authErr;
   const limitErr = rateLimit(req);
+  console.log('[ask] rateLimit done');
   if (limitErr) return limitErr;
 
   const API_KEY = process.env.GROQ_API_KEY;
+  console.log('[ask] apiKey present:', !!API_KEY);
   if (!API_KEY) {
     console.error('[ask] GROQ_API_KEY lipsa');
     return Response.json({ error: 'GROQ_API_KEY lipsa' }, { status: 500, headers: corsHeaders(req) });
   }
 
   let body;
+  console.log('[ask] before req.json()');
   try {
     body = await req.json();
-  } catch {
+    console.log('[ask] body parsed ok');
+  } catch (e) {
+    console.error('[ask] req.json failed:', e?.message);
     return Response.json({ error: 'Body invalid' }, { status: 400, headers: corsHeaders(req) });
   }
 
