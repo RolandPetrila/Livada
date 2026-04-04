@@ -17,7 +17,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// === ACTIVATE: sterge cache-urile vechi (inclusiv cele cu HTML) ===
+// === ACTIVATE: sterge cache-urile vechi + forteaza reload pe toate tab-urile ===
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
@@ -27,6 +27,11 @@ self.addEventListener('activate', event => {
           .map(k => caches.delete(k))
       ))
       .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+      .then(clients => Promise.all(
+        // Forteaza reload pe toate tab-urile deschise la activarea SW nou
+        clients.map(client => client.navigate(client.url))
+      ))
   );
 });
 
