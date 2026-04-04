@@ -13,8 +13,9 @@
 <link rel="apple-touch-icon" href="/icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" as="style">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap"
+  rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
 <style>
 /* ====== CSS VARIABLES — DARK (default) ====== */
 :root {
@@ -156,6 +157,7 @@ body {
 .section {
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+  content-visibility: auto; contain-intrinsic-size: 0 300px;
 }
 .section-title {
   font-family: 'Playfair Display', serif; font-size: 1.3rem;
@@ -8366,19 +8368,33 @@ $$('.section-title').forEach(title => {
 
 // ====== DARK/LIGHT TOGGLE ======
 const btnTheme = $('#btnTheme');
-function setTheme(light) {
-  document.body.classList.toggle('light-mode', light);
-  btnTheme.textContent = light ? '\u2600' : '\u263E';
-  localStorage.setItem('livada-theme', light ? 'light' : 'dark');
-  // Update theme-color meta
+function setTheme(mode) {
+  var isLight;
+  if (mode === 'auto') {
+    isLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    btnTheme.textContent = '\u2699';
+    btnTheme.title = 'Tema: Auto';
+  } else {
+    isLight = mode === 'light';
+    btnTheme.textContent = isLight ? '\u2600' : '\u263E';
+    btnTheme.title = isLight ? 'Tema: Luminos' : 'Tema: \u00CEntunecat';
+  }
+  document.body.classList.toggle('light-mode', isLight);
+  localStorage.setItem('livada-theme', mode);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = light ? '#f4f7f4' : '#1a2e1a';
+  if (meta) meta.content = isLight ? '#f4f7f4' : '#1a2e1a';
 }
-btnTheme.addEventListener('click', () => {
-  setTheme(!document.body.classList.contains('light-mode'));
+btnTheme.addEventListener('click', function() {
+  var current = localStorage.getItem('livada-theme') || 'dark';
+  var next = current === 'dark' ? 'light' : current === 'light' ? 'auto' : 'dark';
+  setTheme(next);
+});
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function() {
+  if (localStorage.getItem('livada-theme') === 'auto') setTheme('auto');
 });
 // Restore theme
-if (localStorage.getItem('livada-theme') === 'light') setTheme(true);
+var savedTheme = localStorage.getItem('livada-theme') || 'dark';
+setTheme(savedTheme);
 
 // ====== SEARCH ======
 const btnSearch = $('#btnSearch');
@@ -8408,28 +8424,44 @@ function clearSearchHighlights() {
     p.normalize();
   });
 }
+// Search cache — pre-calculated at DOMContentLoaded for fast search
+var _tabSearchCache = {};
+function buildSearchCache() {
+  $$('.tab-content').forEach(function(tc) {
+    _tabSearchCache[tc.id] = tc.textContent.toLowerCase();
+  });
+}
 function highlightInActiveTab(query) {
   clearSearchHighlights();
-  if (!query || query.length < 2) return;
+  if (!query || query.length < 2) return 0;
   var active = document.querySelector('.tab-content.active');
-  if (!active) return;
+  if (!active) return 0;
   var walker = document.createTreeWalker(active, NodeFilter.SHOW_TEXT);
   var toReplace = [];
+  var lowerQ = query.toLowerCase();
   while (walker.nextNode()) {
     var node = walker.currentNode;
-    var idx = node.textContent.toLowerCase().indexOf(query.toLowerCase());
-    if (idx >= 0) toReplace.push({ node: node, index: idx, length: query.length });
+    var text = node.textContent.toLowerCase();
+    var idx = 0;
+    while ((idx = text.indexOf(lowerQ, idx)) >= 0) {
+      toReplace.push({ node: node, index: idx, length: query.length });
+      idx += query.length;
+    }
   }
+  // Process in reverse order to avoid offset shifts
   toReplace.reverse().forEach(function(item) {
-    var mark = document.createElement('mark');
-    mark.className = 'search-hl';
-    var range = document.createRange();
-    range.setStart(item.node, item.index);
-    range.setEnd(item.node, item.index + item.length);
-    range.surroundContents(mark);
+    try {
+      var mark = document.createElement('mark');
+      mark.className = 'search-hl';
+      var range = document.createRange();
+      range.setStart(item.node, item.index);
+      range.setEnd(item.node, item.index + item.length);
+      range.surroundContents(mark);
+    } catch(e) { /* skip nodes split by other replacements */ }
   });
-  var first = active.querySelector('mark.search-hl');
-  if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  var allMarks = active.querySelectorAll('mark.search-hl');
+  if (allMarks.length > 0) allMarks[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  return allMarks.length;
 }
 function doSearch() {
   var q = searchInput.value.trim().toLowerCase();
@@ -8438,14 +8470,17 @@ function doSearch() {
   if (q.length < 2) { searchCount.textContent = ''; return; }
   var totalMatches = 0;
   $$('.tab-content').forEach(function(tc) {
-    if (tc.textContent.toLowerCase().includes(q)) {
+    var cached = _tabSearchCache[tc.id] || tc.textContent.toLowerCase();
+    if (cached.includes(q)) {
       totalMatches++;
       var tabBtn = document.querySelector('.tab[data-tab="' + tc.id + '"]');
       if (tabBtn) tabBtn.classList.add('search-match');
     }
   });
-  searchCount.textContent = totalMatches > 0 ? totalMatches + ' tab' + (totalMatches > 1 ? 'uri' : '') : 'Nimic gasit';
-  highlightInActiveTab(q);
+  var inTab = highlightInActiveTab(q);
+  searchCount.textContent = totalMatches > 0
+    ? totalMatches + ' tab' + (totalMatches > 1 ? 'uri' : '') + (inTab > 0 ? ' (' + inTab + ' rezultate)' : '')
+    : 'Nimic gasit';
 }
 function clearSearch() {
   searchInput.value = '';
@@ -8637,29 +8672,48 @@ function editJurnalEntry(id) {
   var textEl = entryEl.querySelector('.je-text');
   if (!textEl || textEl.dataset.editing) return;
   textEl.dataset.editing = 'true';
+  var types = ['tratament','tundere','fertilizare','irigare','recoltare','observatie','altele'];
+  var opts = types.map(function(t){
+    return '<option value="'+t+'"'+(t===e.type?' selected':'')+'>'+t+'</option>';
+  }).join('');
+  entryEl.querySelector('.je-date').innerHTML =
+    '<input type="date" class="je-edit-date" value="'+escapeHtml(e.date||'')+'" style="font-size:0.78rem;padding:2px 4px;background:var(--bg-surface);color:var(--text);border:1px solid var(--border);border-radius:4px;">';
+  entryEl.querySelector('.je-type').innerHTML =
+    '<select class="je-edit-type" style="font-size:0.72rem;padding:2px 4px;background:var(--bg-surface);color:var(--text);border:1px solid var(--border);border-radius:4px;">' + opts + '</select>';
   textEl.innerHTML = '<textarea class="je-edit-area" rows="3">' + escapeHtml(e.note) + '</textarea>' +
     '<div style="display:flex;gap:6px;margin-top:6px;">' +
-    '<button class="btn btn-primary" style="padding:4px 12px;font-size:0.75rem;" onclick="saveJurnalEdit(' + id + ')">Salveaz\u0103</button>' +
+    '<button class="btn btn-primary" style="padding:4px 12px;font-size:0.75rem;" onclick="saveJurnalEdit('+id+')">Salveaz\u0103</button>' +
     '<button class="btn btn-secondary" style="padding:4px 12px;font-size:0.75rem;" onclick="renderJurnal()">Anuleaz\u0103</button></div>';
-  var ta = textEl.querySelector('textarea');
-  ta.focus();
-  ta.setSelectionRange(ta.value.length, ta.value.length);
+  textEl.querySelector('textarea').focus();
 }
 function saveJurnalEdit(id) {
-  var ta = document.querySelector('.jurnal-entry[data-id="' + id + '"] .je-edit-area');
+  var entryEl = document.querySelector('.jurnal-entry[data-id="' + id + '"]');
+  if (!entryEl) return;
+  var ta = entryEl.querySelector('.je-edit-area');
+  var dateInput = entryEl.querySelector('.je-edit-date');
+  var typeSelect = entryEl.querySelector('.je-edit-type');
   if (!ta || !ta.value.trim()) return;
   var entries = getJurnalEntries();
   var e = entries.find(function(x){return x.id===id;});
-  if (e) { e.note = ta.value.trim(); saveJurnalEntries(entries); syncJournal(); }
+  if (e) {
+    e.note = ta.value.trim();
+    if (dateInput && dateInput.value) e.date = dateInput.value;
+    if (typeSelect) e.type = typeSelect.value;
+    saveJurnalEntries(entries);
+    syncJournal();
+  }
   renderJurnal();
 }
 function exportJurnalCSV() {
   var entries = getJurnalEntries();
   if (!entries.length) { alert('Jurnal gol.'); return; }
-  var csv = 'Data,Tip,Nota\n' + entries.map(function(e) {
-    return e.date + ',' + e.type + ',"' + (e.note||'').replace(/"/g,'""') + '"';
+  var bom = '\uFEFF';
+  var csv = bom + 'Data,Tip,Nota,Specie,Kg\n' + entries.map(function(e) {
+    var sp = e.species ? (SPECIES[e.species] || e.species) : '';
+    var kg = e.kg ? e.kg : '';
+    return e.date + ',' + (e.type||'') + ',"' + (e.note||'').replace(/"/g,'""') + '",' + sp + ',' + kg;
   }).join('\n');
-  var blob = new Blob([csv], {type:'text/csv'});
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'jurnal-livada-' + todayLocal() + '.csv';
@@ -8671,10 +8725,11 @@ function copyJurnalClipboard() {
   var text = entries.map(function(e){ return e.date + ' [' + e.type + '] ' + e.note; }).join('\n');
   navigator.clipboard.writeText(text).then(function(){ alert('Copiat!'); }).catch(function(){ alert('Eroare la copiere.'); });
 }
-// Set today as default date
+// Set today as default date + build search cache
 document.addEventListener('DOMContentLoaded', () => {
   const today = todayLocal();
   $('#jurnalDate').value = today;
+  buildSearchCache();
 });
 
 // ====== CALENDAR ======
@@ -9005,7 +9060,7 @@ function injectSpeciesTools(tabId) {
   if (prev) prev.remove();
   activeSpeciesId = tabId;
 
-  if (tabId === 'plan-livada') { injectReportButton(); renderRecoltaSummary(); return; }
+  if (tabId === 'plan-livada') { injectReportButton(); renderRecoltaSummary(); injectStatsSection(); return; }
   if (!SPECIES[tabId]) return;
 
   const tc = document.getElementById(tabId);
@@ -9020,6 +9075,8 @@ function injectSpeciesTools(tabId) {
     '<button class="sp-tool-btn" onclick="printFisa()"><span class="sti">\uD83D\uDDA8\uFE0F</span> Print fi\u0219a</button>' +
     '</div>';
   tc.insertBefore(div, tc.firstChild);
+  // II-8: inject species journal history
+  injectSpeciesHistory(tabId, tc);
 }
 
 function injectReportButton() {
@@ -9038,6 +9095,86 @@ function injectReportButton() {
     '<div id="reportResult" class="report-box" style="display:none;"></div>' +
     '</div>';
   tc.appendChild(div);
+}
+
+// ====== II-2: STATISTICI INTERVENTII ======
+function renderStats() {
+  var entries = getJurnalEntries();
+  var year = new Date().getFullYear();
+  var yearEntries = entries.filter(function(e){ return e.date && e.date.startsWith(String(year)); });
+  if (yearEntries.length === 0) return '<p style="color:var(--text-dim);text-align:center;padding:12px;">Nicio interventie \u00EEnregistrat\u0103 \u00EEn ' + year + '.</p>';
+  var byType = {};
+  yearEntries.forEach(function(e){ byType[e.type] = (byType[e.type]||0) + 1; });
+  var maxType = Math.max.apply(null, Object.values(byType).concat([1]));
+  var typeHTML = Object.entries(byType).sort(function(a,b){return b[1]-a[1];}).map(function(p) {
+    var pct = Math.round(p[1] / maxType * 100);
+    return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">' +
+      '<span style="min-width:90px;font-size:0.78rem;color:var(--text-dim);">' + p[0] + '</span>' +
+      '<div style="flex:1;height:16px;background:var(--bg-surface);border-radius:4px;overflow:hidden;">' +
+      '<div style="width:'+pct+'%;height:100%;background:var(--accent);border-radius:4px;transition:width 0.4s;"></div></div>' +
+      '<span style="font-size:0.78rem;font-weight:700;min-width:22px;text-align:right;">' + p[1] + '</span></div>';
+  }).join('');
+  var byMonth = {};
+  yearEntries.forEach(function(e){
+    var m = parseInt((e.date||'').split('-')[1]);
+    if (m) byMonth[m] = (byMonth[m]||0) + 1;
+  });
+  var monthNames = ['','Ian','Feb','Mar','Apr','Mai','Iun','Iul','Aug','Sep','Oct','Nov','Dec'];
+  var maxMonth = Math.max.apply(null, Object.values(byMonth).concat([1]));
+  var monthHTML = '';
+  for (var m = 1; m <= 12; m++) {
+    var count = byMonth[m] || 0;
+    var pct = Math.round(count / maxMonth * 100);
+    monthHTML += '<div style="text-align:center;">' +
+      '<div style="height:48px;display:flex;align-items:flex-end;justify-content:center;">' +
+      '<div style="width:18px;height:'+pct+'%;background:var(--accent);border-radius:3px 3px 0 0;min-height:'+(count>0?'3':'0')+'px;"></div></div>' +
+      '<div style="font-size:0.58rem;color:var(--text-dim);margin-top:2px;">'+monthNames[m]+'</div>' +
+      (count>0?'<div style="font-size:0.6rem;font-weight:700;">'+count+'</div>':'') + '</div>';
+  }
+  return '<h3 style="margin-bottom:8px;font-size:0.9rem;">Per tip (' + year + ')</h3>' + typeHTML +
+    '<h3 style="margin:14px 0 8px;font-size:0.9rem;">Per lun\u0103</h3>' +
+    '<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:2px;">' + monthHTML + '</div>' +
+    '<p style="font-size:0.72rem;color:var(--text-dim);margin-top:8px;">Total: <strong>' + yearEntries.length + '</strong> interven\u021Bii</p>';
+}
+function injectStatsSection() {
+  if (document.getElementById('stats-section')) {
+    document.getElementById('stats-section').querySelector('.section-body').innerHTML = renderStats();
+    return;
+  }
+  var tc = document.getElementById('plan-livada');
+  if (!tc) return;
+  var div = document.createElement('div');
+  div.id = 'stats-section';
+  div.className = 'section';
+  div.style.marginTop = '16px';
+  div.innerHTML = '<h2 class="section-title" style="cursor:default;">\uD83D\uDCCA Statistici Interven\u021Bii</h2>' +
+    '<div class="section-body">' + renderStats() + '</div>';
+  tc.appendChild(div);
+}
+
+// ====== II-8: SPECIES JOURNAL HISTORY ======
+function injectSpeciesHistory(speciesId, container) {
+  var prev = document.getElementById('sp-history-section');
+  if (prev) prev.remove();
+  var name = (SPECIES[speciesId] || '').toLowerCase();
+  if (!name) return;
+  var history = getJurnalEntries().filter(function(e) {
+    return (e.note || '').toLowerCase().includes(name) || (e.species && e.species === speciesId);
+  }).slice(0, 8);
+  if (history.length === 0) return;
+  var div = document.createElement('div');
+  div.id = 'sp-history-section';
+  div.className = 'section';
+  div.style.marginTop = '12px';
+  div.innerHTML = '<h2 class="section-title" style="cursor:default;">\uD83D\uDCCB Ultimele interven\u021Bii</h2>' +
+    '<div class="section-body">' +
+    history.map(function(e) {
+      return '<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:0.82rem;">' +
+        '<span style="color:var(--accent);font-weight:700;">' + escapeHtml(e.date||'') + '</span> ' +
+        '<span style="color:var(--text-dim);">[' + escapeHtml(e.type||'') + ']</span> ' +
+        escapeHtml(e.note||'') + '</div>';
+    }).join('') + '</div>';
+  container.appendChild(div);
 }
 
 // ====== GALLERY FUNCTIONS ======
@@ -9085,11 +9222,34 @@ function openLightbox(src) {
   overlay.querySelector('#lightbox-img').src = src;
   overlay.style.display = 'flex';
 }
+function compressImage(file, maxPx, quality) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function() {
+      URL.revokeObjectURL(url);
+      var w = img.width, h = img.height;
+      if (w <= maxPx && h <= maxPx && file.type === 'image/jpeg') { resolve(file); return; }
+      var scale = Math.min(maxPx / w, maxPx / h, 1);
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.round(w * scale);
+      canvas.height = Math.round(h * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(function(blob) {
+        resolve(blob || file);
+      }, 'image/jpeg', quality);
+    };
+    img.onerror = function() { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+}
 async function uploadPhoto(input) {
   var file = input.files[0]; if (!file) return;
   document.getElementById('galLoading').style.display = 'block';
   try {
-    var fd = new FormData(); fd.append('file', file); fd.append('species', activeSpeciesId);
+    var compressed = await compressImage(file, 1200, 0.82);
+    var uploadFile = new File([compressed], file.name.replace(/\.[^.]+$/, '.jpg'), {type:'image/jpeg'});
+    var fd = new FormData(); fd.append('file', uploadFile); fd.append('species', activeSpeciesId);
     var res = await authFetch('/api/photos', { method: 'POST', body: fd });
     if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
@@ -9648,14 +9808,29 @@ function openChecklist() {
   openModal('checklist');
 }
 function startStropire() {
-  var note = prompt('Ce tratament aplici? (produse, doze, specii)');
-  if (!note) return;
+  var ckBody = document.querySelector('#modal-checklist .modal-body');
+  var existing = document.getElementById('ck-note-area');
+  if (existing) { existing.querySelector('textarea').focus(); return; }
+  var div = document.createElement('div');
+  div.id = 'ck-note-area';
+  div.style.marginTop = '16px';
+  div.innerHTML = '<label style="font-size:0.85rem;color:var(--text-dim);">Ce tratament aplici?</label>' +
+    '<textarea id="ckNote" rows="3" placeholder="Produse, doze, specii..." style="width:100%;padding:10px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-family:inherit;margin-top:4px;box-sizing:border-box;"></textarea>' +
+    '<div style="display:flex;gap:8px;margin-top:8px;">' +
+    '<button class="btn btn-primary" style="flex:1;" onclick="confirmStropire()">&#128393; \u00CEnregistreaz\u0103</button>' +
+    '<button class="btn btn-secondary" onclick="document.getElementById(\'ck-note-area\').remove();">Anuleaz\u0103</button></div>';
+  if (ckBody) ckBody.appendChild(div);
+  div.querySelector('textarea').focus();
+}
+function confirmStropire() {
+  var note = document.getElementById('ckNote').value.trim();
+  if (!note) { showToast('Completeaz\u0103 ce tratament aplici.'); return; }
   var entries = getJurnalEntries();
-  entries.unshift({id:Date.now(),date:todayLocal(),type:'Tratament',note:note});
+  entries.unshift({id:Date.now(), date:todayLocal(), type:'tratament', note:note});
   saveJurnalEntries(entries);
   syncJournal();
   closeModal('checklist');
-  alert('Tratament \u00EEnregistrat \u00EEn jurnal!');
+  showToast('Tratament \u00EEnregistrat \u00EEn jurnal!');
 }
 
 // ====== PRINT FISA TEREN (B4) ======
