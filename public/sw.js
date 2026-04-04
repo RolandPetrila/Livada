@@ -1,4 +1,4 @@
-const CACHE_NAME = 'livada-v4-20260404';
+const CACHE_NAME = 'livada-v5-20260405';
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
