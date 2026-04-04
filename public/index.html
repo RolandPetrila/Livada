@@ -445,6 +445,85 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 /* ====== REPORT ====== */
 .report-box { background: var(--bg-surface); border-radius: var(--radius); padding: 20px; margin-top: 16px; font-size: 0.86rem; line-height: 1.8; word-wrap: break-word; }
 
+/* ====== SEARCH SUGGESTIONS ====== */
+.search-input-wrap { flex: 1; position: relative; }
+.search-input-wrap input { width: 100%; }
+.search-suggestions {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--bg-card); border: 1px solid var(--accent); border-radius: 8px;
+  max-height: 280px; overflow-y: auto; z-index: 200;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.search-suggestion {
+  padding: 10px 14px; cursor: pointer; font-size: 0.83rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px; min-height: 44px;
+}
+.search-suggestion:last-child { border-bottom: none; }
+.search-suggestion:hover, .search-suggestion.sug-focused {
+  background: rgba(106,191,105,0.12); color: var(--accent-glow);
+}
+.sg-type { font-size: 0.68rem; color: var(--accent-dim); background: var(--bg-surface); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+.sg-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sg-tab { font-size: 0.7rem; color: var(--text-dim); flex-shrink: 0; white-space: nowrap; }
+
+/* ====== COPY BUTTON ====== */
+.copy-btn {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--text-dim); border-radius: 6px; padding: 6px 12px;
+  font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.copy-btn:hover { background: var(--accent-dim); color: var(--text-bright); border-color: var(--accent); }
+.textarea-wrap { position: relative; }
+.textarea-wrap textarea { width: 100%; }
+.textarea-copy-btn {
+  position: absolute; right: 8px; bottom: 8px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-dim); border-radius: 6px; padding: 4px 8px;
+  font-size: 0.72rem; cursor: pointer; transition: all 0.2s; line-height: 1.2;
+}
+.textarea-copy-btn:hover { background: var(--accent-dim); color: var(--text-bright); border-color: var(--accent); }
+
+/* ====== MOD ACCESIBIL (text mare) ====== */
+body.text-large { font-size: 112%; }
+body.text-large .tab { font-size: 0.88rem; padding: 12px 15px; }
+body.text-large table { font-size: 0.9rem; }
+body.text-large .sp-tool-btn { font-size: 0.88rem; padding: 10px 14px; }
+body.text-large .modal-body label { font-size: 0.96rem; }
+body.text-large .bottom-btn { font-size: 0.8rem; }
+body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
+
+/* ====== RECENT SEARCHES ====== */
+.recent-searches { padding: 6px 0 2px; }
+.rs-label { font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; display: block; }
+.rs-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.rs-pill {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--text-dim); border-radius: 14px;
+  padding: 4px 10px; font-size: 0.78rem; cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center; gap: 4px;
+}
+.rs-pill:hover { background: rgba(106,191,105,0.12); color: var(--accent); border-color: var(--accent); }
+
+/* ====== SFAT SEZONIER ====== */
+.seasonal-tip {
+  background: linear-gradient(135deg, rgba(106,191,105,0.12), rgba(58,122,184,0.08));
+  border: 1px solid var(--accent-dim); border-radius: var(--radius);
+  padding: 12px 14px; margin-bottom: 12px; font-size: 0.84rem;
+}
+.seasonal-tip strong { color: var(--accent-glow); }
+
+/* ====== PRODUCT DESCRIPTION ====== */
+.prod-desc {
+  background: var(--bg-surface); border-left: 3px solid var(--accent);
+  padding: 10px 12px; border-radius: 0 6px 6px 0;
+  font-size: 0.82rem; color: var(--text-dim); margin-top: 8px; line-height: 1.5;
+  display: none;
+}
+.prod-desc.visible { display: block; }
+.prod-desc strong { color: var(--accent); }
+
 /* ====== RESPONSIVE ====== */
 @media (max-width: 600px) {
   .content { padding: 10px; }
@@ -492,8 +571,17 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 
 <!-- ====== SEARCH ====== -->
 <div class="search-panel" id="searchPanel">
-  <input type="search" id="searchInput" placeholder="Cauta in toate speciile..." autocomplete="off">
+  <div class="search-input-wrap">
+    <input type="search" id="searchInput" placeholder="Cauta in toate speciile..." autocomplete="off">
+    <div class="search-suggestions" id="searchSuggestions"></div>
+  </div>
   <span class="search-count" id="searchCount"></span>
+</div>
+<div id="recentSearchPanel" style="display:none;padding:4px 16px 8px;background:var(--bg-card);border-bottom:1px solid var(--border);">
+  <div class="recent-searches">
+    <span class="rs-label">&#128337; C&#259;ut&#259;ri recente</span>
+    <div class="rs-pills" id="recentPills"></div>
+  </div>
 </div>
 
 <!-- ====== TABS ====== -->
@@ -577,6 +665,7 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
       <button class="sp-tool-btn" onclick="document.getElementById('restoreFile').click()"><span class="sti">&#128228;</span> Restaurare</button>
       <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(this)">
       <button class="sp-tool-btn" onclick="showTokenSetup()"><span class="sti">&#128273;</span> Token API</button>
+      <button class="sp-tool-btn" id="btnTextSize" onclick="toggleTextSize()" title="Text mai mare pentru citire usoara"><span class="sti">&#128295;</span> <span id="textSizeLabel">Text normal</span></button>
     </div>
     <div id="backupReminder" style="margin-top:12px;"></div>
   </div>
@@ -1267,6 +1356,29 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Cires</h2>
+  <div class="section-body">
+    <div class="alert alert-warning">
+      <strong>Cel mai important lucru de stiut:</strong> Ciresul este singurul pom din livada care NU se taie iarna! Taierea de iarna la cires = cancer bacterian (Pseudomonas syringae) aproape garantat. Unica perioada corecta de tundere este vara, in iulie-august, imediat dupa recoltare, cand temperatura calda permite cicatrizarea rapida.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Ciresul fara polenizator produce 5-10% din potential.</strong> Aceasta nu e o exagerare — ciresul este auto-incompatibil. Doua soiuri incompatibile impreuna (ex. Hedelfinger cu Regina) produc la fel de prost ca un singur soi. Verifica COMPATIBILITATEA soiurilor, nu doar ca "sunt doua soiuri".</li>
+      <li><strong>Cracarea fructelor la ploaie este controlabila.</strong> Cu 2-3 saptamani inainte de recoltare, calciul aplicat foliar (clorura de calciu 0.4%, de 2-3 ori) intareste coaja si reduce cracarea. In plus, soiurile tardive (Lapins, Regina) sunt mai rezistente la cracare decat soiurile timpurii (Burlat).</li>
+      <li><strong>Tine codita la cirese — este diferenta intre 1-2 zile si 5-7 zile de pastrare.</strong> Ciresele fara codita produc o rana care se infecteaza rapid. Pastrare la 0-2°C cu codita: pana la 2 saptamani in conditii ideale.</li>
+      <li><strong>Musca cireselor (Rhagoletis cerasi) apare cu 2-3 saptamani inainte ca larvele sa fie vizibile in fructe.</strong> Cand vezi primul fruct cu larva alba, e prea tarziu pentru tratament eficace. Capcane galbene adezive din mai iti arata cand incepe zborul — trateaza (Calypso 0.2ml/10L) cand prinzi 5+ muste pe saptamana.</li>
+      <li><strong>Ciresul necesita cel mai putin azot din toata livada.</strong> Excesul de azot produce crestere masiva, lemn moale sensibil la cancer bacterian, si aintarzie coacerea fructelor. Fertilizare N minima: maxim 80-100g azotat de amoniu/pom adult, aplicat o singura data in martie.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Tundere de iarna (noiembrie-martie)</strong> → <strong>Solutia:</strong> Numai vara (iulie-august), cu unelte dezinfectate cu alcool dupa fiecare taietura. Protejeaza ranile mai mari de 2 cm cu pasta cu cupru sau mastic.</li>
+      <li><strong>Greseala: Planta un soi de cires autofertil si renunti la polenizator</strong> → <strong>Solutia:</strong> Chiar si soiurile "autofertile" (Lapins, Stella, Sweetheart) produc cu 20-30% mai mult cand au un alt soi in apropiere. Autofertilitatea e o asigurare, nu o scuza pentru a planta singur.</li>
+      <li><strong>Greseala: Ignori tratamentele post-recoltare contra cilindrosporiozei</strong> → <strong>Solutia:</strong> 1-2 tratamente in iulie-august cu Topsin 7g/10L sau zeama bordelez 0.5% pastreaza frunzisul verde si sanatos. Un cires "chel" in august este un cires slabit pentru iarna si neproductiv in sezonul urmator.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
   <p style="color:var(--text-dim);font-size:0.82rem;"><em>Consulta un specialist agronom pentru cazul tau specific. Dozele sunt orientative — citeste MEREU eticheta produsului.</em></p>
 </div>
 
@@ -1810,6 +1922,32 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Visin</h2>
+  <div class="section-body">
+    <div class="alert alert-success">
+      <strong>Cel mai important lucru de stiut:</strong> Visinul este cel mai usor pom de ingrijit din livada ta, dar are o regula care nu se negociaza: tratamentele cu fungicide NU se opresc dupa recoltare! Cilindrosporioza (boala numarul 1 a visinului) face cel mai mare rau in iulie-septembrie, cand visinul nu mai are fructe dar are nevoie de frunze sanatoase pentru a acumula rezerve pentru iarna.
+    </div>
+    <h3>Informatii practice care nu se intaleleg de la sine</h3>
+    <ul>
+      <li><strong>Visinul nu este "lasat in pace" ca un copac salbatic.</strong> Fara tundere anuala de 25-35%, ramurile de 1 an (singurele care dau fructe) devin ramuri de 2-3 ani sterile. In 4-5 ani ai un pom inalt care produce fructe doar la varf, inaccesibil.</li>
+      <li><strong>Uree foliar 5% in octombrie = tratament anti-cilindrosporioza gratuit.</strong> Aplica uree 500g la 10L apa pe frunzele cand 30-40% s-au ingalbenit. Uree grabeste descompunerea frunzelor infectate cazute pe sol, eliminand sursa de spori pentru primavara. Eficient si ieftin.</li>
+      <li><strong>Soiurile industriale (Oblacinska, Schattenmorelle) se recolteaza fara codita.</strong> Se scutura manual direct in recipiente. Soiurile pentru consum proaspat se culeg cu codita — pastrare 3-5 zile mai lunga.</li>
+      <li><strong>Drajonii = oportunitate de inmultire gratuita.</strong> Un drajon de 30-50 cm cu radacini proprii, taiat cu lopata si transplantat primavara sau toamna, produce un visin identic cu cel mama — fara sa cumperi nimic. Dar daca nu ii vrei, elimina-i de 2-3 ori pe sezon cat sunt mici (smulge-i — nu taia cu fierastraul!)</li>
+      <li><strong>Visinul tolereaza tunderea de iarna mai bine decat ciresul.</strong> Spre deosebire de ciresul dulce (care se taie obligatoriu vara), visinul poate fi taiat iarna (dec-feb) fara risc major de bacterioza. Vara dupa recoltare este totusi IDEAL — cicatrizare mai rapida.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Aplici tratamente numai pana la recoltare si le opresti dupa</strong> → <strong>Solutia:</strong> Continua cu cel putin 2 tratamente post-recoltare (iulie si august) cu Topsin 7g/10L sau zeama bordelez 0.5%. Cilindrosporioza care incepe in august poate dezgoli pomul complet pana in septembrie.</li>
+      <li><strong>Greseala: Confunzi visinul cu ciresul si aplici aceleasi reguli (tundere minima)</strong> → <strong>Solutia:</strong> Visin = tundere anuala intensa (25-35%). Cires = tundere minima. Sunt specii diferite cu biologie diferita. Un visin netunsuns 3-4 ani devine inalt si sterile la interior.</li>
+      <li><strong>Greseala: Lasi drajonii sa creasca mai mult de 1 sezon</strong> → <strong>Solutia:</strong> Drajonii neeliminati formeaza in 2-3 ani un tufar dens care fura apa si nutrientii de la pomul principal. Elimina-i de 2-3 ori pe an cat sunt inca firuti (10-20 cm).</li>
+    </ul>
+    <div class="alert alert-info">
+      <strong>Bonus — visinul si congelarea:</strong> Visinele se congeleaza perfect. Scoate samburii (optional), pune in pungi, congeleaza. Rezistenta: 10-12 luni. Perfecte pentru placinte, topings, dulceata in extrasezon. Nu necesita blanching (oparire) inainte de congelare.
+    </div>
+  </div>
+</div>
+
+<div class="section">
   <p style="color:var(--text-dim);font-size:0.82rem;"><em>Consulta un specialist agronom pentru cazul tau specific. Dozele sunt orientative — citeste MEREU eticheta produsului.</em></p>
 </div>
 
@@ -2219,6 +2357,34 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <p><em>Ghid realizat pentru conditiile climatice specifice zonei Nadlac/Arad, Romania.</em></p>
 <p><em>Dozele de pesticide sunt orientative — cititi intotdeauna eticheta produsului si respectati intervalele de siguranta.</em></p>
 </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Cais</h2>
+  <div class="section-body">
+    <div class="alert alert-danger">
+      <strong>Cel mai important lucru de stiut:</strong> Caisul este singurul pom din livada unde o singura noapte de -2°C in inflorire poate distruge 100% din recolta anului. La stadiul "floare deschisa", 30 de minute la -2°C = productie zero. Urmareste prognoza meteo ZI DE ZI in aprilie!
+    </div>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Plantezi soiuri cu inflorire timpurie (Saturn, Neptun)</strong> → <strong>Solutia:</strong> Alege soiuri cu inflorire tarzie — Bergeron inflorieste cu 7-10 zile mai tarziu decat Saturn, exact fereastra care poate face diferenta intre recolta si zero.</li>
+      <li><strong>Greseala: Nu faci nicio rarire a fructelor la cais</strong> → <strong>Solutia:</strong> La 3-4 saptamani dupa inflorire, lasa 1 fruct la 8-10 cm. Fara rarire: fructe mici, pom epuizat, productie slaba si in anni urmatori.</li>
+      <li><strong>Greseala: Pui mastic numai pe taieturile mari si uiti pe cele medii</strong> → <strong>Solutia:</strong> La cais, protejeaza TOATE taieturile mai mari de 1 cm — orice rana nevindecata este poarta de intrare pentru gomoza (scurgere de clei) si ciuperci.</li>
+      <li><strong>Greseala: Uzi abundent cu 1-2 saptamani inainte de recoltare</strong> → <strong>Solutia:</strong> Opreste sau reduce mult irigarea cu 2-3 saptamani inainte de recoltare planificata. Fructele carora li se da apa multa chiar inainte de coacere crapa, au gust apos si nu se pastreaza.</li>
+      <li><strong>Greseala: Lasi fructele mumificate pe pom iarna</strong> → <strong>Solutia:</strong> Culegeti-le pe TOATE toamna si ardeti-le — un fruct mumificat (moniliat) ramas pe pom contine milioane de spori care vor re-infecta florile si fructele in primavara urmatoare.</li>
+      <li><strong>Greseala: Tundeti caisul toamna sau dupa caderea frunzelor</strong> → <strong>Solutia:</strong> Tunderea la cais se face NUMAI iarna (ianuarie-martie) in repaus complet. Tunderea de toamna lasa rani deschise exact cand umiditatea si frigul sunt maxime — invitatia perfecta pentru gomoza si putregai.</li>
+    </ul>
+    <h3>Semne de alarma — cand sa actionezi urgent</h3>
+    <ul>
+      <li><strong>Scurgere de clei galben-brun (gomoza) din trunchi sau ramuri:</strong> Curata zona cu cutitul pana la lemn verde-sanatos, dezinfecteaza cu zeama bordelez 3% si acopera cu mastic pomicol cu cupru. Daca nu tratezi, ciupercile vor extinde zona moarta.</li>
+      <li><strong>Flori brunificate si ramuri care se usuca de la varf spre baza (arsura moniliotica):</strong> Taie ramura afectata cu 20 cm in lemn sanatos, dezinfecteaza cu alcool, arde ramurile taiate. Monilioza se extinde rapid in conditii umede.</li>
+      <li><strong>Frunze cu gauri mici (ciuruire), pete brune cu chenar rosietic:</strong> Aplicati Score 0.02% sau zeama bordelez 1% preventiv. Ciuruirea slabeste pomul si reduce rezistenta la iarna.</li>
+      <li><strong>Fructe cu pete brune moi, cu pernutele cenusii de spori:</strong> Monilioza pe fructe. Culegeti si distrugeti IMEDIAT toate fructele afectate — nu le lasati la baza pomului sa putrezeasca!</li>
+    </ul>
+    <div class="alert alert-info">
+      <strong>Sfat practic esential:</strong> Caisul este partial autofertil — produce si singur. Dar daca ai loc de 2-3 pomi, planteaza soiuri care infloresc simultan (ex: Bergeron + Harcot). Productia creste cu 30-50% datorita polenizarii incrucisate, iar riscul de recolta zero intr-un an cu inghet tarziu este distribuit intre soiuri cu timing usor diferit.
+    </div>
+  </div>
 </div>
 
 <div class="section">
@@ -2772,6 +2938,32 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Piersic</h2>
+  <div class="section-body">
+    <div class="alert alert-danger">
+      <strong>Cel mai important lucru de stiut:</strong> Piersicul este cel mai pretentios pom din livada, dar are o singura regula absoluta: tratamentul anti-basicare in PRIMA jumatate a lui MARTIE, inainte de dezmugurire. Odata ce basicarea a aparut, nu mai exista tratament — este prea tarziu. Sezonul este compromis.
+    </div>
+    <h3>Regula de aur la piersic: verifica lungimea lastarilor</h3>
+    <p>La sfarsitul fiecarei veri, masoara lungimea lastarilor de 1 an. <strong>Lastari de 30-60 cm = pom sanatos, fertilizat corect.</strong> Lastari sub 20 cm = problema — fie prea putin azot, fie boli radiculare, fie pH incorect. Fara lastari noi vigurosi, nu ai pe ce fructifica in sezonul urmator.</p>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Astepti sa apara simptome de basicare inainte sa tratezi</strong> → <strong>Solutia:</strong> Nu poti vedea simptomele inainte sa fie prea tarziu. Ciuperca infecteaza frunza INAINTE ca aceasta sa se deschida complet. Trateaza preventiv in 1-15 martie indiferent de vreme, indiferent daca arata bine.</li>
+      <li><strong>Greseala: Nu raresti fructele deloc — "mi-e mila sa arunc"</strong> → <strong>Solutia:</strong> Norma corecta: 80-120 fructe per pom adult dupa rarire. Pornind de la 300-500 fructe cat are pomul natural, trebuie eliminate 2/3. Stii ca ai rarit corect cand pomul pare "gol" de fructe. Fructele ramase vor fi de 2x mai mari.</li>
+      <li><strong>Greseala: Pui piersicile direct la frigider cald imediat dupa recoltare</strong> → <strong>Solutia:</strong> Lasa piersicile 1 ora la temperatura camerei inainte de refrigerare. Trecerea brusca de la caldura la rece provoaca "chilling injury" — pulpa se albeste si isi pierde aroma si textura. Raceste treptat.</li>
+      <li><strong>Greseala: Nu tai piersicul in fiecare an pentru ca "ii e mila"</strong> → <strong>Solutia:</strong> Piersicul fructifica EXCLUSIV pe lemn de 1 an. Ramura care a rodit intr-un an NU mai rodeşte pe aceeasi portiune in urmatorii ani. Fara tundere anuala agresiva (30-40%), productia migrata la varfuri, inaccesibila, in 2-3 ani.</li>
+      <li><strong>Greseala: Irigare insuficienta in iulie — "nu prea ploua dar merge si asa"</strong> → <strong>Solutia:</strong> Dimensiunea finala a fructului se decide in lunile de crestere rapida (iunie-august). Un pom neirigat intr-o vara secetoasa produce fructe cu 40-60% mai mici. La un soi cu potential de 170g/fruct, obtii 80-90g — cat o cireasa mare.</li>
+    </ul>
+    <h3>Semne de alarma — cand sa actionezi urgent</h3>
+    <ul>
+      <li><strong>Frunze crete, incretite, colorate in rosu-violet sau galben-verde in mai:</strong> Basicare avansata. Nu mai poti trata frunzele afectate. Aplica totusi fungicid pentru a proteja frunzele noi ce vor aparea. Pom va face frunze noi dar va fi slabit — fertilizeaza suplimentar si iriga bine.</li>
+      <li><strong>Varf de lastar se indoaie si se usuca brusc (ca un "carlig"):</strong> Molia vargata (Anarsia lineatella). Taie si arde lastarul afectat 5 cm sub zona moarta. Aplica Coragen (1.75ml/10L) pentru a proteja restul lastarilor.</li>
+      <li><strong>Flori uscate, brune, care nu cad, si ramura moare de la floare spre baza:</strong> Monilioza. Taie ramura afectata 20 cm in lemn sanatos. Arde tot. Aplica Switch sau Topsin imediat.</li>
+      <li><strong>Frunze cu pulbere alba-cenusie, frunze deformate:</strong> Fainare (Sphaerotheca pannosa). Trateaza cu Thiovit Jet (50g/10L) sau, pentru varianta BIO, cu lapte diluat 10% (1 litru lapte la 9 litri apa) — eficienta dovedita stiintific!</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
   <p style="color:var(--text-dim);font-size:0.82rem;"><em>Consulta un specialist agronom pentru cazul tau specific. Dozele sunt orientative — citeste MEREU eticheta produsului.</em></p>
 </div>
 
@@ -3217,6 +3409,29 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 </div>
 
 <div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Prun</h2>
+  <div class="section-body">
+    <div class="alert alert-success">
+      <strong>Cel mai important lucru de stiut:</strong> Prunul este cel mai iertator pom din livada. Dar are o singura actiune obligatorie in toamna care valoreaza mai mult decat orice tratament chimic pe tot sezonul: culegeti si ardeti TOATE fructele mumifiate (negre, uscate, ramase pe pom). Fiecare fruct mumificat contine milioane de spori de monilioza care vor infecta florile in primavara urmatoare.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Sarka (Varsatul prunelor) este INCURABIL si OBLIGATORIU de raportat.</strong> Daca vezi frunze cu mozaic galben-verde sau fructe cu inele galbene, nu taia nimic. Suna la Directia Agricola Arad. Pomul trebuie extirpat si ars prin lege. Material de taiat sau altoaie dintr-un pom infectat poate raspandi virusul la toti pomii din zona.</li>
+      <li><strong>Prunul NU are nevoie de polenizator.</strong> Spre deosebire de ciresul dulce sau par, soiurile clasice romanesti (Tuleu Gras, Stanley, Gras Ameliorat) sunt autofertile — un singur pom produce bine fara alt soi alaturi.</li>
+      <li><strong>Nu da azot dupa 15 iunie.</strong> Azotul dat tarziu produce lastari lungi si moi care nu au timp sa lignifice (sa se intareasca) inainte de iarna si ingheata. Toata fertilizarea cu azot se termina in prima jumatate a lui iunie.</li>
+      <li><strong>Viermele prunelor (Grapholita funebrana) are DOUA generatii pe an.</strong> Prima in mai-iunie, a doua (mai daunatoare!) in iulie-august. Capcane feromonale monteaza din mai. Trateaza cand prinzi 5-7 fluturasi pe saptamana in capcana, nu astepta sa vezi fructele gasite.</li>
+      <li><strong>Prunul regenereaza din tundere excesiva prin "lacomi".</strong> Daca ai taiat prea mult si apar lastari verticali vigurosi fara fructe (lacomi), nu-i taia imediat — slabesti si mai mult pomul. Ciupeste-i la 30-40 cm si lasa-i sa se transforme treptat in ramuri normale.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Stropesti in inflorire plina</strong> → <strong>Solutia:</strong> Prunul infloreste relativ tarziu (sfarsit april - inceput mai), ceea ce e avantajos. Dar albinele lucreaza activ la aceasta temperatura. Zero tratamente din prima floare deschisa pana la caderea a 80% din petale.</li>
+      <li><strong>Greseala: Recoltezi tot dintr-o data</strong> → <strong>Solutia:</strong> Prunele se coc neuniform pe pom. Fa 2-3 treceri la interval de 4-5 zile. Prunele recoltate prea devreme sunt acre si au coaja aspra; cele lasate prea mult cad si se strica rapid.</li>
+      <li><strong>Greseala: Speli prunele inainte de depozitare</strong> → <strong>Solutia:</strong> Pruina albastruie de pe coaja prunei (stratul cerificat) este un protector natural impotriva bolilor si deshidratarii. Spalarea o indeparteaza si scurteaza durata de pastrare de la 2 saptamani la 2-3 zile. Spala numai inainte de consum.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
   <p style="color:var(--text-dim);font-size:0.82rem;"><em>Consulta un specialist agronom pentru cazul tau specific. Dozele sunt orientative — citeste MEREU eticheta produsului.</em></p>
 </div>
 
@@ -3394,6 +3609,25 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: SCDP Constanta, MADR, experienta cultivatori migdal Romania/Italia. Informatii orientative — consulta un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Migdal</h2>
+  <div class="section-body">
+    <div class="alert alert-warning">
+      <strong>Cel mai important lucru de stiut:</strong> Migdalul cumparat din piata sau din magazine are adesea varietati cu inflorire TIMPURIE, nerecomandate pentru Romania. La Nadlac, planteaza EXCLUSIV soiuri cu inflorire tarzie: Ferragnes, Tuono, sau Lauranne. Un migdal cu inflorire timpurie pierde recolta in 5-6 ani din 10 din cauza inghetului de primavara.
+    </div>
+    <div class="alert alert-danger">
+      <strong>ATENTIE CRITICA — Migdal dulce vs. amar:</strong> Migdalii crescuti din sambure sau din surse necertificate pot produce migdale AMARE care contin amigdalina — o substanta care elibereaza acid cianhidric (otrava!) in organism. Cumpara material saditor EXCLUSIV din pepiniere autorizate care garanteaza soiuri dulci.
+    </div>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Plantezi migdalul in zona joasa a livezii</strong> → <strong>Solutia:</strong> Aerul rece se aduna in zonele joase (inversie termica). O zona inalta cu 1-2 metri poate face diferenta de 2-3°C in noptile cu inghet. Planteaza pe locul cel mai ridicat disponibil, cu expunere SUD, langa un gard sau cladire care radiaza caldura.</li>
+      <li><strong>Greseala: Plantezi un singur migdal</strong> → <strong>Solutia:</strong> Cu exceptia soiului Tuono (autofertil), majoritatea soiurilor de migdal necesita polenizator. Ferragnes + Tuono este combinatia ideala: Ferragnes produce mult, Tuono este autofertil si polenizeaza Ferragnes, ambele infloresc tarziu.</li>
+      <li><strong>Greseala: Recoltezi migdalele cand involucrul (coaja verde) e inca inchis</strong> → <strong>Solutia:</strong> Migdalele sunt gata de recoltat cand involucrul verde exterior se DESCHIDE singur si migdala cu coaja (coaja lemnoasa bruna) devine vizibila. Daca involucrul e inchis, mai asteapta 1-2 saptamani.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: PAR CLAPP ==================== -->
@@ -3567,6 +3801,25 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: SCDP Bistrita, Ghid pomicultura MADR, experienta pomicultori zona Arad. Informatii orientative — consulta eticheta produselor si un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Par Favorita lui Clapp</h2>
+  <div class="section-body">
+    <div class="alert alert-danger">
+      <strong>Cel mai important lucru de stiut:</strong> Perele Clapp se recolteaza VERZI! Daca astepti sa fie galbene si moi pe pom, ai pierdut deja recolta — pulpa devine fainoasa, bruna intern, fara gust. Regula de aur: recolteaza cand fructul este inca FERM, de culoare verde-galbui, si se desprinde usor la o usoara rasucire. Post-maturarea se face in casa, 3-5 zile la temperatura camerei.
+    </div>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Ignorezi simptomele de foc bacterian</strong> → <strong>Solutia:</strong> Focul bacterian (ramura ca un "carlig de cioban", frunze negre-arse) se extinde rapid in conditii calde si umede. Taie imediat, 30 cm sub zona infectata. Dezinfecteaza cu alcool DUPA FIECARE taietura — nu faci o taietura si gata. Arde materialul taiat imediat, nu il lasa in livada.</li>
+      <li><strong>Greseala: Dai prea mult azot la par</strong> → <strong>Solutia:</strong> La par, excesul de azot produce lastari tineri moi si vigurosi — hrana perfecta pentru focul bacterian. Jumatate din doza de azot comparativ cu marul: maxim 80-100g azotat per pom adult. Prioritate K+P fata de N.</li>
+      <li><strong>Greseala: Nu controlezi psila parului (Cacopsylla pyri)</strong> → <strong>Solutia:</strong> Psila lasa "miere de mana" — un lichid lipicios negru pe frunze si fructe. Pe langa daune directe, transmite virusul declinului parului — incurabil. Trateaza cu Actara 1.5g/10L sau Movento in primavara timpurie (la dezmugurire).</li>
+    </ul>
+    <div class="alert alert-info">
+      <strong>Sfat de recoltare practic:</strong> Intinde o folie sub par cand crezi ca e aproape de coacere. Dimineata, scutura usor o creanga — daca cateva pere cad fara sa tragi de ele, e momentul recoltarii. Recolta toate perele in aceeasi zi, indiferent daca par "gata" sau nu — cele mai verzi vor posturi-maturing acasa in 5-7 zile.
+    </div>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: PAR WILLIAMS ==================== -->
@@ -3730,6 +3983,32 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: SCDP Bistrita, MADR Romania, fise varietale Williams/Bartlett. Informatii orientative — consulta eticheta produselor si un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Par Williams</h2>
+  <div class="section-body">
+    <div class="alert alert-warning">
+      <strong>Cel mai important lucru de stiut:</strong> Williams NU se recolteaza verde ca Clapp. Se lasa pe pom pana la maturitate deplina — se inmoaie usor la apasare si devine galben-pai. Daca il culegi verde, nu mai capata niciodata aroma sa caracteristica.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Potasiul face aroma:</strong> Ingrasarea cu potasiu (K) in iulie-august este cea care produce aroma muscata specifica Williams. Fara potasiu suficient, fructele vor fi zemoase dar fade. Foloseste sulfat de potasiu 200-300 g/pom in iulie.</li>
+      <li><strong>Recoltare in etape:</strong> Williams nu se coace uniform — fructele din exterior si varf sunt gata cu 5-7 zile inainte de cele din interior. Recolteaza in 2-3 treceri, nu tot deodata.</li>
+      <li><strong>Sensibil la seceta in iunie-august:</strong> In aceasta perioada se formeaza celulele fructului. O seceta de 2-3 saptamani fara irigare produce fructe mici si pietroase. Irigare obligatorie in aceste luni (15-20 litri/pom/saptamana daca nu ploua).</li>
+      <li><strong>Polenizator obligatoriu — Clapp este ideal:</strong> Williams este autosteril. Clapp Favourite si Williams infloresc aproape simultan si se polenizeaza reciproc excelent. Fara polenizator, productia poate fi 0.</li>
+      <li><strong>Palinca de pere — materie prima premium:</strong> Williams este soiul mondial pentru distilate de pere (eau-de-vie). Fructele care nu indeplinesc standardul de vanzare sunt valoroase pentru distilerie — contacteaza micii distilatori locali.</li>
+      <li><strong>Durata de pastrare scurta:</strong> La temperatura camerei, fructele mature tin 3-5 zile. La frigider (2-4°C), 2-3 saptamani. Spre deosebire de Clapp, nu rezista bine la depozitare de lunga durata.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Se recolteaza verde, ca Clapp</strong> → <strong>Solutia:</strong> Testeaza maturitatea zilnic in ultima saptamana — apasa usor langa coada. Daca cedeaza usor, este gata. Culoarea se schimba de la verde intens la galben-pai.</li>
+      <li><strong>Greseala: Se ignora foc bacterian (Erwinia amylovora)</strong> → <strong>Solutia:</strong> Williams este extrem de sensibil. La orice lastari uscati brusc cu aspect de „ars" in mai-iunie, taie imediat 30 cm sub zona afectata si dezinfecteaza unealta cu alcool 70% dupa FIECARE taietura.</li>
+      <li><strong>Greseala: Nu se raresc fructele</strong> → <strong>Solutia:</strong> Rareste la 15-20 cm intre fructe (1 fruct per buchet) in mai-iunie. Williams face natural buchete de 3-5 fructe mici — fara rarire obtii multi fructe mici si de calitate slaba.</li>
+      <li><strong>Greseala: Se planteaza singur, fara polenizator</strong> → <strong>Solutia:</strong> Planta Clapp Favourite in apropiere (max 30-40 m distanta). Un singur pom Clapp polenizeaza 3-4 pomi Williams.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: PAR HOSUI ==================== -->
@@ -3903,6 +4182,33 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: Fisa varietala Hosui (NIFTS Japan), experienta cultivatori nashi Europa. Informatii orientative — consulta un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Par Hosui (Nashi)</h2>
+  <div class="section-body">
+    <div class="alert alert-warning">
+      <strong>Cel mai important lucru de stiut:</strong> Hosui NU este un par — este un fruct japonez cu biologie complet diferita. Tot ce stii despre perii europeni (Williams, Clapp) trebuie resetat. Recoltare, tundere, forma coroanei, sensibilitate la frig — TOTUL este altfel. Cel care il cultiva "ca un par normal" va esua.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Rapanul Hosui este o boala DIFERITA:</strong> Rapanul nashi este cauzat de Venturia nashicola, o specie diferita de cea a parului european (Venturia pirina). Tratamentele sunt similare, dar trebuie aplicate de la dezmugurit — nashi porneste cu 3-5 zile mai devreme decat perii europeni, deci si tratamentele se decaleaza corespunzator.</li>
+      <li><strong>Fructele mumificate = sursa #1 de monilioza:</strong> La nashi, monilioza este mult mai agresiva decat la perii europeni. Fructele mumificate ramase pe pom iarna elibereaza spori la primavara si infecteaza florile. Regula: in ianuarie, inainte de orice altceva, indeparteaza TOATE fructele mumificate de pe pom si de pe sol.</li>
+      <li><strong>Polenizator ideal: alt nashi din pepiniere europene:</strong> Shinseiki si Nijisseiki sunt polenizatorii perfecti, dar aproape imposibil de gasit in Romania. Solutia: pepiniere specializate din Italia, Franta sau Olanda livreaza in Romania — costul transportului merita. Williams si Clapp europeni functioneaza ca plan B (50-70% eficienta).</li>
+      <li><strong>Irigarea concreta: 2-4 picuratori per pom, de 2-3 ori pe saptamana:</strong> In iulie-august, nashi necesita 40-60 litri/pom/saptamana. La picurare: 2-4 picuratori x 4-8 L/ora, 2-3 ore, de 2-3 ori pe saptamana. Fara aceasta apa, fructele sunt mici si lipsite de acel crocant caracteristic care le face valoroase.</li>
+      <li><strong>Azot — stop absolut dupa 1 august:</strong> Spre deosebire de multi alti pomi, Hosui este extrem de sensibil la azotul aplicat tarziu. Orice fertilizare cu azot dupa 1 august produce lastari care nu se maturizeaza si ingheata in prima iarna. Stop total azot din august.</li>
+      <li><strong>Sulfat de potasiu in iulie = dulceata:</strong> Dozele de sulfat de potasiu (100-150g/pom) aplicate in iulie au efect direct asupra concentratiei de zahar din fructe (Brix). La nashi, aceasta fertilizare este esentiala pentru a obtine un produs cu adevarat premium, nu doar un fruct mare dar fad.</li>
+      <li><strong>Fereastra de recoltare: doar 7-10 zile:</strong> Nashi supramatur isi pierde crocantul complet si devine fainos-moale (lipsit de valoare comerciala). Monitorizeaza zilnic in ultima saptamana, recolteaza progresiv (nu tot deodata), incepand cu fructele din exterior si varf.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Nu raresti fructele sau raresti insuficient</strong> → <strong>Solutia:</strong> Rareste la 2-4 saptamani dupa caderea petalelor (fructe de 1.5-2.5 cm). Lasa 1 singur fruct per cluster, 15 cm intre fructe. Fara rarire: 100+ fructe de 150g, cu rarire: 50-70 fructe de 350-400g premium.</li>
+      <li><strong>Greseala: Formezi piramida cu ax central ca la Williams</strong> → <strong>Solutia:</strong> Forma corecta pentru nashi este vasul deschis (cup shape) fara ax central. Elimina lastarul vertical dominant in anul 2. Centrul deschis = lumina pentru fructe = dulceata si colorare uniforma.</li>
+      <li><strong>Greseala: Se recolteaza prea devreme (pielea inca verde-bruna)</strong> → <strong>Solutia:</strong> Asteapta pana pielea devine uniform auriu-bronzata, inclusiv la baza coditei. Testeaza prin gust: daca e acru sau astringent, mai asteapta 3-5 zile. Daca e dulce si crocant — e momentul.</li>
+      <li><strong>Greseala: Se depoziteaza langa mere sau banane</strong> → <strong>Solutia:</strong> Merele si bananele emit etilena care degradeaza rapid nashi. Depoziteaza SEPARAT in frigider. La 0-2°C, nashi tine 2-3 luni.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: PAR NAPOCA ==================== -->
@@ -4072,6 +4378,33 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: SCDP Cluj-Napoca (fisa varietala), MADR Romania. Informatii orientative — consulta un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Par Napoca</h2>
+  <div class="section-body">
+    <div class="alert alert-success">
+      <strong>Cel mai important lucru de stiut:</strong> Napoca este "coloana vertebrala" a livezii de pere — nu cel mai aratos sau mai aromat, dar cel mai sigur. Recoltat corect (verde-galbui, nu galben-moale), tine 3-4 luni la frigider. Aceasta diferenta de recoltare este secretul sau cel mai mare — si cel mai des ignorat.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Calciul este secretul pastrarii de 3-4 luni:</strong> Fara 4-6 aplicari de clorura de calciu 0.4% (40g/10 litri apa) din mai pana in iulie, fructele dezvolta "pete amere" (bitter pit) la depozitare si se degradeaza rapid. Investitia: cateva lei per tratament. Rezultatul: saptamani in plus de pastrare. Aceasta este cea mai subestimata tehnica la parul de depozit.</li>
+      <li><strong>Recoltarea PREA TARZIE distruge capacitatea de pastrare:</strong> Napoca recoltat galben-moale pe pom (supracopt) se pastreaza doar 2-3 saptamani, nu 3 luni. Recolteaza cand pielea este inca verde-galbui si fructul abia incepe sa cedeze la apasare langa codita. Post-maturarea se face la frigider sau camera — nu pe pom.</li>
+      <li><strong>Reducere irigare cu 10-14 zile inainte de recoltare:</strong> Stresul hidric moderat in faza finala concentreaza zaharurile, imbunatateste gustul si — important — prelungeste semnificativ durata de depozitare. Nu inseamna seceta severa, ci reducere la 50% din doza normala.</li>
+      <li><strong>Arcuirea ramurilor tinere = mai multe fructe:</strong> Ramurile la 45-60° de la orizontala formeaza cei mai multi muguri florali. Cele verticale produc doar lemn. Arcuieste ramurile tinere cu sfori sau greutati mici in august-septembrie. Este cea mai simpla si eficienta tehnica pentru a grabi intrarea pe rod si a creste productia.</li>
+      <li><strong>Declinul parului — psila il transmite:</strong> Boala cauzata de fitoplasme (organisme microscopice) se transmite prin psila parului. Simptome: frunze mici, rosii-violete din august, fructe mici si lipsite de gust, declin progresiv pe 2-5 ani. Controlul psilei nu este optional — este si protectie impotriva acestei boli incurabile.</li>
+      <li><strong>Azot — stop dupa 1 iulie (nu august):</strong> Spre deosebire de afirmatiite generale, la Napoca de toamna azotul se opreste din iulie. Aplicat mai tarziu, produce lastari care nu se lignifica si sunt vulnerabili atat la ger, cat si la focul bacterian — tocmai in luna cand riscul de infectie este maxim.</li>
+      <li><strong>Napoca polenizeaza si celelalte soiuri:</strong> Autofertilitatea partiala face Napoca un excelent polenizator si pentru Williams si Clapp. Plantat in livada alaturi de ele, beneficiul este reciproc — Napoca produce mai mult cu ele, iar ele produc mai mult cu Napoca.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Recoltare cand fructul e galben si moale pe pom</strong> → <strong>Solutia:</strong> Recolteaza la verde-galbui, cu fructul inca ferm. La frigider (0-2°C), post-maturarea continua lent — pana in noiembrie-decembrie perele sunt perfecte. Regula: daca te gandesti "mai las cateva zile sa se coaca" — este deja timpul sa recoltezi.</li>
+      <li><strong>Greseala: Nu aplici calciu foliar</strong> → <strong>Solutia:</strong> Clorura de calciu 40g/10L, 4-6 aplicari intre mai si iulie (la 2 saptamani interval). Adauga-l la orice tratament fungicid — nu necesita stropire separata.</li>
+      <li><strong>Greseala: Supraestimare rezistenta la boli — fara tratamente de baza</strong> → <strong>Solutia:</strong> Rezistenta mai buna nu inseamna imunitate. Tratamentele cu cupru din februarie si noiembrie sunt obligatorii. Intr-un an umed fara tratamentele de baza, chiar si Napoca poate pierde recolta la rapan sau foc bacterian.</li>
+      <li><strong>Greseala: Coroana densa, ramuri subverticale</strong> → <strong>Solutia:</strong> Arcuieste ramurile tinere si elimina lacomii verticali. La Napoca, lumina in coroana este direct legata de calitatea si colorarea fructelor.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: MAR FLORINA ==================== -->
@@ -4373,6 +4706,30 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: INRA France (fisa soi Florina), Statiunea de Cercetare Pomicola Bistrita, Ghid pomicultura MADR Romania, experienta pomicultori zona Arad. Informatii orientative — consulta eticheta produselor si un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Mar Florina</h2>
+  <div class="section-body">
+    <div class="alert alert-success">
+      <strong>Cel mai important avantaj al Florinei:</strong> Rezistenta la rapan inseamna ca nu mai faci 10-14 tratamente fungicide pe sezon ca la Golden sau Jonagold. Faci 4-6, din care cele mai importante sunt impotriva FAINARII (nu a rapanului!). Florina are sensibilitate moderata la fainare — aceasta este boala de care trebuie sa ai grija.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Focul bacterian (Erwinia amylovora) este incurabil.</strong> Daca o ramura pare "arsa de foc" (se innegreste brusc, frunzele raman atasate, varful se curbeaza in carlig), taie imediat la 30-40 cm sub zona bolnava. Dezinfecteaza unealta cu alcool dupa FIECARE taietura — cifrele reale arata ca 90% din raspandirea focului bacterian se face prin unelte contaminate.</li>
+      <li><strong>Nu pastra merele Florina langa pere!</strong> Perele emit etilena, un gaz care accelereaza maturarea si stricarea. Langa pere, merele care ar rezista 3-4 luni se strica in 3-4 saptamani.</li>
+      <li><strong>Punctul de altoire TREBUIE sa fie 10-15 cm deasupra solului.</strong> Daca il ingropati (prin tasarea solului sau mulcire gresita), soiul emite radacini proprii. Pe M9, pierde efectul pitic si pomul creste mare si intra tarziu pe rod. Verifica anual.</li>
+      <li><strong>Florina tinde sa supraprouca pe spalier pe M9.</strong> Rarire agresiva in iunie: 1 fruct per buchet, distanta minima 15 cm intre fructe. Fara rarire, fructele sunt mici (sub 100g), necomercializabile, si pomul alterneaza (un an cu rod bun, un an aproape fara nimic).</li>
+      <li><strong>Viermele merelor (Cydia pomonella) are doua generatii pe an.</strong> Prima in mai-iunie, a doua (mai daunatoare) in iulie-august. Capcane cu feromon monteaza din mai. Trateaza cu Coragen (1.5ml/10L) la capturarea a 5+ fluturasi pe saptamana — nu astepta sa vezi gaurele in mere.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: "E rezistenta la rapan, nu mai stropesc deloc"</strong> → <strong>Solutia:</strong> Florina mai are nevoie de 4-6 tratamente pe sezon: fainare (primavara-vara), viermele merelor (mai-august), focul bacterian (preventiv cu cupru), monilioza fructelor (pre-recoltare). Rezistenta la rapan nu inseamna niciun tratament.</li>
+      <li><strong>Greseala: Nu plantezi polenizator alaturi</strong> → <strong>Solutia:</strong> Florina este auto-sterila. Fara un alt soi de mar in raza de 50m (Golden Spur, Idared, Jonathan), ai flori frumoase si zero mere. Daca ai si Golden Spur in livada, sunt polenizatori ideali reciproci.</li>
+      <li><strong>Greseala: Tundere de iarna la temperaturi sub -5°C</strong> → <strong>Solutia:</strong> Ranile de tundere facute la ger ingheata si nu se vindeca corect. Taie cand temperaturi sunt pozitive (peste 0°C), ideal intre 5-10°C. Planifica tunderea pentru zilele favorabile din ianuarie-martie.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: MAR GOLDEN SPUR ==================== -->
@@ -4574,6 +4931,33 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: Statiunea de Cercetare Pomicola Bistrita, MADR Romania, fisei varietale Golden Delicious Spur. Informatii orientative — consulta eticheta produselor si un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Mar Golden Spur</h2>
+  <div class="section-body">
+    <div class="alert alert-danger">
+      <strong>Cel mai important lucru de stiut:</strong> Golden Spur este un mar de desert exceptional, DAR este foarte sensibil la rapan. Frunzele cazute sub pomi iarna contin sporii care infecteaza recolta anului urmator. Strangerea si arderea/compostarea frunzelor in noiembrie + tratamentul de iarna cu zeama bordelez reduc infectia primara cu pana la 80%. Asta face mai multa diferenta decat orice tratament de primavara.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Irigare neregulata = fructe crApate:</strong> Alternanata "seceta lunga → udare abundenta" produce microfisuri in fruct care se extind vizibil. Golden Spur pe M9 este deosebit de sensibil — sistemul radicular superficial nu are rezerve. Regula: frecventa constanta, doze mici-medii, nu rare si masive.</li>
+      <li><strong>Rugina (Gymnosporangium) — ienuperii sunt gazda alternativa:</strong> Daca ai ienuperi (ornamentali sau spontani) in apropierea livezii, pot transmite rugina marului — pete galben-portocalii pe frunze care slabesc pomul. Solutie: indeparteaza ienuperii din raza de 50-100 m daca sunt infectati, sau trateaza cu Score 2ml/10L preventiv in aprilie.</li>
+      <li><strong>Paduchele din San Jose — mic dar distrugator:</strong> Scuturi rotunde de 1-2 mm pe scoarta si ramuri. La atac sever, ramurile se usuca. Tratamentul cu ulei horticol 2% in februarie este cel mai eficient mijloc de control — sufoca scuturile inainte sa se trezeasca.</li>
+      <li><strong>Lapte diluat 1:9 impotriva fainarii:</strong> Metoda traditionala, surprinzator de eficienta impotriva fainarii (stratul alb-prafosal pe lastari tineri). 1 parte lapte + 9 parti apa, aplicat pe lastari dimineata. Cost zero, efect real.</li>
+      <li><strong>Cenusa de lemn = potasiu gratuit:</strong> 0.5-1 kg cenusa de lemn per pom, ingropata usor in sol in aprilie, ofera potasiu, calciu si microelemente. Golden Spur consuma mult potasiu pentru fructele mari si dulci. Este o alternativa bio excelenta la sulfatul de potasiu comercial.</li>
+      <li><strong>Tutorele M9 — verifica dupa furtuni:</strong> M9 are sistem radicular superficial. O furtuna puternica poate inclina tutorele sau pomul fara sa iti dai seama. Dupa orice furtuna semnificativa, verifica starea tutorilor si a legaturilor. Un pom inclinat la 15° iarna poate ceda complet sub greutatea zapezii.</li>
+      <li><strong>Viermele merelor are 2 generatii la Nadlac:</strong> Prima generatie in mai-iunie, a doua in iulie-august. Capcanele cu feromon (minim 1 la 3 pomi) indica exact momentul zborului maxim — trateaza la 7-10 zile dupa zborul maxim, nu dupa calendar. Fara capcana, stropesti aiurea.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Nu strangi frunzele cazute toamna</strong> → <strong>Solutia:</strong> In noiembrie, strang si ard sau composteaza TOATE frunzele de sub pomi. Frunzele infectate cu rapan elibereaza spori in primavara. Aceasta operatie simpla, 30 minute/pom, reduce 80% din infectia primara.</li>
+      <li><strong>Greseala: Nu raresti fructele in iunie</strong> → <strong>Solutia:</strong> Alternanta (un an 200 kg, un an 5 kg) se previne exclusiv prin rarire manuala. Lasa 1 fruct la 15-20 cm. Pare contra-productiv, dar fructele ramase vor creste mult mai mari, mai dulci si mai comercializabile.</li>
+      <li><strong>Greseala: Tundere agresiva de iarna → explozie de lastari verticali</strong> → <strong>Solutia:</strong> Golden Spur necesita tundere moderata. Compensarea vigoreaza cu tundere de vara (ruperea lacomilor cand sunt de 15-20 cm, inca verzi) este mai eficienta si mai putin traumatizanta pentru pom.</li>
+      <li><strong>Greseala: Nu deschizi coroana suficient</strong> → <strong>Solutia:</strong> Rapanul se dezvolta in umiditate ridicata si lumina slaba. O coroana aerisita, cu lumina in centru, este practic un tratament anti-rapan structural. Elimina anual ramurile care cresc spre interior si se incruciseaza.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: ZMEUR ==================== -->
@@ -4723,6 +5107,33 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: ICDP Maracineni, MADR, experienta cultivatori zmeur Romania. Informatii orientative — consulta un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Zmeur</h2>
+  <div class="section-body">
+    <div class="alert alert-warning">
+      <strong>Cel mai important lucru de stiut:</strong> Zmeurul produce in 2 ani cu un sistem simplu: lujer creste in anul 1, fructifica in anul 2, moare. Odata ce intelegi asta, toata ingrijirea devine logica. Daca NU intelegi asta, vei tunde gresit si nu vei obtine fructe.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Drosophila suzukii — daunator diferit de musca otetului:</strong> Spre deosebire de musca obisnuita care ataca fructele deja alterate, Drosophila suzukii depune oua IN fructele INTREGI, inca pe lujer. Larvele mici albe in interiorul zmeurei "sanatoase" sunt semnatura ei. Singurul mod de control practic: recoltare zilnica in varf de sezon. Nu exista alta metoda la fel de eficienta.</li>
+      <li><strong>Afidele transmit virusuri incurabile:</strong> Afidele de zmeur (Amphorophora idaei) nu sunt "doar" daunatori minori — transmit mozaicul zmeurului, un virus care reduce productia cu 40-60% si nu se vindeca. Odata infectata o planta, se elimina. Controlul afidelor din primavara este protectie directa impotriva bolilor virale.</li>
+      <li><strong>Nu planta zmeur dupa zmeur, capsuni, cartofi, tomate, ardei, vinete:</strong> Aceleasi boli de sol (Verticillium, Phytophthora) ataca toate aceste plante. Dupa o cultura de zmeur (sau capsuni), terenul are patogen acumulat — asteapta minim 4-5 ani inainte sa replantezi.</li>
+      <li><strong>Palisatul se monteaza INAINTE de plantare, nu dupa:</strong> Cel mai frecvent regret: "o sa fac palisatul mai tarziu". Lujerii cresc repede si se inclaca. Monteaza stalpi si sarme inainte de prima primavara — 2 sarme la 60 cm si 120 cm, lujerii se leaga pe masura cresterii.</li>
+      <li><strong>Mulciul sub picurare impiedica Botrytis:</strong> Sporii de Botrytis traiesc in sol. Ploaia sau irigarea prin aspersiune ii stropeste pe fructe. Mulciul gros (10-15 cm paie sau tocatura de lemn) la baza lujerilor este o bariera fizica impotriva acestei raspandiri — combinat cu irigare prin picurare, elimina 70% din riscul de Botrytis.</li>
+      <li><strong>Congelarea corecta: strat unic pe tava, 2 ore, apoi punga:</strong> Daca pui zmeura direct in punga si o bagi la congelator, obtii un bloc compact de nedesfacut. Metoda corecta: intinde zmeurele intr-un singur strat pe o tava, congeleaza 2 ore, apoi transfera in pungi. Se pastreaza 12 luni fara pierderi semnificative.</li>
+      <li><strong>Tunderea la sol (remontant) elimina toate bolile:</strong> La soiurile remontante, taierea TUTUROR lujerilor la 2-3 cm in noiembrie este "reset-ul" complet al plantei. Nu mai raman pe sol lujeri cu boli sau daunatori iernatoare. Este cea mai eficienta operatie fitosanitara — si cea mai simpla.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Nu elimini lujerii care au rodit imediat dupa recoltare</strong> → <strong>Solutia:</strong> La zmeurul clasic, imediat ce s-a cules ultimul fruct, taie la sol TOTI lujerii cu scoarta maro care au produs. Nu lasa pana toamna — fiecare zi in plus creste riscul de antracnoza si didymella care infecteaza lujerii tineri.</li>
+      <li><strong>Greseala: Prea multi lujeri pe metru (15-20 in loc de 8-10)</strong> → <strong>Solutia:</strong> Umiditate mare intre lujeri = Botrytis garantat. Rareste la 8-10 lujeri vigurosi per metru. Pare mai putin, dar fiecare lujer va produce fructe mai mari si mai sanatoase.</li>
+      <li><strong>Greseala: Uzi prin aspersiune (furtun, stropitor aruncat)</strong> → <strong>Solutia:</strong> Orice picatura de apa pe fructe = mediu ideal pentru Botrytis. Irigare exclusiv prin picurare la radacina, dimineata devreme (niciodata seara). Daca nu ai picurare, uda direct la baza cu furtunul in jet de pamant.</li>
+      <li><strong>Greseala: Recoltare rara (o data pe saptamana)</strong> → <strong>Solutia:</strong> In varf de sezon, trebuie recoltat la 2 zile (ideal zilnic). Zmeura coapta pe lujer: se altereaza in 24-48h, atrage Drosophila suzukii, favorizeaza Botrytis si contamineaza zmeurele vecine.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: MUR ==================== -->
@@ -4872,6 +5283,33 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: ICDP Maracineni, MADR, experienta cultivatori mur Romania. Informatii orientative — consulta un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Mur</h2>
+  <div class="section-body">
+    <div class="alert alert-warning">
+      <strong>Cel mai important lucru de stiut:</strong> Murul negru LUCIOS este inca acrisor si fara aroma! Mura COAPTA corect este neagra MATA, usor moale, si se desprinde la cea mai usoara atingere. Aceasta diferenta de 3-5 zile face diferenta intre dezamagire si un fruct spectaculos.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Lujerii ating solul si prind radacina — plantatia se extinde singura:</strong> Varfurile lujerilor de mur care ating pamantul formeaza radacini si devin plante noi. Daca nu tai varfurile lujerilor INAINTE sa atinga solul, in 2-3 ani ai o plantatie dubla fata de ce ai vrut. Taie varfurile in august-septembrie.</li>
+      <li><strong>Palisatul se monteaza INAINTE de plantare, nu dupa:</strong> Murul creste 3-5 m pe an. Daca astepti sa plantezi si abia pe urma montezi palisatul, vei lucra printre lujeri in crestere — complicat si cu risc de a-i rupe. Palisatul trebuie sa fie solid: stalpi din lemn tratat sau metal, sarma galvanizata, nu bambus sau scanduri.</li>
+      <li><strong>Soiurile fara spini sunt mai sensibile la ger:</strong> Soiurile clasice cu spini rezista -25°C, cele fara spini rezista -15 la -20°C. La o iarna exceptionally de rece (sub -18°C), soiurile fara spini pot pierde lujerii neprotejati. In zona Nadlac se intampla rar, dar aplecarea lujerilor la sol si acoperirea cu agrotextil in iernile cu prognoza critica este o asigurare valoroasa.</li>
+      <li><strong>Pasarile mananca pana la 30-50% din recolta:</strong> Mierle, sturzi si alte pasari pot devasta o plantatze de mur in cateva zile. Singurul control eficient este plasa anti-pasari (mesh 2-3 cm) montata pe cadrul de palisat. Sperietorile si benzile reflectorizante au efect temporar (1-2 saptamani).</li>
+      <li><strong>Nu planta mur dupa capsuni, zmeur, cartofi, tomate, ardei, vinete:</strong> Bolile de sol (Verticillium, Phytophthora) se acumuleaza si ataca murul. Pauza minima: 4 ani. De la zmeur la mur sau invers — same issue.</li>
+      <li><strong>Congelarea corecta a murelor:</strong> Spre deosebire de coacaze sau afine, murele se zdrobesc daca le bagi direct in punga. Intinde-le intr-un singur strat pe o tava, congeleaza 2 ore, apoi transfera in pungi. Pastreaza calitatea 12 luni si se pot scoate cantitati precise fara sa dezgheti toata punga.</li>
+      <li><strong>Primul an produce putin — normal:</strong> Butasii plantati formeaza in primul an doar 2-4 lujeri bazali si nu produc fructe (sau produc extrem de putine). Nu este o problema — planta investeste in radacini. Productia reala incepe din anul 2, explozia din anul 3+.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Plantezi la 50 cm intre plante (ca la zmeur)</strong> → <strong>Solutia:</strong> Distanta corecta pentru mur este 2-3 m intre plante. La 50 cm, in 2 ani ai un zid solid impenetrabil. Murul nu e zmeur — este mult mai viguros.</li>
+      <li><strong>Greseala: Nu elimini lujerii roditi imediat dupa recoltare</strong> → <strong>Solutia:</strong> In septembrie, imediat ce s-a cules ultima mura, taie la sol TOTI lujerii cu scoarta maro (cei care au rodit). Nu astepta pana in noiembrie — fiecare saptamana in plus = mai mult inocul de boli transmis la lujerii noi.</li>
+      <li><strong>Greseala: Nu cosesti intre randuri</strong> → <strong>Solutia:</strong> Murul trimite drajoni (lujeri noi din radacini) pe o raza de 1-2 m. Coseste intre randuri la fiecare 2-3 saptamani. Drajonii tineri (sub 20 cm) se distrug usor prin cosire; cei mari necesita sapatura.</li>
+      <li><strong>Greseala: Recoltezi cand murul e negru si lucios</strong> → <strong>Solutia:</strong> Asteapta negrul mat — "negru-lucios" = necopt, acrisor. "Negru-mat, usor moale" = perfect. Daca te indoiesti, gusta. Murul copt are gust dulce, aproape ca murele de padure.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: AFIN ==================== -->
@@ -5079,6 +5517,32 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: Universitatea de Stiinte Agricole Cluj-Napoca, ICDP, experienta cultivatori afin Romania. Informatii orientative — consulta un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Afin</h2>
+  <div class="section-body">
+    <div class="alert alert-danger">
+      <strong>Cel mai important lucru de stiut:</strong> Afinul in sol alcalin (pH 7-8, cum e la Nadlac) nu moare imediat — pare OK 2-3 luni, apoi frunzele ingalbenesc intre nervuri (cloroza ferica), cresterea se opreste, si planta moare in 1-2 ani. Ai risipit banii pe plante, turba si efort. Acidifica solul INAINTE de plantare si MASOARA pH-ul lunar.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Afinul NU are peri radiculari.</strong> Radacinile sunt extrem de fine si depind total de ciuperci micorizice (ericoid mycorrhiza) care traiesc in sol acid bogat in materie organica. Daca pH-ul creste sau distrugi solul prin sapare adanca, ciupercile mor, radacinile nu mai pot absorbi nutrientii si planta se degradeaza. Nu sapa niciodata in jurul afinului — mulciul previne buruienile fara prasiala.</li>
+      <li><strong>Elimina TOTI mugurii de floare in primul an.</strong> Mugurii de floare sunt grasi, rotunzi, la varfurile ramurilor — ii deosebesti usor de mugurii vegetativi (subtiri, ascutiti). Daca lasi planta sa fructifice in anul 1, investeste toata energia in cele 10-15 afine, radacinile nu se dezvolta, si din anul 2 planta e fragila si neproductiva.</li>
+      <li><strong>Apa de rob poate fi alcalina la Nadlac.</strong> Masoara pH-ul apei de irigare cu benzi de testare. Daca depaseste pH 7, aciduleaza: 5-10 ml otet alb (9%) la 10 litri apa, sau 1-2 ml acid citric la 10 litri. Tinteste pH 5.0-5.5 al apei de irigare.</li>
+      <li><strong>Pasarile sunt daunatorii numarul 1 — nu ciupercile.</strong> Mierle, sturzi, cinteze consuma 50-80% din recolta in 2-3 zile. Sperietorile au efect de maxim 2-3 zile. Singura solutie eficienta: plasa anti-pasari cu ochiuri de 2-3 cm, montata pe cadru inainte ca fructele sa inceapa sa se coloreze (cand sunt inca verzui-rosiatice).</li>
+      <li><strong>Regula "6 si 6" la tundere.</strong> Un arbust matur ideal are 6 ramuri principale de varste diferite. In fiecare an, elimina 1-2 ramuri vechi (scoarta cenusie, groasa, crapata) si lasa 1-2 ramuri noi sa le inlocuiasca. Fiecare ramura traieste 5-6 ani. Simplu si eficient.</li>
+    </ul>
+    <h3>Ce ingrasaminte sa NU folosesti niciodata la afin</h3>
+    <ul>
+      <li><strong>Cenusa de lemn</strong> — alcalina, ridica pH-ul rapid. Toxic pentru afin.</li>
+      <li><strong>Azotat de calciu</strong> — contine calciu care alcalinizeaza. Toxic pentru afin.</li>
+      <li><strong>Var stins sau var nestins</strong> — alcalin puternic. Toxic pentru afin.</li>
+      <li><strong>NPK clasic 15-15-15</strong> — contine adesea clorura de potasiu, toxica. Foloseste NPK special pentru azalee/rododendron sau sulfat de potasiu separat.</li>
+      <li><strong>Ce sa folosesti:</strong> Sulfat de amoniu (sursa N acidifianta!), sulfat de potasiu, compost de conifere, ingrasaminte speciale pentru afin/acidofile.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: ALUN ==================== -->
@@ -5242,6 +5706,32 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <div class="section" style="background:transparent;border:none;text-align:center;color:var(--text-dim);font-size:0.8rem;">
 <p><em>Surse: SCDP Valcea, ICDP Maracineni, MADR, experienta nucicultori Romania. Informatii orientative — consulta un specialist agronom.</em></p>
 </div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Alun Tufa</h2>
+  <div class="section-body">
+    <div class="alert alert-danger">
+      <strong>Cel mai important lucru de stiut:</strong> Alunul NU este polenizat de insecte — este polenizat de VANT, iarna (ianuarie-februarie). Aceasta inseamna 2 lucruri: (1) ai nevoie de minim 2 soiuri diferite la max 20-30m distanta, altfel nu ai alune indiferent cat de sanatos e pomul; (2) albinele si insectele sunt irelevante la alun — ce conteaza e vantul in zilele cand catinii sunt deschisi.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Acarianul galicol al alunului — muguri "umflati" = nu se mai deschid:</strong> Phytoptus avellanae este un acarosparazit microscopic care traieste in muguri. Atacul se vede clar: mugurii devin anormal de mari, rotunzi, "umflati" (gale de muguri). Acesti muguri nu se mai deschid primavara — sunt morti. Solutia: taie si arde ramurile afectate in februarie-martie. Tratament preventiv: zeama sulfocalcica 2% in repaus vegetativ.</li>
+      <li><strong>Gandacul balanin — gaura rotunda de 2mm = recolta pierduta:</strong> Curculio nucum perforeaza alunele tinere cu "botul" sau lung si depune un ou. Larva mananca miezul in interior — la recoltare, aluna pare normala dar e goala sau cu larva alba inlauntru. Semnal de alarma: alune cazute prematur (august). Prevenire eficienta: culti superficial solul sub tufa toamna (expune pupele la ger). La atac severa: tratament cu Actara in mai-iunie.</li>
+      <li><strong>Recoltare prin scuturare pe prelata — mult mai rapid:</strong> La tufele mari, nu recolta manual fiecare aluna. Asaza o prelata sub tufa si scutura puternic tulpinile. Alunele coapte cad singure. Aceasta metoda economiseste 80% din timp la recoltare si functioneaza perfect cand alunele sunt maturate natural (involucrul verde se deschide singur).</li>
+      <li><strong>Tunderea pe vreme umeda = bacterioza garantata:</strong> Xanthomonas arboricola intra prin ranile proaspete. Daca tunzi pe vreme umeda sau cu ploaie anuntata in 24-48h, bacteriile intra direct in tesut. Regula stricta: tunde DOAR pe vreme uscata, cu previziuni de cel putin 2 zile fara ploaie. Pe taieturile mai mari de 3 cm, aplica mastic/pasta cicatrizanta.</li>
+      <li><strong>Un episod de ger in ianuarie-februarie = zero alune in acel an:</strong> Daca in perioada cand catinii sunt deschisi si florile feminine sunt receptive apare ger sever (sub -10°C), polenizarea esueaza. Nu exista masuri de protectie practice pentru tufe de 3-5 m. Accepta ca aproximativ 1 an din 5-7 va fi fara recolta din aceasta cauza — este natura culturii alunului.</li>
+      <li><strong>Alune umede = aflatoxine (toxice!) — uscare obligatorie:</strong> Alunele recoltate sau cazute si lasate umed se mucegaiesc rapid. Mucegaiul poate produce aflatoxine — toxine hepatotoxice extrem de periculoase. Usca alunele imediat dupa recoltare in strat subtire la umbra ventrala 2-3 saptamani. Test: scutura o aluna — daca miezul "zangane" in coaja, e uscata. Daca e surd, mai usca.</li>
+      <li><strong>Alergii — etichetare obligatorie daca vinzi:</strong> Alunele sunt unul din cei 14 alergeni alimentari principali reglementati in UE. La vanzare (chiar si la piata sau direct), eticheta TREBUIE sa mentioneze "Contine alune". Reactiile alergice la alune pot fi severe.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Plantezi mai multe tufe din acelasi soi (crezand ca "mai mult e mai bine")</strong> → <strong>Solutia:</strong> 5 tufe din Tonda Gentile = 0 alune. 3 tufe Tonda Gentile + 2 tufe Cosford = productie maxima. Soiurile trebuie sa fie DIFERITE — acelasi soi, indiferent de cantitate, nu se polenizeaza reciproc.</li>
+      <li><strong>Greseala: Nu controlezi drajonii — tufa devine junla in 3-4 ani</strong> → <strong>Solutia:</strong> Verifica baza tufei in mai, iunie si august. Taie drajonii cat sunt inca tineri si verzi (sub 30 cm) — se taie usor cu foarfeca. Pastreaza 6-8 tulpini principale + 1-2 drajoni pe an ca inlocuitori ai tulpinilor batrane.</li>
+      <li><strong>Greseala: Lasi alunele cazute pe sol dupa ploaie</strong> → <strong>Solutia:</strong> Alunele cazute pe sol umed se mucegaiesc in 2-3 zile. Recolteaza la fiecare 2-3 zile in perioada de cadere (septembrie). Asaza imediat pe gratar sau suprafata ventilata la uscat.</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <!-- ==================== TAB: RODIU ==================== -->
@@ -5752,6 +6242,29 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 <p><em>Ghid realizat pentru conditiile climatice specifice zonei Nadlac/Arad, Romania.</em></p>
 <p><em>Rodiul este o cultura de perspectiva pentru aceasta zona, cu conditia alegerii soiurilor corecte si a protectiei adecvate iarna.</em></p>
 </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Rodiu</h2>
+  <div class="section-body">
+    <div class="alert alert-warning">
+      <strong>Cel mai important lucru de stiut:</strong> Rodiul NU se recunoaste copt dupa culoare sau dimensiune! Culoarea rosie apare cu 4-6 saptamani inainte de maturitate. Singurul test fiabil: loveste usor fructul cu degetul — la maturitate suna ca o toba metalica (sunet puternic, gol). Fruct nematur suna infundat, ca o carne. Nu recolta pana nu obtii sunetul metalic.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Rodiul se regenereaza din radacini dupa ger sever.</strong> Chiar daca toate ramurile ingheata complet intr-o iarna aspra, radacinile supravietuiesc de obicei si produc lastari noi primavara. Nu grabi sa taie "pomul mort" primavara — asteapta pana in mai sa vezi daca apar lastari noi de la baza. Aceasta este si rationamentul pentru forma de tufa: e mai usor de refacut.</li>
+      <li><strong>Drajonii la rodiu sunt INAMICUL principal al productiei.</strong> Spre deosebire de visin unde drajonii pot fi utili, la rodiu trebuie eliminati DE MINIM 3-4 ORI pe sezon (mai, iunie, august, septembrie). Un an de nepasare si ai 20-30 de tulpini subtiri, umbrite reciproc, fara fructe. Foloseste foarfeca — nu rupe cu mana (stimuleaza cresterea mai agresiva).</li>
+      <li><strong>Protectia de iarna se pregateste in ETAPE, nu dintr-o singura actiune.</strong> Octombrie: opreste irigarea complet. Noiembrie: zeama bordelez 3% pe toata tufa, lasa sa se usuce 2 zile, APOI aplica mulcire 15-20 cm la baza, APOI indoaie si acopera tulpinile. Ordinea conteaza — nu acoperi tulpinile umede sau fara tratament fungic.</li>
+      <li><strong>Soiul Wonderful este inadecvat pentru Nadlac</strong> (-12°C limita), desi este cel mai popular si usor de gasit in magazine. Cauta Salavatski (rezistenta -24°C) sau Russian 26 (-20°C). Daca gasesti numai Wonderful, investeste in protectie de iarna foarte serioasa.</li>
+      <li><strong>Rodiul se pastreaza 2-3 luni la frigider (5-8°C) si pana la 4-5 luni in pivnita racoroasa</strong> — mult mai bine decat orice alt fruct din livada. Poti recolta toamna si consuma pana in iarna tarzie-primavara. Nu se congeleaza intreg (boabele separate, da).</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Formezi rodiul ca un arbore pe trunchi unic</strong> → <strong>Solutia:</strong> In Romania, forma tufa pe 3-5 tulpini este OBLIGATORIE. Daca ai cumparat un pom cu trunchi, taie la 15-20 cm de sol si lasa sa refaca tufa din lastari noi. Forma arbore ingheata complet in prima iarna grea.</li>
+      <li><strong>Greseala: Recoltezi dupa culoare</strong> → <strong>Solutia:</strong> Foloseste testul sunetului metalic (bate fructul cu degetul). Culoarea rosie intensa nu inseamna maturitate. Coroana (capeluta de la varf) uscata si lemnoasa + greutate buna = indicii secundare. Testul sunetului ramane singura metoda sigura.</li>
+      <li><strong>Greseala: Uiti sa dezinfectezi tufa cu zeama bordelez INAINTE de acoperire pentru iarna</strong> → <strong>Solutia:</strong> Aplicati zeama bordelez 3% pe toata tufa in noiembrie si lasati sa se usuce 1-2 zile INAINTE de acoperire. Sub acoperire, in caldura si umiditatea primaverii, sporii fungici se pot activa. Tratamentul preventiv inainte de acoperire este critic.</li>
+    </ul>
+  </div>
 </div>
 
 <div class="section">
@@ -6413,6 +6926,32 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 
 <div class="section">
   <p style="color:var(--text-dim);font-size:0.82rem;"><em>Consulta un specialist agronom pentru cazul tau specific. Dozele sunt orientative — citeste MEREU eticheta produsului.</em></p>
+</div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Kaki Rojo Brillante</h2>
+  <div class="section-body">
+    <div class="alert alert-danger">
+      <strong>Cel mai important lucru de stiut:</strong> Kaki Rojo Brillante este ASTRINGENT — nu se poate manca direct de pe pom! Fructul recoltat contine tanini solubili care produc o senzatie extrem de neplacuta ("leaga" gura ca piatra de var). Trebuie sa elimini astringenta prin una din metodele de postmaturare INAINTE de a manca sau vinde. Aceasta este caracteristica nr. 1 pe care cumparatorii trebuie sa o cunoasca.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Metoda cu alcool = fruct ferm vandabil (metoda spaniola):</strong> Pune fructele intr-un vas inchis ermetic cu un bol mic de rachiu sau tuica (alcool etilic, NU spirt tehnic). Inchide ermetic. Dupa 5-7 zile la temperatura camerei, kaki-ul devine dulce dar ramane FERM — poate fi taiat ca un mar. Aceasta este metoda traditionala din Spania pentru comercializare, mult mai practica decat asteptarea sa se inmoaie complet.</li>
+      <li><strong>Metoda cu mere sau banane = simpla si gratuita:</strong> Pune kaki-urile intr-o punga inchisa cu 2-3 mere sau o banana matura. Etilena naturala eliberata de mere/banane elimina astringenta in 5-10 zile. Nu necesita alcool si functioneaza excelent pentru cantitati mici pentru consumul propriu.</li>
+      <li><strong>Kaki-ul fructifica pe lastaroii NOUL ai anului:</strong> Spre deosebire de cais sau mar care fructifica pe buchete de mai sau lambarde, kaki-ul produce fructe pe lastaroii verzi ai anului curent. Asta inseamna ca tunderea trebuie sa stimuleze lastari noi (scurtare, nu elimnare totala), nu sa conserve lemnul vechi.</li>
+      <li><strong>Rarirea fructelor previne ruperea ramurilor:</strong> Un fruct de kaki cantareste 200-300g. O ramura cu 10 fructe poarta 2-3 kg. In august-septembrie, aceasta greutate poate rupe ramurile principale. Rareste la 1 fruct la 15-20 cm si maxim 3-5 fructe per ramura.</li>
+      <li><strong>Nu elimina florile in PRIMII 2 ANI:</strong> In primii 2 ani de la plantare, daca apar flori, elimina-le! Fructificarea timpurie epuizeaza pomul tanar care are nevoie sa investeasca energia in radacini si structura. Din anul 3 poti lasa cateva fructe.</li>
+      <li><strong>Soiurile hibride Rosseyanka/Nikita's Gift = siguranta la ger pana la -25°C:</strong> Daca vrei un kaki sigur pentru zona Nadlac, aceste hibrizi creati in Ucraina/Rusia rezista la -25/-28°C. Fructele sunt mai mici (80-120g) si astringente, dar pomul supravietuieste iernilor extreme. Ideal ca plan B langa Rojo Brillante.</li>
+      <li><strong>Portaltoi D. virginiana = rezistenta la frig -25°C:</strong> Daca ai posibilitatea, cauta kaki pe portaltoi Diospyros virginiana (kaki-ul american). Rezistenta la frig este semnificativ mai buna (-25°C) decat pe D. lotus (standard). Intreaba explicit pepiniera ce portaltoi are pomul.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Mananci sau vinzi kaki astringent fara postmaturare</strong> → <strong>Solutia:</strong> Incepe INTOTDEAUNA cu testul de gust: muschca din fruct. Daca simti ca "ti se usuca" gura — nu e gata. Aplica una din metodele de eliminare a astringentei (alcool, mere, postmaturare naturala). Informeaza INTOTDEAUNA cumparatorii despre aceasta caracteristica.</li>
+      <li><strong>Greseala: Lasi pomul fara protectie de iarna in primii 5 ani</strong> → <strong>Solutia:</strong> Bandaj trunchi cu iuta din noiembrie, mulci 15-20 cm la baza, varuire. In iernile cu prognoza sub -12°C, impacheteaza tot pomul mic in agrotextil P30. Aceasta nu este optionala — la Nadlac, o singura iarna aspra neprotejata poate distruge investitia de 5 ani.</li>
+      <li><strong>Greseala: Planteaza kaki la umbra sau intr-o fundatura de aer rece</strong> → <strong>Solutia:</strong> Kaki-ul are nevoie de expunere sudica sau sud-vestica, adapostit de vantul din nord (langa un gard, perete sau rand de pomi). Aerul rece cade si stationeaza in fundaturi — acolo e cel mai frig in noptile de iarna.</li>
+      <li><strong>Greseala: Nu rareste fructele</strong> → <strong>Solutia:</strong> In iulie, dupa caderea naturala a fructelor mici ("caderea din iunie"), rareaza manual la 1 fruct la 15-20 cm. Fructe mai putine = fructe mai mari si mai dulci + ramuri nerupte + productie constanta de la an la an (mai putina alternanta).</li>
+    </ul>
+  </div>
 </div>
 
 </div><!-- /kaki -->
@@ -7186,6 +7725,31 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
 
 <div class="section">
   <p style="color:var(--text-dim);font-size:0.82rem;"><em>Consulta un specialist agronom pentru cazul tau specific. Dozele sunt orientative — citeste MEREU eticheta produsului.</em></p>
+</div>
+
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Mur Copac</h2>
+  <div class="section-body">
+    <div class="alert alert-info">
+      <strong>Cel mai important lucru de stiut:</strong> "Mur copac" este denumire comerciala, nu botanica. Este acelasi Rubus fruticosus, dar soiuri selectionate cu lujeri erecti. Avantajul real: nu are nevoie de palisat complex si arata ordonat. Dezavantajul real: produce drajoni agresivi — daca nu ii controlezi, ai mur pretutindeni in livada in 2-3 ani.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Drajonii cresc la 1-2 m distanta de planta mama:</strong> In solul fertil din Nadlac, murul copac produce drajoni (lujeri noi din radacini laterale) pe o raza surprinzator de mare. Coseste sau sapa drajonii lunar, incepand din mai. Daca ai livada dens plantata, instaleaza bariera anti-radacina (folie groasa, 50 cm adancime) in jurul fiecarei plante.</li>
+      <li><strong>Lujerii de mur copac se autosutin, dar palisatul ramane recomandat:</strong> Chiar daca lujerii sunt erecti, incarcati cu fructe (5-12g/fruct) se pot apleca si eventual rupe la baza. Un simplu tub sau stâlpas central cu o singura sarma circulara previne aceasta problema cu effort minim.</li>
+      <li><strong>Confuzia lujeri vechi vs. noi este sursa de greseli de tundere:</strong> Scoarta maro = lujer de 2 ani (a rodit, trebuie taiat). Scoarta verde-bruna = lujer de 1 an (va rodi anul viitor, nu se taie). Taierea lujerilor noi din greseala insemana zero fructe in sezonul urmator.</li>
+      <li><strong>Pasarile sunt daunatori seriosi — plasa anti-pasari din iunie:</strong> Mierle si sturzi pot consuma 30-50% din recolta de mure. Spre deosebire de zmeur (unde plasa e mai greu de montat pe palisat complex), la murul copac cu port erect, o plasa simpla se monteaza usor in jurul fiecarei plante sau pe un cadru simplu.</li>
+      <li><strong>Stop azot dupa 1 iulie:</strong> Fertilizarea cu azot dupa iulie produce lastari care nu au timp sa se aoiasca inainte de prima bruma. Acesti lastari ingheata la -3/-5°C, in timp ce cei maturi rezista la -15/-22°C. Opreste orice fertilizare cu azot dupa 1 iulie.</li>
+      <li><strong>Murul negru lucios nu e inca copt:</strong> Identic cu murul clasic. Murul copt este negru mat, usor moale la apasare, se desprinde la cea mai usoara atingere. Negru lucios si ferm = inca mai are 3-5 zile pana la maturitate deplina.</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Nu controlezi drajonii</strong> → <strong>Solutia:</strong> Coseste intre si in jurul plantelor la fiecare 2-3 saptamani, mai ales in mai-iulie cand drajonii pornesc cel mai activ. Un dragonas de 15 cm se elimina cu coasa; unul de 50 cm necesita sapatura. Costul necontrolarii: livada invadata in 2-3 ani.</li>
+      <li><strong>Greseala: Tai lujerii noi (verzi) crezand ca „curete" planta</strong> → <strong>Solutia:</strong> Tai DOAR scoarta maro (lujeri de 2 ani, post-fructificare). Scoarta verde-bruna sunt lujerii de 1 an — ei vor produce fructele anului urmator. Regula simpla: dupa recoltare, tot ce are scoarta maro se taie la sol.</li>
+      <li><strong>Greseala: Planteaza la umbra (langa un gard, sub un pom)</strong> → <strong>Solutia:</strong> Murul are nevoie de minim 5-6 ore de soare direct pe zi pentru a produce fructe dulci. La umbra partiala produce putine fructe si acestea raman acrisoare. Locul optim: expunere sudica sau estice, neumbrit.</li>
+      <li><strong>Greseala: Nu recunoaste matura bine coapta si recolteaza prea devreme</strong> → <strong>Solutia:</strong> Gusta intotdeauna inainte de a recolta masiv. Mura perfect coapta este dulce ca fructul de padure. Daca e acrisoara, mai asteapta. Diferenta de gust dintre "copt 90%" si "copt 100%" este uriasa.</li>
+    </ul>
+  </div>
 </div>
 
 </div><!-- /mur-copac --><!-- ==================== TAB: ZMEUR GALBEN REMONTANT ==================== -->
@@ -8048,6 +8612,32 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
   <p style="color:var(--text-dim);font-size:0.82rem;"><em>Consulta un specialist agronom pentru cazul tau specific. Dozele sunt orientative — citeste MEREU eticheta produsului.</em></p>
 </div>
 
+<div class="section">
+  <h2 class="section-title">H. Sfaturi Practice pentru Incepatori — Zmeur Galben Remontant</h2>
+  <div class="section-body">
+    <div class="alert alert-success">
+      <strong>Cel mai important lucru de stiut:</strong> Zmeurul galben remontant este probabil cea mai simpla cultura din livada: creste primavara, rodeste toamna, tai totul la sol in noiembrie, reporneste de la zero. Fara forme de coroana, fara decizii complicate. Dar aceasta simplitate functioneaza DOAR daca ai palisat, irigare si tii la 8-10 lujeri/metru.
+    </div>
+    <h3>Informatii practice care nu se inteleg de la sine</h3>
+    <ul>
+      <li><strong>Coacerea zmeurului galben nu e evidenta:</strong> Spre deosebire de zmeurul rosu care se inroseste vizibil, zmeurul galben nu "anunta" maturitatea la fel de clar. Culoarea trece de la galben-pal la galben-chihlimbariu intens — dar testul real este atingerea: fructul matur se desprinde la cea mai usoara atingere, fara sa tragi. Daca tragi si rezista — nu e gata.</li>
+      <li><strong>Lujerii cresc cu 3-5 cm pe zi in mai:</strong> In conditii bune, lujerii au o crestere incredibil de rapida in mai. Daca nu ii legi de palisat saptamanal, dupa 2 saptamani ai un ghem dezordonat imposibil de corectat. Leaga in fiecare saptamana, indiferent cat de ocupat esti.</li>
+      <li><strong>Resturile de tundere se ARD, nu se composteaza:</strong> Lujerii taiati in noiembrie pot contine spori de antracnoza, didymella sau alte boli. Lasati la sol sau compostati, infecteaza plantatia in primavara. Ard-i sau scoate-i din livada — este cea mai simpla masura fitosanitara de toamna.</li>
+      <li><strong>In primul an, lasa florile (nu le elimina):</strong> La zmeurul remontant plantat in primavara, primele flori apar vara. Nu este nevoie sa le elimini (cum se face la capsuni). O recolta mica in primul an nu dauneaza radacinilor — din contra, confirma ca planta este sanatoasa si adaptata.</li>
+      <li><strong>Potasiu in iunie = calitate fructe:</strong> Un pumn de sulfat de potasiu (30g/m²) imprastiat la baza plantelor in iunie, cand apar primii boboci florali, imbunatateste direct continutul de zahar si aroma fructelor. Zmeurul galben are deja un gust mai dulce decat cel rosu — potasiul amplifica aceasta calitate.</li>
+      <li><strong>Drosophila suzukii e mai periculoasa la galben decat la rosu:</strong> Fructele galbene sunt mai greu de supravegheat (nu schimba dramatic culoarea cand sunt infectate). In plus, fara antocianine protectoare, pielea galbuie este mai subtire. Capcanele cu otet de mere + o picatura de detergent (la 30-50 cm de plante) trebuie montate din august.</li>
+      <li><strong>pH solului din Nadlac e la limita pentru zmeur:</strong> Cernoziomurile locale au pH 7.0-7.5. Zmeurul vrea 5.5-6.5. Mulciul permanent (paie, tocatura de lemn) este cel mai simplu mod de a acidifica usor solul in timp. Daca apar frunze galbene cu nervuri verzi (cloroza ferica), aplica chelat de fier EDDHA la radacina, 20g/10L, de 2 ori pe an (aprilie, iunie).</li>
+    </ul>
+    <h3>Greseli frecvente si cum sa le eviti</h3>
+    <ul>
+      <li><strong>Greseala: Palisat montat dupa ce lujerii deja cresc</strong> → <strong>Solutia:</strong> Monteaza palisatul INAINTE sau imediat dupa plantare. In mai, lujerii cresc cu 3-5 cm pe zi. Daca astepti "sa creasca mai intai", vei monta palisatul printre lujeri incolaciti — costisitor in timp si cu risc de a le rupe.</li>
+      <li><strong>Greseala: Lasi resturile de tundere la baza plantelor</strong> → <strong>Solutia:</strong> Aduna TOTI lujerii taiati si arde-i sau scoate-i din livada. Este cea mai simpla operatiune de toamna si reduce drastic inoculul de boli pentru primavara.</li>
+      <li><strong>Greseala: Nu rarest lujerii — lasi 20+ per metru</strong> → <strong>Solutia:</strong> Fiecare lujer in plus peste 10/metru reduce aerisirea, creste umiditatea, favorizeaza Botrytis si reduce calibrul fructelor. In mai, cand lujerii au 20-30 cm, alege-i pe cei mai vigurosi si elimina-i pe ceilalti. Dureros dar necesar.</li>
+      <li><strong>Greseala: Nu recoltezi la fiecare 2-3 zile</strong> → <strong>Solutia:</strong> Zmeurul galben supramatur se desprinde singur de pe lujer, cade pe sol si atrage Drosophila. In varf de sezon, treci zilnic. O recolta pierduta pe sol este si o sursa de infectie pentru intreaga plantatie.</li>
+    </ul>
+  </div>
+</div>
+
 </div><!-- /zmeur-galben -->
 
 </main>
@@ -8081,27 +8671,61 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
       <label for="calcProduct">Produs</label>
       <select id="calcProduct" onchange="updateCalcConc()">
         <option value="">— Alege produsul —</option>
-        <option value="3" data-unit="g">Zeam&#259; bordalez&#259; 3%</option>
-        <option value="0.3" data-unit="g">Funguran OH 0.3%</option>
-        <option value="1" data-unit="ml">Oleomin / Confidor Oil 1%</option>
-        <option value="0.02" data-unit="ml">Score 250 EC 0.02%</option>
-        <option value="0.03" data-unit="g">Mospilan 20 SG 0.03%</option>
-        <option value="0.03" data-unit="g">Chorus 50 WG 0.03%</option>
-        <option value="0.2" data-unit="g">Captadin 0.2%</option>
-        <option value="0.02" data-unit="ml">Mavrik 2F 0.02%</option>
-        <option value="0.02" data-unit="ml">Difcor / Score 0.02%</option>
-        <option value="0.003" data-unit="g">Decis 25 WG 0.003%</option>
-        <option value="0.1" data-unit="g">Switch 0.1%</option>
-        <option value="0.07" data-unit="ml">Topsin 0.07%</option>
-        <option value="0.02" data-unit="ml">Calypso 480 SC 0.02%</option>
-        <option value="0.15" data-unit="g">Merpan 80 WDG 0.15%</option>
-        <option value="0.5" data-unit="g">Thiovit Jet 0.5%</option>
-        <option value="0.015" data-unit="g">Teppeki 0.015%</option>
-        <option value="0.05" data-unit="ml">Luna Experience 0.05%</option>
-        <option value="0.0175" data-unit="ml">Coragen 0.0175%</option>
-        <option value="0.2" data-unit="g">Dithane 0.2%</option>
-        <option value="0.015" data-unit="ml">Karate Zeon 0.015%</option>
+        <optgroup label="🍃 Fungicide pe baza de cupru (preventive, naturale)">
+          <option value="3" data-unit="g">Zeam&#259; bordalez&#259; 3%</option>
+          <option value="0.3" data-unit="g">Funguran OH 0.3%</option>
+          <option value="0.3" data-unit="ml">Cuproxat SC 0.3%</option>
+        </optgroup>
+        <optgroup label="🍃 Fungicide sistemice (patrund in planta)">
+          <option value="0.02" data-unit="ml">Score 250 EC 0.02%</option>
+          <option value="0.02" data-unit="ml">Difcor 250 EC 0.02%</option>
+          <option value="0.07" data-unit="ml">Topsin 70 WDG 0.07%</option>
+          <option value="0.05" data-unit="ml">Luna Experience 400 SC 0.05%</option>
+          <option value="0.015" data-unit="g">Nativo 75 WG 0.015%</option>
+          <option value="0.025" data-unit="ml">Folicur Solo 250 EW 0.025%</option>
+        </optgroup>
+        <optgroup label="🍃 Fungicide de contact (strat protector)">
+          <option value="0.2" data-unit="g">Captadin 80 WDG 0.2%</option>
+          <option value="0.15" data-unit="g">Merpan 80 WDG 0.15%</option>
+          <option value="0.2" data-unit="g">Dithane M-45 0.2%</option>
+          <option value="0.5" data-unit="g">Thiovit Jet 80 WG 0.5% (sulf)</option>
+          <option value="0.4" data-unit="g">Microthiol Special 0.4% (sulf)</option>
+        </optgroup>
+        <optgroup label="🍃 Fungicide combinate (contact + sistemic)">
+          <option value="0.03" data-unit="g">Chorus 50 WG 0.03%</option>
+          <option value="0.1" data-unit="g">Switch 62.5 WG 0.1%</option>
+          <option value="0.08" data-unit="g">Bellis 38 WG 0.08%</option>
+          <option value="0.1" data-unit="ml">Syllit 400 SC 0.1%</option>
+        </optgroup>
+        <optgroup label="🍃 Fungicide anti-botrytis (putregai cenusiu — zmeur, mur, afin)">
+          <option value="0.15" data-unit="g">Signum 33 WG 0.15%</option>
+          <option value="0.1" data-unit="ml">Rovral 500 SC 0.1%</option>
+        </optgroup>
+        <optgroup label="🐛 Insecticide uleioase (iarna — oua si larve)">
+          <option value="1" data-unit="ml">Oleomin / Confidor Oil 1%</option>
+        </optgroup>
+        <optgroup label="🐛 Insecticide sistemice (patrund in planta)">
+          <option value="0.03" data-unit="g">Mospilan 20 SG 0.03%</option>
+          <option value="0.02" data-unit="ml">Calypso 480 SC 0.02%</option>
+          <option value="0.015" data-unit="g">Teppeki 50 WG 0.015%</option>
+          <option value="0.02" data-unit="g">Actara 25 WG 0.02%</option>
+          <option value="0.1" data-unit="ml">Movento 100 SC 0.1%</option>
+        </optgroup>
+        <optgroup label="🐛 Insecticide de contact / de soc (actiune rapida)">
+          <option value="0.02" data-unit="ml">Mavrik 2F 0.02% (sigur albine)</option>
+          <option value="0.003" data-unit="g">Decis 25 WG 0.003%</option>
+          <option value="0.015" data-unit="ml">Karate Zeon 5 CS 0.015%</option>
+          <option value="0.05" data-unit="g">Pirimor 50 WG 0.05% (anti-afide)</option>
+        </optgroup>
+        <optgroup label="🐛 Insecticide biologice (spinosad / diamide)">
+          <option value="0.0175" data-unit="ml">Coragen 20 SC 0.0175%</option>
+          <option value="0.04" data-unit="ml">Laser 240 SC 0.04% (spinosad)</option>
+        </optgroup>
+        <optgroup label="🌿 Bio / Ecologic (fara chimicale)">
+          <option value="0.5" data-unit="g">Bicarbonat sodiu 0.5% (anti-fainare)</option>
+        </optgroup>
       </select>
+      <div class="prod-desc" id="prodDesc"></div>
 
       <label for="calcConc">Concentra&#539;ie (%)</label>
       <input type="number" id="calcConc" step="0.001" min="0" placeholder="ex: 0.02">
@@ -8253,7 +8877,7 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
         <div class="gu-icon">&#128247;</div>
         <div>Adaug&#259; o poz&#259; (max 5MB)</div>
       </div>
-      <input type="file" id="galFileInput" accept="image/*" capture="environment" style="display:none" onchange="uploadPhoto(this)">
+      <input type="file" id="galFileInput" accept="image/*" style="display:none" onchange="uploadPhoto(this)">
       <div id="galLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Se &#238;ncarc&#259;...</div>
       <div id="galGrid" class="gal-grid"></div>
       <div id="galEmpty" class="gal-empty" style="display:none;">Nicio poz&#259; ad&#259;ugat&#259; pentru aceast&#259; specie.</div>
@@ -8276,12 +8900,15 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
         <div class="gu-icon">&#128248;</div>
         <div>Selecteaz&#259; sau fotografiaz&#259;</div>
       </div>
-      <input type="file" id="diagFileInput" accept="image/*" capture="environment" style="display:none" onchange="submitDiagnose(this)">
+      <input type="file" id="diagFileInput" accept="image/*" style="display:none" onchange="submitDiagnose(this)">
       <div id="diagPreview" style="display:none;margin-bottom:12px;">
         <img id="diagImg" style="width:100%;max-height:250px;object-fit:contain;border-radius:8px;">
       </div>
       <div id="diagLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Gemini analizeaz&#259; imaginea...</div>
       <div id="diagResult" class="ai-res" style="display:none;"></div>
+      <div id="diagCopyRow" style="display:none;margin-top:8px;text-align:right;">
+        <button class="copy-btn" onclick="copyTextEl('diagResult')">&#128203; Copiaz&#259; diagnosticul</button>
+      </div>
     </div>
   </div>
 </div>
@@ -8295,10 +8922,16 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
     </div>
     <div class="modal-body">
       <label for="askInput">Pune o &#238;ntrebare despre aceast&#259; specie</label>
-      <textarea id="askInput" rows="3" placeholder="Ex: Ce tratamente aplic &#238;n aprilie? Cum recunosc r&#259;p&#259;nul? Ce fac dac&#259; are frunzele galbene?"></textarea>
+      <div class="textarea-wrap">
+        <textarea id="askInput" rows="3" placeholder="Ex: Ce tratamente aplic &#238;n aprilie? Cum recunosc r&#259;p&#259;nul? Ce fac dac&#259; are frunzele galbene?" style="padding-bottom:32px;"></textarea>
+        <button class="textarea-copy-btn" onclick="copyTextEl('askInput')" title="Copiaz&#259; &#238;ntrebarea">&#128203; Copiaz&#259;</button>
+      </div>
       <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="submitAsk()">Trimite &#238;ntrebarea</button>
       <div id="askLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Se genereaz&#259; r&#259;spunsul...</div>
       <div id="askResult" class="ai-res" style="display:none;"></div>
+      <div id="askCopyRow" style="display:none;margin-top:8px;text-align:right;">
+        <button class="copy-btn" onclick="copyTextEl('askResult')">&#128203; Copiaz&#259; r&#259;spunsul</button>
+      </div>
       <p style="margin-top:12px;font-size:0.72rem;color:var(--text-dim);text-align:center;">
         R&#259;spunsurile sunt generate de AI &#537;i pot con&#539;ine imprecizii. Consult&#259; un specialist agronom.
       </p>
@@ -8416,6 +9049,7 @@ let searchTimeout;
 searchInput.addEventListener('input', () => {
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(doSearch, DEBOUNCE_SEARCH_MS);
+  showSuggestions(searchInput.value.trim());
 });
 
 function clearSearchHighlights() {
@@ -8488,6 +9122,132 @@ function clearSearch() {
   searchCount.textContent = '';
   $$('.tab').forEach(function(t) { t.classList.remove('search-match'); });
   clearSearchHighlights();
+  var sug = document.getElementById('searchSuggestions');
+  if (sug) sug.style.display = 'none';
+}
+
+// ====== SEARCH AUTOCOMPLETE ======
+var _searchIndex = [];
+var _suggFocusIdx = -1;
+
+function buildSearchIndex() {
+  _searchIndex = [];
+  $$('.tab[data-tab]').forEach(function(tab) {
+    var tabId = tab.dataset.tab;
+    var iconEl = tab.querySelector('.tab-icon');
+    var icon = iconEl ? iconEl.textContent : '';
+    var tabName = tab.textContent.replace(icon, '').trim();
+    _searchIndex.push({ text: tabName, tabId: tabId, type: 'Specie', el: null, icon: icon });
+    var content = document.getElementById(tabId);
+    if (!content) return;
+    content.querySelectorAll('h2, h3').forEach(function(h) {
+      var t = h.textContent.trim().replace(/^[▸►▼▶⮞\s]+/, '').trim();
+      if (t.length >= 4 && t.length < 95) {
+        _searchIndex.push({ text: t, tabId: tabId, type: 'Sec\u021biune', el: h, icon: icon });
+      }
+    });
+  });
+}
+
+function showSuggestions(q) {
+  var box = document.getElementById('searchSuggestions');
+  if (!box) return;
+  if (!q || q.length < 2) { box.style.display = 'none'; return; }
+  var ql = q.toLowerCase();
+  var results = _searchIndex.filter(function(s) { return s.text.toLowerCase().includes(ql); }).slice(0, 10);
+  if (!results.length) { box.style.display = 'none'; return; }
+  _suggFocusIdx = -1;
+  box._results = results;
+  var html = results.map(function(r, i) {
+    var tabEl = document.querySelector('.tab[data-tab="' + r.tabId + '"]');
+    var tabIcon = tabEl ? (tabEl.querySelector('.tab-icon') ? tabEl.querySelector('.tab-icon').textContent : '') : '';
+    var tabLabel = tabEl ? tabEl.textContent.replace(tabIcon, '').trim() : r.tabId;
+    return '<div class="search-suggestion" onclick="pickSuggestion(' + i + ')">' +
+      '<span class="sg-type">' + r.type + '</span>' +
+      '<span class="sg-text">' + r.text + '</span>' +
+      (r.type !== 'Specie' ? '<span class="sg-tab">' + tabIcon + '\u00a0' + tabLabel + '</span>' : '') +
+      '</div>';
+  }).join('');
+  box.innerHTML = html;
+  box.style.display = 'block';
+}
+
+function pickSuggestion(idx) {
+  var box = document.getElementById('searchSuggestions');
+  if (!box || !box._results) return;
+  var item = box._results[idx];
+  if (!item) return;
+  box.style.display = 'none';
+  searchInput.value = '';
+  searchCount.textContent = '';
+  // Switch tab
+  var tabBtn = document.querySelector('.tab[data-tab="' + item.tabId + '"]');
+  if (tabBtn) tabBtn.click();
+  // Scroll to element after tab switch
+  if (item.el) {
+    setTimeout(function() {
+      item.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      var prev = item.el.style.background;
+      item.el.style.transition = 'background 0.4s';
+      item.el.style.background = 'rgba(106,191,105,0.28)';
+      setTimeout(function() {
+        item.el.style.transition = 'background 1.2s';
+        item.el.style.background = prev;
+      }, 2200);
+    }, 350);
+  }
+}
+
+// Keyboard navigation in suggestions
+searchInput.addEventListener('keydown', function(e) {
+  var box = document.getElementById('searchSuggestions');
+  if (!box || box.style.display === 'none') return;
+  var items = box.querySelectorAll('.search-suggestion');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    _suggFocusIdx = Math.min(_suggFocusIdx + 1, items.length - 1);
+    items.forEach(function(el, i) { el.classList.toggle('sug-focused', i === _suggFocusIdx); });
+    if (items[_suggFocusIdx]) items[_suggFocusIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    _suggFocusIdx = Math.max(_suggFocusIdx - 1, 0);
+    items.forEach(function(el, i) { el.classList.toggle('sug-focused', i === _suggFocusIdx); });
+  } else if (e.key === 'Enter' && _suggFocusIdx >= 0) {
+    e.preventDefault();
+    pickSuggestion(_suggFocusIdx);
+  } else if (e.key === 'Escape') {
+    box.style.display = 'none';
+  }
+});
+
+// Hide suggestions on outside click
+document.addEventListener('click', function(e) {
+  var box = document.getElementById('searchSuggestions');
+  if (box && !box.contains(e.target) && e.target !== searchInput) {
+    box.style.display = 'none';
+  }
+});
+
+// ====== COPY TEXT ELEMENT ======
+function copyTextEl(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var text = el.tagName === 'TEXTAREA' ? el.value : el.innerText;
+  if (!text || !text.trim()) { showToast('Nimic de copiat.'); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('\u2705 Copiat \u00een clipboard!');
+    }).catch(function() { _fallbackCopy(text); });
+  } else { _fallbackCopy(text); }
+}
+function _fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); showToast('\u2705 Copiat!'); }
+  catch(e) { showToast('Copiere e\u015fuat\u0103.'); }
+  document.body.removeChild(ta);
 }
 
 // ====== MODALS ======
@@ -8524,11 +9284,61 @@ $$('.modal-overlay').forEach(ov => {
 });
 
 // ====== CALCULATOR ======
+// Descrieri produse — explicate pe intelesul unui incepator
+var CALC_PROD_DESC = {
+  'Zeam\u0103 bordalez\u0103 3%': '<strong>Fungicid preventiv natural pe baz\u0103 de cupru.</strong> \u00CEmpiedicic\u0103 aparitia ciupercilor pe toate speciile. Se aplic\u0103 iarna sau toamna, dup\u0103 c\u0103derea frunzelor, c\u00e2nd pomii sunt goi. NU se aplic\u0103 \u00een c\u0103ldur\u0103 sau pe frunze. <em>Pauz\u0103 recoltare: 35 zile.</em> Alternativ\u0103 ecologic\u0103.',
+  'Funguran OH 0.3%': '<strong>Fungicid pe baz\u0103 de hidroxid de cupru.</strong> Protectie \u00eempotriva r\u0103p\u0103nului (mar/par), moniliozei, ciupercilor diverse. Mai pu\u021bin vizibil pe frunze. <em>Pauz\u0103: 21 zile.</em>',
+  'Cuproxat SC 0.3%': '<strong>Fungicid lichid pe baz\u0103 de sulfat de cupru.</strong> Alternativ\u0103 mai u\u015ror de dizolvat fat\u0103 de zeama bordalez\u0103. Eficient preventiv contra b\u0103\u0219ic\u0103rii frunzelor (piersic), rapan, cilindrosporioz\u0103. <em>Pauz\u0103: 21 zile.</em>',
+  'Score 250 EC 0.02%': '<strong>Fungicid sistemic triazol — curativ \u0219i preventiv.</strong> Opre\u015fte ciuperca deja instalat\u0103 (rapan la mar/par, ciuruirea frunzelor la piersic, monilioz\u0103). P\u0103trunde \u00een plant\u0103. <em>Pauz\u0103: 14 zile.</em>',
+  'Difcor 250 EC 0.02%': '<strong>Fungicid sistemic triazol — similar cu Score.</strong> Eficient contra rapanului, f\u0103in\u0103rii, moniliozei. <em>Pauz\u0103: 14 zile.</em>',
+  'Topsin 70 WDG 0.07%': '<strong>Fungicid sistemic benzimidazol.</strong> Impotriva r\u0103p\u0103nului, putregaiului fructelor, moniliozei. P\u0103trunde \u00een plant\u0103. Atentie: alterneaz\u0103 cu alte fungicide (risc rezistent\u0103). <em>Pauz\u0103: 14 zile.</em>',
+  'Luna Experience 400 SC 0.05%': '<strong>Fungicid modern SDHI+triazol — spectru larg, pauz\u0103 scurt\u0103.</strong> Dubla actiune contra moniliozei, r\u0103p\u0103nului, f\u0103in\u0103rii. Ideal la fructe aproape de maturitate. <em>Pauz\u0103: 7 zile.</em>',
+  'Nativo 75 WG 0.015%': '<strong>Fungicid modern cu spectru larg (trifloxystrobin+tebuconazol).</strong> Functioneaz\u0103 preventiv \u0219i curativ. Eficient contra r\u0103p\u0103nului, f\u0103in\u0103rii, moniliozei, ruginii. Rezistent\u0103 bun\u0103 la ploaie. <em>Pauz\u0103: 7 zile.</em>',
+  'Folicur Solo 250 EW 0.025%': '<strong>Fungicid sistemic triazol (tebuconazol).</strong> Impotriva f\u0103in\u0103rii, ruginii, moniliozei la diverse specii. P\u0103trunde ad\u00e2nc \u00een plant\u0103. <em>Pauz\u0103: 14 zile.</em>',
+  'Captadin 80 WDG 0.2%': '<strong>Fungicid de contact (captan) — strat protector pe frunze \u0219i fructe.</strong> Eficient preventiv contra r\u0103p\u0103nului, moniliozei, putregaiului fructelor. NU curativ. <em>Pauz\u0103: 7 zile.</em>',
+  'Merpan 80 WDG 0.15%': '<strong>Fungicid de contact (captan) — similar Captadin.</strong> Impotriva r\u0103p\u0103nului la mar/par, putregaiului fructelor. Preventiv. <em>Pauz\u0103: 7 zile.</em>',
+  'Dithane M-45 0.2%': '<strong>Fungicid de contact (mancozeb) — spectru larg.</strong> Impotriva r\u0103p\u0103nului, manei, alternariozei, antracnozei. Preventiv, se spal\u0103 la ploaie. Contine Mn \u0219i Zn (micro-nutritie bonus). <em>Pauz\u0103: 21 zile.</em>',
+  'Thiovit Jet 80 WG 0.5% (sulf)': '<strong>Fungicid \u0219i acaricid pe baz\u0103 de sulf.</strong> Impotriva f\u0103in\u0103rii, acarienilor ro\u015cii. NU aplica la temperaturi peste 30\u00b0C (arzi frunzele). NU se combin\u0103 cu uleiuri (Oleomin). <em>Pauz\u0103: 3 zile.</em>',
+  'Microthiol Special 0.4% (sulf)': '<strong>Sulf micronizat — alternativ\u0103 mai fin\u0103 la Thiovit.</strong> Particule mai mici, acoperire mai bun\u0103. Acelea\u015fi reguli: evit\u0103 c\u0103ldura \u0219i uleiul. <em>Pauz\u0103: 3 zile.</em>',
+  'Chorus 50 WG 0.03%': '<strong>Fungicid special pentru TEMPERATURI SC\u0102ZUTE (2-25\u00b0C).</strong> Singurul eficient contra moniliozei la cais/piersic/cires \u00een timpul infloritului, c\u00e2nd alte fungicide nu functioneaz\u0103. Indispensabil la c\u00e2nd florile sunt deschise! <em>Pauz\u0103: 7 zile.</em>',
+  'Switch 62.5 WG 0.1%': '<strong>Fungicid combinat contact+sistemic contra moniliozei \u0219i botrytis.</strong> Impotriva moniliozei la fructe (cais, piersic, cire\u015f), putregaiului cenusiu la zmeur/mur/afin. Dubla actiune. <em>Pauz\u0103: 7 zile.</em>',
+  'Bellis 38 WG 0.08%': '<strong>Fungicid modern (boscalid+pyraclostrobin) pentru par, mar, cais.</strong> Impotriva r\u0103p\u0103nului, f\u0103in\u0103rii, moniliozei. Actiune dual\u0103 contact+sistemic. <em>Pauz\u0103: 7 zile.</em>',
+  'Syllit 400 SC 0.1%': '<strong>Fungicid SPECIFIC cilindrosporiozei la cire\u015f \u0219i vi\u015fen.</strong> Boala care face g\u0103uri \u00een frunze \u0219i le face s\u0103 cad\u0103 vara. Aplica dup\u0103 \u00eenflorit \u0219i repetat la 14-21 zile \u00een perioade umede. <em>Pauz\u0103: 7 zile.</em>',
+  'Signum 33 WG 0.15%': '<strong>Fungicid ESENTIAL pentru zmeur, mur, afin — contra putregaiului cenusiu (botrytis).</strong> Botrytis face fructele s\u0103 se umple de mucegai \u0219i s\u0103 se strice rapid. Aplica cu 7-10 zile \u00eenainte de recoltare. <em>Pauz\u0103: 7 zile.</em>',
+  'Rovral 500 SC 0.1%': '<strong>Fungicid contra putregaiului cenusiu (botrytis) — zmeur, mur, afin.</strong> Preventiv \u00een perioadele ploioase. Efiicient dac\u0103 aplici \u00eenainte de aparitia semnelor. <em>Pauz\u0103: 7 zile.</em>',
+  'Oleomin / Confidor Oil 1%': '<strong>Insecticid pe baz\u0103 de ulei parafinic — omor\u0103 ou\u0103le \u0219i larvele de iarn\u0103.</strong> Sufoc\u0103 insectele iernate pe ramuri (p\u0103duchi testo\u015fa, ou\u0103 afide, acarieni). Se aplic\u0103 iarna-primavara devreme, pe lemn gol. NU la sub 4\u00b0C sau peste 20\u00b0C. Ecologic.',
+  'Mospilan 20 SG 0.03%': '<strong>Insecticid sistemic (acetamiprid) contra afidelor \u0219i purici verzi.</strong> P\u0103trunde \u00een plant\u0103, eficient \u0219i pe fata inferioar\u0103 a frunzei. Pericol albine — aplic\u0103 seara. <em>Pauz\u0103: 7 zile.</em>',
+  'Calypso 480 SC 0.02%': '<strong>Insecticid sistemic (thiacloprid) cu toxicitate redus\u0103 pentru albine.</strong> Contra viermilor fructelor, afidelor. Poate fi aplicat \u00een aproprierea infloritului (cu precautie). <em>Pauz\u0103: 7 zile.</em>',
+  'Teppeki 50 WG 0.015%': '<strong>Aficid modern extrem de selectiv (flonicamid) — NU omoar\u0103 albinele.</strong> Actioneaz\u0103 EXCLUSIV contra afidelor, l\u0103s\u00e2nd nev\u0103t\u0103mate insectele benefice. Actiune lent\u0103 (2-3 zile) dar efect lung. <em>Pauz\u0103: 7 zile.</em>',
+  'Actara 25 WG 0.02%': '<strong>Insecticid sistemic (thiamethoxam) contra afidelor \u0219i insectelor sugatoare.</strong> P\u0103trunde \u00een plant\u0103, protejeaz\u0103 inclusiv frunzele noi. Eficient pe vreme r\u0103coroas\u0103. Pericol albine. <em>Pauz\u0103: 7 zile.</em>',
+  'Movento 100 SC 0.1%': '<strong>Insecticid sistemic bidir\u0229c\u021bional (spirotetramat) contra afidelor rezistente.</strong> Unic avantaj: se misc\u0103 \u00een ambele directii \u00een plant\u0103 (sus \u0219i jos). Actiune lent\u0103 (5-7 zile) dar efect de durat\u0103. <em>Pauz\u0103: 7 zile.</em>',
+  'Mavrik 2F 0.02% (sigur albine)': '<strong>Insecticid piretroid SIGUR pentru albine.</strong> Contra g\u0103rg\u0103rit\u0259ei florilor, tripshilor, afidelor. Unul dintre putinele insecticide aplicabile \u00een perioada infloritului. <em>Pauz\u0103: 7 zile.</em>',
+  'Decis 25 WG 0.003%': '<strong>Insecticid piretroid rapid — efect de \u015eoc.</strong> Contra omizilor, insectelor daunatoare. Insectele mor \u00een c\u00e2teva ore. Pericol albine — NU \u00een timpul infloritului. <em>Pauz\u0103: 7 zile.</em>',
+  'Karate Zeon 5 CS 0.015%': '<strong>Insecticid piretroid rapid (lambda-cyhalothrin).</strong> Contra omizilor, mu\u015etii cire\u015eelor, g\u0103rg\u0103ri\u021bei. Actiune rapid\u0103 de \u015eoc. Pericol albine — NU pe timp de v\u00e2nt. <em>Pauz\u0103: 7 zile.</em>',
+  'Pirimor 50 WG 0.05% (anti-afide)': '<strong>Aficid selectiv (pirimicarb) — NU omoar\u0103 albinele \u0219i insectele benefice.</strong> Actioneaz\u0103 EXCLUSIV contra afidelor (rapid, 2-3 ore). Sigur de folosit chiar \u0219i \u00een apropierea infloritului. <em>Pauz\u0103: 7 zile.</em>',
+  'Coragen 20 SC 0.0175%': '<strong>Insecticid biologic (clorantraniliprol) — selectiv \u0219i sigur.</strong> Contra viermilor fructelor, omizilor. Nu afecteaz\u0103 albinele. Actiune lent\u0103 (24-48h) dar efect lung. <em>Pauz\u0103: 7 zile.</em>',
+  'Laser 240 SC 0.04% (spinosad)': '<strong>Insecticid biologic (spinosad) contra mu\u015etii cire\u015eelor \u0219i Drosophilei.</strong> Derivat natural din bacterii de sol. Eficient contra mu\u015ecu\u021bei de o\u021bet (Drosophila suzukii) care atac\u0103 zmeurul, murul, afinul. Sigur dup\u0103 uscare. <em>Pauz\u0103: 3-7 zile.</em>',
+  'Bicarbonat sodiu 0.5% (anti-fainare)': '<strong>Fungicid bio — bicarbonat de sodiu din buc\u0103t\u0103rie!</strong> Concentratie: 5g (o lingurit\u0103) la 1L ap\u0103. Preventiv contra f\u0103in\u0103rii \u0219i mucegaiurilor superficiale. Sigur, f\u0103r\u0103 timp de pauz\u0103, ieftin. Bun pentru zmeur, mur, afin \u00een agricultur\u0103 bio.',
+};
+
 function updateCalcConc() {
   const sel = $('#calcProduct');
   const opt = sel.options[sel.selectedIndex];
   if (opt.value) {
     $('#calcConc').value = opt.value;
+  }
+  // Show product description
+  var descEl = document.getElementById('prodDesc');
+  if (descEl) {
+    var key = opt.text ? opt.text.trim() : '';
+    var desc = CALC_PROD_DESC[key] || '';
+    if (desc) {
+      descEl.innerHTML = desc;
+      descEl.classList.add('visible');
+    } else {
+      descEl.innerHTML = '';
+      descEl.classList.remove('visible');
+    }
   }
 }
 function calculateDose() {
@@ -8726,11 +9536,12 @@ function copyJurnalClipboard() {
   var text = entries.map(function(e){ return e.date + ' [' + e.type + '] ' + e.note; }).join('\n');
   navigator.clipboard.writeText(text).then(function(){ alert('Copiat!'); }).catch(function(){ alert('Eroare la copiere.'); });
 }
-// Set today as default date + build search cache
+// Set today as default date + build search cache + search index
 document.addEventListener('DOMContentLoaded', () => {
   const today = todayLocal();
   $('#jurnalDate').value = today;
   buildSearchCache();
+  buildSearchIndex();
 });
 
 // ====== CALENDAR ======
@@ -9116,6 +9927,7 @@ function injectSpeciesTools(tabId) {
     '<button class="sp-tool-btn" onclick="printFisa()"><span class="sti">\uD83D\uDDA8\uFE0F</span> Print fi\u0219a</button>' +
     '</div>';
   tc.insertBefore(div, tc.firstChild);
+  injectSeasonalTip(tabId, tc);
   // II-8: inject species journal history
   injectSpeciesHistory(tabId, tc);
 }
@@ -9317,6 +10129,7 @@ function openDiagnoseModal() {
   document.getElementById('diagResult').style.display = 'none';
   document.getElementById('diagPreview').style.display = 'none';
   document.getElementById('diagLoading').style.display = 'none';
+  document.getElementById('diagCopyRow').style.display = 'none';
   openModal('diagnose');
 }
 async function submitDiagnose(input) {
@@ -9341,11 +10154,13 @@ async function submitDiagnose(input) {
     if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; }
     else { resultEl.innerHTML = sanitizeAI(data.diagnosis || ''); }
     resultEl.style.display = 'block';
+    document.getElementById('diagCopyRow').style.display = 'block';
   } catch(e) {
     document.getElementById('diagLoading').style.display = 'none';
     var r = document.getElementById('diagResult');
     r.textContent = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
     r.style.display = 'block';
+    document.getElementById('diagCopyRow').style.display = 'block';
   }
   input.value = '';
 }
@@ -9355,6 +10170,7 @@ function openAskModal() {
   document.getElementById('askSpecies').textContent = SPECIES[activeSpeciesId] || activeSpeciesId;
   document.getElementById('askResult').style.display = 'none';
   document.getElementById('askLoading').style.display = 'none';
+  document.getElementById('askCopyRow').style.display = 'none';
   document.getElementById('askInput').value = '';
   openModal('ask');
 }
@@ -9379,11 +10195,13 @@ async function submitAsk() {
     if (data.error) { r.textContent = 'Eroare: ' + data.error; }
     else { r.innerHTML = sanitizeAI(data.answer || ''); }
     r.style.display = 'block';
+    document.getElementById('askCopyRow').style.display = 'block';
   } catch(e) {
     document.getElementById('askLoading').style.display = 'none';
     var r2 = document.getElementById('askResult');
     r2.textContent = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : ('Eroare: ' + e.message);
     r2.style.display = 'block';
+    document.getElementById('askCopyRow').style.display = 'block';
   }
 }
 
@@ -9954,6 +10772,186 @@ window.addEventListener('unhandledrejection', function(e) {
   console.error('Unhandled:', e.reason);
   if (e.reason?.name !== 'AbortError') showToast('Eroare: ' + (e.reason?.message || 'necunoscut\u0103'));
 });
+
+// ====== MOD ACCESIBIL (text mare) ======
+function toggleTextSize() {
+  var isLarge = document.body.classList.toggle('text-large');
+  localStorage.setItem('livada-text-large', isLarge ? '1' : '0');
+  var lbl = document.getElementById('textSizeLabel');
+  if (lbl) lbl.textContent = isLarge ? 'Text normal' : 'Text mai mare';
+}
+(function initTextSize() {
+  if (localStorage.getItem('livada-text-large') === '1') {
+    document.body.classList.add('text-large');
+    var lbl = document.getElementById('textSizeLabel');
+    if (lbl) lbl.textContent = 'Text normal';
+  }
+})();
+
+// ====== RECENT SEARCHES ======
+var MAX_RECENT = 6;
+function getRecentSearches() {
+  try { return JSON.parse(localStorage.getItem('livada-recent-search') || '[]'); }
+  catch { return []; }
+}
+function saveRecentSearch(q) {
+  if (!q || q.length < 2) return;
+  var list = getRecentSearches().filter(function(s) { return s !== q; });
+  list.unshift(q);
+  list = list.slice(0, MAX_RECENT);
+  localStorage.setItem('livada-recent-search', JSON.stringify(list));
+}
+function renderRecentSearches() {
+  var panel = document.getElementById('recentSearchPanel');
+  var pills = document.getElementById('recentPills');
+  if (!panel || !pills) return;
+  var list = getRecentSearches();
+  if (!list.length) { panel.style.display = 'none'; return; }
+  pills.innerHTML = list.map(function(s) {
+    return '<span class="rs-pill" onclick="applyRecentSearch(\'' + s.replace(/'/g,'\\\'') + '\')">&#128269; ' + s + '</span>';
+  }).join('');
+  panel.style.display = 'block';
+}
+function applyRecentSearch(q) {
+  searchInput.value = q;
+  document.getElementById('recentSearchPanel').style.display = 'none';
+  doSearch();
+  showSuggestions(q);
+}
+// Show recent searches when search opens empty
+var _origSearchOpen = btnSearch.addEventListener;
+btnSearch.addEventListener('click', function() {
+  setTimeout(function() {
+    if (searchPanel.classList.contains('open') && !searchInput.value.trim()) {
+      renderRecentSearches();
+    } else {
+      var rp = document.getElementById('recentSearchPanel');
+      if (rp) rp.style.display = 'none';
+    }
+  }, 50);
+});
+// Save search when Enter pressed or suggestion picked
+searchInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && searchInput.value.trim().length >= 2) {
+    saveRecentSearch(searchInput.value.trim());
+    var rp = document.getElementById('recentSearchPanel');
+    if (rp) rp.style.display = 'none';
+  }
+});
+// Also hide recent searches when typing
+searchInput.addEventListener('input', function() {
+  var rp = document.getElementById('recentSearchPanel');
+  if (rp && searchInput.value.trim().length > 0) rp.style.display = 'none';
+});
+
+// ====== SFAT SEZONIER PER SPECIE ======
+var SEASONAL_TIPS = {
+  cires: {
+    3: '\uD83C\uDF38 Preg\u0103te\u015fte <strong>Chorus 50 WG</strong> \u2014 singurul fungicid eficient la frig contra moniliozei la \u00eenflorit.',
+    4: '\uD83D\uDEA8 Florile sunt deschise! Aplic\u0103 <strong>Chorus</strong> anti-monilioz\u0103. Evit\u0103 insecticidele c\u00e2nd sunt albine.',
+    5: '\uD83C\uDF3F Dup\u0103 petale: tratament <strong>anti-cilindrosporioz\u0103 (Syllit 400 SC)</strong> \u2014 boala care face g\u0103uri \u00een frunze.',
+    6: '\u26A0\uFE0F <strong>Musca cire\u015felor</strong> atac\u0103 acum! Capcane galbene + Karate Zeon dac\u0103 e necesar.',
+    7: '\uD83C\uDF52 Recoltare! Cules diminea\u021Ba, f\u0103r\u0103 cozit\u0103 dac\u0103 merge la industrie.',
+  },
+  visin: {
+    4: '\uD83C\uDF38 Aplic\u0103 <strong>Chorus</strong> la \u00eenflorit contra moniliozei.',
+    5: '\u26A0\uFE0F <strong>Cilindrosporioza</strong> atac\u0103 acum! Aplic\u0103 Syllit 400 SC preventiv \u2014 frunzele fac g\u0103uri \u015fi cad.',
+    7: '\uD83C\uDF52 Recoltare vi\u015fine! Culege r\u0103b\u0103d\u0103tor — se strică rapid dup\u0103 cules.',
+    8: '\uD83C\uDF3F Post-recoltare: tratament <strong>anti-cilindrosporioz\u0103</strong> oblig. \u2014 f\u0103r\u0103 el frunzele cad prematur.',
+  },
+  cais: {
+    3: '\uD83D\uDEA8 OBLIGATORIU: tratament <strong>anti-monilioz\u0103 la \u00eenflorit</strong> cu Chorus. Monilioza caisului este devastatoare!',
+    4: '\uD83C\uDF38 Florile deschise — aplic\u0103 <strong>Chorus 50 WG</strong> (eficient la frig). Monitorizez\u0103 \u015fi anti-p\u0103duche verde.',
+    7: '\uD83C\uDF51 Recoltare aproape! Respect\u0103 pauz\u0103 tratament (\u21927 zile). Culege \u00eenainte de ploaie.',
+  },
+  piersic: {
+    2: '\uD83D\uDEA8 TRATAMENT OBLIGATORIU \u00eenainte de dezmugurire: <strong>anti-b\u0103\u015ficare</strong> (Score 0.02% sau Funguran OH). F\u0103r\u0103 el pierzi frunzele!',
+    3: '\u26A0\uFE0F Mugurii umfl\u0103\u021bi? Aplic\u0103 ACUM anti-b\u0103\u015ficare dac\u0103 nu ai f\u0103cut \u00een feb. E ultima \u015fans\u0103!',
+    4: '\uD83C\uDF38 \u00CEnflorit piersic! Aplic\u0103 <strong>Chorus</strong> contra moniliozei. F\u0103r\u0103 insecticide pe timp cu albine.',
+    8: '\uD83C\uDF51 Recoltare piersici! Culege la primele semne de coacere \u2014 se \u00eenmoaie rapid pe pom.',
+  },
+  prun: {
+    3: '\uD83C\uDF38 Preg\u0103te\u015fte tratament <strong>anti-monilioz\u0103</strong> pentru \u00eenflorit (Chorus sau Switch).',
+    9: '\uD83C\uDF51 Recoltare prune! Las\u0103-le cu pruin\u0103 (pojghi\u021b\u0103 alb\u0103) \u2014 semn de \u00eencredere calitate.',
+  },
+  migdal: {
+    2: '\u2744\uFE0F ATEN\u021EIE INGHET! Migdalul \u00eenfloreste primul (feb-mar). La prognoz\u0103 sub -2\u00b0C \u2014 acoper\u0103 cu agrotextil!',
+    3: '\uD83C\uDF38 Migdalul e \u00een floare! Protejeaz\u0103 la inghe\u021b. Aplic\u0103 <strong>Chorus</strong> anti-monilioz\u0103.',
+  },
+  'par-clapp': {
+    4: '\uD83C\uDF37 Sezonul <strong>rap\u0103nului</strong> a \u00eenceput! Aplic\u0103 Score sau Captadin. R\u0103p\u0103nul e boala nr.1 a p\u0103rului.',
+    7: '\uD83C\uDF50 IMPORTANT: Clapp se recolteaz\u0103 <strong>\u00eenainte de coacere complet\u0103</strong>! L\u0103sat pe pom se f\u0103r\u00e2mi\u021beaz\u0103 (brunificare intern\u0103).',
+    8: '\uD83C\uDF50 Recoltare Clapp! Culege c\u00e2nd se \u00eenmoaie u\u015for la ap\u0103sare. NU a\u015ftepta s\u0103 fie galben complet pe pom.',
+  },
+  'par-williams': {
+    4: '\uD83C\uDF37 Protejeaz\u0103 \u00eempotriva <strong>focului bacterian</strong> (Blight). La semne de ramuri \u201ears\u0103\u201d \u2014 taie imediat la 30cm sub infec\u021bie!',
+    8: '\uD83C\uDF50 Williams e copt! Culege c\u00e2nd e \u00eenc\u0103 verde-g\u0103lbui. Coace \u00een cas\u0103 3-5 zile \u2014 perfect aromat.',
+  },
+  'par-hosui': {
+    4: '\uD83D\uDD25 Hosui (nas hi) se recolteaz\u0103 LA MATURITATE DEPLIN\u0102 pe pom \u2014 exact invers fa\u021b\u0103 de perii europeni! Nu culege verde.',
+    5: '\u2744\uFE0F ATEN\u021EIE: Hosui e mai sensibil la frig dec\u00e2t perii europeni! La prognoz\u0103 sub -20\u00b0C \u2014 protejeaz\u0103 trunchiul.',
+  },
+  'par-napoca': {
+    10: '\uD83C\uDF50 P\u0103r Napoca: recoltare toamn\u0103! Avantaj major \u2014 se p\u0103streaz\u0103 2-4 luni la rece (cel mai bine dintre to\u021bi perii t\u0103i).',
+  },
+  'mar-florina': {
+    4: '\u2705 Florina are <strong>rezisten\u021b\u0103 genetic\u0103 la r\u0103p\u0103n</strong> (gena Vf). Ai nevoie de mai pu\u021bine stropiri dec\u00e2t la alte soiuri de m\u0103r!',
+    9: '\uD83C\uDF4E Florina e gata la recoltare! Culege la verdele-ro\u015fcat specific \u2014 nu a\u015ftepta s\u0103 fie ro\u015fu aprins.',
+  },
+  'mar-golden': {
+    4: '\uD83C\uDF37 Golden pe portaltoi M9: r\u0103d\u0103cinile sunt superficiale! Mul\u010be\u015fte obligatoriu la 10-15cm grosime contra gerului.',
+    9: '\uD83C\uDF4E Golden Spur: recoltare sept-oct. Culege c\u00e2nd se desprinde u\u015for \u2014 f\u0103r\u0103 s\u0103 tragi.',
+  },
+  zmeur: {
+    5: '\uD83C\uDF31 Zmeur: verific\u0103 lstarii tineri! Dac\u0103 v\u00e2rfurile se usuc\u0103 \u2014 viermele lujerilor (Agrilus). Taie \u015fi arde.',
+    7: '\uD83D\uDC9A Recoltare zmeur\u0103! Culege la 1-2 zile \u2014 se stric\u0103 rapid. Capcane anti-Drosophila suzukii obligatorii.',
+    2: '\u2702\uFE0F Tundere zmeur! Taie la sol to\u021bi lastarii care au rodit anul trecut (cei lemnificati, maro).',
+  },
+  'zmeur-galben': {
+    7: '\uD83D\uDC9B Zmeur galben remontant: prima recolt\u0103 acum! A doua recolt\u0103 septembrie-octombrie.',
+    11: '\u2702\uFE0F Tundere total\u0103 la sol! Taie to\u021bi lastarii \u2014 varianta simpl\u0103 \u015fi eficient\u0103 pentru \u00eencep\u0103tori.',
+  },
+  mur: {
+    5: '\uD83C\uDF31 Cre\u015ftere rapid\u0103 mur! Dac\u0103 nu ai palisa\u021b \u2014 a\u015feaz\u0103 lstarii pe sp\u0103lier acum c\u00e2t sunt flexibili.',
+    8: '\u26AB Recoltare mur! Culege c\u00e2nd e complet negru \u015fi se desprinde u\u015for. Atent la Drosophila.',
+  },
+  'mur-copac': {
+    8: '\uD83C\uDF33 Mur copac \u2014 recoltare! Fructele se desprind u\u015for la coacere. Nu necesit\u0103 s\u0103ptur\u0103.',
+  },
+  afin: {
+    4: '\uD83D\uDEA8 CRITIC: Verific\u0103 pH-ul solului! Afinul necesit\u0103 pH 4.0-5.5. La Nadlac solul e alcalin (7.0-8.0). F\u0103r\u0103 acidifiere, afinul moare!',
+    6: '\uD83D\uDC99 Recoltare afine \u2014 \u00eenceput! Culege c\u00e2nd au pruin\u0103 alb\u0103-albstruie. Delicat, m\u00e2n\u0103 \u00een bol.',
+    5: '\uD83C\uDF27 Afin \u00een floare! Polenizare de albine. Adaug\u0103 stup \u00een apropriere dac\u0103 poti.',
+  },
+  alun: {
+    2: '\uD83C\uDF3F Alunul \u00eenfloreste iarna! Zorn\u0103ie ramurile pe vreme cu v\u00e2nt s\u0103 se distribuie polenul galben.',
+    9: '\uD83C\uDF30 Recoltare alune! Culege c\u00e2nd cad singure sau la scuturare u\u015foar\u0103. Usuc\u0103 \u00een strat sub\u021bire.',
+  },
+  rodiu: {
+    2: '\u2702\uFE0F Tundere rodiu: <strong>NUMAI iarna</strong> (ian-feb) sau primavara devreme. Tunderea de var\u0103 = nu roade\u015fte!',
+    4: '\uD83C\uDF38 Rodiu \u00eenfloreste mai-iunie. Florile ro\u015fii spectaculoase! Prim\u0103vara devreme nu e rodire, e \u00eenflorire.',
+    10: '\uD83C\uDF4F Recoltare rodiu! Rodiu NU se \u00eenmoaie la coacere (ca piersica). Culege c\u00e2nd coaja s-a \u00eent\u0103rit \u015fi are culoare intens\u0103.',
+    12: '\u2744\uFE0F Protejeaz\u0103 rodiu la inghet! Mu\u015furoi la baz\u0103 + agrotextil la tulpin\u0103. La Nadlac iernile pot fi periculoase.',
+  },
+  kaki: {
+    4: '\uD83D\uDCA1 Kaki Rojo Brillante se recolteaz\u0103 <strong>\u00eenainte de coacere</strong> (fruct tare, astringent). Postmaturare dup\u0103 recoltare!',
+    11: '\u2744\uFE0F ATEN\u021EIE INGHE\u021E: Kaki e sensibil la frig extrem! Protejeaz\u0103 trunchiul cu agrotextil. Hibridul Rosseyanka rezist\u0103 mai bine.',
+    10: '\uD83C\uDF6D Recoltare kaki! Culege \u00eenainte de primele \u00eenghe\u021buri serioase. Postmaturare: pune-l cu mere sau banane.',
+  },
+};
+
+function injectSeasonalTip(tabId, container) {
+  var m = new Date().getMonth() + 1; // 1-12
+  var tip = SEASONAL_TIPS[tabId] && SEASONAL_TIPS[tabId][m];
+  var prev = document.getElementById('seasonal-tip-' + tabId);
+  if (prev) prev.remove();
+  if (!tip) return;
+  var div = document.createElement('div');
+  div.id = 'seasonal-tip-' + tabId;
+  div.className = 'seasonal-tip';
+  div.innerHTML = '<strong>\uD83D\uDCC5 Sfat pentru luna aceasta:</strong> ' + tip;
+  container.insertBefore(div, container.firstChild);
+}
 
 // ====== INIT NEW FEATURES ======
 (function initNewFeatures() {
