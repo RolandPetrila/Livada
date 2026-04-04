@@ -9792,46 +9792,32 @@ $('#dismissBtn').addEventListener('click', () => {
 });
 
 // ====== VERSIUNE + SERVICE WORKER ======
-const APP_BUILD = '2026-04-04 21:30';
+// Versiunea se citeste automat din HTTP Last-Modified — nu mai e hardcodata niciodata
+const APP_BUILD = (function() {
+  try {
+    var d = new Date(document.lastModified);
+    if (isNaN(d.getTime())) return 'live';
+    return d.getFullYear() + '-' +
+      String(d.getMonth()+1).padStart(2,'0') + '-' +
+      String(d.getDate()).padStart(2,'0') + ' ' +
+      String(d.getHours()).padStart(2,'0') + ':' +
+      String(d.getMinutes()).padStart(2,'0');
+  } catch(e) { return 'live'; }
+})();
+
 (function() {
   var el = document.getElementById('appVersionBadge');
   if (el) el.textContent = 'v' + APP_BUILD.split(' ')[0];
 })();
 
-function showUpdateToast() {
-  var existing = document.getElementById('update-toast');
-  if (existing) return;
-  var t = document.createElement('div');
-  t.id = 'update-toast';
-  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:14px 20px;border-radius:10px;z-index:9000;cursor:pointer;font-size:0.9rem;box-shadow:0 4px 16px rgba(0,0,0,0.4);text-align:center;white-space:nowrap;';
-  t.innerHTML = '\uD83D\uDD04 Versiune nou\u0103 disponibil\u0103 \u2014 <strong>Apas\u0103 pentru actualizare</strong>';
-  t.addEventListener('click', function() { window.location.reload(true); });
-  document.body.appendChild(t);
-}
-
 function showAppInfo() {
-  alert('Livada Mea Dashboard\nVersiune: ' + APP_BUILD + '\n\nDeploy: Vercel (livada-mea-psi.vercel.app)\nAI: Groq llama-3.3-70b + Gemini 2.5-flash\nMeteo: Open-Meteo\n\nDaca aplicatia pare veche, da refresh sau sterge cache-ul browserului.');
+  alert('Livada Mea Dashboard\nVersiune: ' + APP_BUILD + '\n\nDeploy: Vercel (livada-mea-psi.vercel.app)\nAI: Groq llama-3.3-70b + Gemini 2.5-flash\nMeteo: Open-Meteo');
 }
 
 if ('serviceWorker' in navigator) {
-  // Asculta mesajul SW_UPDATED — reIncarca automat la versiune noua
-  navigator.serviceWorker.addEventListener('message', function(e) {
-    if (e.data && e.data.type === 'SW_UPDATED') {
-      window.location.reload();
-    }
-  });
-
-  navigator.serviceWorker.register('/sw.js').then(function(reg) {
-    reg.addEventListener('updatefound', function() {
-      var newWorker = reg.installing;
-      if (!newWorker) return;
-      newWorker.addEventListener('statechange', function() {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          showUpdateToast();
-        }
-      });
-    });
-    // Verifica update la fiecare deschidere a app-ului
+  navigator.serviceWorker.register('/sw.js', {
+    updateViaCache: 'none'   // browserul NU foloseste HTTP cache pt sw.js — verifica intotdeauna
+  }).then(function(reg) {
     reg.update().catch(function() {});
   }).catch(function() {});
 }
