@@ -10132,7 +10132,7 @@ function openDiagnoseModal() {
 // Reduce dimensiunea si calitatea pana cand fisierul incape sub limita
 function compressDiagnoseImage(file) {
   return new Promise(function(resolve, reject) {
-    var MAX_BYTES = 3 * 1024 * 1024;
+    var MAX_BYTES = 3.5 * 1024 * 1024; // 3.5MB — sigur sub limita Vercel Edge 4MB
     // Foloseste FileReader + data: URL — evita blob: URL blocat de CSP
     var reader = new FileReader();
     reader.onerror = function() { reject(new Error('Nu am putut citi imaginea.')); };
@@ -10143,11 +10143,11 @@ function compressDiagnoseImage(file) {
         var origW = img.naturalWidth || img.width;
         var origH = img.naturalHeight || img.height;
         var attempts = [
-          { px: 1600, q: 0.82 },
-          { px: 1280, q: 0.75 },
-          { px: 1024, q: 0.70 },
-          { px: 800,  q: 0.65 },
-          { px: 640,  q: 0.60 }
+          { px: 2000, q: 0.92 },
+          { px: 1600, q: 0.88 },
+          { px: 1280, q: 0.82 },
+          { px: 1024, q: 0.75 },
+          { px: 800,  q: 0.70 }
         ];
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');

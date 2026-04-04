@@ -81,7 +81,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
           headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: file.type || 'image/jpeg', data: base64 } }] }],
-            generationConfig: { maxOutputTokens: 1024, temperature: 0.3 },
+            generationConfig: { maxOutputTokens: 8192, temperature: 0.3 },
           }),
           signal: controller.signal,
         }
@@ -102,8 +102,9 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     }
 
     const result = await geminiRes.json();
-    const text =
-      result.candidates?.[0]?.content?.parts?.[0]?.text || 'Nu am putut analiza imaginea. Incearca cu o poza mai clara.';
+    const text = result.candidates?.[0]?.content?.parts?.[0]?.text
+      || result.candidates?.[0]?.content?.parts?.[0]?.text
+      || 'Nu am putut analiza imaginea. Incearca cu o poza mai clara.';
 
     return Response.json({ diagnosis: text }, { headers: corsHeaders(req) });
   } catch (err) {

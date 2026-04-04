@@ -33,13 +33,13 @@ export default async function handler(req) {
     return Response.json({ error: 'Scrie o intrebare' }, { status: 400, headers: corsHeaders(req) });
   }
 
-  const ctx = context ? context.substring(0, 3000) : '';
+  const ctx = context ? context.substring(0, 12000) : '';
 
   const systemPrompt = `Esti consultant pomicol expert, specializat in livezi din zona Nadlac/Arad, Romania (climat continental, sol cernoziom pH 7-8).
 
 Reguli:
 - Raspunde DOAR in romana
-- Fii concis si practic (max 300 cuvinte)
+- Fii detaliat si practic — nu limita lungimea raspunsului daca subiectul o cere
 - Daca intrebarea nu e despre pomicultura, spune politicos ca poti ajuta doar cu teme de pomicultura
 - Cand recomanzi produse, include doze ca concentratie % la 10L apa
 - Mentioneaza alternativele BIO cand exista
@@ -47,7 +47,7 @@ Reguli:
 
 Specia curenta: ${species || 'general (toate speciile)'}`;
 
-  const safeQuestion = question.trim().substring(0, 2000);
+  const safeQuestion = question.trim().substring(0, 8000);
   const userMsg = ctx
     ? `Documentatie de referinta pentru ${species}:\n${ctx}\n\n---\nIntrebarea pomicultorului: ${safeQuestion}`
     : `Intrebarea pomicultorului: ${safeQuestion}`;
@@ -60,13 +60,13 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
-        max_tokens: 1024,
+        max_tokens: 8192,
         temperature: 0.3,
       }),
     });
 
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('GROQ_TIMEOUT')), 25000)
+      setTimeout(() => reject(new Error('GROQ_TIMEOUT')), 28000)
     );
 
     const groqRes = await Promise.race([fetchPromise, timeoutPromise]);
