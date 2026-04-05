@@ -12,13 +12,17 @@ function getHeader(req, name) {
   return req?.headers?.[name.toLowerCase()] ?? null;
 }
 
+// Regex pt URL-uri preview Vercel ale acestui proiect (orice deployment CLI)
+const ALLOWED_ORIGIN_RE = /^https:\/\/livada-[a-z0-9]+-rolandpetrilas-projects\.vercel\.app$/;
+
 export function checkOrigin(req) {
   const origin = getHeader(req, 'origin') || '';
-  // 'null' = PWA standalone instalata (Android/iOS) sau fisier local — permitem
-  if (origin && origin !== 'null' && !ALLOWED_ORIGINS.includes(origin)) {
-    return Response.json({ error: 'Origine nepermisa' }, { status: 403 });
+  // Permis: fara origin (server-to-server/cron), 'null' (PWA standalone Android/iOS),
+  //         origine exacta in allowlist, sau URL preview Vercel al proiectului
+  if (!origin || origin === 'null' || ALLOWED_ORIGINS.includes(origin) || ALLOWED_ORIGIN_RE.test(origin)) {
+    return null;
   }
-  return null;
+  return Response.json({ error: 'Origine nepermisa' }, { status: 403 });
 }
 
 export function corsHeaders(req) {
