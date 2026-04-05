@@ -1,59 +1,62 @@
-// Endpoint diagnostic — testeaza conexiunea Gemini fara imagine
-// Accesat la /api/diagnose-test (GET) — returneaza timing si status
 import { corsHeaders } from './_auth.js';
 
 export const runtime = 'edge';
 
 export default async function handler(req) {
-  if (req.method !== 'GET') {
-    return Response.json({ error: 'GET only' }, { status: 405, headers: corsHeaders(req) });
-  }
-
-  const API_KEY = process.env.GOOGLE_AI_API_KEY;
-  if (!API_KEY) {
-    return Response.json({ ok: false, error: 'GOOGLE_AI_API_KEY lipsa', step: 'config' }, { headers: corsHeaders(req) });
-  }
-
   const t0 = Date.now();
-  const result = { ok: false, steps: {} };
+  const API_KEY = process.env.GOOGLE_AI_API_KEY;
 
-  // Test 1: ping Gemini cu o cerere text simpla (fara imagine)
-  const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('TIMEOUT_15s')), 15000)
-  );
+  // Pas 1: verifica imediat fara sa astepte Gemini
+  if (req.url && req.url.includes('ping')) {
+    return Response.json({
+      ok: true,
+      ping: true,
+      hasKey: !!API_KEY,
+      keyLen: API_KEY ? API_KEY.length : 0,
+      runtime: 'edge',
+    }, { headers: corsHeaders(req) });
+  }
+
+  // Pas 2: testeaza Gemini cu timeout strict 12s
+  if (!API_KEY) {
+    return Response.json({ ok: false, error: 'GOOGLE_AI_API_KEY lipsa' }, { headers: corsHeaders(req) });
+  }
+
+  let geminiStatus = null;
+  let geminiMs = null;
+  let geminiBody = null;
 
   try {
-    const fetchPromise = fetch(
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 12000);
+    const t1 = Date.now();
+    const res = await fetch(
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
       {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: 'Raspunde cu un singur cuvant: OK' }] }],
-          generationConfig: { maxOutputTokens: 10 },
+          contents: [{ parts: [{ text: 'Say OK' }] }],
+          generationConfig: { maxOutputTokens: 5 },
         }),
       }
     );
-
-    const res = await Promise.race([fetchPromise, timeoutPromise]);
-    result.steps.gemini_status = res.status;
-    result.steps.gemini_ms = Date.now() - t0;
-
-    if (!res.ok) {
-      const body = await res.text().catch(() => '');
-      result.error = `Gemini HTTP ${res.status}: ${body.substring(0, 200)}`;
-      result.step = 'gemini_http';
-    } else {
-      const json = await res.json();
-      result.steps.gemini_response = json.candidates?.[0]?.content?.parts?.[0]?.text || '(gol)';
-      result.ok = true;
-      result.total_ms = Date.now() - t0;
-    }
+    clearTimeout(tid);
+    geminiStatus = res.status;
+    geminiMs = Date.now() - t1;
+    geminiBody = await res.text().catch(() => '');
   } catch (e) {
-    result.error = e.message;
-    result.step = 'gemini_fetch';
-    result.steps.elapsed_ms = Date.now() - t0;
+    geminiStatus = 'error';
+    geminiBody = e.message;
+    geminiMs = Date.now() - t0;
   }
 
-  return Response.json(result, { headers: corsHeaders(req) });
+  return Response.json({
+    ok: geminiStatus === 200,
+    gemini_status: geminiStatus,
+    gemini_ms: geminiMs,
+    gemini_response: geminiBody.substring(0, 300),
+    total_ms: Date.now() - t0,
+  }, { headers: corsHeaders(req) });
 }
