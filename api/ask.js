@@ -55,55 +55,66 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
     ? `Documentatie de referinta pentru ${species}:\n${ctx}\n\n---\nIntrebarea pomicultorului: ${safeQuestion}`
     : `Intrebarea pomicultorului: ${safeQuestion}`;
 
+  async function callGroq(model, timeoutMs) {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
+          max_tokens: 8192,
+          temperature: 0.3,
+        }),
+        signal: ctrl.signal,
+      });
+      clearTimeout(tid);
+      return res;
+    } catch (err) {
+      clearTimeout(tid);
+      throw err;
+    }
+  }
+
   try {
-    // Promise.race: Edge Runtime trimite raspunsul imediat, fetch-ul background e abandonat
-    const fetchPromise = fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
-        max_tokens: 8192,
-        temperature: 0.3,
-      }),
-    });
+    let groqRes = await callGroq('llama-3.3-70b-versatile', 26000);
+    let usedFallback = false;
 
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('GROQ_TIMEOUT')), 28000)
-    );
-
-    const groqRes = await Promise.race([fetchPromise, timeoutPromise]);
+    // Fallback la llama-3.1-8b-instant daca modelul primar e suprasolicitat/indisponibil
+    if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
+      console.error('[ask] primary failed', groqRes.status, '— try fallback llama-3.1-8b-instant');
+      try {
+        groqRes = await callGroq('llama-3.1-8b-instant', 12000);
+        usedFallback = true;
+      } catch (fallbackErr) {
+        console.error('[ask] fallback err:', fallbackErr.message);
+        return Response.json({ error: 'AI indisponibil temporar. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
+      }
+    }
 
     if (!groqRes.ok) {
       const errText = await groqRes.text().catch(() => '');
       console.error('[ask] Groq eroare:', groqRes.status, errText.substring(0, 200));
-      if (groqRes.status === 429) {
-        return Response.json(
-          { error: 'AI suprasolicitat. Incearca din nou in cateva secunde.' },
-          { status: 503, headers: corsHeaders(req) }
-        );
-      }
       return Response.json(
-        { error: `AI indisponibil temporar (${groqRes.status}). Incearca din nou.` },
+        { error: groqRes.status === 429 ? 'AI suprasolicitat. Incearca din nou.' : `AI indisponibil (${groqRes.status}). Incearca din nou.` },
         { status: 503, headers: corsHeaders(req) }
       );
     }
 
     const result = await groqRes.json();
     const answer = result.choices?.[0]?.message?.content || 'Nu am putut genera un raspuns.';
-    return Response.json({ answer }, { headers: corsHeaders(req) });
+    return Response.json(
+      { answer, ...(usedFallback ? { _fallback: true, _fallbackModel: 'llama-3.1-8b-instant' } : {}) },
+      { headers: corsHeaders(req) }
+    );
 
   } catch (err) {
     console.error('[ask] eroare:', err?.name, err?.message);
-    if (err?.message === 'GROQ_TIMEOUT' || err?.name === 'AbortError') {
-      return Response.json(
-        { error: 'AI-ul raspunde lent. Incearca din nou in cateva secunde.' },
-        { status: 503, headers: corsHeaders(req) }
-      );
+    if (err?.name === 'AbortError') {
+      return Response.json({ error: 'AI-ul raspunde lent. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
     }
-    return Response.json(
-      { error: 'Eroare la procesare. Incercati din nou.' },
-      { status: 500, headers: corsHeaders(req) }
-    );
+    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: corsHeaders(req) });
   }
 }

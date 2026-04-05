@@ -10306,14 +10306,18 @@ async function submitDiagnose(input) {
     document.getElementById('diagLoading').style.display = 'none';
     var resultEl = document.getElementById('diagResult');
     var prefix = '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poza comprimata automat: ' + (uploadSize/1024).toFixed(0) + 'KB (' + result.px + ')</p>';
-    if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; }
-    else { resultEl.innerHTML = prefix + sanitizeAI(data.diagnosis || ''); }
+    if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; showAiError(data.error); }
+    else {
+      if (data._fallback) showAiFallback(data._fallbackModel || 'gemini-1.5-flash');
+      resultEl.innerHTML = prefix + sanitizeAI(data.diagnosis || '');
+    }
     resultEl.style.display = 'block';
     document.getElementById('diagCopyRow').style.display = 'block';
   } catch(e) {
     document.getElementById('diagLoading').style.display = 'none';
     var r = document.getElementById('diagResult');
-    r.textContent = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
+    var msg = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
+    r.textContent = msg; showAiError(msg);
     r.style.display = 'block';
     document.getElementById('diagCopyRow').style.display = 'block';
   }
@@ -10347,18 +10351,50 @@ async function submitAsk() {
     if (!res.ok) throw new Error(data.error || 'Eroare server (' + res.status + ')');
     document.getElementById('askLoading').style.display = 'none';
     var r = document.getElementById('askResult');
-    if (data.error) { r.textContent = 'Eroare: ' + data.error; }
-    else { r.innerHTML = sanitizeAI(data.answer || ''); }
+    if (data.error) { r.textContent = 'Eroare: ' + data.error; showAiError(data.error); }
+    else {
+      if (data._fallback) showAiFallback(data._fallbackModel || 'llama-3.1-8b-instant');
+      r.innerHTML = sanitizeAI(data.answer || '');
+    }
     r.style.display = 'block';
     document.getElementById('askCopyRow').style.display = 'block';
   } catch(e) {
     document.getElementById('askLoading').style.display = 'none';
     var r2 = document.getElementById('askResult');
-    r2.textContent = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : ('Eroare: ' + e.message);
+    var askMsg = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : ('Eroare: ' + e.message);
+    r2.textContent = askMsg; showAiError(askMsg);
     r2.style.display = 'block';
     document.getElementById('askCopyRow').style.display = 'block';
   }
 }
+
+// ====== TOAST NOTIFICATIONS ======
+function showToast(msg, type) {
+  var container = document.getElementById('livada-toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'livada-toast-container';
+    container.style.cssText = 'position:fixed;bottom:72px;right:12px;z-index:9999;display:flex;flex-direction:column;gap:6px;max-width:300px;pointer-events:none;';
+    document.body.appendChild(container);
+    var s = document.createElement('style');
+    s.textContent = '.lv-toast{padding:9px 13px;border-radius:8px;font-size:0.8rem;line-height:1.4;color:#fff;box-shadow:0 3px 12px rgba(0,0,0,0.35);animation:lvToastIn 0.25s ease;pointer-events:auto;}' +
+      '.lv-toast.err{background:rgba(211,47,47,0.96);}' +
+      '.lv-toast.warn{background:rgba(245,124,0,0.96);}' +
+      '.lv-toast.info{background:rgba(25,118,210,0.92);}' +
+      '@keyframes lvToastIn{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}';
+    document.head.appendChild(s);
+  }
+  var t = document.createElement('div');
+  t.className = 'lv-toast ' + (type === 'error' ? 'err' : type === 'warning' ? 'warn' : 'info');
+  t.textContent = msg;
+  container.appendChild(t);
+  setTimeout(function() {
+    t.style.cssText += 'opacity:0;transition:opacity 0.4s;';
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 420);
+  }, 6000);
+}
+function showAiError(msg) { showToast('\u26A0\uFE0F AI: ' + msg, 'error'); }
+function showAiFallback(model) { showToast('\u2139\uFE0F Model rezerv\u0103 activ: ' + model, 'warning'); }
 
 // ====== JOURNAL SYNC ======
 var jSyncStatus = 'idle';
@@ -10594,8 +10630,9 @@ async function generateReport() {
     if (!res.ok) throw new Error('Eroare server (' + res.status + ')');
     var data = await res.json();
     loading.style.display = 'none'; btn.disabled = false;
-    if (data.error) { result.textContent = 'Eroare: ' + data.error; }
+    if (data.error) { result.textContent = 'Eroare: ' + data.error; showAiError(data.error); }
     else {
+      if (data._fallback) showAiFallback(data._fallbackModel || 'llama-3.1-8b-instant');
       result.innerHTML = '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">Bazat pe ' +
         data.journalCount + ' interven\u021Bii \u0219i ' + data.meteoDays + ' zile meteo</div>' + sanitizeAI(data.report || '') +
         '<div style="display:flex;gap:8px;margin-top:12px;">' +
@@ -10606,7 +10643,8 @@ async function generateReport() {
     result.style.display = 'block';
   } catch(e) {
     loading.style.display = 'none'; btn.disabled = false;
-    result.textContent = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
+    var repMsg = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
+    result.textContent = repMsg; showAiError(repMsg);
     result.style.display = 'block';
   }
 }

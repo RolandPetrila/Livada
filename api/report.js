@@ -54,19 +54,10 @@ export default async function handler(req) {
       }
     } catch {}
 
-    const controller = new AbortController();
-    const fetchTimer = setTimeout(() => controller.abort(), 25000);
-    let groqRes;
-    try {
-      groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${GROQ_KEY}` },
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-        messages: [
-          {
-            role: 'system',
-            content: `Esti consultant pomicol expert. Genereaza un RAPORT ANUAL detaliat pentru o livada din Nadlac, judetul Arad:
+    const reportMessages = [
+      {
+        role: 'system',
+        content: `Esti consultant pomicol expert. Genereaza un RAPORT ANUAL detaliat pentru o livada din Nadlac, judetul Arad:
 - 100+ pomi, 17 specii (cires, visin, cais, piersic, prun, migdal, par, mar, zmeur, mur, afin, alun, rodiu)
 - Proprietar: profesor, abordare semi-comerciala
 - Clima: continental, ierni reci, veri calde, sol cernoziom pH 7-8
@@ -80,34 +71,52 @@ Structura raportului:
 6. NOTA FINALA — scor general 1-10
 
 Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
-          },
-          {
-            role: 'user',
-            content: `Genereaza raportul anual ${year}.\n\nJURNAL INTERVENTII (${yearEntries.length} inregistrari):\n${journalSummary}${localJournal}\n\nISTORIC METEO (${meteoEntries.length} zile):\n${meteoSummary}`,
-          },
-        ],
-        max_tokens: 2048,
-        temperature: 0.4,
-      }),
-      signal: controller.signal,
-    });
-    clearTimeout(fetchTimer);
-    } catch (fetchErr) {
-      clearTimeout(fetchTimer);
-      if (fetchErr.name === 'AbortError') {
-        return Response.json({ error: 'Serviciul AI nu a raspuns in timp util. Incearca din nou.' }, { status: 504, headers: corsHeaders(req) });
+      },
+      {
+        role: 'user',
+        content: `Genereaza raportul anual ${year}.\n\nJURNAL INTERVENTII (${yearEntries.length} inregistrari):\n${journalSummary}${localJournal}\n\nISTORIC METEO (${meteoEntries.length} zile):\n${meteoSummary}`,
+      },
+    ];
+
+    async function callGroqReport(model, timeoutMs) {
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+      try {
+        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${GROQ_KEY}` },
+          body: JSON.stringify({ model, messages: reportMessages, max_tokens: 2048, temperature: 0.4 }),
+          signal: ctrl.signal,
+        });
+        clearTimeout(tid);
+        return res;
+      } catch (err) { clearTimeout(tid); throw err; }
+    }
+
+    let groqRes = await callGroqReport('llama-3.3-70b-versatile', 23000);
+    let usedFallback = false;
+
+    if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
+      console.error('[report] primary failed', groqRes.status, '— try fallback llama-3.1-8b-instant');
+      try {
+        groqRes = await callGroqReport('llama-3.1-8b-instant', 10000);
+        usedFallback = true;
+      } catch (fallbackErr) {
+        return Response.json({ error: 'Serviciul AI nu a raspuns. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
       }
-      throw fetchErr;
     }
 
     if (!groqRes.ok) {
-      throw new Error('Groq API error: ' + groqRes.status);
+      const errText = await groqRes.text().catch(() => '');
+      console.error('[report] Groq', groqRes.status, errText.substring(0, 200));
+      if (groqRes.status === 429) return Response.json({ error: 'AI suprasolicitat. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
+      return Response.json({ error: `AI indisponibil (${groqRes.status}). Incearca din nou.` }, { status: 503, headers: corsHeaders(req) });
     }
 
     const result = await groqRes.json();
     const report = result.choices?.[0]?.message?.content || 'Nu am putut genera raportul.';
 
-    return Response.json({ report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length }, { headers: corsHeaders(req) });
+    return Response.json({ report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length, ...(usedFallback ? { _fallback: true, _fallbackModel: 'llama-3.1-8b-instant' } : {}) }, { headers: corsHeaders(req) });
   } catch (err) {
     const msg = err.message || String(err);
     if (msg.includes('UPSTASH')) {
