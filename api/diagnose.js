@@ -3,16 +3,6 @@ import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 export const runtime = 'edge';
 export const config = { maxDuration: 30 };
 
-// Chunk-based base64 — rapid si sigur pe Edge Runtime (evita call stack limit)
-function toBase64(bytes) {
-  const CHUNK = 32768;
-  const parts = [];
-  for (let i = 0; i < bytes.length; i += CHUNK) {
-    parts.push(String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + CHUNK, bytes.length))));
-  }
-  return btoa(parts.join(''));
-}
-
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
   if (req.method !== 'POST') {
@@ -31,37 +21,25 @@ export default async function handler(req) {
 
   const t0 = Date.now();
 
-  let formData;
+  // Accepta JSON cu base64 (trimis direct din browser — fara overhead multipart)
+  let base64, mimeType, species;
   try {
-    formData = await req.formData();
+    const body = await req.json();
+    base64   = body.base64;
+    mimeType = body.mimeType || 'image/jpeg';
+    species  = (body.species || 'necunoscut').replace(/[^a-zA-Z0-9\s_-]/g, '').substring(0, 100);
+    if (!base64 || typeof base64 !== 'string') {
+      return Response.json({ error: 'Lipseste imaginea (base64).' }, { status: 400, headers: corsHeaders(req) });
+    }
+    if (base64.length > 5 * 1024 * 1024) { // ~3.75MB imagine originala
+      return Response.json({ error: 'Imaginea este prea mare. Comprima mai mult.' }, { status: 400, headers: corsHeaders(req) });
+    }
   } catch (e) {
-    console.error('[diagnose] formData error:', e.message);
-    return Response.json({ error: 'Eroare citire imagine. Incearca din nou.' }, { status: 400, headers: corsHeaders(req) });
+    console.error('[diagnose] json parse error:', e.message);
+    return Response.json({ error: 'Eroare citire date. Incearca din nou.' }, { status: 400, headers: corsHeaders(req) });
   }
 
-  const file = formData.get('image');
-  const species = (formData.get('species') || 'necunoscut').replace(/[^a-zA-Z0-9\s_-]/g, '').substring(0, 100);
-
-  if (!file || typeof file === 'string') {
-    return Response.json({ error: 'Nicio imagine selectata' }, { status: 400, headers: corsHeaders(req) });
-  }
-  if (file.size > 4 * 1024 * 1024) {
-    return Response.json({ error: 'Imaginea depaseste 4MB' }, { status: 400, headers: corsHeaders(req) });
-  }
-
-  console.log(`[diagnose] start — ${file.size}B, ${species}, t+${Date.now()-t0}ms`);
-
-  let base64, mimeType;
-  try {
-    const buf = await file.arrayBuffer();
-    console.log(`[diagnose] arrayBuffer done t+${Date.now()-t0}ms`);
-    base64 = toBase64(new Uint8Array(buf));
-    console.log(`[diagnose] base64 done (${base64.length}chars) t+${Date.now()-t0}ms`);
-    mimeType = (file.type && file.type.startsWith('image/')) ? file.type : 'image/jpeg';
-  } catch (e) {
-    console.error('[diagnose] base64 error:', e.message);
-    return Response.json({ error: 'Nu am putut procesa imaginea.' }, { status: 400, headers: corsHeaders(req) });
-  }
+  console.log(`[diagnose] start — base64 ${base64.length}chars, ${species}, t+${Date.now()-t0}ms`);
 
   const prompt = `Esti expert agronom si fitopatolog specializat in pomicultura din zona Nadlac/Arad, Romania (climat continental, sol predominant cernoziom, pH 7-8).
 
@@ -99,19 +77,18 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     }
   );
 
-  const timeoutMs = 20000;
   const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('GEMINI_TIMEOUT')), timeoutMs)
+    setTimeout(() => reject(new Error('GEMINI_TIMEOUT')), 22000)
   );
 
   let geminiRes;
   try {
     geminiRes = await Promise.race([fetchPromise, timeoutPromise]);
-    console.log(`[diagnose] gemini responded ${geminiRes.status} t+${Date.now()-t0}ms`);
+    console.log(`[diagnose] gemini ${geminiRes.status} t+${Date.now()-t0}ms`);
   } catch (err) {
-    console.error(`[diagnose] fetch error: ${err.message} t+${Date.now()-t0}ms`);
+    console.error(`[diagnose] fetch err: ${err.message} t+${Date.now()-t0}ms`);
     if (err.message === 'GEMINI_TIMEOUT') {
-      return Response.json({ error: `Analiza AI a durat prea mult (${Date.now()-t0}ms). Incearca din nou.` }, { status: 503, headers: corsHeaders(req) });
+      return Response.json({ error: 'Analiza AI a durat prea mult. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
     }
     return Response.json({ error: 'Eroare conexiune AI. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
   }
