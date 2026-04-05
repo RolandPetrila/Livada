@@ -1,7 +1,7 @@
 import { Redis } from '@upstash/redis';
 import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 
-export const config = { maxDuration: 60 };
+export const config = { runtime: 'edge' };
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);

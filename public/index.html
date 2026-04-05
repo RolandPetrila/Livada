@@ -9822,6 +9822,21 @@ if ('serviceWorker' in navigator) {
   }).catch(function() {});
 }
 
+// Auto-refresh dashboard dupa revenire din background (I1)
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') {
+    var last = parseInt(localStorage.getItem('livada-last-dashboard-refresh') || '0');
+    var now = Date.now();
+    if (now - last > 30 * 60 * 1000) { // 30 minute
+      var activeTab = document.querySelector('.tab-content.active');
+      if (activeTab && activeTab.id === 'azi') {
+        initDashboardAzi();
+        localStorage.setItem('livada-last-dashboard-refresh', String(now));
+      }
+    }
+  }
+});
+
 // iOS PWA Install Instructions (IMP-6)
 (function() {
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -9857,10 +9872,22 @@ function authHeaders(extra) {
   if (extra) for (var k in extra) h[k] = extra[k];
   return h;
 }
-function authFetch(url, opts, ms) {
+async function authFetch(url, opts, ms) {
+  ms = ms || 15000;
   opts = opts || {};
-  opts.headers = authHeaders(opts.headers || {});
-  return fetchWithTimeout(url, opts, ms || 15000);
+  var delays = [0, 2000, 5000];
+  for (var i = 0; i < delays.length; i++) {
+    if (i > 0) await new Promise(function(r) { setTimeout(r, delays[i]); });
+    try {
+      var res = await fetchWithTimeout(url, Object.assign({}, opts, {
+        headers: authHeaders(opts.headers || {})
+      }), ms);
+      if ((res.status === 429 || res.status === 503 || res.status === 504) && i < delays.length - 1) continue;
+      return res;
+    } catch(e) {
+      if (i === delays.length - 1) throw e;
+    }
+  }
 }
 
 // ====== HTML ESCAPE + SANITIZE AI (anti-XSS) ======
@@ -10317,20 +10344,37 @@ async function syncDeleteJournal(id) {
 }
 
 // ====== FROST & DISEASE ALERTS ======
+var ALERTS_CACHE_KEY = 'livada-alerts-cache';
+
+function applyAlerts(data) {
+  if (data.frost && data.frost.active) {
+    var ft = document.getElementById('frostText');
+    var fb = document.getElementById('frostBanner');
+    if (ft) ft.textContent = data.frost.message;
+    if (fb) fb.classList.add('active');
+  }
+  if (data.disease && data.disease.active) {
+    var dt = document.getElementById('diseaseText');
+    var db = document.getElementById('diseaseBanner');
+    if (dt) dt.textContent = data.disease.message;
+    if (db) db.classList.add('active');
+  }
+}
+
 async function checkAlerts() {
+  // Afiseaza cache-ul existent imediat (vizibil chiar offline)
+  try {
+    var cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null');
+    if (cached) applyAlerts(cached);
+  } catch(e) {}
+
   if (!navigator.onLine) return;
   try {
     var res = await fetchWithTimeout('/api/frost-alert', {}, 5000);
     if (!res.ok) return;
     var data = await res.json();
-    if (data.frost && data.frost.active) {
-      document.getElementById('frostText').textContent = data.frost.message;
-      document.getElementById('frostBanner').classList.add('active');
-    }
-    if (data.disease && data.disease.active) {
-      document.getElementById('diseaseText').textContent = data.disease.message;
-      document.getElementById('diseaseBanner').classList.add('active');
-    }
+    localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify(data));
+    applyAlerts(data);
   } catch(e) {}
 }
 
@@ -10461,7 +10505,11 @@ async function generateReport() {
     if (data.error) { result.textContent = 'Eroare: ' + data.error; }
     else {
       result.innerHTML = '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">Bazat pe ' +
-        data.journalCount + ' interven\u021Bii \u0219i ' + data.meteoDays + ' zile meteo</div>' + sanitizeAI(data.report || '');
+        data.journalCount + ' interven\u021Bii \u0219i ' + data.meteoDays + ' zile meteo</div>' + sanitizeAI(data.report || '') +
+        '<div style="display:flex;gap:8px;margin-top:12px;">' +
+        '<button class="btn btn-secondary" style="flex:1;font-size:0.8rem;" onclick="copyTextEl(\'reportResult\')">&#128203; Copiaz\u0103 raport</button>' +
+        '<button class="btn btn-secondary" style="flex:1;font-size:0.8rem;" onclick="window.print()">&#128424;&#65039; Printeaz\u0103</button>' +
+        '</div>';
     }
     result.style.display = 'block';
   } catch(e) {
