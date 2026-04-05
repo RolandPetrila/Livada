@@ -8846,7 +8846,10 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
     <div class="modal-body">
       <div class="cal-nav">
         <button onclick="calNav(-1)" aria-label="Luna anterioara">&larr;</button>
-        <h3 id="calTitle"></h3>
+        <div style="text-align:center;">
+          <h3 id="calTitle" style="margin:0 0 2px;"></h3>
+          <button onclick="calMonth=new Date().getMonth();calYear=new Date().getFullYear();renderCalendar();enhanceCalendarWithMeteo();" style="font-size:0.65rem;padding:1px 10px;background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;color:var(--text-dim);cursor:pointer;">Azi</button>
+        </div>
         <button onclick="calNav(1)" aria-label="Luna urmatoare">&rarr;</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
@@ -9648,13 +9651,21 @@ function calNav(dir) {
 }
 
 // ====== RECOLTA SUMMARY ======
-function renderRecoltaSummary() {
+function renderRecoltaSummary(selectedYear) {
   var el = document.getElementById('recoltaSummary');
   if (!el) return;
-  var year = new Date().getFullYear();
-  var entries = getJurnalEntries().filter(function(e) { return e.type === 'recoltare' && e.date && e.date.startsWith(String(year)) && e.kg > 0; });
+  var currentYear = new Date().getFullYear();
+  if (!selectedYear) selectedYear = parseInt(localStorage.getItem('livada-recolta-year') || currentYear);
+  localStorage.setItem('livada-recolta-year', selectedYear);
+  var years = [currentYear, currentYear - 1, currentYear - 2];
+  var yearBtns = years.map(function(y) {
+    var isActive = y === selectedYear;
+    return '<button onclick="renderRecoltaSummary(' + y + ')" style="' + (isActive ? 'background:var(--accent);color:#fff;' : 'background:var(--bg-surface);color:var(--text-dim);') + 'border:1px solid var(--border);border-radius:12px;padding:2px 12px;font-size:0.75rem;cursor:pointer;">' + y + '</button>';
+  }).join('');
+  var yearSelectorHtml = '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;">' + yearBtns + '</div>';
+  var entries = getJurnalEntries().filter(function(e) { return e.type === 'recoltare' && e.date && e.date.startsWith(String(selectedYear)) && e.kg > 0; });
   if (entries.length === 0) {
-    el.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:16px;">Nicio recolt\u0103 \u00EEnregistrat\u0103 \u00EEn ' + year + '. Adaug\u0103 din Jurnal (tip: Recoltare).</p>';
+    el.innerHTML = yearSelectorHtml + '<p style="color:var(--text-dim);text-align:center;padding:16px;">Nicio recolt\u0103 \u00EEnregistrat\u0103 \u00EEn ' + selectedYear + '. Adaug\u0103 din Jurnal (tip: Recoltare).</p>';
     return;
   }
   var bySpecies = {};
@@ -9665,8 +9676,8 @@ function renderRecoltaSummary() {
     var name = SPECIES[p[0]] || p[0].charAt(0).toUpperCase() + p[0].slice(1);
     return '<tr><td>' + escapeHtml(name) + '</td><td style="text-align:right;">' + p[1].kg.toFixed(1) + '</td><td style="text-align:right;">' + p[1].count + '</td></tr>';
   }).join('');
-  el.innerHTML = '<div class="table-wrap"><table><tr><th>Specie</th><th style="text-align:right;">Kg total</th><th style="text-align:right;">Recolt\u0103ri</th></tr>' +
-    rows + '<tr style="font-weight:700;border-top:2px solid var(--accent);"><td>TOTAL ' + year + '</td><td style="text-align:right;">' + totalKg.toFixed(1) + ' kg</td><td style="text-align:right;">' + entries.length + '</td></tr></table></div>';
+  el.innerHTML = yearSelectorHtml + '<div class="table-wrap"><table><tr><th>Specie</th><th style="text-align:right;">Kg total</th><th style="text-align:right;">Recolt\u0103ri</th></tr>' +
+    rows + '<tr style="font-weight:700;border-top:2px solid var(--accent);"><td>TOTAL ' + selectedYear + '</td><td style="text-align:right;">' + totalKg.toFixed(1) + ' kg</td><td style="text-align:right;">' + entries.length + '</td></tr></table></div>';
 }
 
 // ====== CALENDAR JOURNAL OVERLAY ======
@@ -9974,11 +9985,19 @@ function injectReportButton() {
 }
 
 // ====== II-2: STATISTICI INTERVENTII ======
-function renderStats() {
+function renderStats(selectedYear) {
   var entries = getJurnalEntries();
-  var year = new Date().getFullYear();
-  var yearEntries = entries.filter(function(e){ return e.date && e.date.startsWith(String(year)); });
-  if (yearEntries.length === 0) return '<p style="color:var(--text-dim);text-align:center;padding:12px;">Nicio interventie \u00EEnregistrat\u0103 \u00EEn ' + year + '.</p>';
+  var currentYear = new Date().getFullYear();
+  if (!selectedYear) selectedYear = parseInt(localStorage.getItem('livada-stats-year') || currentYear);
+  localStorage.setItem('livada-stats-year', selectedYear);
+  var years = [currentYear, currentYear - 1, currentYear - 2];
+  var yearBtns = years.map(function(y) {
+    var isActive = y === selectedYear;
+    return '<button onclick="var s=document.getElementById(\'stats-section\');if(s)s.querySelector(\'.section-body\').innerHTML=renderStats(' + y + ');" style="' + (isActive ? 'background:var(--accent);color:#fff;' : 'background:var(--bg-surface);color:var(--text-dim);') + 'border:1px solid var(--border);border-radius:12px;padding:2px 10px;font-size:0.72rem;cursor:pointer;">' + y + '</button>';
+  }).join('');
+  var yearSelectorHtml = '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;">' + yearBtns + '</div>';
+  var yearEntries = entries.filter(function(e){ return e.date && e.date.startsWith(String(selectedYear)); });
+  if (yearEntries.length === 0) return yearSelectorHtml + '<p style="color:var(--text-dim);text-align:center;padding:12px;">Nicio interventie \u00EEnregistrat\u0103 \u00EEn ' + selectedYear + '.</p>';
   var byType = {};
   yearEntries.forEach(function(e){ byType[e.type] = (byType[e.type]||0) + 1; });
   var maxType = Math.max.apply(null, Object.values(byType).concat([1]));
@@ -9995,6 +10014,7 @@ function renderStats() {
     var m = parseInt((e.date||'').split('-')[1]);
     if (m) byMonth[m] = (byMonth[m]||0) + 1;
   });
+  var recoltaKg = yearEntries.filter(function(e){ return e.type === 'recoltare' && e.kg > 0; }).reduce(function(sum, e){ return sum + (e.kg || 0); }, 0);
   var monthNames = ['','Ian','Feb','Mar','Apr','Mai','Iun','Iul','Aug','Sep','Oct','Nov','Dec'];
   var maxMonth = Math.max.apply(null, Object.values(byMonth).concat([1]));
   var monthHTML = '';
@@ -10007,10 +10027,12 @@ function renderStats() {
       '<div style="font-size:0.58rem;color:var(--text-dim);margin-top:2px;">'+monthNames[m]+'</div>' +
       (count>0?'<div style="font-size:0.6rem;font-weight:700;">'+count+'</div>':'') + '</div>';
   }
-  return '<h3 style="margin-bottom:8px;font-size:0.9rem;">Per tip (' + year + ')</h3>' + typeHTML +
+  var kgLine = recoltaKg > 0 ? ' \u2022 Recolt\u0103: <strong>' + recoltaKg.toFixed(1) + ' kg</strong>' : '';
+  return yearSelectorHtml +
+    '<h3 style="margin-bottom:8px;font-size:0.9rem;">Per tip (' + selectedYear + ')</h3>' + typeHTML +
     '<h3 style="margin:14px 0 8px;font-size:0.9rem;">Per lun\u0103</h3>' +
     '<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:2px;">' + monthHTML + '</div>' +
-    '<p style="font-size:0.72rem;color:var(--text-dim);margin-top:8px;">Total: <strong>' + yearEntries.length + '</strong> interven\u021Bii</p>';
+    '<p style="font-size:0.72rem;color:var(--text-dim);margin-top:8px;">Total: <strong>' + yearEntries.length + '</strong> interven\u021Bii' + kgLine + '</p>';
 }
 function injectStatsSection() {
   if (document.getElementById('stats-section')) {
@@ -10042,6 +10064,7 @@ function injectSpeciesHistory(speciesId, container) {
   div.id = 'sp-history-section';
   div.className = 'section';
   div.style.marginTop = '12px';
+  var spName = SPECIES[speciesId] || speciesId;
   div.innerHTML = '<h2 class="section-title" style="cursor:default;">\uD83D\uDCCB Ultimele interven\u021Bii</h2>' +
     '<div class="section-body">' +
     history.map(function(e) {
@@ -10049,7 +10072,9 @@ function injectSpeciesHistory(speciesId, container) {
         '<span style="color:var(--accent);font-weight:700;">' + escapeHtml(e.date||'') + '</span> ' +
         '<span style="color:var(--text-dim);">[' + escapeHtml(e.type||'') + ']</span> ' +
         escapeHtml(e.note||'') + '</div>';
-    }).join('') + '</div>';
+    }).join('') +
+    '<div style="margin-top:10px;text-align:center;"><button class="btn btn-primary" style="font-size:0.8rem;padding:6px 18px;" onclick="openModal(\'jurnal\')">+ Adaug\u0103 interven\u021Bie</button></div>' +
+    '</div>';
   container.appendChild(div);
 }
 
@@ -10076,7 +10101,13 @@ async function loadGallery() {
       }).join('');
       grid.onclick = function(e) {
         var btn = e.target.closest('.gal-del'); if (btn) { deletePhoto(btn.dataset.url); return; }
-        var img = e.target.closest('img'); if (img) openLightbox(img.src);
+        var img = e.target.closest('img');
+        if (img) {
+          var allImgs = Array.from(grid.querySelectorAll('img'));
+          var idx = allImgs.indexOf(img);
+          var urls = allImgs.map(function(i) { return i.src; });
+          openLightbox(img.src, urls, idx);
+        }
       };
     } else { empty.style.display = 'block'; }
   } catch(e) {
@@ -10085,18 +10116,57 @@ async function loadGallery() {
     empty.style.display = 'block';
   }
 }
-function openLightbox(src) {
+var _lbUrls = [];
+var _lbIdx = 0;
+function openLightbox(src, urls, idx) {
+  _lbUrls = (urls && urls.length) ? urls : [src];
+  _lbIdx = (idx !== undefined && idx >= 0) ? idx : 0;
   var overlay = document.getElementById('lightbox-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'lightbox-overlay';
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:400;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
-    overlay.innerHTML = '<img id="lightbox-img" style="max-width:95vw;max-height:90vh;object-fit:contain;border-radius:8px;">';
-    overlay.addEventListener('click', function() { overlay.style.display = 'none'; });
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:400;display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML =
+      '<button id="lb-prev" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:2.2rem;width:44px;height:44px;border-radius:50%;cursor:pointer;display:none;">&#8249;</button>' +
+      '<img id="lightbox-img" style="max-width:88vw;max-height:90vh;object-fit:contain;border-radius:8px;cursor:zoom-out;">' +
+      '<button id="lb-next" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:2.2rem;width:44px;height:44px;border-radius:50%;cursor:pointer;display:none;">&#8250;</button>' +
+      '<button id="lb-close" style="position:absolute;top:12px;right:14px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:1.3rem;width:36px;height:36px;border-radius:50%;cursor:pointer;">&#10005;</button>' +
+      '<div id="lb-counter" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.65);font-size:0.8rem;pointer-events:none;"></div>';
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.style.display = 'none'; });
+    overlay.querySelector('#lb-close').addEventListener('click', function() { overlay.style.display = 'none'; });
+    overlay.querySelector('#lb-prev').addEventListener('click', function(e) { e.stopPropagation(); _lbNav(-1); });
+    overlay.querySelector('#lb-next').addEventListener('click', function(e) { e.stopPropagation(); _lbNav(1); });
+    var _swX = null;
+    overlay.addEventListener('touchstart', function(e) { _swX = e.touches[0].clientX; }, {passive:true});
+    overlay.addEventListener('touchend', function(e) {
+      if (_swX === null) return;
+      var dx = e.changedTouches[0].clientX - _swX; _swX = null;
+      if (Math.abs(dx) > 40) _lbNav(dx < 0 ? 1 : -1);
+    }, {passive:true});
+    document.addEventListener('keydown', function(e) {
+      if (!overlay || overlay.style.display === 'none') return;
+      if (e.key === 'ArrowLeft') _lbNav(-1);
+      else if (e.key === 'ArrowRight') _lbNav(1);
+      else if (e.key === 'Escape') overlay.style.display = 'none';
+    });
     document.body.appendChild(overlay);
   }
-  overlay.querySelector('#lightbox-img').src = src;
+  _lbShow();
   overlay.style.display = 'flex';
+}
+function _lbNav(dir) {
+  if (_lbUrls.length <= 1) return;
+  _lbIdx = (_lbIdx + dir + _lbUrls.length) % _lbUrls.length;
+  _lbShow();
+}
+function _lbShow() {
+  var overlay = document.getElementById('lightbox-overlay');
+  if (!overlay) return;
+  overlay.querySelector('#lightbox-img').src = _lbUrls[_lbIdx];
+  var multi = _lbUrls.length > 1;
+  overlay.querySelector('#lb-prev').style.display = multi ? 'flex' : 'none';
+  overlay.querySelector('#lb-next').style.display = multi ? 'flex' : 'none';
+  overlay.querySelector('#lb-counter').textContent = multi ? (_lbIdx + 1) + ' / ' + _lbUrls.length : '';
 }
 function compressImage(file, maxPx, quality) {
   return new Promise(function(resolve) {
@@ -10318,7 +10388,7 @@ async function syncJournal(retryCount) {
         if (document.getElementById('modal-jurnal').classList.contains('open')) renderJurnal();
       }
     }
-    jSyncStatus = 'synced'; updateSyncBadge();
+    jSyncStatus = 'synced'; localStorage.setItem('livada-last-sync', Date.now()); updateSyncBadge();
   } catch(e) {
     if (retryCount < SYNC_MAX_RETRIES) {
       jSyncStatus = 'retrying'; updateSyncBadge('Retry ' + (retryCount+1) + '/' + SYNC_MAX_RETRIES);
@@ -10333,7 +10403,17 @@ async function syncJournal(retryCount) {
 function updateSyncBadge(customLabel) {
   var badge = document.getElementById('syncBadge');
   if (!badge) return;
-  var labels = { idle: '', syncing: '\u21BB Sincronizare...', synced: '\u2713 Sincronizat', error: '\u2717 Eroare sync', retrying: '\u21BB ' };
+  var syncedLabel = '\u2713 Sincronizat';
+  if (jSyncStatus === 'synced') {
+    var lastSync = parseInt(localStorage.getItem('livada-last-sync') || '0');
+    if (lastSync) {
+      var ago = Math.round((Date.now() - lastSync) / 60000);
+      if (ago < 1) syncedLabel = '\u2713 Sincronizat acum';
+      else if (ago === 1) syncedLabel = '\u2713 Sincronizat acum 1 min';
+      else syncedLabel = '\u2713 Sincronizat acum ' + ago + ' min';
+    }
+  }
+  var labels = { idle: '', syncing: '\u21BB Sincronizare...', synced: syncedLabel, error: '\u2717 Eroare sync', retrying: '\u21BB ' };
   var cls = { idle: '', syncing: '', synced: 'ok', error: 'err', retrying: '' };
   badge.className = 'sync-badge ' + (cls[jSyncStatus] || '');
   badge.innerHTML = '<span class="sd"></span> ' + (customLabel || labels[jSyncStatus] || '');
@@ -10402,13 +10482,25 @@ async function loadMeteoHistory() {
       var cls = d.temp < 0 ? 'cold' : d.temp > 30 ? 'hot' : 'warm';
       return '<div class="m-bar ' + cls + '" style="height:' + h + 'px"><div class="m-bar-tip">' + date.slice(5) + ': ' + d.temp + '\u00B0C ' + d.description + '</div></div>';
     }).join('');
+    // Calculeaza risc micoze dupa zile consecutive cu precipitatii
+    var rainyStreak = 0, maxRainyStreak = 0;
+    entries.forEach(function(e) {
+      var desc = (e[1].description || '').toLowerCase();
+      if (desc.includes('ploaie') || desc.includes('averse') || desc.includes('burinta') || desc.includes('ninsoare')) {
+        rainyStreak++; if (rainyStreak > maxRainyStreak) maxRainyStreak = rainyStreak;
+      } else { rainyStreak = 0; }
+    });
+    var riskNote = '';
+    if (maxRainyStreak >= 3) {
+      riskNote = '<div class="alert" style="margin-top:8px;font-size:0.78rem;">\u26A0\uFE0F <strong>Risc micoze:</strong> ' + maxRainyStreak + ' zile consecutive cu precipita\u021Bii. Verific\u0103 necesitatea unui tratament fungicid preventiv.</div>';
+    }
     container.innerHTML = '<div class="m-chart"><h4>Istoric temperaturi \u2014 ultimele ' + entries.length + ' zile</h4>' +
       '<div class="m-chart-wrap">' + bars + '</div>' +
       '<div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-dim);margin-top:4px;">' +
       '<span>' + (entries[0] ? entries[0][0].slice(5) : '') + '</span>' +
       '<span>Min: ' + Math.round(minT) + '\u00B0 / Max: ' + Math.round(maxT) + '\u00B0</span>' +
       '<span>' + (entries[entries.length-1] ? entries[entries.length-1][0].slice(5) : '') + '</span>' +
-      '</div></div>';
+      '</div></div>' + riskNote;
   } catch(e) { container.innerHTML = ''; }
 }
 
