@@ -14,7 +14,8 @@ function getHeader(req, name) {
 
 export function checkOrigin(req) {
   const origin = getHeader(req, 'origin') || '';
-  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+  // 'null' = PWA standalone instalata (Android/iOS) sau fisier local — permitem
+  if (origin && origin !== 'null' && !ALLOWED_ORIGINS.includes(origin)) {
     return Response.json({ error: 'Origine nepermisa' }, { status: 403 });
   }
   return null;
