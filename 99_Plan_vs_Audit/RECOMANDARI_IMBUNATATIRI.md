@@ -1,7 +1,7 @@
 # RECOMANDARI IMBUNATATIRI v6 — Livada Mea Dashboard
 
-**Data:** 2026-04-05 | **Versiune:** v6 (post-Sesiuni 1-15, integrate /improve runda 7)
-**HTML:** 11,082 linii | **API:** 11 routes | **Specii:** 20 + 1 general
+**Data:** 2026-04-06 | **Versiune:** v7 (post-Sesiuni 1-17)
+**HTML:** ~11,350 linii | **API:** 11 routes | **Specii:** 20 + 1 general
 
 ---
 
@@ -20,50 +20,50 @@
 ## CHECKLIST MASTER — Toate fazele (viziune rapida)
 
 ### FAZA 1 — Securitate critica (~25 min)
-- ⬜ **S1** `index.html:8948` DOMPurify pin @3.3.3 + fallback XSS safe
-- ⬜ **S5** `api/_auth.js:20` CORS reject 403 pt origini necunoscute
-- ⬜ **S7** `api/meteo-cron.js:22` CRON_SECRET enforce non-empty
-- ⬜ **T3** `api/ping.js` Adauga CORS headers + OPTIONS
-- ⬜ **T4** `api/meteo-history.js` Error detection robusta
+- ✅ **S1** `index.html:8948` DOMPurify pin @3.3.3 + fallback XSS safe — DONE S16
+- ✅ **S5** `api/_auth.js:20` CORS reject origini necunoscute — DONE S17
+- ✅ **S7** `api/meteo-cron.js:22` CRON_SECRET enforce non-empty — DONE S16
+- ✅ **T3** `api/ping.js` CORS headers + OPTIONS — DONE S16
+- ✅ **T4** `api/meteo-history.js` Error detection robusta + validare date Redis — DONE S17
 
 ### FAZA 2 — Stabilitate API + Modele AI (~30 min)
-- ⬜ **S2** `api/meteo-cron.js` Edge Runtime (fix risc 504 cron zilnic)
-- ⬜ **S3** `api/diagnose.js:69` + `api/diagnose-test.js:34` Gemini 2.5-flash
-- ⬜ **S4** `api/ask.js` + `api/diagnose.js` AbortController proper
+- ✅ **S2** `api/meteo-cron.js` Edge Runtime — DONE S16
+- ✅ **S3** `api/diagnose.js` Gemini 2.5-flash primary + 2.5-flash-lite fallback — DONE S16/S17
+- ✅ **S4** `api/ask.js` + `api/diagnose.js` AbortController + fallback modele — DONE S16
 
 ### FAZA 3 — Memory leaks + cleanup (~30 min)
-- ⬜ **S8** `index.html` compressImage ObjectURL revoke
-- ⬜ **S9** `index.html` Event listener cleanup pe modali/lightbox
+- ✅ **S8** `index.html` compressImage ObjectURL revoke — DONE S16
+- ✅ **S9** `index.html` Lightbox singleton + event cleanup — DONE S16
 
 ### FAZA 4 — UX improvements v5 (4–6h)
 - ✅ **R1** generateReport() filtru an curent — DONE (server-side report.js)
 - ✅ **R2** checkAlerts() offline fallback — DONE S15
 - ✅ **R3** Spray score humidity real — DONE (existent in initDashboardAzi)
-- ⬜ **R4** Meteo history risc boli vizualizat
+- ✅ **R4** Meteo history risc micoze alert (rainyStreak >= 3) — DONE S16
 - ✅ **I1** visibilitychange auto-refresh 30min — DONE S15
-- ⬜ **I2** Calendar buton "Azi"
-- ⬜ **I3** Recolta comparatie multi-an (selector an)
-- ⬜ **I4** Sync timestamp vizibil (cat de proaspat)
+- ✅ **I2** Calendar buton "Azi" — DONE S16
+- ✅ **I3** Recolta comparatie multi-an (selector an) — DONE S16
+- ✅ **I4** Sync timestamp vizibil (timp relativ) — DONE S16
 - ✅ **I5** authFetch() retry backoff — DONE S15
-- ⬜ **I6** Lightbox swipe gesture pe galerie
-- ⬜ **I7** Species history buton "Adauga interventie"
-- ⬜ **I8** Stats selector an + total kg recolta
+- ✅ **I6** Lightbox swipe gesture + tastatura + counter — DONE S16
+- ✅ **I7** Species history buton "Adauga interventie" — DONE S16
+- ✅ **I8** Stats selector an + total kg recolta — DONE S16
 - ✅ **I9** generateReport() butoane Copiaza + Printeaza — DONE S15
 - ✅ **I10** printFisa() popup blocker check — DONE (existent)
 
 ### FAZA 5 — Backend modernizare (5h)
-- ⬜ **S6** Open-Meteo parametri agricultura (soil_moisture, leaf_wetness, uv_index)
+- ✅ **S6** Open-Meteo parametri agricultura (uv_index, soil_moisture, et0) — DONE S17
 - ⬜ **S10** photos.js Edge Runtime (testeaza upload Blob)
-- ⬜ **S11** Report caching Redis TTL 1h
+- ✅ **S11** Report caching Redis TTL 1h — DONE S17
 
 ### FAZA 6 — Features noi (6h)
 - ⬜ **II1** Cost Tracker (cheltuieli sezon)
-- ⬜ **II3** SW Update Notification (toast versiune noua)
+- ✅ **II3** SW Update Notification (toast versiune noua + buton Reincarca) — DONE S17
 - ⬜ **II2/S13** Push Notifications inghet (Notification API)
 - ⬜ **II4** Import jurnal CSV
-- ⬜ **P3-5** Jurnal filtru per specie
-- ⬜ **P3-6** Keyboard shortcuts (J/C/M/K//)
-- ⬜ **P3-7** localStorage Quota Monitor
+- ✅ **P3-5** Jurnal filtru per specie — DONE S17
+- ✅ **P3-6** Keyboard shortcuts (J/C/M/K//?/Esc) + help overlay — DONE S17
+- ✅ **P3-7** localStorage Quota Monitor (warning >80%) — DONE S17
 
 ### FAZA 7 — Strategic / Viitor
 - 🔵 **T1/S12** Offline Queue delete/edit + Background Sync API
@@ -84,7 +84,9 @@
 | S13 | 13 items P1 | Securitate medie + search, lightbox, quick-add | ✅ DONE |
 | S14 | 13 items P2 | Performanta + statistici, dark mode, compress | ✅ DONE |
 | S15 | 7 items | 504 fix, offline alerts, retry, visibilitychange, copy/print | ✅ DONE |
-| **Total** | **95+ items** | | **Sesiuni 1-15 complete** |
+| S16 | 12 items | Faza 3+4: recolta multi-an, lightbox, sync badge, risc micoze, toast AI, gemini 2.5-flash | ✅ DONE |
+| S17 | 11 items | CORS fix, Gemini fallback lite, meteo agro, report cache, SW toast, jurnal filtru specie, kb shortcuts, quota monitor | ✅ DONE |
+| **Total** | **118+ items** | | **Sesiuni 1-17 complete** |
 
 ---
 

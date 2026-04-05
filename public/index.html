@@ -8804,7 +8804,7 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
       <div style="margin-top:16px;">
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <h3 style="color:var(--accent);flex:1;margin:0;">Istoric</h3>
-          <select id="jurnalFilter" onchange="renderJurnal()" style="font-size:0.75rem;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text);">
+          <select id="jurnalFilter" onchange="jurnalPage=0;renderJurnal()" style="font-size:0.75rem;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text);">
             <option value="">Toate tipurile</option>
             <option value="tratament">Tratament</option>
             <option value="tundere">Tundere</option>
@@ -8813,6 +8813,16 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
             <option value="recoltare">Recoltare</option>
             <option value="observatie">Observatie</option>
             <option value="altele">Altele</option>
+          </select>
+          <select id="jurnalSpecieFilter" onchange="jurnalPage=0;renderJurnal()" style="font-size:0.75rem;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text);">
+            <option value="">Toate speciile</option>
+            <option value="cires">Cire&#537;</option><option value="visin">Vi&#537;in</option>
+            <option value="cais">Cais</option><option value="piersic">Piersic</option>
+            <option value="prun">Prun</option><option value="migdal">Migdal</option>
+            <option value="par">P&#259;r</option><option value="mar">M&#259;r</option>
+            <option value="zmeur">Zmeur</option><option value="mur">Mur</option>
+            <option value="afin">Afin</option><option value="alun">Alun</option>
+            <option value="rodiu">Rodiu</option><option value="kaki">Kaki</option>
           </select>
         </div>
         <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
@@ -9445,8 +9455,10 @@ function renderJurnal() {
   var pager = document.getElementById('jurnalPager');
   var filter = document.getElementById('jurnalFilter');
   var filterVal = filter ? filter.value : '';
+  var specieFilterVal = (document.getElementById('jurnalSpecieFilter')?.value || '');
   var all = getJurnalEntries();
   var entries = filterVal ? all.filter(function(e){return e.type===filterVal;}) : all;
+  if (specieFilterVal) entries = entries.filter(function(e){ return (e.species||'') === specieFilterVal || (e.note||'').toLowerCase().includes(specieFilterVal); });
   var searchVal = (document.getElementById('jurnalSearch')?.value || '').toLowerCase().trim();
   var dateFrom = document.getElementById('jurnalDateFrom')?.value || '';
   var dateTo = document.getElementById('jurnalDateTo')?.value || '';
@@ -9454,7 +9466,7 @@ function renderJurnal() {
   if (dateFrom) entries = entries.filter(function(e){ return e.date >= dateFrom; });
   if (dateTo) entries = entries.filter(function(e){ return e.date <= dateTo; });
   if (entries.length === 0) {
-    list.innerHTML = '<div class="jurnal-empty">Nicio interventie' + (filterVal?' de acest tip':'') + '.</div>';
+    list.innerHTML = '<div class="jurnal-empty">Nicio interventie' + (filterVal?' de acest tip':'') + (specieFilterVal?' pentru aceasta specie':'') + '.</div>';
     if (pager) pager.innerHTML = '';
     return;
   }
@@ -9831,6 +9843,17 @@ if ('serviceWorker' in navigator) {
   }).then(function(reg) {
     reg.update().catch(function() {});
   }).catch(function() {});
+
+  // Notificare versiune noua (trimisa de SW la activate)
+  navigator.serviceWorker.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'SW_UPDATED') {
+      var toastEl = document.createElement('div');
+      toastEl.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 18px;border-radius:10px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.25);display:flex;align-items:center;gap:12px;max-width:340px;';
+      toastEl.innerHTML = '<span>&#128260; Versiune nou&#259; disponibil&#259;</span><button onclick="location.reload()" style="background:#fff;color:var(--accent);border:none;border-radius:6px;padding:3px 12px;font-size:0.8rem;cursor:pointer;font-weight:600;">Reîncarc&#259;</button>';
+      document.body.appendChild(toastEl);
+      setTimeout(function() { if (toastEl.parentNode) toastEl.parentNode.removeChild(toastEl); }, 12000);
+    }
+  });
 }
 
 // Auto-refresh dashboard dupa revenire din background (I1)
@@ -11205,6 +11228,91 @@ function injectSeasonalTip(tabId, container) {
   setTimeout(function() { checkAlerts().catch(function(e) { console.error('checkAlerts init:', e); }); }, INIT_ALERTS_DELAY_MS);
   // Sync journal after short delay
   setTimeout(function() { syncJournal().catch(function(e) { console.error('syncJournal init:', e); }); }, INIT_SYNC_DELAY_MS);
+})();
+
+// ====== KEYBOARD SHORTCUTS (P3-6) ======
+(function() {
+  var SHORTCUTS = {
+    'j': function() { openModal('jurnal'); },
+    'c': function() { openModal('calendar'); },
+    'm': function() { openModal('meteo'); },
+    'k': function() {
+      // Deschide prima sectiune vizibila de specii sau tab-ul azi
+      var tab = document.querySelector('[data-tab="azi"]');
+      if (tab) tab.click();
+    },
+    '/': function() {
+      // Focus pe search global daca exista, altfel jurnal
+      var s = document.getElementById('jurnalSearch');
+      if (s) { openModal('jurnal'); setTimeout(function(){ s.focus(); }, 200); }
+    },
+    'Escape': function() {
+      // Inchide orice modal deschis
+      var open = document.querySelector('.modal-overlay.open');
+      if (open) { open.classList.remove('open'); document.body.style.overflow = ''; }
+      var overlay = document.getElementById('kbHelpOverlay');
+      if (overlay) overlay.remove();
+    },
+    '?': function() { toggleKbHelp(); },
+  };
+
+  function toggleKbHelp() {
+    var existing = document.getElementById('kbHelpOverlay');
+    if (existing) { existing.remove(); return; }
+    var overlay = document.createElement('div');
+    overlay.id = 'kbHelpOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML = '<div style="background:var(--bg-surface);border-radius:12px;padding:24px 28px;max-width:320px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.4);">' +
+      '<h3 style="margin:0 0 16px;color:var(--accent);">&#9001; Comenzi rapide</h3>' +
+      '<table style="width:100%;border-collapse:collapse;font-size:0.85rem;">' +
+      '<tr><td style="padding:4px 0;color:var(--text-dim);width:40px;"><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">J</kbd></td><td>Jurnal</td></tr>' +
+      '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">C</kbd></td><td>Calendar tratamente</td></tr>' +
+      '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">M</kbd></td><td>Meteo</td></tr>' +
+      '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">K</kbd></td><td>Tab Azi</td></tr>' +
+      '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">/</kbd></td><td>Cauta in jurnal</td></tr>' +
+      '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">Esc</kbd></td><td>Inchide</td></tr>' +
+      '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">?</kbd></td><td>Aceasta fereastra</td></tr>' +
+      '</table>' +
+      '<button onclick="document.getElementById(\'kbHelpOverlay\').remove()" style="margin-top:16px;width:100%;padding:8px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.85rem;">Inchide</button>' +
+      '</div>';
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+  }
+
+  document.addEventListener('keydown', function(e) {
+    // Ignora cand se scrie intr-un input/textarea/select
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
+    // Ignora modificatori
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var key = e.key;
+    if (SHORTCUTS[key]) { e.preventDefault(); SHORTCUTS[key](); }
+    if (SHORTCUTS[key.toLowerCase()]) { e.preventDefault(); SHORTCUTS[key.toLowerCase()](); }
+  });
+})();
+
+// ====== LOCALSTORAGE QUOTA MONITOR (P3-7) ======
+(function() {
+  function checkLocalStorageQuota() {
+    try {
+      var used = 0;
+      for (var k in localStorage) {
+        if (!localStorage.hasOwnProperty(k)) continue;
+        used += (localStorage.getItem(k) || '').length + k.length;
+      }
+      // localStorage maxim ~5MB = 5242880 chars (fiecare char = 2 bytes in UTF-16)
+      var MAX_CHARS = 2621440; // conservativ: 2.5MB in chars
+      var pct = Math.round(used / MAX_CHARS * 100);
+      if (pct >= 90) {
+        showToast('\u26A0\uFE0F localStorage ' + pct + '% plin! Exporta jurnalul si sterge date vechi.');
+      } else if (pct >= 80) {
+        showToast('\uD83D\uDCBE Spatiu local ' + pct + '% ocupat. Considera export jurnal.');
+      }
+    } catch(e) {}
+  }
+  // Verifica la start si dupa fiecare adaugare in jurnal
+  setTimeout(checkLocalStorageQuota, 3000);
+  document.addEventListener('livada-journal-updated', checkLocalStorageQuota);
 })();
 </script>
 <script defer src="https://va.vercel-scripts.com/v1/speed-insights/script.js"></script>

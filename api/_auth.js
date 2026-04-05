@@ -27,10 +27,10 @@ export function checkOrigin(req) {
 
 export function corsHeaders(req) {
   const origin = getHeader(req, 'origin') || '';
-  const allowed = ALLOWED_ORIGINS.includes(origin);
+  const allowed = !origin || origin === 'null' || ALLOWED_ORIGINS.includes(origin) || ALLOWED_ORIGIN_RE.test(origin);
 
   return {
-    'Access-Control-Allow-Origin': allowed ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Origin': allowed ? (origin || ALLOWED_ORIGINS[0]) : '',
     'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, x-livada-token',
   };

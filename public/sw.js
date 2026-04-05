@@ -29,8 +29,8 @@ self.addEventListener('activate', event => {
       .then(() => self.clients.claim())
       .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
       .then(clients => Promise.all(
-        // Forteaza reload pe toate tab-urile deschise la activarea SW nou
-        clients.map(client => client.navigate(client.url))
+        // Notifica tab-urile ca exista o versiune noua (toast in app, fara reload fortat)
+        clients.map(client => client.postMessage({ type: 'SW_UPDATED' }))
       ))
   );
 });

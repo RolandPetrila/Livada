@@ -29,16 +29,25 @@ export default async function handler(req) {
     const url = new URL(req.url);
     const days = Math.min(Math.max(parseInt(url.searchParams.get('days') || '30', 10) || 30, 1), 365);
 
-    const history = await withTimeout(kv.get('livada:meteo:history'), 5000).catch(() => null) || {};
+    const raw = await withTimeout(kv.get('livada:meteo:history'), 5000).catch((e) => {
+      console.error('meteo-history Redis timeout:', e.message);
+      return null;
+    });
 
-    // Filter to requested number of days
-    const dates = Object.keys(history).sort().slice(-days);
+    // Validare: asigura ca raw e obiect (nu array, nu null, nu string)
+    const history = (raw && typeof raw === 'object' && !Array.isArray(raw)) ? raw : {};
+
+    // Filter to requested number of days; validare fiecare entry
+    const dates = Object.keys(history).sort().filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).slice(-days);
     const filtered = {};
-    for (const d of dates) filtered[d] = history[d];
+    for (const d of dates) {
+      const entry = history[d];
+      if (entry && typeof entry === 'object') filtered[d] = entry;
+    }
 
     return Response.json(filtered, { headers: { ...corsHeaders(req), 'Cache-Control': 'public, max-age=1800' } });
   } catch (err) {
-    console.error('meteo-history error:', err);
-    return Response.json({ error: 'Eroare interna server' }, { status: 500, headers: corsHeaders(req) });
+    console.error('meteo-history error:', err.message);
+    return Response.json({ error: 'Eroare interna server', details: err.message }, { status: 500, headers: corsHeaders(req) });
   }
 }

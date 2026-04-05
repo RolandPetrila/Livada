@@ -25,9 +25,21 @@ export default async function handler(req) {
 
   try {
     const kv = Redis.fromEnv();
+    const year = new Date().getFullYear();
+
+    // Cache check: returneaza raportul cached daca e mai recent de 1h
+    const cacheKey = `livada:report:cache:${year}`;
+    const cached = await kv.get(cacheKey).catch(() => null);
+    if (cached && cached.generatedAt) {
+      const ageMs = Date.now() - cached.generatedAt;
+      if (ageMs < 3600_000) {
+        console.log(`[report] cache hit, age ${Math.round(ageMs / 60000)}min`);
+        return Response.json({ ...cached, _cached: true }, { headers: corsHeaders(req) });
+      }
+    }
+
     const journal = (await kv.get('livada:journal')) || [];
     const meteoHistory = (await kv.get('livada:meteo:history')) || {};
-    const year = new Date().getFullYear();
 
     // Filter journal for current year
     const yearEntries = journal.filter(e => e.date && e.date.startsWith(String(year)));
@@ -116,7 +128,12 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
     const result = await groqRes.json();
     const report = result.choices?.[0]?.message?.content || 'Nu am putut genera raportul.';
 
-    return Response.json({ report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length, ...(usedFallback ? { _fallback: true, _fallbackModel: 'llama-3.1-8b-instant' } : {}) }, { headers: corsHeaders(req) });
+    const payload = { report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length, generatedAt: Date.now(), ...(usedFallback ? { _fallback: true, _fallbackModel: 'llama-3.1-8b-instant' } : {}) };
+
+    // Salveaza in cache Redis cu TTL 1h
+    await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});
+
+    return Response.json(payload, { headers: corsHeaders(req) });
   } catch (err) {
     const msg = err.message || String(err);
     if (msg.includes('UPSTASH')) {

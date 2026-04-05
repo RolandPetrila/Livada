@@ -4,8 +4,8 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S15 complete | **HTML:** 11,082 linii | **API:** 11 routes
-**Ultima actualizare:** 2026-04-05
+**Status sesiuni:** S1-S17 complete | **HTML:** ~11,350 linii | **API:** 11 routes
+**Ultima actualizare:** 2026-04-06
 
 ## Arhitectura
 - **Frontend**: Single HTML file (`public/index.html`) — tot inline (CSS, JS, date)
@@ -55,7 +55,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | Route | Runtime | Timeout | Serviciu extern |
 |-------|---------|---------|-----------------|
 | ask.js | Edge | 28s | Groq |
-| diagnose.js | Edge | 22s | Gemini 2.5-flash (fallback: 2.0-flash) |
+| diagnose.js | Edge | 22s | Gemini 2.5-flash (fallback: 2.5-flash-lite) |
 | diagnose-test.js | Edge | 12s | Gemini |
 | frost-alert.js | Edge | 5s | Redis |
 | journal.js | Edge | 5s | Redis |
@@ -77,7 +77,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 ## Dependente externe
 - Groq API (llama-3.3-70b-versatile) — raspunsuri AI intrebari + rapoarte
-- Google Gemini (gemini-2.5-flash, fallback gemini-2.0-flash) — diagnostic foto AI
+- Google Gemini (gemini-2.5-flash, fallback gemini-2.5-flash-lite) — diagnostic foto AI
 - Open-Meteo (gratuit, fara API key) — date meteo curente + prognoza 5 zile
 - Upstash Redis (@upstash/redis 1.37.0) — persistenta jurnal + meteo history cache
 - Vercel Blob (@vercel/blob 2.3.2) — stocare fotografii galerie
@@ -90,4 +90,4 @@ H. Sfaturi Practice pentru Incepatori (adaugat S15)
 
 ## Imbunatatiri pendinte
 Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI.md` — checklist complet pe faze.
-**Prioritate maxima (Faza 1):** DOMPurify pin, meteo-cron Edge Runtime, Gemini 2.5-flash, CORS fix.
+**Faze 1-6 complete (118+ items).** Ramase: S10 (photos Edge), II1 (Cost Tracker), II2 (Push Notifications), II4 (Import CSV), Faza 7 (strategic).
