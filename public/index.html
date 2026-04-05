@@ -8915,10 +8915,21 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
       <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:12px;">
         Fotografiaz&#259; frunza, fructul sau ramura afectat&#259;. AI-ul analizeaz&#259; &#537;i sugereaz&#259; tratament.
       </p>
-      <div class="gal-upload" onclick="document.getElementById('diagFileInput').click()">
-        <div class="gu-icon">&#128248;</div>
-        <div>Selecteaz&#259; sau fotografiaz&#259;</div>
+      <div style="display:flex;gap:10px;margin-bottom:4px;">
+        <button onclick="document.getElementById('diagCameraInput').click()"
+          style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;background:var(--bg-surface);border:2px dashed var(--accent);border-radius:12px;cursor:pointer;font-size:0.82rem;color:var(--text);min-height:80px;">
+          <span style="font-size:1.6rem;">&#128247;</span>
+          <span>Fac o poz&#259;</span>
+        </button>
+        <button onclick="document.getElementById('diagFileInput').click()"
+          style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;background:var(--bg-surface);border:2px dashed var(--border);border-radius:12px;cursor:pointer;font-size:0.82rem;color:var(--text);min-height:80px;">
+          <span style="font-size:1.6rem;">&#128444;&#65039;</span>
+          <span>Alege din galerie</span>
+        </button>
       </div>
+      <!-- camera: capture="environment" deschide direct camera spate pe Android/iOS -->
+      <input type="file" id="diagCameraInput" accept="image/*" capture="environment" style="display:none" onchange="submitDiagnose(this)">
+      <!-- galerie: fara capture, lasa utilizatorul sa aleaga fisier existent -->
       <input type="file" id="diagFileInput" accept="image/*" style="display:none" onchange="submitDiagnose(this)">
       <div id="diagPreview" style="display:none;margin-bottom:12px;">
         <img id="diagImg" style="width:100%;max-height:250px;object-fit:contain;border-radius:8px;">
