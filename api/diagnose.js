@@ -74,7 +74,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
   let geminiRes;
   try {
     geminiRes = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
@@ -96,16 +96,16 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     return Response.json({ error: 'Eroare conexiune AI. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
   }
 
-  // Fallback la gemini-1.5-flash daca modelul primar esueaza
+  // Fallback la gemini-2.0-flash daca modelul primar esueaza
   let usedFallback = false;
   if (!geminiRes.ok) {
     const primaryStatus = geminiRes.status;
-    console.error(`[diagnose] primary ${primaryStatus}, try fallback gemini-1.5-flash t+${Date.now()-t0}ms`);
+    console.error(`[diagnose] primary ${primaryStatus}, try fallback gemini-2.0-flash t+${Date.now()-t0}ms`);
     const ctrl2 = new AbortController();
     const timer2 = setTimeout(() => ctrl2.abort(), 15000);
     try {
       geminiRes = await fetch(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
@@ -137,7 +137,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
       || 'Nu am putut analiza imaginea. Incearca cu o poza mai clara.';
     console.log(`[diagnose] done${usedFallback ? ' (fallback)' : ''} t+${Date.now()-t0}ms`);
     return Response.json(
-      { diagnosis: text, ...(usedFallback ? { _fallback: true, _fallbackModel: 'gemini-1.5-flash' } : {}) },
+      { diagnosis: text, ...(usedFallback ? { _fallback: true, _fallbackModel: 'gemini-2.0-flash' } : {}) },
       { headers: corsHeaders(req) }
     );
   } catch (err) {

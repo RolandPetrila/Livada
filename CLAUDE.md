@@ -55,7 +55,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | Route | Runtime | Timeout | Serviciu extern |
 |-------|---------|---------|-----------------|
 | ask.js | Edge | 28s | Groq |
-| diagnose.js | Edge + 30s | 22s | Gemini 1.5-flash (*upgrade necesar la 2.5*) |
+| diagnose.js | Edge | 22s | Gemini 2.5-flash (fallback: 2.0-flash) |
 | diagnose-test.js | Edge | 12s | Gemini |
 | frost-alert.js | Edge | 5s | Redis |
 | journal.js | Edge | 5s | Redis |
@@ -69,7 +69,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 ## Variabile de mediu (Vercel Dashboard)
 - `LIVADA_API_TOKEN` — autentificare API (dezactivata momentan, rate limit activ)
 - `GROQ_API_KEY` — AI ask + raport (llama-3.3-70b-versatile)
-- `GOOGLE_AI_API_KEY` — AI diagnostic foto (Gemini 1.5-flash in cod, *upgrade la 2.5 necesar*)
+- `GOOGLE_AI_API_KEY` — AI diagnostic foto (Gemini 2.5-flash, fallback 2.0-flash)
 - `UPSTASH_REDIS_REST_URL` — Redis cache meteo + jurnal sync
 - `UPSTASH_REDIS_REST_TOKEN` — Redis auth
 - `BLOB_READ_WRITE_TOKEN` — Vercel Blob galerie foto
@@ -77,7 +77,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 ## Dependente externe
 - Groq API (llama-3.3-70b-versatile) — raspunsuri AI intrebari + rapoarte
-- Google Gemini (gemini-1.5-flash in cod) — diagnostic foto AI
+- Google Gemini (gemini-2.5-flash, fallback gemini-2.0-flash) — diagnostic foto AI
 - Open-Meteo (gratuit, fara API key) — date meteo curente + prognoza 5 zile
 - Upstash Redis (@upstash/redis 1.37.0) — persistenta jurnal + meteo history cache
 - Vercel Blob (@vercel/blob 2.3.2) — stocare fotografii galerie
