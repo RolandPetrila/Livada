@@ -1,132 +1,441 @@
-# RECOMANDARI IMBUNATATIRI v5 — Livada Mea Dashboard
+# RECOMANDARI IMBUNATATIRI v6 — Livada Mea Dashboard
 
-**Data:** 2026-04-05 (actualizat S15: 2026-04-05)
-**Versiune:** v5 (post-Sesiuni 1-15)
-**HTML:** 11,034+ linii | **API:** 11 routes | **Specii:** 20 + 1 general
-**Comparatie vs v4:** S12-S14 completate (38 items P0-P2). S15: 5 items implementate (report 504, R2, I1, I5, I9).
-
-**S15 IMPLEMENTAT:**
-- `api/report.js` — fix 504: `maxDuration:60` → Edge Runtime ✅
-- R2 `checkAlerts()` — offline fallback cu localStorage cache ✅
-- I1 `visibilitychange` — auto-refresh dashboard dupa 30 min background ✅
-- I5 `authFetch()` — retry cu backoff (0s/2s/5s) pe 429/503/504 ✅
-- I9 `generateReport()` — butoane Copiaza + Printeaza dupa raport ✅
-- I10 `printFisa()` — deja implementat (popup blocker check existent) ✅
-- R3 humidity — deja implementat in `initDashboardAzi` (URL + fallback existent) ✅
+**Data:** 2026-04-05 | **Versiune:** v6 (post-Sesiuni 1-15, integrate /improve runda 7)
+**HTML:** 11,082 linii | **API:** 11 routes | **Specii:** 20 + 1 general
 
 ---
 
-## STATUS v4 — CE S-A IMPLEMENTAT (S12-S14)
+## LEGENDA STATUS
 
-| Sesiune | Items | Categorie |
-|---------|-------|-----------|
-| S12 | 12 items P0 | Securitate critica + buguri |
-| S13 | 13 items P1 | Securitate medie + features: search jurnal, lightbox, quick-add |
-| S14 | 13 items P2 | Performanta + features: statistici, species history, dark mode, compress |
-| **Total** | **38/54** | **P0-P2 complete** |
-
-**Ramas din v4:** P3 (9 items) + P4 (7 items) = 16 items — **re-prioritizate mai jos**
+| Simbol | Semnificatie |
+|--------|-------------|
+| ✅ | DONE — Implementat si testat |
+| 🔄 | IN PROGRESS — In curs de implementare |
+| ⬜ | TODO — De implementat |
+| 🔵 | VIITOR — Planificat strategic, nu urgent |
+| ❌ | ANULAT — Nu se mai implementeaza |
 
 ---
 
-## PARTE 0 — REMEDIERI CRITICE DESCOPERITE IN V5
+## CHECKLIST MASTER — Toate fazele (viziune rapida)
 
-> Probleme noi identificate la analiza codului 11,034 linii (vs 7,358 la v4).
+### FAZA 1 — Securitate critica (~25 min)
+- ⬜ **S1** `index.html:8948` DOMPurify pin @3.3.3 + fallback XSS safe
+- ⬜ **S5** `api/_auth.js:20` CORS reject 403 pt origini necunoscute
+- ⬜ **S7** `api/meteo-cron.js:22` CRON_SECRET enforce non-empty
+- ⬜ **T3** `api/ping.js` Adauga CORS headers + OPTIONS
+- ⬜ **T4** `api/meteo-history.js` Error detection robusta
 
-### R1. `generateReport()` — Trimite TOATE intrarile, nu doar anul curent
+### FAZA 2 — Stabilitate API + Modele AI (~30 min)
+- ⬜ **S2** `api/meteo-cron.js` Edge Runtime (fix risc 504 cron zilnic)
+- ⬜ **S3** `api/diagnose.js:69` + `api/diagnose-test.js:34` Gemini 2.5-flash
+- ⬜ **S4** `api/ask.js` + `api/diagnose.js` AbortController proper
 
-**Fisier:** `public/index.html:10452`
-**Problema:** `localJournal = getJurnalEntries().map(...)` trimite ALL entries la Groq. Cu 200+ interventii din 3 ani, risipesti token-uri pe date irelevante si poti depasi limita contextului LLM.
+### FAZA 3 — Memory leaks + cleanup (~30 min)
+- ⬜ **S8** `index.html` compressImage ObjectURL revoke
+- ⬜ **S9** `index.html` Event listener cleanup pe modali/lightbox
+
+### FAZA 4 — UX improvements v5 (4–6h)
+- ✅ **R1** generateReport() filtru an curent — DONE (server-side report.js)
+- ✅ **R2** checkAlerts() offline fallback — DONE S15
+- ✅ **R3** Spray score humidity real — DONE (existent in initDashboardAzi)
+- ⬜ **R4** Meteo history risc boli vizualizat
+- ✅ **I1** visibilitychange auto-refresh 30min — DONE S15
+- ⬜ **I2** Calendar buton "Azi"
+- ⬜ **I3** Recolta comparatie multi-an (selector an)
+- ⬜ **I4** Sync timestamp vizibil (cat de proaspat)
+- ✅ **I5** authFetch() retry backoff — DONE S15
+- ⬜ **I6** Lightbox swipe gesture pe galerie
+- ⬜ **I7** Species history buton "Adauga interventie"
+- ⬜ **I8** Stats selector an + total kg recolta
+- ✅ **I9** generateReport() butoane Copiaza + Printeaza — DONE S15
+- ✅ **I10** printFisa() popup blocker check — DONE (existent)
+
+### FAZA 5 — Backend modernizare (5h)
+- ⬜ **S6** Open-Meteo parametri agricultura (soil_moisture, leaf_wetness, uv_index)
+- ⬜ **S10** photos.js Edge Runtime (testeaza upload Blob)
+- ⬜ **S11** Report caching Redis TTL 1h
+
+### FAZA 6 — Features noi (6h)
+- ⬜ **II1** Cost Tracker (cheltuieli sezon)
+- ⬜ **II3** SW Update Notification (toast versiune noua)
+- ⬜ **II2/S13** Push Notifications inghet (Notification API)
+- ⬜ **II4** Import jurnal CSV
+- ⬜ **P3-5** Jurnal filtru per specie
+- ⬜ **P3-6** Keyboard shortcuts (J/C/M/K//)
+- ⬜ **P3-7** localStorage Quota Monitor
+
+### FAZA 7 — Strategic / Viitor
+- 🔵 **T1/S12** Offline Queue delete/edit + Background Sync API
+- 🔵 **T2/S14** Rate limiting Redis-backed (distribuit)
+- 🔵 **T5/S15** Teste unitare vitest
+
+---
+
+## PROGRES SESIUNI ANTERIOARE
+
+| Sesiune | Items | Categorie | Status |
+|---------|-------|-----------|--------|
+| S1-S8 | Faze 1-4 | Infrastructura + continut specii + AI | ✅ DONE |
+| S9 | 10 items P0/P1 | Spray score, prognoza, securitate, UX | ✅ DONE |
+| S10 | 6 items UX | Imbunatatiri UX | ✅ DONE |
+| S11 | 20 items | Audit standard — securitate + calitate | ✅ DONE |
+| S12 | 12 items P0 | 3 specii noi + securitate critica | ✅ DONE |
+| S13 | 13 items P1 | Securitate medie + search, lightbox, quick-add | ✅ DONE |
+| S14 | 13 items P2 | Performanta + statistici, dark mode, compress | ✅ DONE |
+| S15 | 7 items | 504 fix, offline alerts, retry, visibilitychange, copy/print | ✅ DONE |
+| **Total** | **95+ items** | | **Sesiuni 1-15 complete** |
+
+---
+
+---
+
+# FAZA 1 — Securitate critica
+
+> **Timp estimat: ~25 min** | **Risc: LOW** | **ROI: 9–10/10**
+
+---
+
+## S1. DOMPurify — Pin versiune + fix fallback XSS
+
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html:8948` (CDN) + `public/index.html:9918` (fallback)
+**Prioritate:** CRITICA — CVE-2026-0540 (HIGH, XSS bypass in 3.1.3–3.3.1)
+
+**Problema:**
+1. CDN `@3` nepinuit — daca jsdelivr serve o versiune afectata temporar = XSS.
+2. Linia 9918: `return md` returneaza HTML nesanitizat daca DOMPurify nu s-a incarcat inca.
+
+**Fix:**
+```html
+<!-- index.html:8948 — INAINTE: -->
+<script defer src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+
+<!-- DUPA: -->
+<script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.3.3/dist/purify.min.js"></script>
+```
+
+```javascript
+// index.html:9918 — INAINTE:
+  return md;
+}
+
+// DUPA:
+  // Fallback sigur: strip all tags daca DOMPurify nu e incarcat
+  return md.replace(/<[^>]*>/g, '');
+}
+```
+
+**Efort:** 15 min | **Sursa:** https://github.com/advisories/GHSA-v2wj-7wpq-c8vv
+
+---
+
+## S5. CORS — Reject 403 in loc de fallback origin
+
+**Status:** ⬜ TODO
+**Fisier:** `api/_auth.js:20`
+
+**Problema:** Daca origin-ul nu e in whitelist, returneaza `ALLOWED_ORIGINS[0]` — nu respinge. Orice domeniu poate vedea header-ul CORS al productiei.
 
 **Fix:**
 ```javascript
-async function generateReport() {
-  var year = new Date().getFullYear();
-  var allEntries = getJurnalEntries();
-  var yearEntries = allEntries.filter(function(e) { return e.date && e.date.startsWith(String(year)); });
-  if (yearEntries.length === 0) {
-    showToast('Nicio interventie in ' + year + '. Alege un alt an sau adauga interventii.');
-    return;
-  }
-  if (!confirm('Datele din ' + year + ' (' + yearEntries.length + ' interventii) vor fi trimise la Groq AI. Continua?')) return;
-  var localJournal = yearEntries.map(function(e) { return e.date + ': [' + e.type + '] ' + (e.note||''); }).join('\n');
-  // ... restul neschimbat, cu localJournal filtrat
+// _auth.js:19-23 — INAINTE:
+  return {
+    'Access-Control-Allow-Origin': allowed ? origin : ALLOWED_ORIGINS[0],
+    ...
+  };
+
+// DUPA:
+  return {
+    'Access-Control-Allow-Origin': allowed ? origin : '',
+    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, x-livada-token',
+  };
 ```
 
-**Complexitate:** Mica (5 linii) | **Impact:** Mare — rapoarte focusate, token-uri economisite
+**Efort:** 10 min
 
 ---
 
-### R2. `checkAlerts()` — Fara fallback offline
+## S7. CRON_SECRET — Enforce non-empty
 
-**Fisier:** `public/index.html:10320-10334`
-**Problema:** `if (!navigator.onLine) return;` — daca utilizatorul e offline, alertele din sesiunea anterioara dispar. Inghet detectat ieri e invizibil azi la pornire fara internet.
+**Status:** ⬜ TODO
+**Fisier:** `api/meteo-cron.js:22`
+
+**Problema:** `if (cronSecret) { ... }` — daca `CRON_SECRET` nu e setat in Vercel env, oricine poate triggera cronul manual.
 
 **Fix:**
 ```javascript
-const ALERTS_CACHE_KEY = 'livada-alerts-cache';
-
-async function checkAlerts() {
-  // Afiseaza cache-ul existent imediat (chiar offline)
-  try {
-    var cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null');
-    if (cached) applyAlerts(cached);
-  } catch(e) {}
-
-  if (!navigator.onLine) return;
-  try {
-    var res = await fetchWithTimeout('/api/frost-alert', {}, 5000);
-    if (!res.ok) return;
-    var data = await res.json();
-    localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify(data));
-    applyAlerts(data);
-  } catch(e) {}
-}
-
-function applyAlerts(data) {
-  if (data.frost && data.frost.active) {
-    document.getElementById('frostText').textContent = data.frost.message;
-    document.getElementById('frostBanner').classList.add('active');
+// INAINTE:
+  const cronSecret = process.env.CRON_SECRET;
+  if (cronSecret) {
+    const auth = ...
+    if (auth !== `Bearer ${cronSecret}`) {
+      return Response.json({ error: 'Neautorizat' }, { status: 401 });
+    }
   }
-  if (data.disease && data.disease.active) {
-    document.getElementById('diseaseText').textContent = data.disease.message;
-    document.getElementById('diseaseBanner').classList.add('active');
+
+// DUPA:
+  const cronSecret = process.env.CRON_SECRET;
+  if (!cronSecret) {
+    return Response.json({ error: 'CRON_SECRET neconfigurat' }, { status: 500 });
   }
-}
+  const auth = req.headers?.get?.('authorization') || req.headers?.['authorization'] || '';
+  if (auth !== `Bearer ${cronSecret}`) {
+    return Response.json({ error: 'Neautorizat' }, { status: 401 });
+  }
 ```
 
-**Complexitate:** Mica | **Impact:** Mare — alerte vizibile offline (salvate din ultima sesiune online)
+**Efort:** 5 min
 
 ---
 
-### R3. `calculateSprayScore()` — Umiditate hardcoded 60% (A0-16 din v4, neimplementat)
+## T3. ping.js — Adauga CORS headers
 
-**Fisier:** `public/index.html:10515`
-**Problema confirmata in cod:** Prognoza stropire calculeaza scorul cu `humidity=60` hardcodat. Open-Meteo daily API nu returneaza umiditate zilnica in query-ul actual.
+**Status:** ⬜ TODO
+**Fisier:** `api/ping.js`
 
-**Fix complet (adauga `relative_humidity_2m_mean` la Open-Meteo query):**
+**Problema:** `ping.js` nu aplica CORS si nu raspunde la `OPTIONS`. Request de pe localhost sau alt origin e blocat.
+
+**Fix (inlocuieste complet):**
 ```javascript
-// In fetchMeteo(), modifica URL-ul Open-Meteo:
-var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LIVADA_LAT + '&longitude=' + LIVADA_LON +
-  '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max' +
-  ',relative_humidity_2m_mean' +   // ADAUGA ACEASTA LINIE
-  '&forecast_days=5&timezone=Europe%2FBucharest';
+import { corsHeaders, handleOptions } from './_auth.js';
+export const config = { runtime: 'edge' };
 
-// Apoi in procesarea zilelor prognoza:
-var humidity = data.daily.relative_humidity_2m_mean[i] || 60;
-calculateSprayScore((tMax + tMin) / 2, wMax, prec, humidity);
+export default async function handler(req) {
+  if (req.method === 'OPTIONS') return handleOptions(req);
+  return new Response(JSON.stringify({ ok: true, t: Date.now() }), {
+    headers: Object.assign({ 'Content-Type': 'application/json' }, corsHeaders(req))
+  });
+}
 ```
 
-**Complexitate:** Mica (2 linii) | **Impact:** Mediu — spray score prognoza corect
+**Efort:** 5 min
 
 ---
 
-### R4. `loadMeteoHistory()` — Date meteo fara vizualizare risc boli
+## T4. meteo-history.js — Error detection robusta
 
-**Fisier:** `public/index.html:10338`
-**Problema:** Graficul meteo history arata doar temperatura (bare colorate). Backend-ul `meteo-history` returneaza si `rain` si `humidity` — suficient pentru calculul riscului fungic — dar nu sunt afisate.
+**Status:** ⬜ TODO
+**Fisier:** `api/meteo-history.js`
 
-**Fix — adauga linie risc sub grafic:**
+**Problema:** `msg.includes('UPSTASH') || msg.includes('Missing')` — string-matching fragil.
+
+**Fix:**
+```javascript
+// INAINTE:
+if (msg.includes('UPSTASH') || msg.includes('Missing')) {
+
+// DUPA:
+if (!process.env.UPSTASH_REDIS_REST_URL || err instanceof TypeError) {
+```
+
+**Efort:** 5 min
+
+---
+
+---
+
+# FAZA 2 — Stabilitate API + Modele AI
+
+> **Timp estimat: ~30 min** | **Risc: LOW** | **ROI: 8–9/10**
+
+---
+
+## S2. meteo-cron.js — Edge Runtime
+
+**Status:** ⬜ TODO
+**Fisier:** `api/meteo-cron.js`
+
+**Problema:** Singurul route cu I/O extern (Open-Meteo + Redis x4) care ruleaza pe Node.js serverless. Vercel Hobby: 10s limita. Lantul Open-Meteo (2-3s) + 4 Redis ops (2-4s) = risc 504 la conexiune lenta.
+
+**Fix (adauga dupa import):**
+```javascript
+import { Redis } from '@upstash/redis';
+
+export const runtime = 'edge';  // ADAUGA ACEASTA LINIE
+
+const LAT = 46.17;
+```
+
+**Efort:** 5 min | **De ce merge:** Upstash Redis si Open-Meteo folosesc HTTP intern — compatibil Edge Runtime.
+
+---
+
+## S3. Gemini — Upgrade 1.5-flash → 2.5-flash
+
+**Status:** ⬜ TODO
+**Fisiere:** `api/diagnose.js:69` + `api/diagnose-test.js:34`
+
+**Problema:** Codul foloseste `gemini-1.5-flash` — 2 generatii in urma. Gemini 2.5-flash ofera calitate semnificativ mai buna la analiza imagine. NOTA: `gemini-2.0-flash` se deprecieaza 1 iunie 2026!
+
+**Fix — diagnose.js:69:**
+```javascript
+// INAINTE:
+'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+
+// DUPA:
+'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+```
+
+**Fix — diagnose-test.js:34:**
+```javascript
+// INAINTE:
+'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+
+// DUPA:
+'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+```
+
+**Efort:** 5 min | **Sursa:** https://ai.google.dev/gemini-api/docs/models
+
+---
+
+## S4. AbortController proper pe ask.js si diagnose.js
+
+**Status:** ⬜ TODO
+**Fisiere:** `api/ask.js:68` + `api/diagnose.js:68`
+
+**Problema:** Ask si diagnose folosesc `Promise.race` cu timeout promise — fetch-ul AI continua in background dupa ce clientul a primit raspuns, consumand quota Groq/Gemini inutil. `diagnose-test.js` il face corect (model de urmat).
+
+**Fix ask.js (inlocuieste Promise.race cu AbortController):**
+```javascript
+// INAINTE (Promise.race):
+const fetchPromise = fetch('https://api.groq.com/...', {...});
+const timeoutPromise = new Promise((_, reject) =>
+  setTimeout(() => reject(new Error('GROQ_TIMEOUT')), 28000)
+);
+const groqRes = await Promise.race([fetchPromise, timeoutPromise]);
+
+// DUPA (AbortController):
+const controller = new AbortController();
+const tid = setTimeout(() => controller.abort(), 28000);
+let groqRes;
+try {
+  groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` },
+    body: JSON.stringify({...}),
+    signal: controller.signal,
+  });
+  clearTimeout(tid);
+} catch (err) {
+  clearTimeout(tid);
+  if (err.name === 'AbortError') {
+    return Response.json({ error: 'AI-ul raspunde lent. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
+  }
+  throw err;
+}
+```
+
+**Acelasi pattern pentru diagnose.js** (timeout 22s in loc de 28s).
+
+**Efort:** 30 min (2 fisiere)
+
+---
+
+---
+
+# FAZA 3 — Memory leaks + cleanup
+
+> **Timp estimat: ~30 min** | **Risc: LOW** | **ROI: 6/10**
+
+---
+
+## S8. compressImage — Revoke ObjectURL
+
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html` — functia `compressImage()`
+
+**Problema:** `URL.createObjectURL(file)` aloca un blob URL care nu e revocat dupa success. Fiecare poza comprimata = cateva KB leakate in sesiune (5-10 poze = 1-2MB neeliberate).
+
+**Fix — adauga revoke in finally:**
+```javascript
+function compressImage(file, maxBytes, callback) {
+  var src = URL.createObjectURL(file);
+  var img = new Image();
+  img.onload = function() {
+    // ... cod compresie existent ...
+    canvas.toDataURL(file.type || 'image/jpeg', quality);
+    URL.revokeObjectURL(src); // ADAUGA ACEASTA LINIE
+    callback(dataUrl);
+  };
+  img.onerror = function() {
+    URL.revokeObjectURL(src); // deja existent sau adauga
+    callback(null);
+  };
+  img.src = src;
+}
+```
+
+**Efort:** 10 min
+
+---
+
+## S9. Event listener cleanup pe modali
+
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html` — `openLightbox()` + modal checklist
+
+**Problema:** La fiecare deschidere lightbox/modal, se adauga listeneri noi fara sa se stearga cei vechi. Dupa 20 deschideri = 20 listeneri identici care ruleaza in paralel.
+
+**Fix — verifica existenta overlay inainte de creare:**
+```javascript
+function openLightbox(src, allSrcs) {
+  allSrcs = allSrcs || [src];
+  var idx = allSrcs.indexOf(src);
+  var overlay = document.getElementById('lightbox-overlay');
+  if (!overlay) {
+    // CREEAZA overlay o singura data
+    overlay = document.createElement('div');
+    overlay.id = 'lightbox-overlay';
+    // ... adauga listeneri O SINGURA DATA ...
+    document.body.appendChild(overlay);
+  }
+  // Actualizeaza doar imaginea si counter-ul
+  document.getElementById('lightbox-img').src = src;
+  // ... rest neschimbat
+}
+```
+
+**Efort:** 20 min
+
+---
+
+---
+
+# FAZA 4 — UX improvements v5
+
+> **Timp estimat: 4–6h** | **Risc: LOW** | **ROI: 7–8/10**
+
+---
+
+## R1. generateReport() — Filtru an curent ✅ DONE
+
+**Status:** ✅ DONE — Implementat in `api/report.js` (server-side, filtrare la liniile 30-31)
+
+---
+
+## R2. checkAlerts() — Fallback offline ✅ DONE
+
+**Status:** ✅ DONE — Implementat in S15 cu `ALERTS_CACHE_KEY` localStorage
+
+---
+
+## R3. calculateSprayScore() — Humidity real ✅ DONE
+
+**Status:** ✅ DONE — Existent in `initDashboardAzi` cu `relative_humidity_2m_mean`
+
+---
+
+## R4. loadMeteoHistory() — Risc boli vizualizat
+
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html` — `loadMeteoHistory()` ~linia 10338
+
+**Problema:** Graficul meteo history arata doar temperatura. Backend returneaza si `rain` si `humidity` — suficient pentru risc fungic — dar nu sunt afisate.
+
+**Fix — adauga nota risc sub grafic:**
 ```javascript
 // In loadMeteoHistory(), dupa constructia bars:
 var riskDays = entries.filter(function(e) {
@@ -134,77 +443,55 @@ var riskDays = entries.filter(function(e) {
   return d.rain > 0 && d.temp >= 10 && d.temp <= 25;
 });
 var riskNote = riskDays.length >= 3
-  ? '<div class="alert alert-warning" style="font-size:0.78rem;margin-top:8px;">⚠️ <strong>' + riskDays.length + ' zile cu conditii favorabile pentru boli fungice</strong> in ultimele 30 zile. Verifica rapanul si monilioza.</div>'
+  ? '<div class="alert alert-warning" style="font-size:0.78rem;margin-top:8px;"><strong>' + riskDays.length + ' zile cu conditii favorabile pentru boli fungice</strong> in ultimele 30 zile. Verifica rapanul si monilioza.</div>'
   : (riskDays.length > 0
-     ? '<div class="alert alert-info" style="font-size:0.78rem;margin-top:8px;">ℹ️ ' + riskDays.length + ' zi/zile cu ploi la temperatura optima pentru boli.</div>'
+     ? '<div class="alert alert-info" style="font-size:0.78rem;margin-top:8px;">' + riskDays.length + ' zi/zile cu ploi la temperatura optima pentru boli.</div>'
      : '');
 container.innerHTML = '...(grafic existent)...' + riskNote;
 ```
 
-**Complexitate:** Mica | **Impact:** Mediu — valorifica date existente din API
+**Efort:** 30 min | **Impact:** Mediu — valorifica date existente din API
 
 ---
 
----
+## I1. visibilitychange auto-refresh ✅ DONE
 
-## PARTEA I — IMBUNATATIRI FUNCTII EXISTENTE
-
-### 1. `initDashboardAzi()` — Auto-refresh la visibility change (P3 → P1)
-
-**Fisier:** `public/index.html` — nu exista `visibilitychange` handler
-**Problema:** Dashboard-ul se incarca o singura data. Daca app-ul e in background 2-3 ore, meteo-ul si alertele sunt vechi. Pe Android (PWA), frecvent app-ul e minimizat si redeschis.
-
-**Imbunatatire:**
-```javascript
-// Adauga dupa initializarea SW (linia ~9777):
-document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'visible') {
-    var last = parseInt(localStorage.getItem('livada-last-dashboard-refresh') || '0');
-    var now = Date.now();
-    if (now - last > 30 * 60 * 1000) { // 30 minute
-      var activeTab = document.querySelector('.tab-content.active');
-      if (activeTab && activeTab.id === 'azi') {
-        initDashboardAzi();
-        localStorage.setItem('livada-last-dashboard-refresh', String(now));
-      }
-    }
-  }
-});
-```
-
-**Complexitate:** Mica | **Impact:** Mare — date mereu actuale la revenire in app
+**Status:** ✅ DONE — Implementat in S15 cu handler 30min
 
 ---
 
-### 2. `renderCalendar()` — Buton "Azi" pentru navigare rapida (P3 → P1)
+## I2. renderCalendar() — Buton "Azi"
 
+**Status:** ⬜ TODO
 **Fisier:** `public/index.html` — zona calendar navigation
-**Problema:** Singura navigare e ← → luna cu luna. Daca utilizatorul navigheza la o luna anterioara pentru a verifica o interventie, intoarcerea la luna curenta necesita N click-uri.
 
-**Imbunatatire — adauga buton central:**
+**Problema:** Navigare doar ← → luna cu luna. Intoarcerea la luna curenta dupa navigare = N click-uri.
+
+**Fix — adauga buton central:**
 ```javascript
-// In renderCalendar(), dupa constructia header-ului cu sagetile:
-// Inlocuieste div-ul cu butoanele de navigare cu:
 var navHtml = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">' +
   '<button class="btn btn-secondary" style="padding:6px 12px;" onclick="calNav(-1)">&#8249;</button>' +
   '<div style="text-align:center;">' +
   '<div style="font-weight:700;font-size:0.95rem;">' + MONTHS_RO[calMonth] + ' ' + calYear + '</div>' +
-  '<button class="btn btn-secondary" style="padding:2px 10px;font-size:0.7rem;margin-top:4px;" onclick="calMonth=new Date().getMonth();calYear=new Date().getFullYear();renderCalendar();enhanceCalendarWithMeteo();">Azi</button>' +
+  '<button class="btn btn-secondary" style="padding:2px 10px;font-size:0.7rem;margin-top:4px;" ' +
+  'onclick="calMonth=new Date().getMonth();calYear=new Date().getFullYear();renderCalendar();enhanceCalendarWithMeteo();">Azi</button>' +
   '</div>' +
   '<button class="btn btn-secondary" style="padding:6px 12px;" onclick="calNav(1)">&#8250;</button>' +
   '</div>';
 ```
 
-**Complexitate:** Mica | **Impact:** Mediu — navigare mult mai fluida
+**Efort:** 15 min | **Impact:** Mediu — navigare fluida
 
 ---
 
-### 3. `renderRecoltaSummary()` — Selector an (comparatie multi-an) (P3 → P1)
+## I3. renderRecoltaSummary() — Selector an (comparatie multi-an)
 
+**Status:** ⬜ TODO
 **Fisier:** `public/index.html` — zona recoltaSummary
-**Problema:** Tabelul arata doar anul curent. Dupa 2-3 ani de jurnal, comparatia productiei ("Am recoltat mai mult in 2025 sau 2026?") e imposibila.
 
-**Imbunatatire:**
+**Problema:** Tabelul arata doar anul curent. Dupa 2-3 ani nu poti compara productia.
+
+**Fix complet:**
 ```javascript
 function renderRecoltaSummary() {
   var el = document.getElementById('recoltaSummary');
@@ -236,16 +523,18 @@ function renderRecoltaSummary() {
 }
 ```
 
-**Complexitate:** Mica | **Impact:** Mare — vizibilitate progres anual (esential dupa 2+ ani de jurnal)
+**Efort:** 30 min | **Impact:** Mare
 
 ---
 
-### 4. `syncJournal()` — Afiseaza timestamp ultima sincronizare reusita (din S11 planificat)
+## I4. syncJournal() — Timestamp ultima sincronizare
 
+**Status:** ⬜ TODO
 **Fisier:** `public/index.html` — `updateSyncBadge()`
-**Problema:** Badge-ul arata "Sincronizat" dar nu stie utilizatorul CAND. "Sincronizat acum 3 zile" are alta relevanta decat "Sincronizat acum 2 minute".
 
-**Imbunatatire:**
+**Problema:** Badge-ul arata "Sincronizat" dar nu stie utilizatorul CAND.
+
+**Fix:**
 ```javascript
 // In syncJournal(), la succes:
 jSyncStatus = 'synced';
@@ -264,57 +553,31 @@ function updateSyncBadge(customLabel) {
       var diff = Math.round((Date.now() - new Date(lastSync)) / 60000);
       timeLabel = diff < 1 ? ' (acum)' : diff < 60 ? ' (' + diff + ' min)' : ' (' + Math.round(diff/60) + ' h)';
     }
-    badge.textContent = '● Sincronizat' + timeLabel;
+    badge.textContent = 'Sincronizat' + timeLabel;
     badge.style.color = 'var(--success)';
   }
-  // ... restul status-urilor neschimbat
 }
 ```
 
-**Complexitate:** Mica | **Impact:** Mediu — utilizatorul stie cat de proaspete sunt datele
+**Efort:** 20 min | **Impact:** Mediu
 
 ---
 
-### 5. `authFetch()` — Retry automat cu backoff (P3 → P1)
+## I5. authFetch() — Retry backoff ✅ DONE
 
-**Fisier:** `public/index.html` — `authFetch()` la linia ~9860
-**Problema:** Un request esuat (503/429/504) = fail instant fara retry. Pe conexiuni mobile fluctuante sau la Vercel cold start, un request perfect valid esueaza.
-
-**Imbunatatire:**
-```javascript
-async function authFetch(url, opts, ms) {
-  ms = ms || 10000;
-  opts = opts || {};
-  var retries = [0, 2000, 5000]; // 3 incercari: imediat, 2s, 5s
-  for (var i = 0; i < retries.length; i++) {
-    if (i > 0) await new Promise(function(r){ setTimeout(r, retries[i]); });
-    try {
-      var res = await fetchWithTimeout(url, Object.assign({}, opts, {
-        headers: Object.assign(authHeaders(), opts.headers || {})
-      }), ms);
-      if (res.status === 429 || res.status === 503 || res.status === 504) {
-        if (i < retries.length - 1) continue; // retry
-      }
-      return res;
-    } catch(e) {
-      if (i === retries.length - 1) throw e;
-    }
-  }
-}
-```
-
-**Complexitate:** Mica | **Impact:** Mare — API calls robuste pe mobil cu conexiune slaba
+**Status:** ✅ DONE — Implementat in S15 cu retries [0, 2000, 5000]
 
 ---
 
-### 6. `openLightbox()` — Swipe gesture pentru navigare intre poze (mobil)
+## I6. openLightbox() — Swipe gesture galerie
 
+**Status:** ⬜ TODO
 **Fisier:** `public/index.html:10061`
-**Problema:** Lightbox-ul se deschide la click pe imagine dar nu exista navigare stanga/dreapta. Pe Android, utilizatorul vrea sa swipe-uiasca prin galeria specimenului pentru a urmari evolutia bolii.
 
-**Imbunatatire:**
+**Problema:** Lightbox se deschide la click dar nu exista navigare stanga/dreapta. Pe Android = imposibil de navigat intre poze.
+
+**Fix complet:**
 ```javascript
-// Extinde openLightbox() cu suport swipe + navigate:
 function openLightbox(src, allSrcs) {
   allSrcs = allSrcs || [src];
   var idx = allSrcs.indexOf(src);
@@ -323,20 +586,18 @@ function openLightbox(src, allSrcs) {
     overlay = document.createElement('div');
     overlay.id = 'lightbox-overlay';
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:400;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
-    overlay.innerHTML = '<button id="lb-prev" style="position:absolute;left:12px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:2rem;padding:8px 14px;border-radius:50%;cursor:pointer;z-index:1;">&#8249;</button>' +
+    overlay.innerHTML =
+      '<button id="lb-prev" style="position:absolute;left:12px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:2rem;padding:8px 14px;border-radius:50%;cursor:pointer;z-index:1;">&#8249;</button>' +
       '<img id="lightbox-img" style="max-width:90vw;max-height:85vh;object-fit:contain;border-radius:8px;">' +
       '<button id="lb-next" style="position:absolute;right:12px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:2rem;padding:8px 14px;border-radius:50%;cursor:pointer;z-index:1;">&#8250;</button>' +
       '<div id="lb-counter" style="position:absolute;bottom:12px;color:rgba(255,255,255,0.7);font-size:0.8rem;"></div>';
-    // Touch swipe
     var touchStartX = 0;
     overlay.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
     overlay.addEventListener('touchend', function(e){
       var dx = e.changedTouches[0].clientX - touchStartX;
       if (Math.abs(dx) > 50) navigate(dx > 0 ? -1 : 1);
     });
-    overlay.addEventListener('click', function(e){
-      if (e.target === overlay) overlay.style.display = 'none';
-    });
+    overlay.addEventListener('click', function(e){ if (e.target === overlay) overlay.style.display = 'none'; });
     document.body.appendChild(overlay);
   }
   function navigate(dir) {
@@ -362,16 +623,18 @@ grid.onclick = function(e) {
 };
 ```
 
-**Complexitate:** Medie | **Impact:** Mare — navigare naturala in galerie pe Android
+**Efort:** 45 min | **Impact:** Mare pe Android
 
 ---
 
-### 7. `injectSpeciesHistory()` — Buton "Adauga interventie" direct in widget specie
+## I7. injectSpeciesHistory() — Buton "Adauga interventie"
 
+**Status:** ⬜ TODO
 **Fisier:** `public/index.html:10005`
-**Problema:** Widget-ul "Ultimele interventii" arata istoricul per specie, dar pentru a adauga o interventie noua, utilizatorul trebuie sa iasa din tab, sa deschida modalul Jurnal, sa selecteze manual specia. Flux inutil de lung.
 
-**Imbunatatire — adauga buton la finalul widget-ului:**
+**Problema:** Flux lung: tab specie → iesire → modal jurnal → selectare specie manual.
+
+**Fix:**
 ```javascript
 function injectSpeciesHistory(speciesId, container) {
   // ... cod existent ...
@@ -385,16 +648,18 @@ function injectSpeciesHistory(speciesId, container) {
 }
 ```
 
-**Complexitate:** Mica | **Impact:** Mediu — flux rapid din tab specie → adaugare jurnal
+**Efort:** 20 min | **Impact:** Mediu
 
 ---
 
-### 8. `renderStats()` — Adauga selectie an + total kg recolta in statistici
+## I8. renderStats() — Selector an + total kg recolta
 
+**Status:** ⬜ TODO
 **Fisier:** `public/index.html:9950`
-**Problema:** Graficul interventii per tip si luna e limitat la anul curent si nu include recoltele (kg). Un pomicultor vrea sa vada si productia anuala, nu doar numarul de interventii.
 
-**Imbunatatire:**
+**Problema:** Graficul interventii e limitat la anul curent, nu include kg recolta.
+
+**Fix — adauga la inceputul renderStats():**
 ```javascript
 function renderStats() {
   var entries = getJurnalEntries();
@@ -402,75 +667,146 @@ function renderStats() {
   var year = parseInt(localStorage.getItem('livada-stats-year') || String(new Date().getFullYear()));
   if (!allYears.includes(String(year))) year = parseInt(allYears[0] || new Date().getFullYear());
   var yearEntries = entries.filter(function(e){ return e.date && e.date.startsWith(String(year)); });
-  
-  // Selector an (daca exista mai multi ani)
+
   var yearSelHtml = allYears.length > 1
     ? '<div style="margin-bottom:12px;"><select onchange="localStorage.setItem(\'livada-stats-year\',this.value);injectStatsSection();" style="padding:4px 8px;border-radius:6px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-size:0.82rem;">' +
-      allYears.map(function(y){ return '<option value="'+y+'"'+(String(year)===y?' selected':'')+'>'+y+'</option>'; }).join('') + '</select></div>'
+      allYears.map(function(y){ return '<option value="'+y+'"'+(String(year)===y?' selected':'')+'>'+y+'</option>'; }).join('') +
+      '</select></div>'
     : '';
-  
-  // Total recolta kg
+
   var totalKg = yearEntries.filter(function(e){ return e.type==='recoltare' && e.kg>0; }).reduce(function(s,e){ return s+parseFloat(e.kg||0); }, 0);
   var kgHtml = totalKg > 0
-    ? '<div style="padding:8px 12px;background:var(--bg-surface);border-radius:8px;margin-bottom:12px;font-size:0.85rem;">🍎 Recolta totala ' + year + ': <strong>' + totalKg.toFixed(1) + ' kg</strong></div>'
+    ? '<div style="padding:8px 12px;background:var(--bg-surface);border-radius:8px;margin-bottom:12px;font-size:0.85rem;">Recolta totala ' + year + ': <strong>' + totalKg.toFixed(1) + ' kg</strong></div>'
     : '';
-  
-  // ... restul graficelor neschimbat (byType + byMonth) ...
-  return yearSelHtml + kgHtml + '<!-- grafice existente -->';
+
+  // ... restul graficelor cu yearEntries in loc de entries ...
 }
 ```
 
-**Complexitate:** Mica | **Impact:** Mare — viziune completa an (interventii + productie)
+**Efort:** 45 min | **Impact:** Mare
 
 ---
 
-### 9. `generateReport()` — Buton copiere raport + buton print
+## I9. generateReport() — Butoane Copiaza + Printeaza ✅ DONE
 
-**Fisier:** `public/index.html:10463`
-**Problema:** Raportul se genereaza si se afiseaza, dar nu exista mod de a-l salva. Nu are buton "Copiaza" sau "Printeaza". Utilizatorul poate face Ctrl+A, Ctrl+C din div — dar pe mobil e imposibil.
+**Status:** ✅ DONE — Implementat in S15
 
-**Imbunatatire — adauga butoane dupa display:**
+---
+
+## I10. printFisa() — Popup blocker check ✅ DONE
+
+**Status:** ✅ DONE — Existent in cod
+
+---
+
+---
+
+# FAZA 5 — Backend modernizare
+
+> **Timp estimat: ~5h** | **Risc: MEDIUM** | **ROI: 7–9/10**
+
+---
+
+## S6. Open-Meteo — Parametri agricultura
+
+**Status:** ⬜ TODO
+**Fisier:** `api/meteo-cron.js` (URL si stocare) + `public/index.html` (afisare)
+
+**De ce:** Date GRATUITE, extrem de utile. Disponibile in API, nefolosite inca.
+- `soil_moisture_0_to_1cm` — decizie irigatie
+- `et0_fao_evapotranspiration` — necesar apa zilnic
+- `leaf_wetness_probability` — predictor boli fungice (mai precis decat formula actuala)
+- `uv_index` — stres solar, arsuri fructe
+
+**Fix — extinde URL meteo-cron.js:**
 ```javascript
-// In generateReport(), dupa result.innerHTML = ...:
-result.innerHTML += '<div style="display:flex;gap:8px;margin-top:12px;">' +
-  '<button class="btn btn-secondary" style="flex:1;font-size:0.8rem;" onclick="copyTextEl(\'reportResult\')">Copiaza raport</button>' +
-  '<button class="btn btn-secondary" style="flex:1;font-size:0.8rem;" onclick="window.print()">Printeaza</button>' +
-  '</div>';
+const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}` +
+  `&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation` +
+  `&hourly=temperature_2m,precipitation,relative_humidity_2m,weather_code` +
+  `&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code` +
+  `,et0_fao_evapotranspiration,uv_index_max` +          // NOU
+  `&hourly=leaf_wetness_probability` +                   // NOU
+  `&daily=soil_moisture_0_to_1cm_mean` +                 // NOU
+  `&timezone=Europe/Bucharest&forecast_days=5`;
 ```
 
-**Complexitate:** Mica (3 linii) | **Impact:** Mediu — raportul devine utilizabil offline (copiat in WhatsApp, email, etc.)
+**Stocare extinsa in Redis:**
+```javascript
+history[today] = {
+  // ... campuri existente ...
+  et0: data.daily.et0_fao_evapotranspiration?.[0] || 0,
+  uv: data.daily.uv_index_max?.[0] || 0,
+  soil_moisture: data.daily.soil_moisture_0_to_1cm_mean?.[0] || null,
+};
+```
+
+**Widget nou in dashboard:** Afisare `et0` (necesar apa ml/mp) si `uv` (index UV) in sectiunea meteo.
+
+**Efort:** 4h | **Sursa:** https://open-meteo.com/en/docs
 
 ---
 
-### 10. `printFisa()` — Verifica popup blocker (P3 → P1)
+## S10. photos.js — Edge Runtime
 
-**Fisier:** `public/index.html` — functia printFisa
-**Problema:** `window.open()` returneaza `null` daca popup-urile sunt blocate pe Android Chrome. Urmatoarea linie `win.document.write(...)` arunca `TypeError: Cannot read property 'document' of null`.
+**Status:** ⬜ TODO
+**Fisier:** `api/photos.js:3`
 
-**Fix:**
+**Problema:** `maxDuration: 60` fara `runtime: 'edge'` — acelasi pattern ca vechiul report.js bug.
+
+**Actiune:** Testeaza mai intai daca `@vercel/blob` `put()` functioneaza in Edge Runtime.
 ```javascript
-function printFisa() {
-  var win = window.open('', '_blank');
-  if (!win) { showToast('Permite popup-urile pentru aceasta pagina (Settings > Site settings).'); return; }
-  // ... restul neschimbat
+// TESTEAZA: adauga temporar si verifica upload in production
+export const config = { runtime: 'edge' };
+// Daca upload-ul functioneaza → keep. Daca nu → revert la Node.js cu maxDuration explicit.
+```
+
+**Efort:** 30 min (test + deploy) | **Risc:** MEDIUM — @vercel/blob PUT in Edge neconfirmat
+
+---
+
+## S11. Report caching Redis TTL 1h
+
+**Status:** ⬜ TODO
+**Fisier:** `api/report.js`
+
+**Problema:** Raportul anual se regenereaza complet la fiecare click — Redis + Groq consumate inutil.
+
+**Fix — cache in Redis cu TTL 3600s:**
+```javascript
+// Dupa Redis.fromEnv():
+const cacheKey = `livada:report:${year}`;
+const cached = await kv.get(cacheKey);
+if (cached) {
+  return Response.json(cached, { headers: corsHeaders(req) });
 }
+
+// ... genereaza report ...
+
+// Inainte de return final:
+await kv.setex(cacheKey, 3600, { report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length });
+return Response.json({ report, year, ... });
 ```
 
-**Complexitate:** Mica (2 linii) | **Impact:** Mediu — previne crash pe Android cu popup blocker activ
+**Efort:** 2h | **Impact:** Reduce latenta + economiseste tokens Groq
 
 ---
 
-## PARTEA II — FUNCTII NOI
+---
 
-### 1. Cost Tracker — Evidenta cheltuieli per sezon (P3 → P1)
+# FAZA 6 — Features noi
 
-**Descriere:** Sectiune in "Plan Livada" unde utilizatorul adauga costul produselor cumparate (produs, cantitate, pret/unitate). Calculeaza totalul per sezon si emite alerta daca depaseste un buget setat.
+> **Timp estimat: ~6h** | **Risc: LOW** | **ROI: 6–8/10**
 
-**De ce e util:** "Am dat 800 lei pe fungicide in 2025 — merit sa cumpar in stoc de toamna?" — intrebare reala. Datele exista in jurnal (tratamentele) dar costul niciodata.
+---
 
-**Complexitate:** Medie | **Impact:** Mare
+## II1. Cost Tracker — Evidenta cheltuieli sezon
 
-**Exemplu implementare (localStorage + UI inline):**
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html` — sectiunea Plan Livada
+
+**De ce:** "Am dat 800 lei pe fungicide — merit sa cumpar stoc de toamna?" — intrebare reala fara raspuns actual.
+
+**Implementare JS:**
 ```javascript
 function getCostEntries() {
   try { return JSON.parse(localStorage.getItem('livada-costs') || '[]'); }
@@ -484,7 +820,8 @@ function addCost() {
   var entries = getCostEntries();
   entries.unshift({ id: Date.now(), date: todayLocal(), product: product, qty: qty, price: price, total: qty * price });
   localStorage.setItem('livada-costs', JSON.stringify(entries));
-  renderCosts(); showToast('Cost inregistrat!');
+  renderCosts();
+  showToast('Cost inregistrat!');
 }
 function renderCosts() {
   var el = document.getElementById('costsBody'); if (!el) return;
@@ -505,10 +842,10 @@ function renderCosts() {
 }
 ```
 
+**HTML section:**
 ```html
-<!-- HTML pentru sectiunea costs in Plan Livada: -->
 <div class="section" id="costs-section" style="margin-top:16px;">
-  <h2 class="section-title">💰 Cheltuieli Sezon</h2>
+  <h2 class="section-title">Cheltuieli Sezon</h2>
   <div class="section-body">
     <div style="display:grid;grid-template-columns:1fr 80px 80px auto;gap:6px;margin-bottom:12px;align-items:end;">
       <input id="costProduct" type="text" placeholder="Produs (ex: Score 250 EC)"
@@ -524,17 +861,63 @@ function renderCosts() {
 </div>
 ```
 
+**Efort:** 2h | **Impact:** Mare
+
 ---
 
-### 2. Notificari Browser pentru Inghet (Notification API)
+## II3. SW Update Notification
 
-**Descriere:** La detectarea unui alert de inghet de catre meteo-cron (setat in Redis), app-ul poate trimite o notificare push nativa la urmatoarea deschidere sau la vizita activa.
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html` — sectiunea SW registration (~linia 9777) + `public/sw.js`
 
-**De ce e util:** Roland poate vedea notificarea chiar daca nu a deschis app-ul. "Inghet posibil maine —2°C" direct pe ecranul telefonului = reactioneaza imediat (acopera pomii sensibili).
+**Problema:** Dupa `git push`, Roland poate folosi ore intregi versiunea veche din cache.
 
-**Complexitate:** Medie | **Impact:** Maxim (prevenire pierderi productie)
+**Fix — index.html (inlocuieste inregistrarea SW):**
+```javascript
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(function(reg) {
+    reg.addEventListener('updatefound', function() {
+      var newWorker = reg.installing;
+      newWorker.addEventListener('statechange', function() {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          var t = document.createElement('div');
+          t.className = 'toast';
+          t.style.cssText += 'cursor:pointer;background:var(--accent);color:#fff;';
+          t.textContent = 'Versiune noua disponibila. Apasa pentru actualizare.';
+          t.addEventListener('click', function() {
+            newWorker.postMessage({ type: 'SKIP_WAITING' });
+            location.reload();
+          });
+          document.body.appendChild(t);
+          setTimeout(function() { if (t.parentNode) t.remove(); }, 10000);
+        }
+      });
+    });
+  });
+}
+```
 
-**Exemplu implementare:**
+**Fix — sw.js (adauga handler):**
+```javascript
+self.addEventListener('message', function(event) {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+```
+
+**Efort:** 1h | **Impact:** Mediu — elimina utilizarea versiunii vechi dupa deploy
+
+---
+
+## II2/S13. Push Notifications inghet (Notification API)
+
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html` — `initDashboardAzi()` + buton setari
+
+**De ce:** Alerta de inghet vizibila pe ecranul telefonului chiar daca app-ul e inchis.
+
+**Implementare:**
 ```javascript
 async function requestNotificationPermission() {
   if (!('Notification' in window)) return false;
@@ -547,7 +930,7 @@ async function requestNotificationPermission() {
 }
 
 async function checkAlertsWithNotification() {
-  await checkAlerts(); // functia existenta
+  await checkAlerts();
   if (!navigator.onLine) return;
   try {
     var res = await fetchWithTimeout('/api/frost-alert', {}, 5000);
@@ -556,13 +939,12 @@ async function checkAlertsWithNotification() {
     if (data.frost && data.frost.active) {
       var lastNotif = localStorage.getItem('livada-frost-notif-date');
       var today = todayLocal();
-      if (lastNotif !== today) { // notifica o data pe zi
+      if (lastNotif !== today) {
         var granted = await requestNotificationPermission();
         if (granted) {
-          new Notification('❄️ Livada Mea — Alerta Inghet', {
+          new Notification('Livada Mea — Alerta Inghet', {
             body: data.frost.message || 'Inghet posibil. Protejeaza pomii sensibili!',
             icon: '/icon.svg',
-            badge: '/icon.svg',
             tag: 'frost-alert'
           });
           localStorage.setItem('livada-frost-notif-date', today);
@@ -571,72 +953,28 @@ async function checkAlertsWithNotification() {
     }
   } catch(e) {}
 }
-
 // In initDashboardAzi(), inlocuieste checkAlerts() cu checkAlertsWithNotification()
-// Adauga buton "Activeaza notificari" in setari rapide:
 ```
 
+**Buton in setari:**
 ```html
 <button class="btn btn-secondary" onclick="requestNotificationPermission().then(function(ok){showToast(ok?'Notificari activate!':'Notificari refuzate.');})">
-  🔔 Notificari inghet
+  Notificari inghet
 </button>
 ```
 
----
-
-### 3. Service Worker Update Notification (P3 → P2)
-
-**Descriere:** Toast clickabil cand service worker-ul se actualizeaza: "Versiune noua disponibila. Apasa pentru actualizare." Previne utilizarea cache-ului vechi dupa deploy.
-
-**De ce e util:** Dupa `git push`, Roland poate folosi ore intregi versiunea veche din cache fara sa stie. Actualizarea manuala e imposibila fara sa stii ca e nevoie.
-
-**Complexitate:** Mica | **Impact:** Mediu
-
-**Exemplu implementare:**
-```javascript
-// In sectiunea de Service Worker registration (linia ~9777):
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(function(reg) {
-    reg.addEventListener('updatefound', function() {
-      var newWorker = reg.installing;
-      newWorker.addEventListener('statechange', function() {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          // Versiune noua instalata, asteapta activare
-          var t = document.createElement('div');
-          t.className = 'toast';
-          t.style.cssText += 'cursor:pointer;background:var(--accent);color:#fff;';
-          t.textContent = '🔄 Versiune noua disponibila. Apasa pentru actualizare.';
-          t.addEventListener('click', function() {
-            newWorker.postMessage({ type: 'SKIP_WAITING' });
-            location.reload();
-          });
-          document.body.appendChild(t);
-          setTimeout(function() { t.remove(); }, 10000);
-        }
-      });
-    });
-  });
-}
-
-// In sw.js, adauga handler pentru SKIP_WAITING:
-self.addEventListener('message', function(event) {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-```
+**Efort:** 2h | **Impact:** Maxim (prevenire pierderi productie)
 
 ---
 
-### 4. Import Jurnal din CSV (P4 → P2)
+## II4. Import jurnal CSV
 
-**Descriere:** Buton "Import CSV" in modalul jurnal care parseaza un fisier CSV (Data,Tip,Nota) si adauga intrarile in jurnal. Util daca utilizatorul a tinut jurnal in Excel anterior sau vrea sa migreze date.
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html` — modal jurnal
 
-**De ce e util:** Roland poate adauga datele din 2024-2025 dintr-un Excel vechi. Datele istorice imbunatatesc rapoartele AI si statisticile.
+**De ce:** Roland poate importa date din 2024-2025 dintr-un Excel vechi.
 
-**Complexitate:** Mica | **Impact:** Mediu
-
-**Exemplu implementare:**
+**Implementare:**
 ```javascript
 function importJurnalCSV(input) {
   var file = input.files[0]; if (!file) return;
@@ -665,7 +1003,7 @@ function importJurnalCSV(input) {
       renderJurnal();
       syncJournal();
       showToast(imported + ' interventii importate din CSV!');
-    } else { showToast('Nicio intrare valida in CSV. Format: YYYY-MM-DD,tip,nota'); }
+    } else { showToast('Nicio intrare valida. Format: YYYY-MM-DD,tip,nota'); }
   };
   reader.readAsText(file);
   input.value = '';
@@ -673,32 +1011,31 @@ function importJurnalCSV(input) {
 ```
 
 ```html
-<!-- Adauga in footer-ul modal jurnal, langa butonul Export CSV: -->
+<!-- In footer modal jurnal, langa Export CSV: -->
 <label class="btn btn-secondary" style="cursor:pointer;font-size:0.8rem;">
   Import CSV
   <input type="file" accept=".csv,text/csv" style="display:none;" onchange="importJurnalCSV(this)">
 </label>
 ```
 
+**Efort:** 1h | **Impact:** Mediu
+
 ---
 
-### 5. Jurnal filtru per specie (specii din jurnal)
+## P3-5. Jurnal filtru per specie
 
-**Descriere:** Dropdown "Specie" in filtrul jurnalului care afiseaza doar intrarile pentru o anumita specie (camp `species` din entry sau detectat in nota).
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html` — filtrul jurnalului + `renderJurnal()`
 
-**De ce e util:** Cu 20 specii si 200+ interventii, "Cate stropiri am aplicat la Piersic?" e o intrebare frecventa fara raspuns rapid actual.
-
-**Complexitate:** Mica | **Impact:** Mare
-
-**Exemplu implementare:**
+**Implementare:**
 ```javascript
-// Adauga in HTML filtrul jurnal (dupa filtrul de tip):
+// Dropdown in HTML filtru jurnal:
 // <select id="jurnalSpeciesFilter" onchange="jurnalPage=0;renderJurnal();">
 //   <option value="">Toate speciile</option>
-//   <option value="piersic">Piersic</option>... (generat din SPECIES)
+//   ... (generat din SPECIES)
 // </select>
 
-// In renderJurnal(), adauga filtru:
+// In renderJurnal():
 var speciesFilter = document.getElementById('jurnalSpeciesFilter');
 if (speciesFilter && speciesFilter.value) {
   var spId = speciesFilter.value;
@@ -710,19 +1047,16 @@ if (speciesFilter && speciesFilter.value) {
 }
 ```
 
+**Efort:** 1h | **Impact:** Mare (cu 200+ interventii filtrul e esential)
+
 ---
 
-### 6. Keyboard Shortcuts pentru navigare rapida (P4 → P3)
+## P3-6. Keyboard shortcuts
 
-**Descriere:** Scurtaturi de tastatura pentru putere-utilizatori pe desktop/tablet: `J`=Jurnal, `C`=Calendar, `M`=Meteo, `K`=Calculator, `/`=Cautare.
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html`
 
-**De ce e util:** Pe desktop sau tableta cu tastatura, navigarea intre modale cu mouse-ul e mai lenta. Util cand utilizatorul consulta app-ul in timp ce introduce date intr-un alt program.
-
-**Complexitate:** Mica | **Impact:** Mic (niche)
-
-**Exemplu implementare:**
 ```javascript
-// Adauga in sectiunea event listeners:
 document.addEventListener('keydown', function(e) {
   if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
   if (document.querySelector('.modal-overlay.open')) return;
@@ -734,17 +1068,15 @@ document.addEventListener('keydown', function(e) {
 });
 ```
 
+**Efort:** 30 min | **Impact:** Mic (util pe desktop/tableta cu tastatura)
+
 ---
 
-### 7. localStorage Quota Monitor (P4 → P3)
+## P3-7. localStorage Quota Monitor
 
-**Descriere:** Verificare automata a dimensiunii localStorage la startup si dupa fiecare save. Toast de avertizare daca se apropie de limita de 5MB.
+**Status:** ⬜ TODO
+**Fisier:** `public/index.html`
 
-**De ce e util:** La 11,034 linii de documentatie inline + jurnal + galerie blob URLs, riscul de depasire creste. Un overflow silentios = pierdere de date fara niciun mesaj.
-
-**Complexitate:** Mica | **Impact:** Mediu
-
-**Exemplu implementare:**
 ```javascript
 function checkStorageUsage(warn) {
   var total = 0;
@@ -754,184 +1086,49 @@ function checkStorageUsage(warn) {
   }
   var mb = (total * 2) / (1024 * 1024);
   if (warn && mb > 3.5) {
-    showToast('⚠️ Stocare locala ' + mb.toFixed(1) + '/5 MB. Fa backup si sterge jurnalul vechi!');
+    showToast('Stocare locala ' + mb.toFixed(1) + '/5 MB. Fa backup si sterge jurnalul vechi!');
   }
   return mb;
 }
-// Apeleaza checkStorageUsage(true) dupa initNewFeatures() si dupa addJurnalEntry()
+// Apeleaza: checkStorageUsage(true) dupa initNewFeatures() si dupa addJurnalEntry()
 ```
 
----
-
-## PARTEA III — IMBUNATATIRI TEHNICE
-
-### T1. Offline Queue pentru delete/edit (P3 ramane P3)
-
-**Problema:** Daca utilizatorul sterge o interventie din jurnal offline, stergerea e aplicata in localStorage dar la sync-ul urmator Redis inca are entry-ul → re-apare dupa sync.
-**Solutie:** Queue `livada-pending-ops` [{op:'delete',id:N}] salvat in localStorage, executat la reconnect inainte de sync.
-**Complexitate:** Medie | **Impact:** Calitate — sync robust fara re-aparitii dupa offline
+**Efort:** 30 min | **Impact:** Mediu — previne pierdere silentioasa de date
 
 ---
 
-### T2. Rate limit persistent Redis (din S11 planificat, P3)
+---
 
-**Problema:** Rate limiter din `_auth.js` foloseste `Map` in-memory → se pierde la cold start Vercel. La restart frecvent, rate limiting e efectiv dezactivat.
-**Solutie:** Salvare contor in Upstash Redis cu TTL 60s. Performanta acceptabila (<5ms per check).
-**Complexitate:** Medie | **Impact:** Securitate/Calitate
+# FAZA 7 — Strategic / Viitor
+
+> **Planificate pentru faze ulterioare. Nu blocheaza nimic din fazele 1-6.**
 
 ---
 
-### T3. ping.js — Adauga CORS headers
+## T1/S12. Offline Queue + Background Sync API
 
-**Fisier:** `api/ping.js`
-**Problema:** `ping.js` nu aplica CORS headers si nu raspunde la `OPTIONS`. Orice request de la alt origin (ex: diagnostic de pe localhost) va fi blocat de browser.
-
-**Fix:**
-```javascript
-import { corsHeaders, handleOptions } from './_auth.js';
-export const config = { runtime: 'edge' };
-export default async function handler(req) {
-  if (req.method === 'OPTIONS') return handleOptions(req);
-  return new Response(JSON.stringify({ ok: true, t: Date.now() }), {
-    headers: Object.assign({ 'Content-Type': 'application/json' }, corsHeaders(req))
-  });
-}
-```
-
-**Complexitate:** Mica (5 linii) | **Impact:** Corectitudine
+**Status:** 🔵 VIITOR
+**De ce:** Daca utilizatorul sterge o interventie offline → entry re-apare dupa sync. Background Sync API rezolva sincronizarea automata la reconectare.
+**Complexitate:** Medie | **ROI:** 7/10 — util daca offline editing devine frecvent
 
 ---
 
-### T4. meteo-history.js — Error detection robusta
+## T2/S14. Rate limiting Redis-backed
 
-**Fisier:** `api/meteo-history.js`
-**Problema:** `msg.includes('UPSTASH') || msg.includes('Missing')` — string-matching fragil pe mesajul de eroare.
-
-**Fix:**
-```javascript
-// Inlocuieste:
-if (msg.includes('UPSTASH') || msg.includes('Missing'))
-// Cu:
-if (err instanceof TypeError || !process.env.UPSTASH_REDIS_REST_URL)
-```
-
-**Complexitate:** Mica | **Impact:** Mentenanta
+**Status:** 🔵 VIITOR
+**De ce:** Rate limiter curent e in-memory Map — se reseteaza la cold start Vercel. La 1-3 utilizatori riscul de abuz e minim.
+**Complexitate:** Medie | **ROI:** 4/10 — nu justifica efortul la scala actuala
 
 ---
 
-### T5. Teste unitare pentru functii critice (P3 ramane P3)
+## T5/S15. Teste unitare vitest
 
-**Problema:** Zero teste. Functii critice netestata: `calculateSprayScore()`, `escapeHtml()`, `syncJournal()` merge logic, `rateLimit()`.
-**Solutie:** Extrage functiile pure in module testabile + vitest.
-**Complexitate:** Mare | **Impact:** Calitate pe termen lung
-
----
-
-### T6. Accesibilitate — `aria-label` pe bottom bar si modals
-
-**Problema:** Butoanele din bottom bar nu au `aria-label`. Screen reader-ul citeste icon SVG sau nimic.
-**Solutie:**
-```html
-<button class="bottom-btn" aria-label="Deschide calculator doze" onclick="openModal('calculator')">...</button>
-<button class="bottom-btn" aria-label="Deschide jurnal interventii" onclick="openModal('jurnal')">...</button>
-```
-**Complexitate:** Mica | **Impact:** Accesibilitate WCAG 2.1
+**Status:** 🔵 VIITOR
+**De ce:** Zero teste = risc la refactorizari. Util la urmatoarea extindere majora.
+**Complexitate:** Mare | **ROI:** 6/10 pe termen lung
 
 ---
 
-### T7. Diagnostice de imagini — Progress indicator (%)
-
-**Fisier:** `public/index.html` — `compressDiagnoseImage()` + `submitDiagnose()`
-**Problema:** La upload imagine mare, utilizatorul vede spinner static. Daca compresia dureaza 3-4s pe telefon vechi, nu exista feedback de progres.
-**Solutie:** Adauga text dinamic: "Comprima imaginea...", "Trimite la AI...", "Analizeaza...".
-
-```javascript
-async function submitDiagnose(input) {
-  // ...
-  loadingDiv.textContent = 'Comprima imaginea...';
-  var compressed = await compressDiagnoseImage(file);
-  loadingDiv.textContent = 'Trimite la AI (' + (compressed.size/1024).toFixed(0) + ' KB)...';
-  // ... fetch
-  loadingDiv.textContent = 'Analizeaza...';
-}
-```
-**Complexitate:** Mica | **Impact:** UX — feedback clar pe telefoane lente
-
 ---
 
-## SUMAR PRIORITATI v5
-
-| Prioritate | # | Nume | Complexitate | Impact | Tip |
-|---|---|---|---|---|---|
-| **P0 — REMEDIERI CRITICE** | R1 | generateReport() filtru an | Mica | Mare | Corectitudine |
-| **P0** | R2 | checkAlerts() cache offline | Mica | Mare | UX/Offline |
-| **P0** | R3 | Spray score umiditate API | Mica | Mediu | Corectitudine |
-| **P1 — IMPORTANT** | 1 | Dashboard auto-refresh | Mica | Mare | Feature |
-| **P1** | 2 | Calendar buton Azi | Mica | Mediu | UX |
-| **P1** | 3 | Recolta comparatie multi-an | Mica | Mare | Feature |
-| **P1** | 4 | Sync timestamp vizibil | Mica | Mediu | UX |
-| **P1** | 5 | authFetch retry backoff | Mica | Mare | Tehnic |
-| **P1** | 10 | printFisa popup check | Mica | Mediu | Bugfix |
-| **P1** | R4 | Meteo history risc boli | Mica | Mediu | Feature |
-| **P2 — VALOROS** | 6 | Lightbox swipe galerie | Medie | Mare | UX Mobile |
-| **P2** | 7 | Species history add button | Mica | Mediu | UX |
-| **P2** | 8 | Stats selector an + kg | Mica | Mare | Feature |
-| **P2** | 9 | Report copiere + print | Mica | Mediu | UX |
-| **P2** | II-1 | Cost Tracker | Medie | Mare | Feature |
-| **P2** | II-3 | SW update notification | Mica | Mediu | Tehnic |
-| **P2** | II-4 | Import CSV jurnal | Mica | Mediu | Feature |
-| **P2** | T3 | ping.js CORS | Mica | Corectitudine | Tehnic |
-| **P3 — STRATEGIC** | II-2 | Notificari inghet (Notification API) | Medie | Maxim | Feature |
-| **P3** | II-5 | Jurnal filtru specie | Mica | Mare | Feature |
-| **P3** | T1 | Offline queue delete/edit | Medie | Calitate | Tehnic |
-| **P3** | T2 | Rate limit Redis persistent | Medie | Securitate | Tehnic |
-| **P3** | T6 | localStorage quota monitor | Mica | Mediu | Feature |
-| **P4 — NICE-TO-HAVE** | II-6 | Keyboard shortcuts | Mica | Mic | Feature |
-| **P4** | T4 | meteo-history error detect | Mica | Mentenanta | Tehnic |
-| **P4** | T5 | Teste unitare (vitest) | Mare | Calitate | Tehnic |
-| **P4** | T6 | Aria-labels accesibilitate | Mica | Accesibilitate | Tehnic |
-| **P4** | T7 | Diagnose progress indicator | Mica | UX | Feature |
-
-**Total v5: 28 recomandari** (4 P0 remedieri + 6 P1 + 8 P2 + 5 P3 + 5 P4)
-
----
-
-## NOTE IMPLEMENTARE
-
-1. **Constrangere single-file:** Tot codul ramane inline in `public/index.html`. Exceptie: sw.js si api/*.js au fisierele lor.
-
-2. **Pattern stocare localStorage:** Toate cheile noi incep cu `livada-`. Noi chei adaugate in v5:
-   - `livada-alerts-cache` — ultima stare alerte (JSON)
-   - `livada-costs` — cost tracker (JSON array)
-   - `livada-stats-year` — ultimul an selectat in statistici
-   - `livada-last-sync` — timestamp ISO ultima sincronizare reusita
-   - `livada-last-dashboard-refresh` — timestamp ultima reimprospatare dashboard
-   - `livada-frost-notif-date` — data ultimei notificari inghet (YYYY-MM-DD)
-
-3. **Dependinte intre recomandari:**
-   - R1 (generateReport filtru an) independent, implementeaza primul
-   - R2 (checkAlerts cache) independent, 15 minute implementare
-   - R3 (spray score humidity) necesita modificarea URL-ului Open-Meteo in fetchMeteo()
-   - II-1 (Cost Tracker) necesita o sectiune noua in Plan Livada — adauga dupa stats-section
-   - II-2 (Notificari) depinde de R2 (checkAlerts reformat)
-   - 3 (Recolta multi-an) depinde de structura `renderRecoltaSummary()` refacuta
-
-4. **Ce NU se schimba:**
-   - Continutul documentatiei per specie (A-G) — 20 specii complete
-   - Structura tab-urilor (20 + azi + plan-livada)
-   - API routes si contractele lor
-   - Deploy flow (git push → auto-deploy Vercel)
-   - SW.js strategie network-first
-
-5. **Sesiuni recomandate:**
-   - **Sesiunea 15:** P0 (R1+R2+R3+R4) + P1 top (dashboard auto-refresh, Calendar Azi, recolta multi-an, authFetch retry, print fix)
-   - **Sesiunea 16:** P2 features (lightbox swipe, stats an, cost tracker, SW update notif, import CSV)
-   - **Sesiunea 17:** P3 strategic (notificari inghet, jurnal filtru specie, offline queue)
-   - **Sesiunea 18:** P4 polish + teste
-
-6. **Estimare dimensiune HTML dupa v5 complet:**
-   - P0 (4 items): ~+60 linii
-   - P1 (6 items): ~+150 linii
-   - P2 (8 items): ~+350 linii (Cost Tracker e substantial)
-   - P3+P4: ~+250 linii
-   - **Total estimat: ~11,850 linii** (vs 11,034 acum)
+*Actualizat: 2026-04-05 | Urmatoarea revizie: dupa Faza 1-3 completate*
