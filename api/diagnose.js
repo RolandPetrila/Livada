@@ -3,18 +3,16 @@ import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
 export const runtime = 'edge';
 export const config = { maxDuration: 30 };
 
-function uint8ToBase64(uint8) {
-  const CHUNK = 8192;
+// btoa-safe base64 via TextDecoder — fara uint8ToBase64 care poate da TypeError pe Edge
+function toBase64(bytes) {
   let binary = '';
-  for (let i = 0; i < uint8.length; i += CHUNK) {
-    binary += String.fromCharCode.apply(null, uint8.subarray(i, i + CHUNK));
-  }
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) binary += String.fromCharCode(bytes[i]);
   return btoa(binary);
 }
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
-
   if (req.method !== 'POST') {
     return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders(req) });
   }
@@ -29,24 +27,33 @@ export default async function handler(req) {
     return Response.json({ error: 'GOOGLE_AI_API_KEY lipsa' }, { status: 500, headers: corsHeaders(req) });
   }
 
+  let formData;
   try {
-    const formData = await req.formData();
-    const file = formData.get('image');
-    const species = (formData.get('species') || 'necunoscut').replace(/[^a-zA-Z0-9\s_-]/g, '').substring(0, 100);
+    formData = await req.formData();
+  } catch (e) {
+    return Response.json({ error: 'Eroare citire imagine. Incearca din nou.' }, { status: 400, headers: corsHeaders(req) });
+  }
 
-    if (!file) {
-      return Response.json({ error: 'Nicio imagine selectata' }, { status: 400, headers: corsHeaders(req) });
-    }
+  const file = formData.get('image');
+  const species = (formData.get('species') || 'necunoscut').replace(/[^a-zA-Z0-9\s_-]/g, '').substring(0, 100);
 
-    // Limit 4MB (Vercel body limit is 4.5MB)
-    if (file.size > 4 * 1024 * 1024) {
-      return Response.json({ error: 'Imaginea depaseste 4MB' }, { status: 400, headers: corsHeaders(req) });
-    }
+  if (!file || typeof file === 'string') {
+    return Response.json({ error: 'Nicio imagine selectata' }, { status: 400, headers: corsHeaders(req) });
+  }
+  if (file.size > 4 * 1024 * 1024) {
+    return Response.json({ error: 'Imaginea depaseste 4MB' }, { status: 400, headers: corsHeaders(req) });
+  }
 
-    const bytes = new Uint8Array(await file.arrayBuffer());
-    const base64 = uint8ToBase64(bytes);
+  let base64, mimeType;
+  try {
+    const buf = await file.arrayBuffer();
+    base64 = toBase64(new Uint8Array(buf));
+    mimeType = (file.type && file.type.startsWith('image/')) ? file.type : 'image/jpeg';
+  } catch (e) {
+    return Response.json({ error: 'Nu am putut procesa imaginea.' }, { status: 400, headers: corsHeaders(req) });
+  }
 
-    const prompt = `Esti expert agronom si fitopatolog specializat in pomicultura din zona Nadlac/Arad, Romania (climat continental, sol predominant cernoziom, pH 7-8).
+  const prompt = `Esti expert agronom si fitopatolog specializat in pomicultura din zona Nadlac/Arad, Romania (climat continental, sol predominant cernoziom, pH 7-8).
 
 Analizeaza aceasta fotografie a speciei: ${species}.
 
@@ -70,45 +77,46 @@ Raspunde STRUCTURAT in romana:
 
 Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat.`;
 
-    const controller = new AbortController();
-    const fetchTimer = setTimeout(() => controller.abort(), 25000); // Edge Runtime max 30s
-    let geminiRes;
-    try {
-      geminiRes = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: file.type || 'image/jpeg', data: base64 } }] }],
-            generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
-          }),
-          signal: controller.signal,
-        }
-      );
-      clearTimeout(fetchTimer);
-    } catch (fetchErr) {
-      clearTimeout(fetchTimer);
-      if (fetchErr.name === 'AbortError') {
-        return Response.json({ error: 'Analiza AI a durat prea mult. Incearca din nou.' }, { status: 504, headers: corsHeaders(req) });
-      }
-      throw fetchErr;
+  // Promise.race — acelasi pattern ca ask.js (functioneaza pe Edge Runtime)
+  const fetchPromise = fetch(
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
+        generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
+      }),
     }
+  );
 
-    if (!geminiRes.ok) {
-      const errBody = await geminiRes.text();
-      console.error(`Gemini API error: ${geminiRes.status} — ${errBody.substring(0, 200)}`);
-      throw new Error('Serviciul AI a returnat o eroare. Incearca din nou.');
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('GEMINI_TIMEOUT')), 22000)
+  );
+
+  let geminiRes;
+  try {
+    geminiRes = await Promise.race([fetchPromise, timeoutPromise]);
+  } catch (err) {
+    if (err.message === 'GEMINI_TIMEOUT') {
+      return Response.json({ error: 'Analiza AI a durat prea mult. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
     }
+    return Response.json({ error: 'Eroare conexiune AI. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
+  }
 
+  if (!geminiRes.ok) {
+    const errBody = await geminiRes.text().catch(() => '');
+    console.error(`Gemini error: ${geminiRes.status} — ${errBody.substring(0, 200)}`);
+    return Response.json({ error: `AI indisponibil (${geminiRes.status}). Incearca din nou.` }, { status: 503, headers: corsHeaders(req) });
+  }
+
+  try {
     const result = await geminiRes.json();
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text
-      || result.candidates?.[0]?.content?.parts?.[0]?.text
       || 'Nu am putut analiza imaginea. Incearca cu o poza mai clara.';
-
     return Response.json({ diagnosis: text }, { headers: corsHeaders(req) });
   } catch (err) {
-    console.error('API diagnose error:', err);
-    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: corsHeaders(req) });
+    console.error('Gemini parse error:', err);
+    return Response.json({ error: 'Eroare procesare raspuns AI.' }, { status: 500, headers: corsHeaders(req) });
   }
 }
