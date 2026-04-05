@@ -74,7 +74,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
   let geminiRes;
   try {
     geminiRes = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-04-17:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
