@@ -14,7 +14,7 @@ export default async function handler(req) {
     if (req.method === 'GET') {
       const rlErr = rateLimit(req);
       if (rlErr) return rlErr;
-      const url = new URL(req.url);
+      const url = new URL(req.url, 'http://localhost');
       const rawSpecies = (url.searchParams.get('species') || '').replace(/[^a-zA-Z0-9_-]/g, '');
       const prefix = rawSpecies ? `livada/photos/${rawSpecies}/` : 'livada/photos/';
 
