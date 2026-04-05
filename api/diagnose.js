@@ -1,10 +1,14 @@
-import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
+import { corsHeaders, handleOptions, checkAuth, rateLimit, checkOrigin } from './_auth.js';
 
 export const runtime = 'edge';
 export const config = { maxDuration: 30 };
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
+
+  const originErr = checkOrigin(req);
+  if (originErr) return originErr;
+
   if (req.method !== 'POST') {
     return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders(req) });
   }

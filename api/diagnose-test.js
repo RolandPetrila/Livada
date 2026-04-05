@@ -1,8 +1,13 @@
-import { corsHeaders } from './_auth.js';
+import { corsHeaders, handleOptions, checkOrigin } from './_auth.js';
 
 export const runtime = 'edge';
 
 export default async function handler(req) {
+  if (req.method === 'OPTIONS') return handleOptions(req);
+
+  const originErr = checkOrigin(req);
+  if (originErr) return originErr;
+
   const t0 = Date.now();
   const API_KEY = process.env.GOOGLE_AI_API_KEY;
 

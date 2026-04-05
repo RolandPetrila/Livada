@@ -12,6 +12,14 @@ function getHeader(req, name) {
   return req?.headers?.[name.toLowerCase()] ?? null;
 }
 
+export function checkOrigin(req) {
+  const origin = getHeader(req, 'origin') || '';
+  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+    return Response.json({ error: 'Origine nepermisa' }, { status: 403 });
+  }
+  return null;
+}
+
 export function corsHeaders(req) {
   const origin = getHeader(req, 'origin') || '';
   const allowed = ALLOWED_ORIGINS.includes(origin);

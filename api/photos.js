@@ -1,10 +1,13 @@
 import { put, list, del } from '@vercel/blob';
-import { corsHeaders, handleOptions, checkAuth, rateLimit } from './_auth.js';
+import { corsHeaders, handleOptions, checkAuth, rateLimit, checkOrigin } from './_auth.js';
 
 export const config = { maxDuration: 60 };
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
+
+  const originErr = checkOrigin(req);
+  if (originErr) return originErr;
 
   try {
     // GET — list photos (optionally filtered by species) — public, rate-limited

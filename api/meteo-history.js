@@ -1,5 +1,5 @@
 import { Redis } from '@upstash/redis';
-import { corsHeaders, handleOptions, rateLimit } from './_auth.js';
+import { corsHeaders, handleOptions, rateLimit, checkOrigin } from './_auth.js';
 
 // Edge Runtime: raspunsul e trimis imediat, fetch-ul Redis background e abandonat
 export const config = { runtime: 'edge' };
@@ -11,11 +11,21 @@ const withTimeout = (p, ms) => Promise.race([
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
+
+  const originErr = checkOrigin(req);
+  if (originErr) return originErr;
+
   const rlErr = rateLimit(req);
   if (rlErr) return rlErr;
 
+  let kv;
   try {
-    const kv = Redis.fromEnv();
+    kv = Redis.fromEnv();
+  } catch {
+    return Response.json({ error: 'KV nu este configurat' }, { status: 503, headers: corsHeaders(req) });
+  }
+
+  try {
     const url = new URL(req.url);
     const days = Math.min(Math.max(parseInt(url.searchParams.get('days') || '30', 10) || 30, 1), 365);
 
@@ -28,9 +38,6 @@ export default async function handler(req) {
 
     return Response.json(filtered, { headers: { ...corsHeaders(req), 'Cache-Control': 'public, max-age=1800' } });
   } catch (err) {
-    if (err.message?.includes('UPSTASH') || err.message?.includes('Missing')) {
-      return Response.json({ error: 'KV nu este configurat' }, { status: 503, headers: corsHeaders(req) });
-    }
     console.error('meteo-history error:', err);
     return Response.json({ error: 'Eroare interna server' }, { status: 500, headers: corsHeaders(req) });
   }

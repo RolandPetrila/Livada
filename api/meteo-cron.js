@@ -19,11 +19,12 @@ const WMO_CODES = {
 export default async function handler(req) {
   // Verificare CRON_SECRET — previne triggerare manuala neautorizata
   const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret) {
-    const auth = req.headers?.get?.('authorization') || req.headers?.['authorization'] || '';
-    if (auth !== `Bearer ${cronSecret}`) {
-      return Response.json({ error: 'Neautorizat' }, { status: 401 });
-    }
+  if (!cronSecret) {
+    return Response.json({ error: 'CRON_SECRET neconfigurat' }, { status: 500 });
+  }
+  const auth = req.headers?.get?.('authorization') || req.headers?.['authorization'] || '';
+  if (auth !== `Bearer ${cronSecret}`) {
+    return Response.json({ error: 'Neautorizat' }, { status: 401 });
   }
 
   let kv;
