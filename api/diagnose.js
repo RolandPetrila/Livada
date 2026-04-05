@@ -69,29 +69,29 @@ Raspunde STRUCTURAT in romana:
 
 Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat.`;
 
-  const fetchPromise = fetch(
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
-        generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
-      }),
-    }
-  );
-
-  const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('GEMINI_TIMEOUT')), 22000)
-  );
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 22000);
 
   let geminiRes;
   try {
-    geminiRes = await Promise.race([fetchPromise, timeoutPromise]);
+    geminiRes = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-04-17:generateContent',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
+          generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
+        }),
+        signal: ctrl.signal,
+      }
+    );
+    clearTimeout(timer);
     console.log(`[diagnose] gemini ${geminiRes.status} t+${Date.now()-t0}ms`);
   } catch (err) {
-    console.error(`[diagnose] fetch err: ${err.message} t+${Date.now()-t0}ms`);
-    if (err.message === 'GEMINI_TIMEOUT') {
+    clearTimeout(timer);
+    console.error(`[diagnose] fetch err: ${err.name} ${err.message} t+${Date.now()-t0}ms`);
+    if (err.name === 'AbortError') {
       return Response.json({ error: 'Analiza AI a durat prea mult. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
     }
     return Response.json({ error: 'Eroare conexiune AI. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });

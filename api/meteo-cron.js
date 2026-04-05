@@ -1,5 +1,7 @@
 import { Redis } from '@upstash/redis';
 
+export const config = { runtime: 'edge' };
+
 const LAT = 46.17;
 const LON = 20.75;
 
