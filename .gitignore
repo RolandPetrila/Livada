@@ -18,3 +18,5 @@ Livada_Mea_Dashboard.html
 tools/html_output/
 
 .env*.local
+*.env
+CheckPoint/
