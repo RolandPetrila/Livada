@@ -4,7 +4,7 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete + Runda 9 (N8-N17) | **HTML:** ~12,550 linii | **API:** 11 routes
+**Status sesiuni:** S1-S17 complete + Runda 9+10 (N8-N17, II1/II2/II4, T9, S10) | **HTML:** ~13,150 linii | **API:** 11 routes
 **Ultima actualizare:** 2026-04-07
 
 ## Arhitectura
@@ -90,4 +90,4 @@ H. Sfaturi Practice pentru Incepatori (adaugat S15)
 
 ## Imbunatatiri pendinte
 Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI.md` — checklist complet pe faze.
-**Faze 1-6 complete + Runda 9 (N8-N17) implementate (130+ items total).** Ramase: S10 (photos Edge), II1 (Cost Tracker), II2 (Push Notifications), II4 (Import CSV), T9 (PNG icons), Faza 7 (strategic).
+**Faze 1-6 + Runda 9+10 implementate (140+ items total).** Ramase: Faza 7 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere).
