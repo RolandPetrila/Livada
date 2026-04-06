@@ -653,6 +653,28 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
 
       <hr style="border:none;border-top:1px solid var(--border);margin:0 0 24px;">
 
+      <!-- IDENTIFICARE SPECIE (Pl@ntNet) -->
+      <div style="margin-bottom:24px;">
+        <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:8px;color:var(--text);">&#127807; Identific&#259; specia</h3>
+        <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:10px;">Nu &#351;tii ce plant&#259; e? Pl@ntNet recunoa&#351;te 30.000+ specii dintr-o fotografie.</p>
+        <div style="display:flex;gap:10px;margin-bottom:4px;">
+          <button onclick="document.getElementById('aiIdentCameraInput').click()"
+            style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;background:var(--bg-surface);border:2px dashed var(--accent);border-radius:12px;cursor:pointer;font-size:0.82rem;color:var(--text);min-height:80px;">
+            <span style="font-size:1.6rem;">&#128247;</span><span>Fac o poz&#259;</span>
+          </button>
+          <button onclick="document.getElementById('aiIdentFileInput').click()"
+            style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;background:var(--bg-surface);border:2px dashed var(--border);border-radius:12px;cursor:pointer;font-size:0.82rem;color:var(--text);min-height:80px;">
+            <span style="font-size:1.6rem;">&#128194;</span><span>Alege din galerie</span>
+          </button>
+        </div>
+        <input type="file" id="aiIdentCameraInput" accept="image/*" capture="environment" style="display:none" onchange="submitAiIdent(this)">
+        <input type="file" id="aiIdentFileInput" accept="image/*" style="display:none" onchange="submitAiIdent(this)">
+        <div id="aiIdentLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Pl@ntNet identific&#259;...</div>
+        <div id="aiIdentResult" style="display:none;margin-top:10px;"></div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:0 0 24px;">
+
       <!-- DIAGNOSTIC FOTO GENERAL -->
       <div>
         <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:8px;color:var(--text);">&#128248; Diagnostic foto</h3>
@@ -10471,6 +10493,52 @@ async function submitAsk() {
 }
 
 // ====== AI GENERAL TAB ======
+async function submitAiIdent(input) {
+  var file = input.files[0]; if (!file) return;
+  document.getElementById('aiIdentLoading').style.display = 'block';
+  document.getElementById('aiIdentResult').style.display = 'none';
+  try {
+    var result = await compressDiagnoseImage(file);
+    var res = await authFetch('/api/identify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ base64: result.base64, mimeType: 'image/jpeg', organ: 'auto' })
+    }, 30000);
+    var data = await res.json();
+    document.getElementById('aiIdentLoading').style.display = 'none';
+    var el = document.getElementById('aiIdentResult');
+    if (!res.ok || data.error) {
+      el.innerHTML = '<p style="color:var(--error);">' + (data.error || 'Eroare identificare.') + '</p>';
+    } else {
+      var html = '<div style="background:var(--bg-surface);border-radius:10px;padding:12px;border:1px solid var(--border);">';
+      html += '<p style="font-size:0.78rem;color:var(--text-dim);margin:0 0 8px;">Rezultate Pl@ntNet:</p>';
+      (data.results || []).forEach(function(r, i) {
+        var names = r.commonNames && r.commonNames.length ? ' (' + r.commonNames.join(', ') + ')' : '';
+        html += '<div style="' + (i > 0 ? 'margin-top:8px;padding-top:8px;border-top:1px solid var(--border);' : '') + '">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+        html += '<span style="font-weight:700;font-size:0.88rem;font-style:italic;">' + r.scientificName + '</span>';
+        html += '<span style="font-size:0.8rem;color:var(--accent);font-weight:700;">' + r.score + '%</span>';
+        html += '</div>';
+        if (names) html += '<div style="font-size:0.8rem;color:var(--text-dim);">' + names + '</div>';
+        if (r.family) html += '<div style="font-size:0.75rem;color:var(--text-dim);">Familia: ' + r.family + '</div>';
+        // Buton: copiaza numele in campul de specie pentru diagnostic
+        html += '<button onclick="document.getElementById(\'aiGenDiagSpecies\').value=\'' + (r.commonNames[0] || r.scientificName).replace(/'/g, '') + '\';this.textContent=\'&#10003; Copiat\';" ';
+        html += 'style="margin-top:6px;padding:4px 10px;font-size:0.75rem;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;">Foloseste la diagnostic</button>';
+        html += '</div>';
+      });
+      html += '</div>';
+      el.innerHTML = html;
+    }
+    el.style.display = 'block';
+  } catch(e) {
+    document.getElementById('aiIdentLoading').style.display = 'none';
+    var el2 = document.getElementById('aiIdentResult');
+    el2.innerHTML = '<p style="color:var(--error);">' + (e.name === 'AbortError' ? 'Prea lent. Incearca din nou.' : 'Eroare: ' + e.message) + '</p>';
+    el2.style.display = 'block';
+  }
+  input.value = '';
+}
+
 async function submitAiGenAsk() {
   var question = document.getElementById('aiGenAskInput').value.trim();
   if (!question) return;
