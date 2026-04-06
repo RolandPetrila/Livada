@@ -618,11 +618,81 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
     <div class="tab" data-tab="alun"><span class="tab-icon">&#127792;</span>Alun</div>
     <div class="tab" data-tab="rodiu"><span class="tab-icon">&#127807;</span>Rodiu</div>
     <div class="tab" data-tab="kaki"><span class="tab-icon">&#127818;</span>Kaki</div>
+
+    <span class="tab-sep">Asistent</span>
+    <div class="tab" data-tab="ai-general"><span class="tab-icon">&#129302;</span>AI</div>
   </div>
 </nav>
 
 <!-- ====== MAIN CONTENT ====== -->
 <main class="content" id="content">
+
+<!-- ==================== TAB: AI GENERAL ==================== -->
+<div class="tab-content" id="ai-general">
+  <div class="section">
+    <h2 class="section-title" style="cursor:default;">&#129302; Asistent AI General</h2>
+    <div class="section-body">
+
+      <!-- CHAT GENERAL -->
+      <div style="margin-bottom:24px;">
+        <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:8px;color:var(--text);">&#128172; &#206;ntreab&#259; orice</h3>
+        <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:10px;">Pune &#238;ntreb&#259;ri despre orice specie, problem&#259; sau tehnic&#259; &#8212; f&#259;r&#259; restric&#539;ii de documenta&#539;ie.</p>
+        <div style="margin-bottom:8px;">
+          <input type="text" id="aiGenSpeciesInput" placeholder="Specie (op&#539;ional) &#8212; ex: C&#259;p&#351;un, Nuc, Lav&#259;nd&#259;, Tomate..."
+            style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);font-size:0.85rem;box-sizing:border-box;">
+        </div>
+        <div class="textarea-wrap">
+          <textarea id="aiGenAskInput" rows="3" placeholder="Ex: Cum tratez rugina la nuc? Ce &#238;ngr&#259;&#351;&#259;m&#226;nte folosesc prim&#259;vara? C&#226;nd se planteaz&#259; c&#259;p&#351;unii?" style="padding-bottom:32px;"></textarea>
+          <button class="textarea-copy-btn" onclick="copyTextEl('aiGenAskInput')" title="Copiaz&#259;">&#128203;</button>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="submitAiGenAsk()">Trimite &#238;ntrebarea</button>
+        <div id="aiGenAskLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Se genereaz&#259; r&#259;spunsul...</div>
+        <div id="aiGenAskResult" class="ai-res" style="display:none;"></div>
+        <div id="aiGenAskCopyRow" style="display:none;margin-top:8px;text-align:right;">
+          <button class="copy-btn" onclick="copyTextEl('aiGenAskResult')">&#128203; Copiaz&#259; r&#259;spunsul</button>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:0 0 24px;">
+
+      <!-- DIAGNOSTIC FOTO GENERAL -->
+      <div>
+        <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:8px;color:var(--text);">&#128248; Diagnostic foto</h3>
+        <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:10px;">Fotografiaz&#259; orice plant&#259; sau simptom &#8212; inclusiv specii care nu sunt &#238;n documenta&#539;ia livezii.</p>
+        <div style="margin-bottom:8px;">
+          <input type="text" id="aiGenDiagSpecies" placeholder="Specie (op&#539;ional) &#8212; ex: C&#259;p&#351;un, Nuc, Ro&#351;ie, Floarea-soarelui..."
+            style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);font-size:0.85rem;box-sizing:border-box;">
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:4px;">
+          <button onclick="document.getElementById('aiGenCameraInput').click()"
+            style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;background:var(--bg-surface);border:2px dashed var(--accent);border-radius:12px;cursor:pointer;font-size:0.82rem;color:var(--text);min-height:80px;">
+            <span style="font-size:1.6rem;">&#128247;</span>
+            <span>Fac o poz&#259;</span>
+          </button>
+          <button onclick="document.getElementById('aiGenFileInput').click()"
+            style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;background:var(--bg-surface);border:2px dashed var(--border);border-radius:12px;cursor:pointer;font-size:0.82rem;color:var(--text);min-height:80px;">
+            <span style="font-size:1.6rem;">&#128194;</span>
+            <span>Alege din galerie</span>
+          </button>
+        </div>
+        <input type="file" id="aiGenCameraInput" accept="image/*" capture="environment" style="display:none" onchange="submitAiGenDiagnose(this)">
+        <input type="file" id="aiGenFileInput" accept="image/*" style="display:none" onchange="submitAiGenDiagnose(this)">
+        <div id="aiGenDiagPreview" style="display:none;margin:10px 0;">
+          <img id="aiGenDiagImg" style="width:100%;max-height:250px;object-fit:contain;border-radius:8px;">
+        </div>
+        <div id="aiGenDiagLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Gemini analizeaz&#259; imaginea...</div>
+        <div id="aiGenDiagResult" class="ai-res" style="display:none;"></div>
+        <div id="aiGenDiagCopyRow" style="display:none;margin-top:8px;text-align:right;">
+          <button class="copy-btn" onclick="copyTextEl('aiGenDiagResult')">&#128203; Copiaz&#259; diagnosticul</button>
+        </div>
+      </div>
+
+      <p style="margin-top:20px;font-size:0.72rem;color:var(--text-dim);text-align:center;">
+        R&#259;spunsurile sunt generate de AI &#351;i pot con&#539;ine imprecizii. Consult&#259; un specialist agronom.
+      </p>
+    </div>
+  </div>
+</div>
 
 <!-- ==================== TAB: PLAN LIVADA ==================== -->
 <div class="tab-content active" id="azi">
@@ -10402,6 +10472,89 @@ async function submitAsk() {
   }
 }
 
+// ====== AI GENERAL TAB ======
+async function submitAiGenAsk() {
+  var question = document.getElementById('aiGenAskInput').value.trim();
+  if (!question) return;
+  if (!navigator.onLine) { alert('Offline! Necesit\u0103 conexiune la internet.'); return; }
+  var species = document.getElementById('aiGenSpeciesInput').value.trim() || 'general';
+  document.getElementById('aiGenAskLoading').style.display = 'block';
+  document.getElementById('aiGenAskResult').style.display = 'none';
+  document.getElementById('aiGenAskCopyRow').style.display = 'none';
+  try {
+    var res = await authFetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: question, species: species, context: '' })
+    }, 65000);
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Eroare server (' + res.status + ')');
+    document.getElementById('aiGenAskLoading').style.display = 'none';
+    var r = document.getElementById('aiGenAskResult');
+    if (data.error) { r.textContent = 'Eroare: ' + data.error; showAiError(data.error); }
+    else {
+      if (data._fallback) showAiFallback(data._fallbackModel || 'llama-3.1-8b-instant');
+      r.innerHTML = sanitizeAI(data.answer || '');
+    }
+    r.style.display = 'block';
+    document.getElementById('aiGenAskCopyRow').style.display = 'block';
+  } catch(e) {
+    document.getElementById('aiGenAskLoading').style.display = 'none';
+    var r2 = document.getElementById('aiGenAskResult');
+    var msg = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : ('Eroare: ' + e.message);
+    r2.textContent = msg; showAiError(msg);
+    r2.style.display = 'block';
+    document.getElementById('aiGenAskCopyRow').style.display = 'block';
+  }
+}
+
+async function submitAiGenDiagnose(input) {
+  var file = input.files[0]; if (!file) return;
+  var species = (document.getElementById('aiGenDiagSpecies').value.trim() || 'necunoscut').replace(/[^a-zA-Z\u0103\u00E2\u00EE\u015F\u0163\u0102\u00C2\u00CE\u015E\u01620-9\s_-]/g, '').substring(0, 100);
+  document.getElementById('aiGenDiagLoading').style.display = 'block';
+  document.getElementById('aiGenDiagResult').style.display = 'none';
+  document.getElementById('aiGenDiagCopyRow').style.display = 'none';
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('aiGenDiagImg').src = e.target.result;
+    document.getElementById('aiGenDiagPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+
+  try {
+    var result = await compressDiagnoseImage(file);
+    var uploadSize = result.blob.size;
+    var res = await authFetch('/api/diagnose', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ base64: result.base64, mimeType: 'image/jpeg', species: species })
+    }, 65000);
+    var rawText = await res.text();
+    var data;
+    try { data = JSON.parse(rawText); } catch(_) { throw new Error('Eroare server (' + res.status + ')'); }
+    if (!res.ok) throw new Error(data.error || 'Eroare server (' + res.status + ')');
+    document.getElementById('aiGenDiagLoading').style.display = 'none';
+    var resultEl = document.getElementById('aiGenDiagResult');
+    var prefix = '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poz\u0103 comprimat\u0103: ' + (uploadSize/1024).toFixed(0) + 'KB (' + result.px + ')</p>';
+    if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; showAiError(data.error); }
+    else {
+      if (data._fallback) showAiFallback(data._fallbackModel || 'gemini-2.5-flash-lite');
+      resultEl.innerHTML = prefix + sanitizeAI(data.diagnosis || '');
+    }
+    resultEl.style.display = 'block';
+    document.getElementById('aiGenDiagCopyRow').style.display = 'block';
+  } catch(e) {
+    document.getElementById('aiGenDiagLoading').style.display = 'none';
+    var r = document.getElementById('aiGenDiagResult');
+    var msg = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
+    r.textContent = msg; showAiError(msg);
+    r.style.display = 'block';
+    document.getElementById('aiGenDiagCopyRow').style.display = 'block';
+  }
+  input.value = '';
+}
+
 // ====== TOAST NOTIFICATIONS ======
 function showToast(msg, type) {
   var container = document.getElementById('livada-toast-container');
@@ -11247,6 +11400,10 @@ function injectSeasonalTip(tabId, container) {
     'j': function() { openModal('jurnal'); },
     'c': function() { openModal('calendar'); },
     'm': function() { openModal('meteo'); },
+    'a': function() {
+      var tab = document.querySelector('[data-tab="ai-general"]');
+      if (tab) tab.click();
+    },
     'k': function() {
       // Deschide prima sectiune vizibila de specii sau tab-ul azi
       var tab = document.querySelector('[data-tab="azi"]');
@@ -11279,6 +11436,7 @@ function injectSeasonalTip(tabId, container) {
       '<tr><td style="padding:4px 0;color:var(--text-dim);width:40px;"><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">J</kbd></td><td>Jurnal</td></tr>' +
       '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">C</kbd></td><td>Calendar tratamente</td></tr>' +
       '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">M</kbd></td><td>Meteo</td></tr>' +
+      '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">A</kbd></td><td>Tab AI General</td></tr>' +
       '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">K</kbd></td><td>Tab Azi</td></tr>' +
       '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">/</kbd></td><td>Cauta in jurnal</td></tr>' +
       '<tr><td><kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;">Esc</kbd></td><td>Inchide</td></tr>' +
