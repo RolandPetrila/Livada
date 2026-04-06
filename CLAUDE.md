@@ -32,6 +32,7 @@ Roland.md        — Cerinte originale Roland (C1-C5, toate implementate)
 - **Zero costuri**: toate serviciile pe plan gratuit
 - **Single HTML**: tot continutul inline, fara dependente externe (exceptie: Google Fonts)
 - **Edge Runtime OBLIGATORIU** pe orice API route cu I/O extern (Vercel Hobby = 10s limit Node.js)
+- **EXCEPTIE Edge Runtime**: `photos.js` ramane Node.js — `@vercel/blob` foloseste `undici` intern, incompatibil cu V8 isolate. Nu schimba la Edge!
 
 ## Conventii cod
 - HTML semantic: h2 titluri sectiune, h3 subsectiuni
@@ -61,7 +62,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | journal.js | Edge | 5s | Redis |
 | meteo-cron.js | Edge | 25s | Open-Meteo + Redis |
 | meteo-history.js | Edge | 5s | Redis |
-| photos.js | Edge | 28s | Vercel Blob |
+| photos.js | Node.js | 10s | Vercel Blob (ATENTIE: @vercel/blob incompatibil cu Edge — foloseste undici) |
 | ping.js | Edge | — | — |
 | report.js | Edge | 25s | Redis + Groq |
 | _auth.js | Utility | — | — |
