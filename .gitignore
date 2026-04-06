@@ -20,3 +20,5 @@ tools/html_output/
 .env*.local
 *.env
 CheckPoint/
+!public/icon-192.png
+!public/icon-512.png

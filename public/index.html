@@ -755,7 +755,7 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
 <div class="section">
   <h2 class="section-title" style="cursor:default;">&#9888;&#65039; Alerte active</h2>
   <div class="section-body" id="alerteAzi">
-        <div style="text-align:right;margin-bottom:8px;"><button id="notifToggleBtn" onclick="requestLivadaNotifPermission()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:0.75rem;cursor:pointer;color:var(--text-dim);">?? Activeaza notificari</button></div>
+        <div style="text-align:right;margin-bottom:8px;"><button id="notifToggleBtn" onclick="requestLivadaNotifPermission()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:0.75rem;cursor:pointer;color:var(--text-dim);">🔔 Activeaza notificari</button></div>
     <p style="color:var(--text-dim);">Se verific&#259;...</p>
   </div>
 </div>
@@ -11325,10 +11325,10 @@ function updateNotifBtn() {
   var perm = ('Notification' in window) ? Notification.permission : 'unsupported';
   if (perm === 'unsupported') { btn.style.display = 'none'; return; }
   if (perm === 'granted') {
-    btn.textContent = isDisabled ? '?? Activeaza notificari' : '?? Dezactiveaza notificari';
+    btn.textContent = isDisabled ? '🔔 Activeaza notificari' : '🔕 Dezactiveaza notificari';
     btn.onclick = toggleLivadaNotif;
   } else {
-    btn.textContent = '?? Activeaza notificari alerte';
+    btn.textContent = '🔔 Activeaza notificari alerte';
     btn.onclick = requestLivadaNotifPermission;
   }
 }
@@ -11677,7 +11677,7 @@ async function initDashboardAzi() {
           '<div style="font-weight:700;font-size:0.82rem;color:' + r.levelColor + ';">' +
           r.label + ' — RISC ' + r.level + '</div>' +
           '<div style="font-size:0.78rem;color:var(--text-dim);">Specii: ' + r.species + '</div>' +
-          '<div style="font-size:0.78rem;">?? ' + r.treatment + '</div>' +
+          '<div style="font-size:0.78rem;">💊 ' + r.treatment + '</div>' +
           '</div>';
       });
       riskHtml += '</div>';
@@ -12185,18 +12185,18 @@ function injectSeasonalTip(tabId, container) {
 // ====== N8: GDD CALCULATOR — Caldura acumulata + predictie fenologica ======
 var GDD_BASE_TEMP = 10;
 var GDD_MILESTONES = {
-  cais:[{gdd:80,label:'Dezmugurit',icon:'??'},{gdd:120,label:'Inflorire',icon:'??'},{gdd:170,label:'Cadere petale',icon:'??'},{gdd:230,label:'Legare fructe',icon:'??'},{gdd:700,label:'Recolta posibila',icon:'??'}],
-  piersic:[{gdd:100,label:'Dezmugurit',icon:'??'},{gdd:150,label:'Inflorire',icon:'??'},{gdd:210,label:'Cadere petale',icon:'??'},{gdd:280,label:'Legare fructe',icon:'??'},{gdd:1050,label:'Recolta posibila',icon:'??'}],
-  cires:[{gdd:70,label:'Dezmugurit',icon:'??'},{gdd:100,label:'Inflorire',icon:'??'},{gdd:150,label:'Cadere petale',icon:'??'},{gdd:600,label:'Recolta posibila',icon:'??'}],
-  visin:[{gdd:80,label:'Dezmugurit',icon:'??'},{gdd:120,label:'Inflorire',icon:'??'},{gdd:700,label:'Recolta posibila',icon:'??'}],
-  'par-clapp':[{gdd:130,label:'Dezmugurit',icon:'??'},{gdd:180,label:'Inflorire',icon:'??'},{gdd:250,label:'Legare fructe',icon:'??'},{gdd:1100,label:'Recolta posibila',icon:'??'}],
-  'par-williams':[{gdd:130,label:'Dezmugurit',icon:'??'},{gdd:185,label:'Inflorire',icon:'??'},{gdd:1150,label:'Recolta posibila',icon:'??'}],
-  'par-hosui':[{gdd:140,label:'Dezmugurit',icon:'??'},{gdd:190,label:'Inflorire',icon:'??'},{gdd:1200,label:'Recolta posibila',icon:'??'}],
-  'par-napoca':[{gdd:135,label:'Dezmugurit',icon:'??'},{gdd:185,label:'Inflorire',icon:'??'},{gdd:1250,label:'Recolta posibila',icon:'??'}],
-  'mar-florina':[{gdd:150,label:'Dezmugurit',icon:'??'},{gdd:200,label:'Inflorire',icon:'??'},{gdd:270,label:'Legare fructe',icon:'??'},{gdd:1300,label:'Recolta posibila',icon:'??'}],
-  'mar-golden':[{gdd:145,label:'Dezmugurit',icon:'??'},{gdd:195,label:'Inflorire',icon:'??'},{gdd:1250,label:'Recolta posibila',icon:'??'}],
-  prun:[{gdd:100,label:'Dezmugurit',icon:'??'},{gdd:140,label:'Inflorire',icon:'??'},{gdd:900,label:'Recolta posibila',icon:'??'}],
-  migdal:[{gdd:60,label:'Dezmugurit (TIMPURIU!)',icon:'⚠️'},{gdd:90,label:'Inflorire',icon:'??'},{gdd:800,label:'Recolta posibila',icon:'??'}],
+  cais:[{gdd:80,label:'Dezmugurit',icon:'🌱'},{gdd:120,label:'Inflorire',icon:'🌸'},{gdd:170,label:'Cadere petale',icon:'🌿'},{gdd:230,label:'Legare fructe',icon:'🍏'},{gdd:700,label:'Recolta posibila',icon:'📦'}],
+  piersic:[{gdd:100,label:'Dezmugurit',icon:'🌱'},{gdd:150,label:'Inflorire',icon:'🌸'},{gdd:210,label:'Cadere petale',icon:'🌿'},{gdd:280,label:'Legare fructe',icon:'🍏'},{gdd:1050,label:'Recolta posibila',icon:'📦'}],
+  cires:[{gdd:70,label:'Dezmugurit',icon:'🌱'},{gdd:100,label:'Inflorire',icon:'🌸'},{gdd:150,label:'Cadere petale',icon:'🌿'},{gdd:600,label:'Recolta posibila',icon:'📦'}],
+  visin:[{gdd:80,label:'Dezmugurit',icon:'🌱'},{gdd:120,label:'Inflorire',icon:'🌸'},{gdd:700,label:'Recolta posibila',icon:'📦'}],
+  'par-clapp':[{gdd:130,label:'Dezmugurit',icon:'🌱'},{gdd:180,label:'Inflorire',icon:'🌸'},{gdd:250,label:'Legare fructe',icon:'🍏'},{gdd:1100,label:'Recolta posibila',icon:'📦'}],
+  'par-williams':[{gdd:130,label:'Dezmugurit',icon:'🌱'},{gdd:185,label:'Inflorire',icon:'🌸'},{gdd:1150,label:'Recolta posibila',icon:'📦'}],
+  'par-hosui':[{gdd:140,label:'Dezmugurit',icon:'🌱'},{gdd:190,label:'Inflorire',icon:'🌸'},{gdd:1200,label:'Recolta posibila',icon:'📦'}],
+  'par-napoca':[{gdd:135,label:'Dezmugurit',icon:'🌱'},{gdd:185,label:'Inflorire',icon:'🌸'},{gdd:1250,label:'Recolta posibila',icon:'📦'}],
+  'mar-florina':[{gdd:150,label:'Dezmugurit',icon:'🌱'},{gdd:200,label:'Inflorire',icon:'🌸'},{gdd:270,label:'Legare fructe',icon:'🍏'},{gdd:1300,label:'Recolta posibila',icon:'📦'}],
+  'mar-golden':[{gdd:145,label:'Dezmugurit',icon:'🌱'},{gdd:195,label:'Inflorire',icon:'🌸'},{gdd:1250,label:'Recolta posibila',icon:'📦'}],
+  prun:[{gdd:100,label:'Dezmugurit',icon:'🌱'},{gdd:140,label:'Inflorire',icon:'🌸'},{gdd:900,label:'Recolta posibila',icon:'📦'}],
+  migdal:[{gdd:60,label:'Dezmugurit (TIMPURIU!)',icon:'⚠️'},{gdd:90,label:'Inflorire',icon:'🌸'},{gdd:800,label:'Recolta posibila',icon:'📦'}],
 };
 
 async function loadMeteoHistoryForWidgets() {
@@ -12252,7 +12252,7 @@ function renderGDDWidget(containerEl, meteoHistory) {
   el.setAttribute('title', 'GDD acumulate din 1 martie — click pentru detalii');
   el.innerHTML =
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
-    '<strong>??️ Căldură acumulată (GDD)</strong>' +
+    '<strong>🌡️ Căldură acumulată (GDD)</strong>' +
     '<span style="font-size:1.05rem;font-weight:700;color:var(--accent);">' + Math.round(gdd) + ' GDD</span>' +
     '</div>' +
     (currentStage ? '<div style="font-size:0.82rem;margin-bottom:3px;">' + currentStage.icon + ' ' + currentStage.label + '</div>' : '') +
@@ -12319,7 +12319,7 @@ function renderChillHoursWidget(containerEl, meteoHistory) {
     var id = entry[0], req = entry[1];
     var pct = Math.min(100, Math.round((chillH / req.min) * 100));
     var barColor = pct >= 100 ? 'var(--accent)' : pct >= 70 ? 'var(--warning)' : 'var(--danger)';
-    var status = pct >= 100 ? '✅' : pct >= 70 ? '??' : '??';
+    var status = pct >= 100 ? '✅' : pct >= 70 ? '⚠️' : '❌';
     html += '<div style="margin:4px 0;">' +
       '<div style="display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:2px;">' +
       '<span>' + status + ' ' + req.label + '</span><span style="color:var(--text-dim);">' + pct + '% din ' + req.min + 'h</span></div>' +
@@ -12364,21 +12364,21 @@ async function openWeeklyPlanner() {
       var jEntries = journal.filter(function(e) { return e.date === dateStr; });
       var isToday = dateStr === today;
       var dateObj = new Date(dateStr + 'T12:00:00');
-      var dayName = ['??Du','??Lu','??Ma','??Mi','??Jo','??Vi','??Sâ'][dateObj.getDay()];
+      var dayName = ['Du','Lu','Ma','Mi','Jo','Vi','Sâ'][dateObj.getDay()];
       var dayNum = dateObj.getDate() + '.' + String(dateObj.getMonth() + 1).padStart(2, '0');
       html += '<div style="padding:9px 0;border-bottom:1px solid var(--border);' +
         (isToday ? 'background:rgba(106,191,105,0.06);padding:9px 8px;margin:1px 0;border-radius:8px;' : '') + '">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">' +
         '<div><span style="font-size:0.78rem;">' + dayName + '</span> ' +
-        '<strong style="' + (isToday ? 'color:var(--accent-glow)' : '') + '">' + (isToday ? '?? ' : '') + dayNum + '</strong>' +
+        '<strong style="' + (isToday ? 'color:var(--accent-glow)' : '') + '">' + (isToday ? '📍 ' : '') + dayNum + '</strong>' +
         '<span style="font-size:0.72rem;color:var(--text-dim);margin-left:5px;">' +
         Math.round(tmin) + '°/' + Math.round(tmax) + '°' +
-        (rain > 0 ? ' ?? ' + Math.round(rain * 10) / 10 + 'mm' : '') +
-        ' ?? ' + Math.round(wind) + 'km/h</span></div>' +
+        (rain > 0 ? ' 🌧️ ' + Math.round(rain * 10) / 10 + 'mm' : '') +
+        ' 💨 ' + Math.round(wind) + 'km/h</span></div>' +
         '<span style="font-size:0.82rem;font-weight:700;' + scoreColor + '">Spray ' + score + '%</span>' +
         '</div>';
       if (jEntries.length > 0) {
-        html += '<div style="font-size:0.75rem;color:var(--accent);margin-top:2px;">?? ' +
+        html += '<div style="font-size:0.75rem;color:var(--accent);margin-top:2px;">📋 ' +
           jEntries.map(function(e) {
             return '[' + e.type + '] ' + (e.note ? e.note.substring(0, 40) + (e.note.length > 40 ? '…' : '') : '');
           }).join(' | ') + '</div>';
@@ -12448,18 +12448,18 @@ function startVoiceInput(targetId) {
   _voiceRec.lang = 'ro-RO';
   _voiceRec.interimResults = false;
   _voiceRec.maxAlternatives = 1;
-  if (btn) { btn.textContent = '??️ Ascult…'; btn.style.background = 'rgba(212,83,74,0.3)'; }
+  if (btn) { btn.textContent = '🎤 Ascult…'; btn.style.background = 'rgba(212,83,74,0.3)'; }
   _voiceRec.onresult = function(e) {
     var text = e.results[0][0].transcript;
     inputEl.value = (inputEl.value ? inputEl.value.trim() + '. ' : '') + text.charAt(0).toUpperCase() + text.slice(1);
   };
   _voiceRec.onend = function() {
     _voiceRec = null;
-    if (btn) { btn.textContent = '??'; btn.style.background = ''; }
+    if (btn) { btn.textContent = '🎤'; btn.style.background = ''; }
   };
   _voiceRec.onerror = function(e) {
     _voiceRec = null;
-    if (btn) { btn.textContent = '??'; btn.style.background = ''; }
+    if (btn) { btn.textContent = '🎤'; btn.style.background = ''; }
     var msgs = {'not-allowed':'Permisiune microfon refuzată.','no-speech':'Nicio voce detectată.','network':'Eroare rețea.'};
     showToast(msgs[e.error] || 'Eroare dictare: ' + e.error, 'error');
   };
@@ -12502,7 +12502,7 @@ function renderSpeciesComparator() {
     var hasBoth = tr1.length > 0 && tr2.length > 0;
     var bg = m === currentMonth ? 'background:rgba(106,191,105,0.08);' : m % 2 === 0 ? 'background:var(--bg-surface);' : '';
     html += '<tr style="' + bg + (m === currentMonth ? 'font-weight:700;' : '') + '">' +
-      '<td style="padding:5px 8px;border:1px solid var(--border);">' + (m === currentMonth ? '?? ' : '') + MONTHS[m] + '</td>' +
+      '<td style="padding:5px 8px;border:1px solid var(--border);">' + (m === currentMonth ? '📍 ' : '') + MONTHS[m] + '</td>' +
       '<td style="padding:5px 8px;border:1px solid var(--border);color:var(--accent-dim);font-size:0.75rem;">' + (tr1.length ? tr1.join('<br>') : '<span style="opacity:0.3">—</span>') + '</td>' +
       '<td style="padding:5px 8px;border:1px solid var(--border);color:var(--info);font-size:0.75rem;">' + (tr2.length ? tr2.join('<br>') : '<span style="opacity:0.3">—</span>') + '</td>' +
       '<td style="padding:5px 8px;border:1px solid var(--border);text-align:center;">' + (hasBoth ? '<span style="color:var(--accent);">✓</span>' : '') + '</td></tr>';
@@ -12512,7 +12512,7 @@ function renderSpeciesComparator() {
 }
 
 // ====== N14: HARTA LIVADA VIZUALA ======
-var TREE_ICONS = {cais:'??',piersic:'??',cires:'??',visin:'??',prun:'??','mar-florina':'??','mar-golden':'??','par-clapp':'??','par-williams':'??','par-hosui':'??','par-napoca':'??',migdal:'??',rodiu:'??',kaki:'??',afin:'??',zmeur:'??','zmeur-galben':'??',mur:'⚫','mur-copac':'⚫',alun:'??'};
+var TREE_ICONS = {cais:'🍑',piersic:'🍑',cires:'🍒',visin:'🍒',prun:'🟣','mar-florina':'🍎','mar-golden':'🍎','par-clapp':'🍐','par-williams':'🍐','par-hosui':'🍐','par-napoca':'🍐',migdal:'🌰',rodiu:'🔴',kaki:'🟠',afin:'🫐',zmeur:'🍓','zmeur-galben':'🌻',mur:'⚫','mur-copac':'⚫',alun:'🌰'};
 var TREE_STATUS_COLORS = {ok:'var(--accent)',warning:'var(--warning)',sick:'var(--danger)'};
 function getTreeMap() { return JSON.parse(localStorage.getItem('livada-tree-map') || '{}'); }
 function saveTreeMap(map) { localStorage.setItem('livada-tree-map', JSON.stringify(map)); }
@@ -12532,7 +12532,7 @@ function renderTreeMap() {
     for (var c = 1; c <= COLS; c++) {
       var key = 'r' + r + 'c' + c;
       var tree = map[key];
-      var icon = tree ? (TREE_ICONS[tree.species] || '??') : '+';
+      var icon = tree ? (TREE_ICONS[tree.species] || '🌳') : '+';
       var border = tree ? ('2px solid ' + (TREE_STATUS_COLORS[tree.status || 'ok'])) : '1px dashed var(--border)';
       html += '<button onclick="openTreeCell('' + key + '')" title="' +
         (tree ? escapeHtml(tree.name || key) : 'Liber R' + r + 'C' + c) + '" ' +
@@ -12612,7 +12612,7 @@ function renderTreePanel(speciesId) {
   var trees = getTrees(speciesId);
   var label = (SPECIES[speciesId] || speciesId);
   var html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
-    '<strong style="font-size:0.85rem;">?? Pomi ' + escapeHtml(label) + ': ' + trees.length + '</strong>' +
+    '<strong style="font-size:0.85rem;">🌳 Pomi ' + escapeHtml(label) + ': ' + trees.length + '</strong>' +
     '<button class="btn btn-primary" style="font-size:0.75rem;padding:5px 10px;" onclick="addTreeNote('' + speciesId + '')">+ Pom nou</button></div>';
   if (trees.length === 0) {
     html += '<p style="color:var(--text-dim);font-size:0.82rem;text-align:center;padding:12px 0;">Niciun pom înregistrat. Adaugă primul pentru tracking individual.</p>';
