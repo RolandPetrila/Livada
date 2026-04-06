@@ -78,18 +78,59 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
     }
   }
 
+  async function callCerebras(timeoutMs) {
+    const CEREBRAS_KEY = process.env.CEREBRAS_API_KEY;
+    if (!CEREBRAS_KEY) throw new Error('CEREBRAS_API_KEY lipsa');
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const res = await fetch('https://api.cerebras.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${CEREBRAS_KEY}` },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b',
+          messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
+          max_tokens: 8192,
+          temperature: 0.3,
+        }),
+        signal: ctrl.signal,
+      });
+      clearTimeout(tid);
+      return res;
+    } catch (err) { clearTimeout(tid); throw err; }
+  }
+
   try {
     let groqRes = await callGroq('llama-3.3-70b-versatile', 26000);
     let usedFallback = false;
+    let fallbackModel = '';
 
-    // Fallback la llama-3.1-8b-instant daca modelul primar e suprasolicitat/indisponibil
+    // Fallback 1: llama-3.1-8b-instant pe Groq
     if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
       console.error('[ask] primary failed', groqRes.status, '— try fallback llama-3.1-8b-instant');
+      let groqFb2Ok = false;
       try {
         groqRes = await callGroq('llama-3.1-8b-instant', 12000);
+        groqFb2Ok = groqRes.ok;
         usedFallback = true;
+        fallbackModel = 'llama-3.1-8b-instant';
       } catch (fallbackErr) {
-        console.error('[ask] fallback err:', fallbackErr.message);
+        console.error('[ask] groq fallback err:', fallbackErr.message);
+      }
+
+      // Fallback 2: Cerebras (daca Groq e complet indisponibil)
+      if (!groqFb2Ok) {
+        console.error('[ask] groq fb2 failed — try Cerebras llama-3.3-70b');
+        try {
+          const cerebrasRes = await callCerebras(15000);
+          if (cerebrasRes.ok) {
+            const result = await cerebrasRes.json();
+            const answer = result.choices?.[0]?.message?.content || 'Nu am putut genera un raspuns.';
+            return Response.json({ answer, _fallback: true, _fallbackModel: 'cerebras/llama-3.3-70b' }, { headers: corsHeaders(req) });
+          }
+        } catch (cerebrasErr) {
+          console.error('[ask] cerebras err:', cerebrasErr.message);
+        }
         return Response.json({ error: 'AI indisponibil temporar. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
       }
     }
@@ -106,7 +147,7 @@ Specia curenta: ${species || 'general (toate speciile)'}`;
     const result = await groqRes.json();
     const answer = result.choices?.[0]?.message?.content || 'Nu am putut genera un raspuns.';
     return Response.json(
-      { answer, ...(usedFallback ? { _fallback: true, _fallbackModel: 'llama-3.1-8b-instant' } : {}) },
+      { answer, ...(usedFallback ? { _fallback: true, _fallbackModel: fallbackModel } : {}) },
       { headers: corsHeaders(req) }
     );
 

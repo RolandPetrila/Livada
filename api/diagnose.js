@@ -127,6 +127,45 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     if (!geminiRes.ok) {
       const errBody = await geminiRes.text().catch(() => '');
       console.error(`[diagnose] fallback failed ${geminiRes.status}: ${errBody.substring(0, 200)}`);
+
+      // Fallback 3: xAI Grok vision
+      const XAI_KEY = process.env.XAI_API_KEY;
+      if (XAI_KEY) {
+        console.log(`[diagnose] try xAI Grok vision t+${Date.now()-t0}ms`);
+        const ctrl3 = new AbortController();
+        const timer3 = setTimeout(() => ctrl3.abort(), 15000);
+        try {
+          const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${XAI_KEY}` },
+            body: JSON.stringify({
+              model: 'grok-2-vision-1212',
+              messages: [{
+                role: 'user',
+                content: [
+                  { type: 'text', text: prompt },
+                  { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } },
+                ],
+              }],
+              max_tokens: 2048,
+              temperature: 0.3,
+            }),
+            signal: ctrl3.signal,
+          });
+          clearTimeout(timer3);
+          console.log(`[diagnose] xAI ${xaiRes.status} t+${Date.now()-t0}ms`);
+          if (xaiRes.ok) {
+            const xaiResult = await xaiRes.json();
+            const text = xaiResult.choices?.[0]?.message?.content
+              || 'Nu am putut analiza imaginea. Incearca cu o poza mai clara.';
+            return Response.json({ diagnosis: text, _fallback: true, _fallbackModel: 'grok-2-vision-1212' }, { headers: corsHeaders(req) });
+          }
+        } catch (xaiErr) {
+          clearTimeout(timer3);
+          console.error(`[diagnose] xAI err: ${xaiErr.message}`);
+        }
+      }
+
       return Response.json({ error: `AI indisponibil (${geminiRes.status}). Incearca din nou.` }, { status: 503, headers: corsHeaders(req) });
     }
   }

@@ -105,15 +105,54 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
       } catch (err) { clearTimeout(tid); throw err; }
     }
 
+    async function callCerebrasReport(timeoutMs) {
+      const CEREBRAS_KEY = process.env.CEREBRAS_API_KEY;
+      if (!CEREBRAS_KEY) throw new Error('CEREBRAS_API_KEY lipsa');
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+      try {
+        const res = await fetch('https://api.cerebras.ai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${CEREBRAS_KEY}` },
+          body: JSON.stringify({ model: 'llama-3.3-70b', messages: reportMessages, max_tokens: 2048, temperature: 0.4 }),
+          signal: ctrl.signal,
+        });
+        clearTimeout(tid);
+        return res;
+      } catch (err) { clearTimeout(tid); throw err; }
+    }
+
     let groqRes = await callGroqReport('llama-3.3-70b-versatile', 23000);
     let usedFallback = false;
+    let fallbackModel = '';
 
     if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
       console.error('[report] primary failed', groqRes.status, '— try fallback llama-3.1-8b-instant');
+      let groqFb2Ok = false;
       try {
         groqRes = await callGroqReport('llama-3.1-8b-instant', 10000);
+        groqFb2Ok = groqRes.ok;
         usedFallback = true;
+        fallbackModel = 'llama-3.1-8b-instant';
       } catch (fallbackErr) {
+        console.error('[report] groq fallback err:', fallbackErr.message);
+      }
+
+      // Fallback 2: Cerebras
+      if (!groqFb2Ok) {
+        console.error('[report] groq fb2 failed — try Cerebras llama-3.3-70b');
+        try {
+          const cerebrasRes = await callCerebrasReport(18000);
+          if (cerebrasRes.ok) {
+            const result = await cerebrasRes.json();
+            const report = result.choices?.[0]?.message?.content || 'Nu am putut genera raportul.';
+            const payload = { report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length, generatedAt: Date.now(), _fallback: true, _fallbackModel: 'cerebras/llama-3.3-70b' };
+            await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});
+            return Response.json(payload, { headers: corsHeaders(req) });
+          }
+        } catch (cerebrasErr) {
+          console.error('[report] cerebras err:', cerebrasErr.message);
+        }
         return Response.json({ error: 'Serviciul AI nu a raspuns. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
       }
     }
@@ -128,7 +167,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
     const result = await groqRes.json();
     const report = result.choices?.[0]?.message?.content || 'Nu am putut genera raportul.';
 
-    const payload = { report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length, generatedAt: Date.now(), ...(usedFallback ? { _fallback: true, _fallbackModel: 'llama-3.1-8b-instant' } : {}) };
+    const payload = { report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length, generatedAt: Date.now(), ...(usedFallback ? { _fallback: true, _fallbackModel: fallbackModel } : {}) };
 
     // Salveaza in cache Redis cu TTL 1h
     await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});

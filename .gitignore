@@ -16,3 +16,5 @@ Thumbs.db
 Livada_Mea_Dashboard.html
 .claude/
 tools/html_output/
+
+.env*.local
