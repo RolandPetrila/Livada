@@ -1,7 +1,7 @@
 import { put, list, del } from '@vercel/blob';
 import { corsHeaders, handleOptions, checkAuth, rateLimit, checkOrigin } from './_auth.js';
 
-export const config = { runtime: 'edge' };
+export const config = { maxDuration: 10 };
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
