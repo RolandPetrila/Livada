@@ -27,15 +27,20 @@ export default async function handler(req) {
     const kv = Redis.fromEnv();
     const year = new Date().getFullYear();
 
-    // Cache check: returneaza raportul cached daca e mai recent de 1h
+    // Cache check: returneaza raportul cached daca e mai recent de 1h SI jurnalul nu s-a schimbat
     const cacheKey = `livada:report:cache:${year}`;
-    const cached = await kv.get(cacheKey).catch(() => null);
+    const [cached, journalLastUpdate] = await Promise.all([
+      kv.get(cacheKey).catch(() => null),
+      kv.get('livada:journal:last-update').catch(() => null),
+    ]);
     if (cached && cached.generatedAt) {
       const ageMs = Date.now() - cached.generatedAt;
-      if (ageMs < 3600_000) {
+      const cacheIsStale = journalLastUpdate && Number(journalLastUpdate) > cached.generatedAt;
+      if (ageMs < 3600_000 && !cacheIsStale) {
         console.log(`[report] cache hit, age ${Math.round(ageMs / 60000)}min`);
         return Response.json({ ...cached, _cached: true }, { headers: corsHeaders(req) });
       }
+      if (cacheIsStale) console.log('[report] cache stale — jurnal actualizat dupa generare');
     }
 
     const journal = (await kv.get('livada:journal')) || [];
@@ -122,20 +127,28 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
       } catch (err) { clearTimeout(tid); throw err; }
     }
 
-    let groqRes = await callGroqReport('llama-3.3-70b-versatile', 23000);
+    let groqRes = await callGroqReport('meta-llama/llama-4-maverick-17b-128e-instruct', 23000);
     let usedFallback = false;
     let fallbackModel = '';
 
     if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
-      console.error('[report] primary failed', groqRes.status, '— try fallback llama-3.1-8b-instant');
+      console.error('[report] llama-4-maverick failed', groqRes.status);
       let groqFb2Ok = false;
+
+      // Fallback 1: llama-3.3-70b-versatile
       try {
-        groqRes = await callGroqReport('llama-3.1-8b-instant', 10000);
+        groqRes = await callGroqReport('llama-3.3-70b-versatile', 20000);
         groqFb2Ok = groqRes.ok;
-        usedFallback = true;
-        fallbackModel = 'llama-3.1-8b-instant';
-      } catch (fallbackErr) {
-        console.error('[report] groq fallback err:', fallbackErr.message);
+        if (groqFb2Ok) { usedFallback = true; fallbackModel = 'llama-3.3-70b-versatile'; }
+      } catch (e) { console.error('[report] fb1 err:', e.message); }
+
+      // Fallback 2: llama-3.1-8b-instant
+      if (!groqFb2Ok) {
+        try {
+          groqRes = await callGroqReport('llama-3.1-8b-instant', 10000);
+          groqFb2Ok = groqRes.ok;
+          if (groqFb2Ok) { usedFallback = true; fallbackModel = 'llama-3.1-8b-instant'; }
+        } catch (e) { console.error('[report] fb2 err:', e.message); }
       }
 
       // Fallback 2: Cerebras

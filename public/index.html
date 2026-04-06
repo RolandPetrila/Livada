@@ -9036,8 +9036,9 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
       </div>
       <div id="diagLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Gemini analizeaz&#259; imaginea...</div>
       <div id="diagResult" class="ai-res" style="display:none;"></div>
-      <div id="diagCopyRow" style="display:none;margin-top:8px;text-align:right;">
-        <button class="copy-btn" onclick="copyTextEl('diagResult')">&#128203; Copiaz&#259; diagnosticul</button>
+      <div id="diagCopyRow" style="display:none;margin-top:8px;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
+        <button class="copy-btn" onclick="copyTextEl('diagResult')" style="flex:none;">&#128203; Copiaz&#259; diagnosticul</button>
+        <button class="btn btn-primary" onclick="openJurnalFromDiag()" style="font-size:0.8rem;padding:6px 14px;flex:none;">&#129514; Adaug&#259; tratament</button>
       </div>
       <!-- CHAT diagnostic modal -->
       <div id="diagChatSection" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
@@ -9547,6 +9548,35 @@ function addJurnalEntry() {
       var kg = parseFloat(document.getElementById('jurnalKg')?.value) || 0;
       if (sp) entry.species = sp;
       if (kg > 0) entry.kg = kg;
+      // N1: PHI Calculator — verifica pauza de securitate
+      var PHI_DAYS = {
+        'dithane':28,'mancozeb':28,'captan':7,'folpan':7,'score':14,'systhane':14,
+        'topas':14,'folicur':14,'chorus':7,'switch':7,'teldor':7,'signum':7,
+        'calypso':14,'actara':7,'mospilan':7,'confidor':14,'decis':7,'karate':7,
+        'fastac':7,'laser':1,'delegate':7,'coragen':7,'affirm':7
+      };
+      var recoltareDate = new Date(date + 'T12:00');
+      var recentEntries = getJurnalEntries().filter(function(e) {
+        return (e.type === 'fitosanitar' || e.type === 'tratament') &&
+               (Date.now() - new Date(e.date + 'T12:00')) < 40 * 86400000;
+      });
+      var violations = [];
+      recentEntries.forEach(function(e) {
+        var noteLower = (e.note || '').toLowerCase();
+        Object.keys(PHI_DAYS).forEach(function(prod) {
+          if (noteLower.includes(prod)) {
+            var treatDate = new Date(e.date + 'T12:00');
+            var daysDiff = Math.round((recoltareDate - treatDate) / 86400000);
+            if (daysDiff >= 0 && daysDiff < PHI_DAYS[prod]) {
+              violations.push(prod.charAt(0).toUpperCase()+prod.slice(1) + ': tratament pe ' + e.date + ' (pauza: ' + PHI_DAYS[prod] + ' zile, au trecut: ' + daysDiff + ' zile)');
+            }
+          }
+        });
+      });
+      if (violations.length > 0) {
+        var ok = confirm('\u26A0\uFE0F ATENTIE PAUZA DE SECURITATE!\n\nUrmatoarele produse nu au respectat intervalul minim:\n\n' + violations.join('\n') + '\n\nContinui inregistrarea recoltei?');
+        if (!ok) { debounceBtn(btn, 0); return; }
+      }
     }
     var entries = getJurnalEntries();
     entries.unshift(entry);
@@ -9850,15 +9880,28 @@ function wmoEmoji(code) {
 }
 
 // ====== METEO (Open-Meteo — gratuit, fara API key) ======
+// T8: cache in-memory 5 minute pentru deduplicare request-uri
+var _meteoCache = null, _meteoCacheTs = 0;
+var METEO_URL_FULL = 'https://api.open-meteo.com/v1/forecast?latitude=' + LIVADA_LAT + '&longitude=' + LIVADA_LON + '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&timezone=Europe/Bucharest&forecast_days=5';
+var METEO_URL_FAST = 'https://api.open-meteo.com/v1/forecast?latitude=' + LIVADA_LAT + '&longitude=' + LIVADA_LON + '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,relative_humidity_2m_mean,weather_code&timezone=Europe/Bucharest&forecast_days=3';
+async function fetchMeteoData(full) {
+  var now = Date.now();
+  if (_meteoCache && (now - _meteoCacheTs) < 300000) return _meteoCache;
+  var url = full ? METEO_URL_FULL : METEO_URL_FAST;
+  var res = await fetchWithTimeout(url, {}, 10000);
+  if (!res.ok) throw new Error('Open-Meteo error ' + res.status);
+  _meteoCache = await res.json();
+  _meteoCacheTs = now;
+  return _meteoCache;
+}
+
 function initMeteo() { fetchMeteo(); }
 
 async function fetchMeteo() {
   var el = document.getElementById('meteoData');
   el.innerHTML = '<p style="text-align:center;color:var(--text-dim);">Se \u00eencarc\u0103...</p>';
   try {
-    var res = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=' + LIVADA_LAT + '&longitude=' + LIVADA_LON + '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&timezone=Europe/Bucharest&forecast_days=5', {}, 10000);
-    if (!res.ok) throw new Error('Open-Meteo error ' + res.status);
-    var d = await res.json();
+    var d = await fetchMeteoData(true);
     var c = d.current;
     var code = c.weather_code;
     var desc = WMO_CODES[code] || 'Necunoscut';
@@ -9880,7 +9923,7 @@ async function fetchMeteo() {
         (c.precipitation > 0 ? '<span>\uD83C\uDF27\uFE0F Precipita\u021Bii: ' + c.precipitation + ' mm</span>' : '') +
       '</div></div>' + alertHtml +
       '<p style="margin-top:12px;font-size:0.78rem;color:var(--text-dim);text-align:center;">N\u0103dlac, Arad \u2022 Actualizat: ' + new Date().toLocaleTimeString('ro-RO') + '</p>' +
-      '<button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="fetchMeteo()">Re\u00eencarc\u0103 meteo</button>';
+      '<button class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="_meteoCacheTs=0;fetchMeteo()">Re\u00eencarc\u0103 meteo</button>';
     // B1: Prognoza 5 zile
     if (d.daily && d.daily.time) {
       var ZILE = ['Du','Lu','Ma','Mi','Jo','Vi','S\u00E2'];
@@ -10204,13 +10247,25 @@ function injectSpeciesHistory(speciesId, container) {
     return (e.note || '').toLowerCase().includes(name) || (e.species && e.species === speciesId);
   }).slice(0, 8);
   if (history.length === 0) return;
+  // V2: interval de la ultimul tratament fitosanitar
+  var treatments = history.filter(function(e) { return e.type === 'fitosanitar' || e.type === 'tratament'; });
+  var intervalHtml = '';
+  if (treatments.length > 0) {
+    var lastT = treatments[0]; // sorted desc
+    var daysSince = Math.floor((Date.now() - new Date(lastT.date + 'T12:00')) / 86400000);
+    var iColor = daysSince < 7 ? '#c0392b' : daysSince < 11 ? '#e67e22' : '#27ae60';
+    var iMsg = daysSince < 7
+      ? '\u26A0\uFE0F Atentie: ' + daysSince + ' zile de la ultimul tratament (interval minim 7 zile)'
+      : '\u2705 Ultimul tratament: acum ' + daysSince + ' zile';
+    intervalHtml = '<div style="padding:6px 10px;background:var(--bg-surface);border-left:3px solid ' + iColor + ';border-radius:4px;margin-bottom:8px;font-size:0.82rem;color:' + iColor + ';font-weight:600;">' + iMsg + '</div>';
+  }
   var div = document.createElement('div');
   div.id = 'sp-history-section';
   div.className = 'section';
   div.style.marginTop = '12px';
   var spName = SPECIES[speciesId] || speciesId;
   div.innerHTML = '<h2 class="section-title" style="cursor:default;">\uD83D\uDCCB Ultimele interven\u021Bii</h2>' +
-    '<div class="section-body">' +
+    '<div class="section-body">' + intervalHtml +
     history.map(function(e) {
       return '<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:0.82rem;">' +
         '<span style="color:var(--accent);font-weight:700;">' + escapeHtml(e.date||'') + '</span> ' +
@@ -10358,6 +10413,21 @@ async function deletePhoto(url) {
     await authFetch('/api/photos', { method: 'DELETE', headers: {'Content-Type':'application/json'}, body: JSON.stringify({url:url}) });
     loadGallery();
   } catch(e) { alert('Eroare: ' + e.message); }
+}
+
+// V3: Diagnostic → Adauga tratament in jurnal
+function openJurnalFromDiag() {
+  var today = new Date().toISOString().slice(0, 10);
+  openModal('jurnal');
+  setTimeout(function() {
+    var typeEl = document.getElementById('jurnalType');
+    var dateEl = document.getElementById('jurnalDate');
+    var noteEl = document.getElementById('jurnalNote');
+    if (typeEl) { typeEl.value = 'fitosanitar'; typeEl.dispatchEvent(new Event('change')); }
+    if (dateEl) dateEl.value = today;
+    if (noteEl) noteEl.value = (SPECIES[activeSpeciesId] ? SPECIES[activeSpeciesId] + ' — ' : '') + 'Tratament conform diagnostic AI: ';
+    if (noteEl) { noteEl.focus(); noteEl.setSelectionRange(noteEl.value.length, noteEl.value.length); }
+  }, 150);
 }
 
 // ====== DIAGNOSE FUNCTIONS ======
@@ -10718,14 +10788,20 @@ async function sendDiagChat(prefix) {
   inputEl.value = '';
   loadEl.style.display = 'block';
 
-  // Build prompt with context on first message
-  var contextBlock = history.length === 0
-    ? 'Diagnostic AI primit:\n"""\n' + diagContext + '\n"""\n\nSpecia analizata: ' + species + '\n\n'
-    : '';
+  // Build prompt — first message includes full diagnosis, subsequent include last 2 Q&A pairs
+  var fullQuestion;
+  if (history.length === 0) {
+    fullQuestion = 'Diagnostic AI primit:\n"""\n' + diagContext + '\n"""\n\nSpecia analizata: ' + species + '\n\nIntrebare: ' + question;
+  } else {
+    var recentHistory = history.slice(-4); // max 4 entries = 2 Q&A pairs
+    var contextLines = recentHistory.map(function(e) {
+      return (e.role === 'user' ? 'Utilizator' : 'AI') + ': ' + e.content.substring(0, 350);
+    });
+    fullQuestion = 'Context conversatie (diagnostic ' + species + '):\n' + contextLines.join('\n') + '\n\nIntrebare noua: ' + question;
+  }
 
-  var fullQuestion = contextBlock + question;
-
-  history.push({ role: 'user', content: fullQuestion });
+  // Store CLEAN question in history (not context-enriched)
+  history.push({ role: 'user', content: question });
 
   try {
     var res = await authFetch('/api/ask', {
@@ -11132,10 +11208,10 @@ async function initDashboardAzi() {
   var alerteEl = document.getElementById('alerteAzi');
   var meteoEl = document.getElementById('meteoAzi');
 
-  // B3: Fetch-uri PARALELE
+  // B3: Fetch-uri PARALELE — meteo foloseste cache-ul in-memory (T8)
   var [alertRes, meteoRes] = await Promise.allSettled([
     navigator.onLine ? fetchWithTimeout('/api/frost-alert', {}, 5000) : Promise.reject('offline'),
-    navigator.onLine ? fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=' + LIVADA_LAT + '&longitude=' + LIVADA_LON + '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,relative_humidity_2m_mean,weather_code&timezone=Europe/Bucharest&forecast_days=3', {}, 8000) : Promise.reject('offline')
+    navigator.onLine ? fetchMeteoData(false) : Promise.reject('offline')
   ]);
 
   // B. Alerte
@@ -11159,8 +11235,8 @@ async function initDashboardAzi() {
 
   // C. Meteo rapid + prognoza 3 zile cu spray score
   if (meteoEl) {
-    if (meteoRes.status === 'fulfilled' && meteoRes.value.ok) {
-      var md = await meteoRes.value.json();
+    if (meteoRes.status === 'fulfilled' && meteoRes.value && meteoRes.value.current) {
+      var md = meteoRes.value; // fetchMeteoData returneaza JSON direct
       var cc = md.current;
       var score = calculateSprayScore(cc.temperature_2m, cc.wind_speed_10m, cc.precipitation, cc.relative_humidity_2m);
       var sl = sprayLabel(score);
