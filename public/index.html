@@ -475,6 +475,28 @@ mark.search-hl { background: rgba(232,168,56,0.4); color: inherit; border-radius
   display: inline-flex; align-items: center; gap: 4px;
 }
 .copy-btn:hover { background: var(--accent-dim); color: var(--text-bright); border-color: var(--accent); }
+/* ====== DIAGNOSTIC CHAT BUBBLES ====== */
+.chat-bubble-user {
+  align-self: flex-end; background: var(--accent); color: #fff;
+  padding: 8px 12px; border-radius: 12px 12px 2px 12px;
+  max-width: 85%; font-size: 0.84rem; white-space: pre-wrap; word-break: break-word;
+}
+.chat-bubble-ai {
+  align-self: flex-start; background: var(--bg-surface); border: 1px solid var(--border);
+  padding: 8px 12px; border-radius: 12px 12px 12px 2px; max-width: 92%; font-size: 0.84rem;
+}
+.chat-bubble-err {
+  align-self: flex-start; background: var(--bg-surface); border: 1px solid var(--border);
+  padding: 8px 12px; border-radius: 12px; max-width: 92%; font-size: 0.84rem; color: var(--danger);
+}
+/* ====== INTERVAL TRATAMENT BADGE ====== */
+.diag-interval-badge {
+  padding: 6px 10px; background: var(--bg-surface); border-left: 3px solid;
+  border-radius: 4px; margin-bottom: 8px; font-size: 0.82rem; font-weight: 600;
+}
+.diag-interval-ok    { border-color: var(--accent);  color: var(--accent); }
+.diag-interval-warn  { border-color: var(--warning); color: var(--warning); }
+.diag-interval-danger{ border-color: var(--danger);  color: var(--danger); }
 .textarea-wrap { position: relative; }
 .textarea-wrap textarea { width: 100%; }
 .textarea-copy-btn {
@@ -9036,7 +9058,7 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
       </div>
       <div id="diagLoading" class="ai-load" style="display:none;"><div class="ai-spin"></div><br>Gemini analizeaz&#259; imaginea...</div>
       <div id="diagResult" class="ai-res" style="display:none;"></div>
-      <div id="diagCopyRow" style="display:none;margin-top:8px;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
+      <div id="diagCopyRow" style="display:none;margin-top:8px;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
         <button class="copy-btn" onclick="copyTextEl('diagResult')" style="flex:none;">&#128203; Copiaz&#259; diagnosticul</button>
         <button class="btn btn-primary" onclick="openJurnalFromDiag()" style="font-size:0.8rem;padding:6px 14px;flex:none;">&#129514; Adaug&#259; tratament</button>
       </div>
@@ -9533,6 +9555,17 @@ document.getElementById('jurnalType')?.addEventListener('change', function() {
   var rf = document.getElementById('recoltaFields');
   if (rf) rf.style.display = this.value === 'recoltare' ? 'block' : 'none';
 });
+// Istoric conversatii chat diagnostic (per prefix: 'diag' | 'aiGenDiag')
+var _diagChatHistory = {};
+
+// N1: PHI Calculator — pauze de securitate (zile) per produs fitosanitar
+var PHI_DAYS = {
+  'dithane':28,'mancozeb':28,'captan':7,'folpan':7,'score':14,'systhane':14,
+  'topas':14,'folicur':14,'chorus':7,'switch':7,'teldor':7,'signum':7,
+  'calypso':14,'actara':7,'mospilan':7,'confidor':14,'decis':7,'karate':7,
+  'fastac':7,'laser':1,'delegate':7,'coragen':7,'affirm':7
+};
+
 function addJurnalEntry() {
   var btn = document.getElementById('btnAddJurnal');
   if (btn && btn.disabled) return;
@@ -9548,13 +9581,6 @@ function addJurnalEntry() {
       var kg = parseFloat(document.getElementById('jurnalKg')?.value) || 0;
       if (sp) entry.species = sp;
       if (kg > 0) entry.kg = kg;
-      // N1: PHI Calculator — verifica pauza de securitate
-      var PHI_DAYS = {
-        'dithane':28,'mancozeb':28,'captan':7,'folpan':7,'score':14,'systhane':14,
-        'topas':14,'folicur':14,'chorus':7,'switch':7,'teldor':7,'signum':7,
-        'calypso':14,'actara':7,'mospilan':7,'confidor':14,'decis':7,'karate':7,
-        'fastac':7,'laser':1,'delegate':7,'coragen':7,'affirm':7
-      };
       var recoltareDate = new Date(date + 'T12:00');
       var recentEntries = getJurnalEntries().filter(function(e) {
         return (e.type === 'fitosanitar' || e.type === 'tratament') &&
@@ -10253,11 +10279,11 @@ function injectSpeciesHistory(speciesId, container) {
   if (treatments.length > 0) {
     var lastT = treatments[0]; // sorted desc
     var daysSince = Math.floor((Date.now() - new Date(lastT.date + 'T12:00')) / 86400000);
-    var iColor = daysSince < 7 ? '#c0392b' : daysSince < 11 ? '#e67e22' : '#27ae60';
+    var iCls = daysSince < 7 ? 'diag-interval-danger' : daysSince < 11 ? 'diag-interval-warn' : 'diag-interval-ok';
     var iMsg = daysSince < 7
       ? '\u26A0\uFE0F Atentie: ' + daysSince + ' zile de la ultimul tratament (interval minim 7 zile)'
       : '\u2705 Ultimul tratament: acum ' + daysSince + ' zile';
-    intervalHtml = '<div style="padding:6px 10px;background:var(--bg-surface);border-left:3px solid ' + iColor + ';border-radius:4px;margin-bottom:8px;font-size:0.82rem;color:' + iColor + ';font-weight:600;">' + iMsg + '</div>';
+    intervalHtml = '<div class="diag-interval-badge ' + iCls + '">' + iMsg + '</div>';
   }
   var div = document.createElement('div');
   div.id = 'sp-history-section';
@@ -10490,61 +10516,65 @@ function compressDiagnoseImage(file) {
   });
 }
 
-async function submitDiagnose(input) {
+// Functie unificata pentru diagnostic foto — folosita de modal specie si tab AI General
+async function runDiagnose(input, species, prefix) {
   var file = input.files[0]; if (!file) return;
+  var g = function(id) { return document.getElementById(id); };
+  var copyRowDisplay = prefix === 'diag' ? 'flex' : 'block';
 
-  document.getElementById('diagLoading').style.display = 'block';
-  document.getElementById('diagResult').style.display = 'none';
+  g(prefix + 'Loading').style.display = 'block';
+  g(prefix + 'Result').style.display = 'none';
+  g(prefix + 'CopyRow').style.display = 'none';
 
-  // Previzualizare imediata din fisierul original
   var reader = new FileReader();
   reader.onload = function(e) {
-    document.getElementById('diagImg').src = e.target.result;
-    document.getElementById('diagPreview').style.display = 'block';
+    g(prefix + 'Img').src = e.target.result;
+    g(prefix + 'Preview').style.display = 'block';
   };
   reader.readAsDataURL(file);
 
   try {
-    // Comprima intotdeauna — robust, functioneaza pe orice telefon
     var result = await compressDiagnoseImage(file);
     var uploadSize = result.blob.size;
-
     var res = await authFetch('/api/diagnose', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ base64: result.base64, mimeType: 'image/jpeg', species: SPECIES[activeSpeciesId] || activeSpeciesId })
+      body: JSON.stringify({ base64: result.base64, mimeType: 'image/jpeg', species: species })
     }, 65000);
     var rawText = await res.text();
     var data;
-    try { data = JSON.parse(rawText); } catch(_) {
-      throw new Error('Eroare server (' + res.status + ')');
-    }
+    try { data = JSON.parse(rawText); } catch(_) { throw new Error('Eroare server (' + res.status + ')'); }
     if (!res.ok) throw new Error(data.error || 'Eroare server (' + res.status + ')');
-    document.getElementById('diagLoading').style.display = 'none';
-    var resultEl = document.getElementById('diagResult');
-    var prefix = '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poza comprimata automat: ' + (uploadSize/1024).toFixed(0) + 'KB (' + result.px + ')</p>';
+    g(prefix + 'Loading').style.display = 'none';
+    var resultEl = g(prefix + 'Result');
+    var sizeInfo = '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poza comprimata: ' + (uploadSize/1024).toFixed(0) + 'KB (' + result.px + ')</p>';
     if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; showAiError(data.error); }
     else {
-      if (data._fallback) showAiFallback(data._fallbackModel || 'gemini-1.5-flash');
-      resultEl.innerHTML = prefix + sanitizeAI(data.diagnosis || '');
+      if (data._fallback) showAiFallback(data._fallbackModel || 'gemini');
+      resultEl.innerHTML = sizeInfo + sanitizeAI(data.diagnosis || '');
     }
     resultEl.style.display = 'block';
-    document.getElementById('diagCopyRow').style.display = 'block';
+    g(prefix + 'CopyRow').style.display = copyRowDisplay;
     if (!data.error) {
-      document.getElementById('diagChatSection').style.display = 'block';
-      document.getElementById('diagChatMessages').innerHTML = '';
-      _diagChatHistory['diag'] = [];
+      g(prefix + 'ChatSection').style.display = 'block';
+      g(prefix + 'ChatMessages').innerHTML = '';
+      _diagChatHistory[prefix] = [];
     }
   } catch(e) {
-    document.getElementById('diagLoading').style.display = 'none';
-    var r = document.getElementById('diagResult');
+    g(prefix + 'Loading').style.display = 'none';
+    var r = g(prefix + 'Result');
     var msg = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
     r.textContent = msg; showAiError(msg);
     r.style.display = 'block';
-    document.getElementById('diagCopyRow').style.display = 'block';
+    g(prefix + 'CopyRow').style.display = copyRowDisplay;
   }
   input.value = '';
 }
+
+function submitDiagnose(input) {
+  return runDiagnose(input, SPECIES[activeSpeciesId] || activeSpeciesId, 'diag');
+}
+
 
 // ====== ASK AI FUNCTIONS ======
 function openAskModal() {
@@ -10694,61 +10724,13 @@ async function submitAiGenAsk() {
   }
 }
 
-async function submitAiGenDiagnose(input) {
-  var file = input.files[0]; if (!file) return;
-  var species = (document.getElementById('aiGenDiagSpecies').value.trim() || 'necunoscut').replace(/[^a-zA-ZăâîșțĂÂÎȘȚ0-9\s_-]/g, '').substring(0, 100);
-  document.getElementById('aiGenDiagLoading').style.display = 'block';
-  document.getElementById('aiGenDiagResult').style.display = 'none';
-  document.getElementById('aiGenDiagCopyRow').style.display = 'none';
-
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    document.getElementById('aiGenDiagImg').src = e.target.result;
-    document.getElementById('aiGenDiagPreview').style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-
-  try {
-    var result = await compressDiagnoseImage(file);
-    var uploadSize = result.blob.size;
-    var res = await authFetch('/api/diagnose', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ base64: result.base64, mimeType: 'image/jpeg', species: species })
-    }, 65000);
-    var rawText = await res.text();
-    var data;
-    try { data = JSON.parse(rawText); } catch(_) { throw new Error('Eroare server (' + res.status + ')'); }
-    if (!res.ok) throw new Error(data.error || 'Eroare server (' + res.status + ')');
-    document.getElementById('aiGenDiagLoading').style.display = 'none';
-    var resultEl = document.getElementById('aiGenDiagResult');
-    var prefix = '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poz\u0103 comprimat\u0103: ' + (uploadSize/1024).toFixed(0) + 'KB (' + result.px + ')</p>';
-    if (data.error) { resultEl.textContent = 'Eroare: ' + data.error; showAiError(data.error); }
-    else {
-      if (data._fallback) showAiFallback(data._fallbackModel || 'gemini-2.5-flash-lite');
-      resultEl.innerHTML = prefix + sanitizeAI(data.diagnosis || '');
-    }
-    resultEl.style.display = 'block';
-    document.getElementById('aiGenDiagCopyRow').style.display = 'block';
-    if (!data.error) {
-      document.getElementById('aiGenDiagChatSection').style.display = 'block';
-      document.getElementById('aiGenDiagChatMessages').innerHTML = '';
-      _diagChatHistory['aiGenDiag'] = [];
-    }
-  } catch(e) {
-    document.getElementById('aiGenDiagLoading').style.display = 'none';
-    var r = document.getElementById('aiGenDiagResult');
-    var msg = e.name === 'AbortError' ? 'Serviciul AI r\u0103spunde lent. \u00CEncearc\u0103 din nou.' : (navigator.onLine ? ('Eroare: ' + e.message) : 'Necesit\u0103 conexiune la internet.');
-    r.textContent = msg; showAiError(msg);
-    r.style.display = 'block';
-    document.getElementById('aiGenDiagCopyRow').style.display = 'block';
-  }
-  input.value = '';
+function submitAiGenDiagnose(input) {
+  var species = (document.getElementById('aiGenDiagSpecies').value.trim() || 'necunoscut')
+    .replace(/[^a-zA-ZăâîșțĂÂÎȘȚ0-9\s_-]/g, '').substring(0, 100);
+  return runDiagnose(input, species, 'aiGenDiag');
 }
 
 // ====== DIAGNOSTIC CHAT ======
-var _diagChatHistory = {};
-
 async function sendDiagChat(prefix) {
   var inputId    = prefix + 'ChatInput';
   var messagesId = prefix + 'ChatMessages';
@@ -10780,7 +10762,7 @@ async function sendDiagChat(prefix) {
 
   // Render user bubble
   var userBubble = document.createElement('div');
-  userBubble.style.cssText = 'align-self:flex-end;background:var(--accent);color:#fff;padding:8px 12px;border-radius:12px 12px 2px 12px;max-width:85%;font-size:0.84rem;white-space:pre-wrap;word-break:break-word;';
+  userBubble.className = 'chat-bubble-user';
   userBubble.textContent = question;
   msgsEl.appendChild(userBubble);
   msgsEl.scrollTop = msgsEl.scrollHeight;
@@ -10816,14 +10798,14 @@ async function sendDiagChat(prefix) {
     history.push({ role: 'assistant', content: answer });
 
     var aiBubble = document.createElement('div');
-    aiBubble.style.cssText = 'align-self:flex-start;background:var(--bg-surface);border:1px solid var(--border);padding:8px 12px;border-radius:12px 12px 12px 2px;max-width:92%;font-size:0.84rem;';
+    aiBubble.className = 'chat-bubble-ai';
     aiBubble.innerHTML = sanitizeAI(answer);
     msgsEl.appendChild(aiBubble);
     msgsEl.scrollTop = msgsEl.scrollHeight;
   } catch(e) {
     loadEl.style.display = 'none';
     var errBubble = document.createElement('div');
-    errBubble.style.cssText = 'align-self:flex-start;background:var(--bg-surface);border:1px solid var(--border);padding:8px 12px;border-radius:12px;max-width:92%;font-size:0.84rem;color:#c0392b;';
+    errBubble.className = 'chat-bubble-err';
     errBubble.textContent = e.name === 'AbortError' ? 'R\u0103spuns lent. \u00CEncearc\u0103 din nou.' : 'Eroare: ' + e.message;
     msgsEl.appendChild(errBubble);
     msgsEl.scrollTop = msgsEl.scrollHeight;

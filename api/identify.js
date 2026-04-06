@@ -1,4 +1,5 @@
 import { corsHeaders, handleOptions, checkOrigin, rateLimit } from './_auth.js';
+import { callGemini, callOpenAIVision, geminiText, openaiText } from './_ai.js';
 
 export const config = { runtime: 'edge' };
 
@@ -24,108 +25,53 @@ Raspunde STRUCTURAT in romana:
 
 Daca nu poti identifica cu certitudine, spune ce grupuri/familii sunt posibile.`;
 
-// ── Helper Gemini vision ──────────────────────────────────────────────────────
-async function callGemini(apiKey, base64, mimeType, timeoutMs) {
-  const ctrl = new AbortController();
-  const tid  = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: AI_PROMPT }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
-          generationConfig: { maxOutputTokens: 1024, temperature: 0.2 },
-        }),
-        signal: ctrl.signal,
-      }
-    );
-    clearTimeout(tid);
-    return res;
-  } catch (err) { clearTimeout(tid); throw err; }
-}
-
-// ── Helper OpenAI-compatible vision ──────────────────────────────────────────
-async function callOpenAIVision(endpoint, apiKey, model, base64, mimeType, timeoutMs) {
-  const ctrl = new AbortController();
-  const tid  = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: AI_PROMPT },
-            { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } },
-          ],
-        }],
-        max_tokens: 1024,
-        temperature: 0.2,
-      }),
-      signal: ctrl.signal,
-    });
-    clearTimeout(tid);
-    return res;
-  } catch (err) { clearTimeout(tid); throw err; }
-}
+const IDENTIFY_OPTS = { maxTokens: 1024, temperature: 0.2 };
 
 // ── Fallback AI chain ─────────────────────────────────────────────────────────
 async function tryAiFallbacks(base64, mimeType, log) {
-  // Gemini key2
   const KEY2 = process.env.GOOGLE_AI_API_KEY_2;
   if (KEY2) {
     try {
-      const res = await callGemini(KEY2, base64, mimeType, 14000);
+      const res = await callGemini(KEY2, 'gemini-2.5-flash', base64, mimeType, AI_PROMPT, 14000, IDENTIFY_OPTS);
       log(`gemini key2 → ${res.status}`);
       if (res.ok) {
-        const j = await res.json();
-        const text = j?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const text = geminiText(await res.json());
         if (text) return { text, model: 'gemini-2.5-flash (key2)' };
       }
     } catch (e) { log(`gemini key2 err: ${e.name}`); }
   }
 
-  // GPT-4o via GitHub Models
   const GH = process.env.GITHUB_MODELS_TOKEN;
   if (GH) {
     try {
-      const res = await callOpenAIVision('https://models.inference.ai.azure.com/chat/completions', GH, 'gpt-4o', base64, mimeType, 18000);
+      const res = await callOpenAIVision('https://models.inference.ai.azure.com/chat/completions', GH, 'gpt-4o', base64, mimeType, AI_PROMPT, 18000, IDENTIFY_OPTS);
       log(`gpt-4o → ${res.status}`);
       if (res.ok) {
-        const j = await res.json();
-        const text = j?.choices?.[0]?.message?.content;
+        const text = openaiText(await res.json());
         if (text) return { text, model: 'gpt-4o (github)' };
       }
     } catch (e) { log(`gpt-4o err: ${e.name}`); }
   }
 
-  // Pixtral-12B via Mistral
   const MISTRAL = process.env.MISTRAL_API_KEY;
   if (MISTRAL) {
     try {
-      const res = await callOpenAIVision('https://api.mistral.ai/v1/chat/completions', MISTRAL, 'pixtral-12b-2409', base64, mimeType, 18000);
+      const res = await callOpenAIVision('https://api.mistral.ai/v1/chat/completions', MISTRAL, 'pixtral-12b-2409', base64, mimeType, AI_PROMPT, 18000, IDENTIFY_OPTS);
       log(`pixtral → ${res.status}`);
       if (res.ok) {
-        const j = await res.json();
-        const text = j?.choices?.[0]?.message?.content;
+        const text = openaiText(await res.json());
         if (text) return { text, model: 'pixtral-12b (mistral)' };
       }
     } catch (e) { log(`pixtral err: ${e.name}`); }
   }
 
-  // Grok vision
   const XAI = process.env.XAI_API_KEY;
   if (XAI) {
     try {
-      const res = await callOpenAIVision('https://api.x.ai/v1/chat/completions', XAI, 'grok-2-vision-1212', base64, mimeType, 14000);
+      const res = await callOpenAIVision('https://api.x.ai/v1/chat/completions', XAI, 'grok-2-vision-1212', base64, mimeType, AI_PROMPT, 14000, IDENTIFY_OPTS);
       log(`grok → ${res.status}`);
       if (res.ok) {
-        const j = await res.json();
-        const text = j?.choices?.[0]?.message?.content;
+        const text = openaiText(await res.json());
         if (text) return { text, model: 'grok-2-vision-1212' };
       }
     } catch (e) { log(`grok err: ${e.name}`); }
@@ -196,7 +142,7 @@ export default async function handler(req) {
 
     // Gemini 2.5-flash — identificare AI cu descriere in romana
     GEMINI_KEY1
-      ? callGemini(GEMINI_KEY1, base64, mimeType, 18000)
+      ? callGemini(GEMINI_KEY1, 'gemini-2.5-flash', base64, mimeType, AI_PROMPT, 18000, IDENTIFY_OPTS)
       : Promise.reject(new Error('no gemini key')),
   ]);
 
@@ -221,8 +167,7 @@ export default async function handler(req) {
   let aiResult = null;
   if (geminiSettled.status === 'fulfilled' && geminiSettled.value.ok) {
     try {
-      const j = await geminiSettled.value.json();
-      const text = j?.candidates?.[0]?.content?.parts?.[0]?.text;
+      const text = geminiText(await geminiSettled.value.json());
       if (text) { aiResult = { text, model: 'gemini-2.5-flash' }; log('gemini ok'); }
     } catch { log('gemini parse err'); }
   } else {

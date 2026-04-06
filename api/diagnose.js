@@ -1,55 +1,7 @@
 import { corsHeaders, handleOptions, checkAuth, rateLimit, checkOrigin } from './_auth.js';
+import { callGemini, callOpenAIVision, geminiText, openaiText } from './_ai.js';
 
 export const config = { runtime: 'edge' };
-
-// ── Helper: apel Gemini (inline_data base64) ─────────────────────────────────
-async function callGemini(apiKey, model, base64, mimeType, prompt, timeoutMs) {
-  const ctrl = new AbortController();
-  const tid  = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
-          generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
-        }),
-        signal: ctrl.signal,
-      }
-    );
-    clearTimeout(tid);
-    return res;
-  } catch (err) { clearTimeout(tid); throw err; }
-}
-
-// ── Helper: apel OpenAI-compatible cu image_url ───────────────────────────────
-async function callOpenAIVision(endpoint, apiKey, model, base64, mimeType, prompt, timeoutMs) {
-  const ctrl = new AbortController();
-  const tid  = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: prompt },
-            { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } },
-          ],
-        }],
-        max_tokens: 2048,
-        temperature: 0.3,
-      }),
-      signal: ctrl.signal,
-    });
-    clearTimeout(tid);
-    return res;
-  } catch (err) { clearTimeout(tid); throw err; }
-}
 
 // ── Helper: apel Plant.id v3 (diagnostic specializat boli) ───────────────────
 async function callPlantId(apiKey, base64, mimeType, timeoutMs) {
@@ -98,15 +50,6 @@ function formatPlantIdResult(data) {
     txt += '\n---\n';
     return txt;
   } catch { return null; }
-}
-
-// ── Extrage text din raspuns Gemini ──────────────────────────────────────────
-function geminiText(json) {
-  return json?.candidates?.[0]?.content?.parts?.[0]?.text || null;
-}
-// ── Extrage text din raspuns OpenAI-compatible ────────────────────────────────
-function openaiText(json) {
-  return json?.choices?.[0]?.message?.content || null;
 }
 
 export default async function handler(req) {
