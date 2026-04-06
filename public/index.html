@@ -705,6 +705,16 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
         <div id="aiGenDiagCopyRow" style="display:none;margin-top:8px;text-align:right;">
           <button class="copy-btn" onclick="copyTextEl('aiGenDiagResult')">&#128203; Copiaz&#259; diagnosticul</button>
         </div>
+        <!-- CHAT diagnostic AI General -->
+        <div id="aiGenDiagChatSection" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+          <p style="font-size:0.82rem;font-weight:700;margin:0 0 10px;color:var(--text);">&#128172; Discut&#259; despre diagnostic</p>
+          <div id="aiGenDiagChatMessages" style="max-height:280px;overflow-y:auto;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;"></div>
+          <div id="aiGenDiagChatLoading" class="ai-load" style="display:none;padding:6px 0 2px;"><div class="ai-spin"></div></div>
+          <div style="display:flex;gap:8px;align-items:flex-end;">
+            <textarea id="aiGenDiagChatInput" rows="2" placeholder="Ex: Ce produs folosesc exact? Pot aplica azi? Ce doz&#259;?" style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+            <button onclick="sendDiagChat('aiGenDiag')" style="padding:10px 14px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem;min-height:44px;min-width:44px;">&#10148;</button>
+          </div>
+        </div>
       </div>
 
       <p style="margin-top:20px;font-size:0.72rem;color:var(--text-dim);text-align:center;">
@@ -9029,6 +9039,16 @@ body.text-large .bottom-btn .b-icon { font-size: 1.5rem; }
       <div id="diagCopyRow" style="display:none;margin-top:8px;text-align:right;">
         <button class="copy-btn" onclick="copyTextEl('diagResult')">&#128203; Copiaz&#259; diagnosticul</button>
       </div>
+      <!-- CHAT diagnostic modal -->
+      <div id="diagChatSection" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+        <p style="font-size:0.82rem;font-weight:700;margin:0 0 10px;color:var(--text);">&#128172; Discut&#259; despre diagnostic</p>
+        <div id="diagChatMessages" style="max-height:280px;overflow-y:auto;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;"></div>
+        <div id="diagChatLoading" class="ai-load" style="display:none;padding:6px 0 2px;"><div class="ai-spin"></div></div>
+        <div style="display:flex;gap:8px;align-items:flex-end;">
+          <textarea id="diagChatInput" rows="2" placeholder="Ex: Ce produs folosesc exact? Pot aplica azi? Ce doza?" style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+          <button onclick="sendDiagChat('diag')" style="padding:10px 14px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem;min-height:44px;min-width:44px;">&#10148;</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -10347,6 +10367,9 @@ function openDiagnoseModal() {
   document.getElementById('diagPreview').style.display = 'none';
   document.getElementById('diagLoading').style.display = 'none';
   document.getElementById('diagCopyRow').style.display = 'none';
+  document.getElementById('diagChatSection').style.display = 'none';
+  document.getElementById('diagChatMessages').innerHTML = '';
+  _diagChatHistory['diag'] = [];
   openModal('diagnose');
 }
 // Comprimare robusta pentru diagnoza — foloseste toDataURL (synchronous, functioneaza pe orice browser/telefon)
@@ -10437,6 +10460,11 @@ async function submitDiagnose(input) {
     }
     resultEl.style.display = 'block';
     document.getElementById('diagCopyRow').style.display = 'block';
+    if (!data.error) {
+      document.getElementById('diagChatSection').style.display = 'block';
+      document.getElementById('diagChatMessages').innerHTML = '';
+      _diagChatHistory['diag'] = [];
+    }
   } catch(e) {
     document.getElementById('diagLoading').style.display = 'none';
     var r = document.getElementById('diagResult');
@@ -10632,6 +10660,11 @@ async function submitAiGenDiagnose(input) {
     }
     resultEl.style.display = 'block';
     document.getElementById('aiGenDiagCopyRow').style.display = 'block';
+    if (!data.error) {
+      document.getElementById('aiGenDiagChatSection').style.display = 'block';
+      document.getElementById('aiGenDiagChatMessages').innerHTML = '';
+      _diagChatHistory['aiGenDiag'] = [];
+    }
   } catch(e) {
     document.getElementById('aiGenDiagLoading').style.display = 'none';
     var r = document.getElementById('aiGenDiagResult');
@@ -10642,6 +10675,94 @@ async function submitAiGenDiagnose(input) {
   }
   input.value = '';
 }
+
+// ====== DIAGNOSTIC CHAT ======
+var _diagChatHistory = {};
+
+async function sendDiagChat(prefix) {
+  var inputId    = prefix + 'ChatInput';
+  var messagesId = prefix + 'ChatMessages';
+  var loadingId  = prefix + 'ChatLoading';
+
+  var inputEl = document.getElementById(inputId);
+  var question = (inputEl.value || '').trim();
+  if (!question) return;
+
+  // Get diagnosis context
+  var diagResultId = prefix === 'diag' ? 'diagResult' : 'aiGenDiagResult';
+  var diagContext  = (document.getElementById(diagResultId).innerText || '').substring(0, 1200);
+
+  // Get species
+  var species = 'necunoscut';
+  if (prefix === 'diag') {
+    species = SPECIES[activeSpeciesId] || activeSpeciesId || 'necunoscut';
+  } else {
+    var sp = document.getElementById('aiGenDiagSpecies');
+    if (sp) species = (sp.value.trim() || 'necunoscut').substring(0, 80);
+  }
+
+  // Init history
+  if (!_diagChatHistory[prefix]) _diagChatHistory[prefix] = [];
+
+  var history = _diagChatHistory[prefix];
+  var msgsEl  = document.getElementById(messagesId);
+  var loadEl  = document.getElementById(loadingId);
+
+  // Render user bubble
+  var userBubble = document.createElement('div');
+  userBubble.style.cssText = 'align-self:flex-end;background:var(--accent);color:#fff;padding:8px 12px;border-radius:12px 12px 2px 12px;max-width:85%;font-size:0.84rem;white-space:pre-wrap;word-break:break-word;';
+  userBubble.textContent = question;
+  msgsEl.appendChild(userBubble);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+
+  inputEl.value = '';
+  loadEl.style.display = 'block';
+
+  // Build prompt with context on first message
+  var contextBlock = history.length === 0
+    ? 'Diagnostic AI primit:\n"""\n' + diagContext + '\n"""\n\nSpecia analizata: ' + species + '\n\n'
+    : '';
+
+  var fullQuestion = contextBlock + question;
+
+  history.push({ role: 'user', content: fullQuestion });
+
+  try {
+    var res = await authFetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: fullQuestion, species: species })
+    }, 30000);
+    var data = await res.json();
+    loadEl.style.display = 'none';
+    var answer = data.answer || data.error || 'Eroare.';
+
+    history.push({ role: 'assistant', content: answer });
+
+    var aiBubble = document.createElement('div');
+    aiBubble.style.cssText = 'align-self:flex-start;background:var(--bg-surface);border:1px solid var(--border);padding:8px 12px;border-radius:12px 12px 12px 2px;max-width:92%;font-size:0.84rem;';
+    aiBubble.innerHTML = sanitizeAI(answer);
+    msgsEl.appendChild(aiBubble);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  } catch(e) {
+    loadEl.style.display = 'none';
+    var errBubble = document.createElement('div');
+    errBubble.style.cssText = 'align-self:flex-start;background:var(--bg-surface);border:1px solid var(--border);padding:8px 12px;border-radius:12px;max-width:92%;font-size:0.84rem;color:#c0392b;';
+    errBubble.textContent = e.name === 'AbortError' ? 'R\u0103spuns lent. \u00CEncearc\u0103 din nou.' : 'Eroare: ' + e.message;
+    msgsEl.appendChild(errBubble);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+    history.pop(); // remove failed user message
+  }
+}
+
+// Enter key in chat inputs
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    var t = e.target;
+    if (t.id === 'diagChatInput')       { e.preventDefault(); sendDiagChat('diag'); }
+    if (t.id === 'aiGenDiagChatInput')  { e.preventDefault(); sendDiagChat('aiGenDiag'); }
+  }
+});
 
 // ====== TOAST NOTIFICATIONS ======
 function showToast(msg, type) {
