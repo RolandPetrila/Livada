@@ -10508,7 +10508,7 @@ async function submitAiGenAsk() {
 
 async function submitAiGenDiagnose(input) {
   var file = input.files[0]; if (!file) return;
-  var species = (document.getElementById('aiGenDiagSpecies').value.trim() || 'necunoscut').replace(/[^a-zA-Z\u0103\u00E2\u00EE\u015F\u0163\u0102\u00C2\u00CE\u015E\u01620-9\s_-]/g, '').substring(0, 100);
+  var species = (document.getElementById('aiGenDiagSpecies').value.trim() || 'necunoscut').replace(/[^a-zA-ZăâîșțĂÂÎȘȚ0-9\s_-]/g, '').substring(0, 100);
   document.getElementById('aiGenDiagLoading').style.display = 'block';
   document.getElementById('aiGenDiagResult').style.display = 'none';
   document.getElementById('aiGenDiagCopyRow').style.display = 'none';
