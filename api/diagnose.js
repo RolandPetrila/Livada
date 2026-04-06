@@ -2,6 +2,64 @@ import { corsHeaders, handleOptions, checkAuth, rateLimit, checkOrigin } from '.
 
 export const config = { runtime: 'edge' };
 
+// ── Helper: apel Gemini (inline_data base64) ─────────────────────────────────
+async function callGemini(apiKey, model, base64, mimeType, prompt, timeoutMs) {
+  const ctrl = new AbortController();
+  const tid  = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
+          generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
+        }),
+        signal: ctrl.signal,
+      }
+    );
+    clearTimeout(tid);
+    return res;
+  } catch (err) { clearTimeout(tid); throw err; }
+}
+
+// ── Helper: apel OpenAI-compatible cu image_url (GitHub/Mistral/xAI) ─────────
+async function callOpenAIVision(endpoint, apiKey, model, base64, mimeType, prompt, timeoutMs) {
+  const ctrl = new AbortController();
+  const tid  = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } },
+          ],
+        }],
+        max_tokens: 2048,
+        temperature: 0.3,
+      }),
+      signal: ctrl.signal,
+    });
+    clearTimeout(tid);
+    return res;
+  } catch (err) { clearTimeout(tid); throw err; }
+}
+
+// ── Extrage text din raspuns Gemini ──────────────────────────────────────────
+function geminiText(json) {
+  return json?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+}
+// ── Extrage text din raspuns OpenAI-compatible ────────────────────────────────
+function openaiText(json) {
+  return json?.choices?.[0]?.message?.content || null;
+}
+
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return handleOptions(req);
 
@@ -17,14 +75,13 @@ export default async function handler(req) {
   const limitErr = rateLimit(req);
   if (limitErr) return limitErr;
 
-  const API_KEY = process.env.GOOGLE_AI_API_KEY;
-  if (!API_KEY) {
+  const GEMINI_KEY1 = process.env.GOOGLE_AI_API_KEY;
+  if (!GEMINI_KEY1) {
     return Response.json({ error: 'GOOGLE_AI_API_KEY lipsa' }, { status: 500, headers: corsHeaders(req) });
   }
 
   const t0 = Date.now();
 
-  // Accepta JSON cu base64 (trimis direct din browser — fara overhead multipart)
   let base64, mimeType, species;
   try {
     const body = await req.json();
@@ -34,7 +91,7 @@ export default async function handler(req) {
     if (!base64 || typeof base64 !== 'string') {
       return Response.json({ error: 'Lipseste imaginea (base64).' }, { status: 400, headers: corsHeaders(req) });
     }
-    if (base64.length > 5 * 1024 * 1024) { // ~3.75MB imagine originala
+    if (base64.length > 5 * 1024 * 1024) {
       return Response.json({ error: 'Imaginea este prea mare. Comprima mai mult.' }, { status: 400, headers: corsHeaders(req) });
     }
   } catch (e) {
@@ -68,119 +125,104 @@ Raspunde STRUCTURAT in romana:
 
 Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat.`;
 
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 22000);
+  // ── Lanț de fallback ─────────────────────────────────────────────────────────
+  // 1. Gemini 2.5-flash (cheia 1)
+  // 2. Gemini 2.5-flash-lite (cheia 1) — model mai mic
+  // 3. Gemini 2.5-flash (cheia 2) — rotatie cheie, evita rate limit
+  // 4. GPT-4o via GitHub Models — 50 req/zi gratuit, calitate top
+  // 5. Pixtral-12B via Mistral — 1B tokens/luna gratuit
+  // 6. Grok-2-vision (xAI) — rezerva finala
 
-  let geminiRes;
+  const log = (msg) => console.log(`[diagnose] ${msg} t+${Date.now()-t0}ms`);
+
+  // ── 1. Gemini 2.5-flash cheia 1 ──────────────────────────────────────────────
+  let res, text;
   try {
-    geminiRes = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
-          generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
-        }),
-        signal: ctrl.signal,
-      }
-    );
-    clearTimeout(timer);
-    console.log(`[diagnose] gemini ${geminiRes.status} t+${Date.now()-t0}ms`);
-  } catch (err) {
-    clearTimeout(timer);
-    console.error(`[diagnose] fetch err: ${err.name} ${err.message} t+${Date.now()-t0}ms`);
-    if (err.name === 'AbortError') {
+    res = await callGemini(GEMINI_KEY1, 'gemini-2.5-flash', base64, mimeType, prompt, 22000);
+    log(`gemini-2.5-flash key1 → ${res.status}`);
+    if (res.ok) {
+      text = geminiText(await res.json());
+      if (text) return Response.json({ diagnosis: text }, { headers: corsHeaders(req) });
+    }
+  } catch (e) {
+    log(`gemini-2.5-flash key1 err: ${e.name}`);
+    if (e.name === 'AbortError') {
       return Response.json({ error: 'Analiza AI a durat prea mult. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
     }
-    return Response.json({ error: 'Eroare conexiune AI. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
   }
 
-  // Fallback la gemini-2.5-flash-lite daca modelul primar esueaza
-  let usedFallback = false;
-  if (!geminiRes.ok) {
-    const primaryStatus = geminiRes.status;
-    console.error(`[diagnose] primary ${primaryStatus}, try fallback gemini-2.5-flash-lite t+${Date.now()-t0}ms`);
-    const ctrl2 = new AbortController();
-    const timer2 = setTimeout(() => ctrl2.abort(), 15000);
-    try {
-      geminiRes = await fetch(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
-            generationConfig: { maxOutputTokens: 2048, temperature: 0.3 },
-          }),
-          signal: ctrl2.signal,
-        }
-      );
-      clearTimeout(timer2);
-      console.log(`[diagnose] fallback ${geminiRes.status} t+${Date.now()-t0}ms`);
-      usedFallback = true;
-    } catch (fallbackErr) {
-      clearTimeout(timer2);
-      console.error(`[diagnose] fallback err: ${fallbackErr.message}`);
-      return Response.json({ error: `AI indisponibil (${primaryStatus}). Incearca din nou.` }, { status: 503, headers: corsHeaders(req) });
-    }
-    if (!geminiRes.ok) {
-      const errBody = await geminiRes.text().catch(() => '');
-      console.error(`[diagnose] fallback failed ${geminiRes.status}: ${errBody.substring(0, 200)}`);
-
-      // Fallback 3: xAI Grok vision
-      const XAI_KEY = process.env.XAI_API_KEY;
-      if (XAI_KEY) {
-        console.log(`[diagnose] try xAI Grok vision t+${Date.now()-t0}ms`);
-        const ctrl3 = new AbortController();
-        const timer3 = setTimeout(() => ctrl3.abort(), 15000);
-        try {
-          const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${XAI_KEY}` },
-            body: JSON.stringify({
-              model: 'grok-2-vision-1212',
-              messages: [{
-                role: 'user',
-                content: [
-                  { type: 'text', text: prompt },
-                  { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } },
-                ],
-              }],
-              max_tokens: 2048,
-              temperature: 0.3,
-            }),
-            signal: ctrl3.signal,
-          });
-          clearTimeout(timer3);
-          console.log(`[diagnose] xAI ${xaiRes.status} t+${Date.now()-t0}ms`);
-          if (xaiRes.ok) {
-            const xaiResult = await xaiRes.json();
-            const text = xaiResult.choices?.[0]?.message?.content
-              || 'Nu am putut analiza imaginea. Incearca cu o poza mai clara.';
-            return Response.json({ diagnosis: text, _fallback: true, _fallbackModel: 'grok-2-vision-1212' }, { headers: corsHeaders(req) });
-          }
-        } catch (xaiErr) {
-          clearTimeout(timer3);
-          console.error(`[diagnose] xAI err: ${xaiErr.message}`);
-        }
-      }
-
-      return Response.json({ error: `AI indisponibil (${geminiRes.status}). Incearca din nou.` }, { status: 503, headers: corsHeaders(req) });
-    }
-  }
-
+  // ── 2. Gemini 2.5-flash-lite cheia 1 ─────────────────────────────────────────
   try {
-    const result = await geminiRes.json();
-    const text = result.candidates?.[0]?.content?.parts?.[0]?.text
-      || 'Nu am putut analiza imaginea. Incearca cu o poza mai clara.';
-    console.log(`[diagnose] done${usedFallback ? ' (fallback)' : ''} t+${Date.now()-t0}ms`);
-    return Response.json(
-      { diagnosis: text, ...(usedFallback ? { _fallback: true, _fallbackModel: 'gemini-2.5-flash-lite' } : {}) },
-      { headers: corsHeaders(req) }
-    );
-  } catch (err) {
-    console.error('[diagnose] parse error:', err.message);
-    return Response.json({ error: 'Eroare procesare raspuns AI.' }, { status: 500, headers: corsHeaders(req) });
+    res = await callGemini(GEMINI_KEY1, 'gemini-2.5-flash-lite', base64, mimeType, prompt, 15000);
+    log(`gemini-2.5-flash-lite key1 → ${res.status}`);
+    if (res.ok) {
+      text = geminiText(await res.json());
+      if (text) return Response.json({ diagnosis: text, _fallback: true, _fallbackModel: 'gemini-2.5-flash-lite' }, { headers: corsHeaders(req) });
+    }
+  } catch (e) { log(`gemini-flash-lite err: ${e.name}`); }
+
+  // ── 3. Gemini 2.5-flash cheia 2 (rotatie cheie) ───────────────────────────────
+  const GEMINI_KEY2 = process.env.GOOGLE_AI_API_KEY_2;
+  if (GEMINI_KEY2) {
+    try {
+      res = await callGemini(GEMINI_KEY2, 'gemini-2.5-flash', base64, mimeType, prompt, 15000);
+      log(`gemini-2.5-flash key2 → ${res.status}`);
+      if (res.ok) {
+        text = geminiText(await res.json());
+        if (text) return Response.json({ diagnosis: text, _fallback: true, _fallbackModel: 'gemini-2.5-flash (key2)' }, { headers: corsHeaders(req) });
+      }
+    } catch (e) { log(`gemini key2 err: ${e.name}`); }
   }
+
+  // ── 4. GPT-4o via GitHub Models (50 req/zi gratuit) ──────────────────────────
+  const GITHUB_TOKEN = process.env.GITHUB_MODELS_TOKEN;
+  if (GITHUB_TOKEN) {
+    try {
+      res = await callOpenAIVision(
+        'https://models.inference.ai.azure.com/chat/completions',
+        GITHUB_TOKEN, 'gpt-4o', base64, mimeType, prompt, 20000
+      );
+      log(`gpt-4o github → ${res.status}`);
+      if (res.ok) {
+        text = openaiText(await res.json());
+        if (text) return Response.json({ diagnosis: text, _fallback: true, _fallbackModel: 'gpt-4o (github)' }, { headers: corsHeaders(req) });
+      }
+    } catch (e) { log(`gpt-4o github err: ${e.name}`); }
+  }
+
+  // ── 5. Pixtral-12B via Mistral (1B tokens/luna gratuit) ───────────────────────
+  const MISTRAL_KEY = process.env.MISTRAL_API_KEY;
+  if (MISTRAL_KEY) {
+    try {
+      res = await callOpenAIVision(
+        'https://api.mistral.ai/v1/chat/completions',
+        MISTRAL_KEY, 'pixtral-12b-2409', base64, mimeType, prompt, 20000
+      );
+      log(`pixtral-12b mistral → ${res.status}`);
+      if (res.ok) {
+        text = openaiText(await res.json());
+        if (text) return Response.json({ diagnosis: text, _fallback: true, _fallbackModel: 'pixtral-12b (mistral)' }, { headers: corsHeaders(req) });
+      }
+    } catch (e) { log(`pixtral err: ${e.name}`); }
+  }
+
+  // ── 6. Grok-2-vision (xAI) — rezerva finala ──────────────────────────────────
+  const XAI_KEY = process.env.XAI_API_KEY;
+  if (XAI_KEY) {
+    try {
+      res = await callOpenAIVision(
+        'https://api.x.ai/v1/chat/completions',
+        XAI_KEY, 'grok-2-vision-1212', base64, mimeType, prompt, 15000
+      );
+      log(`grok-2-vision xai → ${res.status}`);
+      if (res.ok) {
+        text = openaiText(await res.json());
+        if (text) return Response.json({ diagnosis: text, _fallback: true, _fallbackModel: 'grok-2-vision-1212' }, { headers: corsHeaders(req) });
+      }
+    } catch (e) { log(`grok err: ${e.name}`); }
+  }
+
+  // ── Toate fallback-urile epuizate ─────────────────────────────────────────────
+  log('toate fallback-urile epuizate');
+  return Response.json({ error: 'Serviciul AI de diagnostic este indisponibil momentan. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
 }
