@@ -601,4 +601,50 @@ Favorita lui Clapp, cu pastrarea sa limitata, este ideala pentru:
 
 ---
 
+## H. SFATURI PRACTICE PENTRU INCEPATORI — PAR CLAPP (FAVORITA LUI CLAPP)
+
+### Cele 5 lucruri pe care trebuie sa le stii INAINTE de a planta Favorita lui Clapp
+
+**1. Recoltarea timpurie este OBLIGATORIE, nu optionala.**
+Aceasta este regula numarul unu la Favorita lui Clapp si cea mai frecvent incalcata. Daca astepti sa se coaca pe pom, perele devin fainoase si nesatisfacatoare. Recoltezi cand fructul este INCA FERM, verde-galben, si il lasi sa se coaca in casa 5-7 zile. Asta e toata "tehnica".
+
+**2. Focul bacterian este amenintarea #1 — si nu exista tratament curativ.**
+Daca esti inconjurat de livezi de par sau mar, riscul de foc bacterian creste semnificativ. Strategia este simpla: tratament preventiv cu cupru in repaus si cu Aliette (sau Blossom Protect in varianta bio) la caderea petalelor. Nu astepta sa apara simptomele — atunci e deja prea tarziu pentru chimie.
+
+**NOTA IMPORTANTA — produs bio recomandat pentru inflorire:** In perioadele cu risc ridicat de foc bacterian (primavara calda si ploioasa), in timpul infloririi cand NU se pot aplica insecticide, se poate folosi **Blossom Protect** (Aureobasidium pullulans — drojdie antagonista). Este certificat pentru agricultura ecologica, autorizat in Romania, si este considerata cea mai eficienta solutie bio impotriva focului bacterian in timpul infloririi. Se aplica in 2-3 reprize in timpul infloririi, dimineata devreme sau seara. Este mai eficient decat Bacillus subtilis in aceasta fereastra de timp critica.
+
+**3. Fara polenizator = fara pere.**
+Un pom singur de Favorita lui Clapp nu produce nimic. Daca ai deja Williams sau Conference in livada, esti acoperit. Daca nu, planteaza cel putin un polenizator la maxim 30-40 m distanta.
+
+**4. Vigoarea pomului trebuie controlata prin tundere.**
+Favorita lui Clapp este un pom viguros. Daca nu tai regulat (vara si iarna), coroana se inchide, lumina nu mai ajunge la fructe, si bolile prolifereaza. Tunderea de vara (iulie — eliminarea lastarilor verticali) este la fel de importanta ca tunderea de iarna.
+
+**5. Pastrarea este scurta — planifica valorificarea din timp.**
+2-3 saptamani la frigider. Nu acumula mai mult decat poti vinde sau consuma in aceasta fereastra. Planifica: o parte pentru consum proaspat, o parte pentru compot/dulceata, o parte pentru palinca.
+
+### Intrebari frecvente de la incepatori
+
+**"Am cules perele si s-au facut fainoase in 2 zile — de ce?"**
+Le-ai lasat prea mult pe pom. Data viitoare, culege cand fructul este ferm si verde-galben, nu galben-moale. Testul: apasa usor langa codita — trebuie sa fie complet ferm. Daca simti cedare, ai intarziat deja cu 3-5 zile.
+
+**"Pomul are lastari cu varf indoit ca un carlig si frunze negre — ce e?"**
+Simptome clasice de foc bacterian (Erwinia amylovora). Actiune imediata: (1) Nu atinge zona cu mainile goale. (2) Taie la 30 cm sub ultima zona vizibil afectata. (3) Dezinfecteaza unealta cu alcool 70% dupa FIECARE taietura. (4) Arde materialul taiat imediat. (5) Raporteaza la DSVSA Arad (obligatie legala).
+
+**"Cate tratamente are nevoie Favorita lui Clapp?"**
+Minimum: 8-10 stropiri pe sezon (cupru iarna, Aliette la cadere petale, rapan + psila in mai-august, post-recoltare). Un program bine aplicat de 10-12 stropiri asigura fructe comerciale in toti anii.
+
+**"Pot face agricultura ecologica cu Favorita lui Clapp?"**
+Este posibil dar dificil, din cauza sensibilitatii ridicate la focul bacterian si rapan. Un program bio riguros (cupru + Aliette/Blossom Protect + produse pe baza de sulf) functioneaza in anii cu presiune redusa de boli. In anii umezi si calzi, presiunea este prea mare pentru produse bio singure. Recomandat: sistem de productie integrata (minim chimie, maximum igiena si preventie).
+
+### Ce completeaza un par Clapp in livada din Nadlac
+
+Favorita lui Clapp are un rol specific: **este prima para de vara**, coapta la sfarsitul lui iulie — inceputul lui august, cand piata este goala de pere. Combinatia ideala in livada:
+- **Clapp** (sfarsit iulie — august): primele pere, premium de vara, piata goala = pret bun
+- **Williams** (august): para de desert si de palinca, piata inca activa
+- **Napoca** (septembrie — octombrie): para de toamna si depozit, venituri pana in ianuarie
+
+Aceste trei soiuri se polenizeaza reciproc, au coacere esalonata si acopera piata de pere pe o perioada de 5-6 luni.
+
+---
+
 > **Disclaimer:** Acest ghid este realizat in scop informativ si educational, pe baza literaturii de specialitate pomicola, a practicilor recomandate pentru zona de vest a Romaniei si a experientei acumulate. Dozele de produse fitosanitare sunt orientative — cititi intotdeauna eticheta producatorului. Produsele mentionate pot avea autorizatii diferite in timp — verificati lista produselor autorizate MADR/ANF la momentul utilizarii. Informatiile despre focul bacterian reflecta reglementarile in vigoare la data redactarii. Consultati un inginer agronom sau DSVSA Arad pentru situatii specifice. Autorul nu isi asuma responsabilitatea pentru rezultatele aplicarii informatiilor fara adaptare la conditiile locale concrete.

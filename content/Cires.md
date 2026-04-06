@@ -348,6 +348,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 
 **Combatere:**
 - [CONV] Topsin M 7g/10L sau Score 2ml/10L — de la dezmugurire, continuat post-recoltare
+- [CONV] Dodifun SC (dodina 400g/l) 0.05% (5ml/10L) — fungicid specific pentru Blumeriella jaapii, actiune preventiva si curative. Alterneaza cu Score pentru prevenirea rezistentei.
 - [BIO] Zeama bordelez 0.5-1% — preventiv de 3-4 ori pe sezon; post-recoltare in special
 - Uree foliar 5% aplicata la caderea frunzelor — descompune frunzele infectate rapid
 
@@ -369,6 +370,8 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 - [BIO] Zeama bordelez 1% — identic ca abordare
 - La infectie activa: taie ramurile bolnave 15-20 cm sub zona infectata + dezinfecteaza uneltele + protejeaza rana cu mastic cu cupru
 - Evita taierea iarna
+
+**ATENTIE — Rezistenta la cupru:** Cercetarile recente (2024-2025) confirma ca unele tulpini de Pseudomonas syringae din Romania au dezvoltat rezistenta la produsele pe baza de cupru, reducand eficacitatea tratamentelor clasice cu zeama bordelez si Champion. Daca observi ca infectia continua in ciuda tratamentelor cu cupru aplicate corect, consulta un fitopatolog si considera alternarea cu alte produse antibacteriene (ex. Serenade — Bacillus subtilis) sau abordare strict culturala (taietura agresiva a lemnului infectat + dezinfectie unelte). Prevenirea prin alegerea momentului de tundere (vara, nu iarna) ramane cea mai eficienta masura.
 
 ### Musca cireselor (Rhagoletis cerasi) — DAUNATOR #1
 

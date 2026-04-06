@@ -489,3 +489,86 @@ Iarna, soarecii si iepurii pot roade scoarta lujerilor (mai ales sub mulci sau a
 - **Fertilizare:** 5 litri compost/m² primavara + optional NPK 10-10-10 (50g/m²). Murul nu e pretentios, dar raspunde bine la fertilizare.
 - **Congelarea:** Cel mai simplu mod de a pastra murele: inta un strat pe tava, congeleaza 2 ore, transfera in pungi. Pastreaza calitatea 12 luni. Dulceata de mure e si ea spectaculoasa — 1 kg mure + 500g zahar + 1 lamaie.
 - **Rabdare:** Primul an produce putin. Anul 2 e primul an real de productie. Din anul 3 — productie plina.
+
+---
+
+## H. SFATURI PRACTICE PENTRU INCEPATORI
+
+### H1. Murul vs. zmeurul — diferente cheie de intretinere
+
+| Aspect | Zmeur | Mur |
+|---|---|---|
+| Dimensiune lujeri | 1.5-2 m, subtiri | 2-5 m, grosi si rigizi |
+| Palisat | 2 sarme la 60 si 120 cm | Sistem "T" sau dublu T, mai robust |
+| Tundere | Relativ usoara | Mai laborioasa (lujeri grosi, greu de scos din palisat) |
+| Invazie | Moderata (drajoni) | AGRESIVA (drajoni + inradacinare varfuri) |
+| Soiuri fara spini | Rar | Frecvent — preferate pentru ingrijire usoara |
+| Maturare fruct | Rosu = copt | Negru MAT = copt; negru lucios = NECOPT |
+
+### H2. Cum recunosti coapte murele cultivate — gresit cel mai des
+
+**Gresit frecvent:** Recoltat cand murul e negru-lucios. La stadiul "negru-lucios", murul e acid si fara aroma.
+
+**Corect:** Asteapta negru MAT, usor moale la atingere, se desprinde fara efort. Diferenta de 3-5 zile fata de stadiul lucios este URIASA ca gust.
+
+**Testul simplu:** Ia murul intre degetul mare si aratator. Trage usor. Daca se desprinde fara rezistenta cu un mic "pop" — copt. Daca tragi si ramane — mai asteapta.
+
+### H3. Controlul invaziei — prioritate de la inceput
+
+Murul este una dintre cele mai invazive plante din gradina daca nu e controlat. In solul fertil cernoziom din Nadlac, cresterea si raspandirea sunt si mai agresive.
+
+**Surse de invazie:**
+1. **Drajoni** — lujeri noi care apar din radacinile laterale, la 0.5-2 m de planta mama
+2. **Inradacinarea varfurilor** — varful unui lujer lung atinge solul, prinde radacini si devine o planta noua
+
+**Program de control:**
+- Coseste intre randuri la 2 saptamani in sezonul de vegetatie
+- Verifica lunar perimetrul culturii — taie orice lujer "fugar" la sol
+- Taie varfurile lujerilor care depasesc sistemul de palisat INAINTE sa atinga solul
+- Optional (cea mai eficienta metoda pe termen lung): instaleaza bariera anti-radacina (folie PEID 1mm, ingropata 40 cm adancime) pe ambele laturi ale randului
+
+### H4. Recoltare corecta — evita Botrytis si Drosophila suzukii
+
+**Drosophila suzukii la mur:** Murul este gazda frecventa a acestui daunator. Fructele mai mari si mai ferme ale murului sunt mai rezistente decat zmeura, dar infestarea apare in perioadele calde cu fructe supracoapte lasate pe planta.
+
+**Protocol de recoltare:**
+- Recolteaza la fiecare 2-3 zile in plin sezon
+- Recolteaza dimineata (fructe mai ferme, mai rezistente)
+- Nu lasa fructe cazute la sol — le culege zilnic si le composteaza departe de cultura
+- Capcane cu otet de mere + sapun (schimba saptamanal) din iulie
+
+**Recoltare profesionala:** Tine o mana in strat la fund si intoarce/ridica lujerii cu cealalta mana, verificand si fata inferioara a ramificatiilor (murele se ascund adesea sub frunze).
+
+### H5. Tunderea de vara — cea mai importanta operatiune
+
+Imediat dupa terminarea recoltei pe un lujer (august-septembrie), taie-l la sol. Nu astepta toamna.
+
+**De ce urgent:** Lujerii morti ramasi in palisat:
+- Ocupa spatiu si impiedica cresterea lujerilor noi
+- Gazduiesc spori de boli (antracnoza, rugina, Botrytis)
+- Se usuca si devin fragili — la vant, pot rupe lujerii vii vecini
+
+**Sfat practic:** La soiurile fara spini, scoaterea lujerilor morti din palisat e relativ usoara. La soiurile cu spini — manusi groase, foarfeca de forta, rabdare.
+
+### H6. Schema vizuala anuala
+
+```
+PRIMAVARA (martie-mai):
+  → Lujeri noi (verzi) cresc din baza
+  → Lujerii din anul trecut (maro) au muguri → vor face fructe
+  → Leaga ambele tipuri de palisat SEPARAT (noi = centru, vechi = lateral)
+
+VARA (iunie-septembrie):
+  → Lujerii maro (vechi) RODESC → recolteaza!
+  → Dupa recoltare pe un lujer: TAIE LA SOL imediat
+  → Lujerii verzi (noi) continua sa creasca
+
+TOAMNA (octombrie-noiembrie):
+  → Toata tunderea ramasa se face acum
+  → Raman pe palisat: 5-8 lujeri noi vigurosi per planta
+  → Apleca lujerii la sol si acopera cu agrotextil (iernare)
+
+IARNA (decembrie-februarie):
+  → Repaus. Verifica mulciul, repara palisatul.
+  → Februarie: ridica lujerii, fixeaza pe palisat, curata ramificatiile laterale la 30-40 cm
+```

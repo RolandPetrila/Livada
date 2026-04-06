@@ -4,8 +4,8 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete | **HTML:** ~11,350 linii | **API:** 11 routes
-**Ultima actualizare:** 2026-04-06
+**Status sesiuni:** S1-S17 complete + Runda 9 (N8-N17) | **HTML:** ~12,550 linii | **API:** 11 routes
+**Ultima actualizare:** 2026-04-07
 
 ## Arhitectura
 - **Frontend**: Single HTML file (`public/index.html`) — tot inline (CSS, JS, date)
@@ -68,7 +68,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 ## Variabile de mediu (Vercel Dashboard)
 - `LIVADA_API_TOKEN` — autentificare API (dezactivata momentan, rate limit activ)
-- `GROQ_API_KEY` — AI ask + raport (llama-3.3-70b-versatile)
+- `GROQ_API_KEY` — AI ask + raport (llama-4-maverick primary, llama-3.3-70b-versatile fallback)
 - `GOOGLE_AI_API_KEY` — AI diagnostic foto (Gemini 2.5-flash, fallback 2.0-flash)
 - `UPSTASH_REDIS_REST_URL` — Redis cache meteo + jurnal sync
 - `UPSTASH_REDIS_REST_TOKEN` — Redis auth
@@ -90,4 +90,4 @@ H. Sfaturi Practice pentru Incepatori (adaugat S15)
 
 ## Imbunatatiri pendinte
 Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI.md` — checklist complet pe faze.
-**Faze 1-6 complete (118+ items).** Ramase: S10 (photos Edge), II1 (Cost Tracker), II2 (Push Notifications), II4 (Import CSV), Faza 7 (strategic).
+**Faze 1-6 complete + Runda 9 (N8-N17) implementate (130+ items total).** Ramase: S10 (photos Edge), II1 (Cost Tracker), II2 (Push Notifications), II4 (Import CSV), T9 (PNG icons), Faza 7 (strategic).

@@ -59,12 +59,15 @@ Alunul este **autoINcompatibil** — polenul unui soi NU poate fecunda florile f
 
 | Soi | Perioada polenizare (catini) | Soiuri polenizatoare recomandate |
 |---|---|---|
-| Tonda Gentile | Mijloc (feb) | Cosford, Ennis, Romavel |
-| Cosford | Timpuriu-mijloc (ian-feb) | Tonda Gentile, Ennis, Romavel |
-| Ennis | Mijloc-tardiv (feb) | Cosford, Romavel |
-| Romavel | Timpuriu-mijloc (ian-feb) | Tonda Gentile, Cosford, Ennis |
+| Tonda Gentile | Mijloc (feb) | Cosford, Ennis, Romavel, Merveille de Bollwiller |
+| Cosford | Timpuriu-mijloc (ian-feb) | Tonda Gentile, Ennis, Romavel, Merveille de Bollwiller |
+| Ennis | Mijloc-tardiv (feb) | Cosford, Romavel, Merveille de Bollwiller |
+| Romavel | Timpuriu-mijloc (ian-feb) | Tonda Gentile, Cosford, Ennis, Merveille de Bollwiller |
+| **Merveille de Bollwiller** | Mijloc-tardiv (feb) | Cosford, Tonda Gentile, Romavel |
 
-**Sfat:** Planteaza cel putin un soi cu polenizare TIMPURIE (Cosford, Romavel) si unul MEDIU-TARDIV (Tonda Gentile, Ennis) — asa ai suprapunere garantata indiferent de variatiile meteorologice.
+> **Nota despre Merveille de Bollwiller:** Soi francez vechi, cu fructe MARI si gust excelent, polenizare mijlociu-tarzie. Adaptat climatelor nordice (include conditiile din Romania). Excelent polenizator reciproc cu Cosford si Tonda Gentile. Disponibil in unele pepiniere romanesti si prin comanda online din Franta/Germania. [RELEVANT ca alternativa la Ennis — fructe similare ca marime, rezistenta mai buna la bacterioza]
+
+**Sfat:** Planteaza cel putin un soi cu polenizare TIMPURIE (Cosford, Romavel) si unul MEDIU-TARDIV (Tonda Gentile, Ennis, Merveille de Bollwiller) — asa ai suprapunere garantata indiferent de variatiile meteorologice. Cercetari ale Universitatii din Turin confirma ca Tonda Gentile si Merveille de Bollwiller sunt mutual compatibile si se folosesc impreuna in plantatii comerciale.
 
 ### Cerinte climatice — zona Nadlac/Arad
 
@@ -163,23 +166,28 @@ Alunul suporta mai bine seceta decat zmeurul sau afinul. Dar in perioadele de se
 
 **MAI (dupa infrunzire, frunze tinere)**
 
-| Tratament | Produs | Doza la 10L apa | Scop |
-|---|---|---|---|
-| Convential | Mospilan 20 SG | 2.5g | Balosita alunului (preventiv) |
-| BIO | Piretrina naturala | 10ml | Balosita (alternativa BIO) |
+| Tratament | Produs | Doza la 10L apa | Scop | PHI |
+|---|---|---|---|---|
+| Convential | Mospilan 20 SG (acetamiprid) | 2.5g | Balosita alunului | 14 zile |
+| BIO | Piretrina naturala (ex: Pyrethrum FS) | 10ml | Balosita (alternativa BIO) | 1-3 zile |
 
-> **Nota:** Acest tratament de mai e necesar DOAR daca ai avut atac de balosita in anul anterior. Altfel, sari-l.
+> **Nota:** Acest tratament de mai e necesar DOAR daca ai avut atac de balosita in anul anterior. Altfel, sari-l. Mospilan 20 SG (acetamiprid) este autorizat in UE — acetamiprida a primit aprobare de reinoire in 2021. PHI orientativ 14 zile (verifica eticheta produsului — poate varia pe culturi). Nu trata cand albinele sunt active.
 
 ---
 
 **IUNIE (fructe in crestere)**
 
-| Tratament | Produs | Doza la 10L apa | Scop |
-|---|---|---|---|
-| Convential | Actara 25 WG | 4g | Gandacul alunelor (Curculio nucum) |
-| BIO | Capcane cu feromoni | — | Monitorizare + capturare gandaci |
+| Tratament | Produs | Doza la 10L apa | Scop | PHI |
+|---|---|---|---|---|
+| Convential | Decis Mega 50 EW (deltametrin) | 5ml | Gandacul alunelor (Curculio nucum) | 7 zile |
+| Convential alternativ | Karate Zeon 50 CS (lambda-cihalotrin) | 15ml | Gandacul alunelor | 7 zile |
+| BIO | Capcane cu feromoni + Spinosad (Laser 240 SC) 4ml | — / 4ml | Monitorizare + capturare gandaci | 7 zile Spinosad |
 
-> **Nota:** Gandacul alunelor este daunator specific — daca nu ai probleme, nu trata.
+> **ATENTIE — PRODUSE INTERZISE:** Actara 25 WG (thiamethoxam) este **INTERZIS in UE pentru uz in aer liber din aprilie 2018**. Calypso 480 SC (thiacloprid) a fost **retras din UE din aprilie 2020**. Nu le mai folosi si nu le cumpara! Sunt neonicotinoide interzise.
+>
+> **Nota:** Gandacul alunelor este daunator specific — daca nu ai probleme, nu trata. Aplica insecticidul cand adultii sunt activi (mai-iunie), dimineata sau seara, niciodata la temperatura > 25°C. Nu trata in inflorire — nu exista inflorire la aceasta data, dar verifica sa nu fie plante apicole in zona.
+>
+> **Alternativa biologica eficace:** Beauveria bassiana (ciuperca entomopatogena) aplicata la sol in mai-iunie — distruge larvele si pupele din sol. Disponibila sub diverse marci (Naturalis-L, Botanigard). Combina cu cultivarea superficiala a solului sub tufa toamna.
 
 ---
 
@@ -193,6 +201,21 @@ Alunul suporta mai bine seceta decat zmeurul sau afinul. Dar in perioadele de se
 ---
 
 **Total tratamente pe an: 2-4.** Alunul este practic o cultura care se ingrijeste singura, comparativ cu pomii fructiferi clasici.
+
+### Tabel PHI (Pauza de Recoltare) — produse folosite la alun
+
+| Produs | Substanta activa | PHI (zile) | Status UE 2025 | Note |
+|---|---|---|---|---|
+| Zeama bordeleza | Cupru (sulfat) | 0-3 | Autorizat BIO | Verifica eticheta |
+| Mospilan 20 SG | Acetamiprid | 14 | Autorizat | Aplicat doar la nevoie |
+| Decis Mega 50 EW | Deltametrin | 7 | Autorizat | Inlocuitor Actara la Curculio |
+| Karate Zeon 50 CS | Lambda-cihalotrin | 7 | Autorizat | Alternativa la Decis |
+| Captan 80 WDG | Captan | 7 | Autorizat | Doar la monilioza severa |
+| Folicur Solo | Tebuconazol | 21 | Autorizat | Doar la fainare severa |
+| ~~Actara 25 WG~~ | ~~Thiamethoxam~~ | — | **INTERZIS UE (2018)** | Nu cumpara, nu folosi! |
+| ~~Calypso 480 SC~~ | ~~Thiacloprid~~ | — | **RETRAS UE (2020)** | Nu cumpara, nu folosi! |
+
+> **Regula esentiala:** Intotdeauna citeste eticheta produsului inainte de aplicare — PHI-ul poate diferi intre culturi si poate fi actualizat. Informatiile de mai sus sunt orientative si bazate pe etichetele curente (2025). La recoltare (august-septembrie), respecta PHI cu strictete.
 
 ---
 
@@ -318,7 +341,7 @@ Alunul produce drajoni abundent — este in natura lui sa formeze tufe dense. Fa
 - Colectarea si distrugerea alunelor cazute prematur (contin larve!)
 - Gaini sau pasari in livada — se hranesc cu larvele din sol
 
-**Tratament:** Actara 25 WG (4g/10L) sau Calypso 480 SC (3ml/10L) in mai-iunie, cand adultii sunt activi. BIO: capcane cu feromoni + Beauveria bassiana (ciuperca entomopatogena).
+**Tratament:** ~~Actara 25 WG~~ [INTERZIS UE din 2018] ~~Calypso 480 SC~~ [RETRAS UE din 2020]. **Produse autorizate:** Decis Mega 50 EW (deltametrin, 5ml/10L, PHI 7 zile) sau Karate Zeon 50 CS (lambda-cihalotrin, 15ml/10L, PHI 7 zile), aplicate in mai-iunie cand adultii sunt activi. BIO: capcane cu feromoni + Beauveria bassiana (ciuperca entomopatogena) + Spinosad (Laser 240 SC, 4ml/10L).
 
 #### 3. Acarienii (Phytoptus avellanae — acarianul galicol al alunului)
 
@@ -488,7 +511,7 @@ La alunii tineri (1-3 ani), iepurii si caprioarele pot roade scoarta tulpinilor 
 
 **Solutia:**
 - Inspectia alunelor in iulie-august: deschide 10 alune la intamplare. Daca mai mult de 2 contin larve sau gauri, ai problema.
-- Anul urmator: trateaza cu insecticid in mai-iunie (Actara 25 WG) cand gandacii sunt activi
+- Anul urmator: trateaza cu insecticid autorizat in mai-iunie (Decis Mega 50 EW sau Karate Zeon) cand gandacii sunt activi — Actara 25 WG este INTERZIS in UE din 2018!
 - Colecteaza alunele cazute prematur (contin larve!) si distruge-le
 - Cultiva superficial solul sub tufa toamna — expune pupele la ger
 - Solutie BIO: gaini sub aluni toamna — scurma si mananca larvele/pupele din sol

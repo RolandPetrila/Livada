@@ -632,6 +632,52 @@ Nashi (părul asiatic) este practic **necunoscut pe piața românească**. Aceas
 | Fructe crăpate, pete amare pe piele | Deficit calciu | Clorură de calciu foliar 40g/10L, la 10–14 zile |
 | Frunze cu pete roșii-violete | Deficit fosfor | Superfosfat 150g/pom, compost bogat |
 
+---
+
+## H. SFATURI PRACTICE PENTRU ÎNCEPĂTORI — PĂR HOSUI (NASHI)
+
+### Cele 5 lucruri pe care trebuie să le știi ÎNAINTE de a planta Hosui
+
+**1. Hosui NU este un păr obișnuit — resetează tot ce știi despre pere.**
+Forma rotundă ca un măr, pielea ruginită, textura crocantă — totul este diferit de Williams sau Clapp. Cel mai important lucru practic: se recoltează LA MATURITATE DEPLINĂ pe pom, nu verde (ca perele europene). Dacă îl culegi prea devreme, obții un fruct acru și tare. Dacă îl culegi la timp, obții ceva unic pe piața românească.
+
+**2. Rărirea fructelor este operația care face sau strică tot.**
+Hosui poate lega 5–8 fructe per pinten. Fără rărire, obții sute de fructe de 100–150 g, fără crunchiness, fără dulceață, care crăpă și putrezesc rapid. Cu rărire corectă (1 fruct/cluster, 15 cm distanță pe ramură), obții fructe de 300–400 g — premium, frumoase, cu un gust excepțional. Aceasta este diferența dintre eșec și succes cu Hosui.
+
+**3. Polenizarea este o problemă reală în România — rezolvă-o din timp.**
+Hosui este autosteril și are nevoie de un alt soi de nashi ca polenizator ideal. Problema: soiurile de nashi (Shinseiki, Chojuro, Nijisseiki) sunt greu de găsit în pepinierele românești. Soluție de urgență validată: Williams sau Conference la maximum 50 m distanță funcționează ca polenizatori parțiali (50–70% eficiență), mai ales cu albine active. Dacă poți procura un Shinseiki sau Nijisseiki din pepiniere italiene sau olandeze cu livrare în România — fă-o. Diferența față de polenizatorii europeni este de 20–30% în producție.
+
+**4. Rezistența la ger: –20 până la –22°C pentru lemn matur — dar iernile extreme există.**
+Zona Nădlac rareori depășește –15°C, deci Hosui adult este în siguranță în iernile normale. Problema este că o dată la 5–10 ani apar episoade de –20°C sau mai mult (ex. iarna 2012, 2017). Protejează pomii tineri OBLIGATORIU (trunchi învelit, mulci la bază) și verifică prognoza în episoadele de ger polar. **Notă despre rezistența portaltoiului:** Unele pepiniere românești afișează –32°C pentru Hosui pe dublu intermediar — aceasta se referă la rezistența sistemului radicular (portaltoiul de par franc), nu la rezistența soiului Hosui. Lemnul soiului rezistă –20 la –22°C indiferent de portaltoi.
+
+**5. Hosui este un produs de nișă premium — comercializează-l ca atare.**
+Nu încerca să concurezi pe kilogram cu perele europene. Hosui se vinde la 15–30 lei/kg, față de 5–10 lei/kg perele obișnuite. Strategia câștigătoare: degustare directă la vânzare (cine gustă, cumpără), explicarea originii japoneze, prezentare îngrijită (hârtie de ambalaj individuală). Piețele de producători, magazinele bio și restaurantele sunt piața ta țintă — nu supermarketul.
+
+### Întrebări frecvente de la începători
+
+**„De unde cumpăr un soi de nashi pentru polenizare?"**
+Pepinierele românești specializate (fructifer.ro, pepinierasosa.ro) pot importa la comandă. Alternativ: pepiniere italiene (es. Vivaio Europiante) sau olandeze (es. Fleuren Jonk) cu livrare în România — costuri de 30–50 euro/pom, transport inclus. Investiția merită față de reducerea cu 20–30% a producției pe toată durata de viață a pomilor Hosui.
+
+**„Hosui se poate cultiva ecologic?"**
+Da, mai bine decât perele europene, pentru că rapănul nashi (Venturia nashicola) are în România o presiune mai mică decât rapănul mărului și al perelor europene. Un program bio riguros (cupru + Score BIO + bicarbonat de potasiu + Bacillus subtilis) funcționează în cei mai mulți ani. Focul bacterian rămâne amenințarea principală chiar și în agricultura ecologică.
+
+**„Cum explic unui client ce este nashi?"**
+Formula câștigătoare: „Este o pară japoneză care are textura unui măr — crocantă și suculentă, nu moale ca o pară obișnuită. Extrem de dulce, fără acid. Gustul este complet diferit față de orice fruct din România." Apoi dai o felie de gustat. Rata de conversie la vânzare după degustare depășește 70%.
+
+### Diferențele cheie față de ceilalți peri din livadă (tabel rezumat)
+
+| Aspect | Hosui (nashi) | Williams | Clapp | Napoca |
+|---|---|---|---|---|
+| Recoltare | **Pe pom, copt complet** | Off-tree, ferm | Off-tree, ferm | Off-tree, ușor ferm |
+| Textură | **Crocantă, fermă** | Fondantă, topitoare | Fondantă, suculentă | Semifondantă |
+| Rărire fructe | **CRITICĂ (1/cluster)** | Importantă | Importantă | Importantă |
+| Polenizator | **Greu de găsit în RO** | Williams, Clapp, Napoca | Williams, Conference | Williams, Clapp |
+| Ger rezistență | –20 la –22°C | –22 la –25°C | –25 la –28°C | –25 la –28°C |
+| Preț piață | **15–30 lei/kg (premium)** | 8–15 lei/kg | 6–12 lei/kg | 5–10 lei/kg |
+| Dificultate cultură | **Medie–mare** | Medie | Medie | Ușoară–medie |
+
+---
+
 ### DISCLAIMER
 
 > Acest ghid este un document informativ, compilat din surse de cercetare pomologică și experiență practică. Dozele de produse sunt orientative — citește ÎNTOTDEAUNA eticheta produsului și respectă instrucțiunile producătorului. Produsele fitosanitare disponibile și legislația aferentă se pot modifica — verifică lista produselor omologate la MADR (Ministerul Agriculturii și Dezvoltării Rurale) înainte de utilizare. Consultă un inginer agronom pentru recomandări adaptate situației tale specifice. Autorul nu își asumă răspunderea pentru pierderile rezultate din aplicarea informațiilor fără verificare locală.
@@ -639,4 +685,4 @@ Nashi (părul asiatic) este practic **necunoscut pe piața românească**. Aceas
 ---
 
 *Document generat pentru livada semi-comercială Roland Petrila, Nădlac, județul Arad.*
-*Structura A–G conform standardul documentației proiectului Livada Dashboard.*
+*Structura A–H conform standardul documentației proiectului Livada Dashboard.*

@@ -346,13 +346,15 @@ Criteriul **nr. 2** este adaptarea la sezonul scurt (rodiul are nevoie de 150-18
 
 | Soi | Origine | Rezistenta ger | Marimea fructului | Calitatea fructului | Recomandat Nadlac? |
 |---|---|---|---|---|---|
-| **Salavatski** | Uzbekistan/Rusia | **-24°C** (exceptional) | Mare (300-500g) | Excelenta, dulce-acrisor | **DA — RECOMANDAT #1** |
-| **Russian 26** | Rusia | -20°C | Mediu-mare | Buna | **DA — RECOMANDAT #2** |
-| **Makedonia** | Bulgaria/Macedonia | -18°C | Mediu (200-350g) | Buna, dulce | **DA** |
-| **Kazake** | Asia Centrala | -18°C | Mediu | Buna | **DA** |
-| **Wonderful** | SUA/California | -12°C | Mare (400-600g) | Excelenta, gust intens | **NU (fara protectie intensa)** |
-| **Mollar de Elche** | Spania | -10°C | Mare | Excelenta | **NU — prea sensibil** |
-| **Acco** | Israel | -8°C | Mare | Premium | **NU — prea sensibil** |
+| **Salavatski** | Uzbekistan/Rusia | **-18°C fara protectie / -24°C cu protectie** | Mare (300-500g) | Excelenta, dulce-acrisor | **DA — RECOMANDAT #1** |
+| **Russian 26** | Rusia | -18°C fara protectie / -20°C cu protectie | Mediu-mare | Buna | **DA — RECOMANDAT #2** |
+| **Makedonia** | Bulgaria/Macedonia | -15°C fara protectie / -18°C cu protectie | Mediu (200-350g) | Buna, dulce | **DA** |
+| **Kazake** | Asia Centrala | -15°C fara protectie / -18°C cu protectie | Mediu | Buna | **DA** |
+| **Wonderful** | SUA/California | -10°C fara protectie / -12°C cu protectie | Mare (400-600g) | Excelenta, gust intens | **NU (fara protectie intensa)** |
+| **Mollar de Elche** | Spania | -8°C | Mare | Excelenta | **NU — prea sensibil** |
+| **Acco** | Israel | -6°C | Mare | Premium | **NU — prea sensibil** |
+
+> **Clarificare importanta hardiness Salavatski:** Cifrele de "-24°C" circula in multe surse comerciale romanesti, dar sunt temperatura maxima documentata cu protectie activa (mulci + acoperire) in conditii ideale de aclimatizare. **Fara protectie**, Salavatski rezista la aproximativ -17°C/-18°C in camp deschis — suficient pentru Nadlac in iernile tipice. In iernile cu minime sub -18°C (care se intampla la Nadlac o data la 7-10 ani), chiar si Salavatski poate suferi deteriorari ale lemnului aerian, dar regenereaza de obicei din radacini. Aceasta este diferenta esentiala fata de soiurile mediteraneene (Wonderful, Mollar) care mor complet. [CERT - bazat pe date de camp din zona USDA 6, Georgia/Virginia SUA si Bulgaria]
 
 ### Profiluri detaliate soiuri recomandate
 
@@ -360,7 +362,7 @@ Criteriul **nr. 2** este adaptarea la sezonul scurt (rodiul are nevoie de 150-18
 
 **Origine:** Uzbekistan si sudul Rusiei, creat pentru climate continentale severe.
 
-**Rezistenta ger:** Pana la **-24°C** in conditii de aclimatizare buna — cel mai rezistent soi disponibil la noi.
+**Rezistenta ger:** Pana la **-18°C fara protectie activa, pana la -24°C cu mulci abundent si acoperire** — cel mai rezistent soi disponibil la noi. Documentat ca supravietuitor in zone USDA 6 din SUA (Virginia, Kentucky, New Jersey) si din sudul Rusiei.
 
 **Fruct:** Mare (300-500g), coaja rosie-carmin, boabe rosii inchis, gust echilibrat dulce-acrisor. Maturare: septembrie-octombrie.
 
@@ -587,6 +589,47 @@ Lemnul umed ingheata mult mai usor decat lemnul lignificat si uscat. Opreste iri
 
 **Greseala #5: Recoltezi prea devreme**
 Fructele de rodiu arata "gata" cu mult inainte de a fi coapte. Culoarea rosie apare cu 4-6 saptamani inainte de maturitate. Testul sunetului metalic este singura metoda fiabila — nu te ghida dupa culoare sau dimensiune.
+
+---
+
+## H. Sfaturi Practice pentru Incepatori — Rodiu la Nadlac
+
+### Tabel PHI (Pauza de Recoltare) — produse folosite la rodiu
+
+| Produs | Substanta activa | PHI (zile) | Observatii |
+|---|---|---|---|
+| Zeama bordeleza 1-3% | Cupru (sulfat) | 3 | Aplicata primavara si toamna, nu pe fructe mature |
+| Captadin 50 WP | Captan | 7 | Putregai cenusiu — doar la nevoie |
+| Calypso 480 SC (tiacloprid) | Thiacloprid | — | **RETRAS UE din 2020 — nu folosi!** |
+| Mospilan 20 SG (acetamiprid) | Acetamiprid | 14 | Afide — autorizat UE |
+| Sapun potasic | — | 0 | BIO — fara pauza |
+| Ulei de neem | Azadirachtin | 0-1 | BIO — sigur, verifica eticheta |
+| Bicarbonat de sodiu 0.5% | — | 0 | BIO — preventiv putregai |
+
+> **Nota practica:** Rodiul se recolteaza **septembrie-octombrie** la Nadlac. Nu aplica niciun fungicid chimic pe fructe din august! Mospilan 20 SG dupa PHI de 14 zile inseamna ca ultima aplicare posibila este cu 2 saptamani inainte de inceperea recoltarii.
+
+### Evaluare realism hardiness — zona Nadlac
+
+| Situatie | Ce se intampla | Actiune |
+|---|---|---|
+| Iarna normala (-10°C / -12°C) | Salavatski: SUPRAVIETUIESTE fara protectie | Mulci de baza suficient |
+| Iarna grea (-15°C / -18°C) | Salavatski: supravietuieste cu protectie, Makedonia: risc | Protectie activa necesara |
+| Iarna extrema (-20°C) | Salavatski: regenereaza din radacini; Makedonia/Wonderful: posibil mort | Protectie maxima + acoperire |
+| Iarna catastrofala (-24°C) | Toti soii: damage sever, regenerare incerta | Protectie maxima + acoperire completa |
+
+**Concluzie pentru Nadlac:** Iernile tipice (-10 la -15°C) sunt gestionabile cu Salavatski si protectie corecta. Iernile extreme (sub -18°C) apar statistic o data la 7-10 ani si reprezinta singurul risc real de pierdere a arbustului. Dupa o iarna grea, regenerarea din radacini este frecventa — nu abandona rodiul dupa un sezon dificil.
+
+### Productivitate realista la Nadlac
+
+| Varsta tufa | Productie estimata | Conditii |
+|---|---|---|
+| Anul 1-3 | 0 kg | Formare structura, nu lasa sa fructifice |
+| Anul 4-5 | 1-3 kg | Primele fructe reale |
+| Anul 6-8 | 5-10 kg/tufa | Productie initiala |
+| Anul 9-15 | 10-15 kg/tufa | Productie stabila |
+| Dupa 15 ani | 15-20 kg/tufa | Productie maxima la Nadlac |
+
+> Ghidurile comerciale citeaza 20-30 kg/tufa, dar acestea sunt pentru zone mediteraneene. La Nadlac, din cauza limitelor climatice, estimeaza **50-60% din productia maxima citata**. Totusi, 10-15 kg/tufa de fructe exotice cu valoare de 30-50 lei/kg reprezinta o productie excelenta pentru o livada semi-comerciala.
 
 ---
 

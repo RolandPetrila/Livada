@@ -373,6 +373,8 @@ Da, migdalul este sensibil la basicare, exact ca piersicul!
 | **'Nikitskij 62'** | Ucraina (Crimea) | Tarzie | **-25°C** | Auto-sterila | Semi-moale | Adaptat clima continentala, dificil de gasit |
 | **'Lauranne'** | Franta | Tarzie | -18°C | **Autofertila** | Semi-moale | Ideal daca plantezi un singur pom, dar rar in Romania |
 | **'Marinada'** | Spania | Tarzie | -16°C | Partial autofertila | Moale | Productiva dar rezistenta la ger mai slaba |
+| **'Lovrin 18'** | Romania | Tarzie | -20 la -22°C | Auto-sterila | Semi-moale | Soi romanesc traditional, adaptat Banat-Arad, mai usor de gasit in pepinierele locale |
+| **'Supernova'** | Romania | Tarzie | -20°C | Auto-sterila | Semi-moale | Soi nou romanesc, disponibil la Pepiniera Dumbrava; bun randament |
 
 ### Recomandari concrete pentru Nadlac
 

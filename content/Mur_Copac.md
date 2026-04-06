@@ -638,3 +638,93 @@ In zona Nadlac, murul copac este in general **sigur** iarna, dar pot aparea prob
 > **Surse informatii:** Cunostinte agronomice generale despre genul Rubus, date climatice Nadlac/Arad, experienta cu soiuri comercializate in Romania. Informatiile sunt marcate [CERT], [PROBABIL] sau [INCERT] in functie de gradul de certitudine. Datele despre rezistenta la ger a soiurilor variaza in literatura — valorile prezentate sunt estimari conservative.
 >
 > **Ultima actualizare:** Aprilie 2026
+
+---
+
+## H. SFATURI PRACTICE PENTRU INCEPATORI — MURUL COPAC
+
+### H1. Diferenta esentiala fata de murul clasic tarator
+
+Daca ai mai cultivat sau citit despre murul tarator clasic (Thornfree, Loch Ness, Black Satin), murul copac erect functioneaza pe acelasi principiu biologic, dar cu doua diferente practice importante:
+
+| Aspect | Mur clasic tarator | Mur copac erect |
+|---|---|---|
+| Port | Lujeri lungi (3-5m), taratori | Lujeri verticali (1-1.8m), drepti |
+| Palisat | OBLIGATORIU complex (T sau dublu T) | OPTIONAL sau simplu (1-2 sarme) |
+| Tehnica speciala | Dirijare lujeri pe suport | **Ciupire varf (tip pruning)** la 90-100 cm |
+| Tundere | Elimini lujerii roditi (lungi, grosi) | Elimini lujerii roditi (mai scurti, mai usor) |
+| Invazie | Moderata (drajoni) | AGRESIVA (mai multi drajoni!) |
+
+**Cel mai important lucru diferit:** Tehnica de ciupire a varfului (tip pruning) este SPECIFICA murului copac erect si poate dubla sau tripla productia. La murul tarator NU se aplica in acelasi mod.
+
+### H2. Ciupirea varfurilor — tehnica cu cel mai mare impact
+
+Aceasta tehnica este confirmata stiintific: cercetari de la universitatile agricole din SUA arata o crestere de 4-5 ori a productiei la murele erecte cand se aplica ciupirea varfurilor. [CERT]
+
+**Cum functioneaza:**
+- Fara ciupire: lujerul creste DREPT, 1.5-2 m, cu putine ramificatii laterale = putine fructe
+- Cu ciupire: lujerul e oprit la 90 cm, produce 4-6 ramificatii laterale bogate = mult mai multe fructe
+
+**Procedura pas cu pas:**
+1. Urmareste lujerii noi (verzi) din primavara
+2. Cand ating 90-100 cm inaltime — ciupeste varful (ultimii 5-10 cm) cu mana sau foarfeca
+3. In 2-3 saptamani: din punctele de sub taietura apar 4-6 ramificatii laterale noi
+4. Daca ramificatiile depasesc 40-50 cm pana in toamna: ciupeste si pe ele la 30-40 cm
+5. Rezultat: o planta compacta, ramificata, cu zeci de muguri florali pentru urmatorul sezon
+
+**Cand sa ciupesti:** Iunie-iulie, cand lujerii ating 90-100 cm. Nu astepta sa creasca mai mult — pierdere de eficienta.
+
+**Atentie:** Ciupesti LUJERII NOI (vegetativi, de anul 1). NU atingi lujerii de anul 2 (cei care rodesc in acea vara — au scoarta mai inchisa si ramificatii cu fructe).
+
+### H3. Ciclul annual simplificat
+
+```
+PRIMAVARA (martie-mai):
+  → Lujerii de ANUL 2 (maro) pornesc si formeaza ramificatii laterale cu flori
+  → Lujerii de ANUL 1 (verzi, noi) incep sa creasca din baza
+
+VARA (iunie-septembrie):
+  → Lujerii de ANUL 2 RODESC → recolteaza la 2-3 zile!
+  → Lujerii de ANUL 1 cresc rapid → ciupeste-i la 90-100 cm (iunie-iulie)
+  → Dupa recoltare pe un lujer de ANUL 2: TAIE LA SOL imediat
+
+TOAMNA (octombrie-noiembrie):
+  → Lujerii de ANUL 1 (acum ciupiti si ramificati) se maturizeaza
+  → Raman pe planta: 4-6 lujeri vigurosi ramificati
+  → Aplica mulci la baza, verifica palisatul
+
+IARNA (ianuarie-februarie):
+  → Tundere de iarna: scurteaza ramificatiile laterale ale lujerilor la 20-30 cm (3-5 muguri)
+  → Aceste ramificatii vor fi pline de fructe vara urmatoare!
+```
+
+### H4. Soiuri recomandate pentru incepator in Nadlac
+
+Daca nu ai inca soiul ales, recomandarea pentru incepatori in zona Nadlac:
+
+**Prima alegere: Ouachita sau Navaho**
+- Complet erecte, fara spini — tundere si recoltare fara durere fizica
+- Rezistenta buna la ger (nu ai nevoie de protectie speciala in Nadlac)
+- Productivitate buna dupa aplicarea ciupirii varfurilor
+- Disponibile in pepinierele din zona (Dariu Plant, pepiniere Arad)
+
+**A doua alegere: Chester**
+- Semi-erect (necesita palisat simplu)
+- CEL MAI REZISTENT la ger dintre toate soiurile fara spini (-25°C)
+- Productivitate excelenta
+- Ideal daca ai teama de iernile exceptionale
+
+**Evita pentru inceput: Reuben**
+- Remontant, fructe uriase — dar ARE SPINI agresivi
+- Potrivit dupa ce capeti experienta cu soiurile fara spini
+
+### H5. Semnele de alarma — ce sa verifici lunar
+
+| Ce vezi | Problema probabila | Actiune |
+|---|---|---|
+| Fructe cu o parte rosie/verde care nu se coc | Acarienii murului (Acalitus essigi) | Sulf muiabil 30g/10L in primavara, la umflarea mugurilor |
+| Fructe cu larve mici albe | Drosophila suzukii | Capcane otet + recoltare zilnica + Spinosad daca sever |
+| Lujeri care se usuca brusc de la varf | Uscarea lujerilor (Leptosphaeria) | Taie la 20 cm sub zona afectata, dezinfecteaza foarfeca, tratament cupru |
+| Drajoni la 1-2 m de planta | Expansiune normala | Coseste sau sapa — normal si controlabil |
+| Lujeri de ANUL 2 care nu produc fructe | Nu ai ciupit varfurile in vara precedenta | Ciupeste lujerii noi din aceasta vara |
+| Fructe deformate, drupele nedezvoltate | Polenizare insuficienta | Asigura prezenta albinelor: nu trata in inflorire |

@@ -76,6 +76,76 @@ Cosit iarba de 4–6 ori/sezon cu motocoasa. Nu lăsa iarba mai înaltă de 15�
 Iarba cosită se lasă ca mulț pe loc (nutrienți + umiditate).
 Benzile de sub coroană — ține-le curate de buruieni pe o lățime de 1m de fiecare parte a trunchiului.
 
+# PARTEA IV — SPECII SPECIALE / EXOTICE: ALUN, RODIU, KAKI
+
+## 4.1 Rezumat caracteristici unice
+
+Livada din Nadlac include 3 specii cu biologie fundamental diferita de pomii fructiferi clasici (mar, par, piersic). Acestea necesita abordari complet diferite.
+
+| Specie | Tip | Polenizare | Risc iarna Nadlac | Tratamente/an | Obs. principale |
+|---|---|---|---|---|---|
+| Alun (Corylus avellana) | Arbust/arbore mic | **Vant! OBLIGATORIU 2+ soiuri** | ZERO (rezista -30°C) | 2-4 (cel mai putin!) | Infloreste IARNA (ian-feb); INTERZIS Actara/Calypso in UE |
+| Rodiu (Punica granatum) | Arbust exotic | Auto-fertil | MEDIU-MARE (risc sub -18°C) | 2-5 | Salavatski recomandat; protectie iarna obligatorie |
+| Kaki Rojo Brillante (Diospyros kaki) | Pom exotic | **Partenocarpic** (fara polenizator) | MARE (risc sub -15°C) | 4-6 | Fruct astringent — necesita postmaturare; protectie iarna critica |
+
+## 4.2 Calendar tratamente — specii speciale
+
+### ALUN
+
+| Perioada | Tratament recomandat | Doza | PHI | Note |
+|---|---|---|---|---|
+| Martie (dupa polenizare) | Zeama bordeleza 1% | 100g + 100g la 10L | 3 zile | NU aplica in ian-feb cand polenizeaza! |
+| Mai (la nevoie) | Mospilan 20 SG (acetamiprid) | 2.5g/10L | 14 zile | Balosita — numai daca ai atac |
+| Iunie (la nevoie) | Decis Mega 50 EW (deltametrin) | 5ml/10L | 7 zile | Gorgojul alunelor — numai la atac confirmat |
+| Octombrie | Zeama bordeleza 1% | 100g + 100g la 10L | 3 zile | Dezinfectie post-recoltare |
+
+> **ATENTIE LEGALA:** Actara 25 WG (thiamethoxam) — **INTERZIS in UE din 2018**. Calypso 480 SC (thiacloprid) — **RETRAS din UE din 2020**. Nu le folosi!
+
+### RODIU
+
+| Perioada | Tratament recomandat | Doza | PHI | Note |
+|---|---|---|---|---|
+| Martie | Zeama bordeleza 3% | 300g + 300g la 10L | 3 zile | Dezinfectie generala |
+| Mai (la nevoie) | Mospilan 20 SG | 2.5g/10L | 14 zile | Afide — doar la atac |
+| Noiembrie (OBLIGATORIU) | Zeama bordeleza 3% | 300g + 300g la 10L | — | Inainte de protectia de iarna |
+
+### KAKI
+
+| Perioada | Tratament recomandat | Doza | PHI | Note |
+|---|---|---|---|---|
+| Februarie (repaus) | Zeama bordelez 3% + Ulei horticol 1% | 300g/10L + 100ml/10L | 0 | Dezinfectie + oua daunatori |
+| Martie-Aprilie | Zeama bordelez 1% | 100g + 100g la 10L | 3 zile | Preventiv antracnoza |
+| Mai-Iulie (la nevoie) | Mancozeb 0.2% SAU Captadin 0.2% | 20g/10L | 28 / 7 zile | Antracnoza in ani ploiosi |
+| STOP septembrie | — | — | — | Respecta PHI inainte de recoltare oct-nov! |
+| Noiembrie | Zeama bordeleza 3% | 300g + 300g la 10L | — | Curatare post-recoltare |
+
+## 4.3 Tundere specii speciale — reguli esentiale
+
+### Alun — forma TUFA (6-8 tulpini)
+- **Tundere:** Ianuarie-Februarie, in REPAUS, DUPA eliberarea polenului de catini
+- **Regula cheie:** Elimina 1-2 tulpini batrane/an + controleaza drajonii de 2-3 ori/sezon
+- **INTERZIS:** Tundere in ian-feb inainte de polenizare — distrugi catinii!
+
+### Rodiu — forma TUFA (3-5 tulpini)
+- **Tundere structurala:** Sfarsit iarna / inceput primavara (martie-aprilie la Nadlac), DUPA ultimul ger
+- **INTERZIS:** Tundere de toamna — stimuleaza crestere fragila care ingheata
+- **Regula cheie:** Elimina drajoni de 3-4 ori/sezon; max 5 tulpini principale
+
+### Kaki — forma VAS AMELIORAT (3-4 sarpante)
+- **Tundere:** Sfarsit Februarie — inceput Martie (fereastra optima la Nadlac)
+- **Fructifica pe lastarii NOI ai anului** — scurteaza ramurile pentru a stimula lastari noi
+- **Rarire fructe OBLIGATORIE:** 1 fruct la 15-20cm de ramura; max 3-5 fructe/ramura
+
+## 4.4 Protectie iarna specii speciale
+
+| Specie | Risc | Masuri obligatorii | Masuri la prognoza sub -15°C |
+|---|---|---|---|
+| Alun | ZERO (lemn) | Mulci 10cm la baza tufelor tinere | — |
+| Rodiu Salavatski | MEDIU | Zeama bordelez 3% (nov), mulci 15-20cm | Acoperire tulpini + indoire la sol |
+| Kaki Rojo Brillante | MARE | Bandaj trunchi (nov-mar), mulci 15-20cm, varuire | Agrotextil P50 pe tot pomul |
+
+---
+
 # SURSE ȘI REFERINȚE
 Agrointel.ro — Tabel tratamente pomi fructiferi (schema ing. Marius Roman, Pepinierele Roman)
 AgroMentor.ro — Schemă tratament piersic 2026

@@ -978,4 +978,84 @@ Aceasta este provocarea principala fata de zmeurul rosu! La zmeurul rosu, coacer
 
 ---
 
-> **Nota finala:** Zmeurul galben remontant este una dintre cele mai recunoscatoare culturi din livada. Investitie initiala minima, intretinere simpla, productie rapida (din anul 2!), fructe delicioase si rare pe piata. Cu irigare, mulci si tundere corecta, vei avea zmeuri galbene superbe din august pana in octombrie, an de an. Succes, Roland! 🍋✨
+> **Nota finala:** Zmeurul galben remontant este una dintre cele mai recunoscatoare culturi din livada. Investitie initiala minima, intretinere simpla, productie rapida (din anul 2!), fructe delicioase si rare pe piata. Cu irigare, mulci si tundere corecta, vei avea zmeuri galbene superbe din august pana in octombrie, an de an. Succes, Roland!
+
+---
+
+## H. SFATURI PRACTICE PENTRU INCEPATORI — SPECIFIC ZMEUR GALBEN REMONTANT
+
+### H1. Diferentele fata de zmeurul rosu — ce se schimba concret
+
+Tu ai deja zmeur rosu in livada. Zmeurul galben remontant se ingrijeste aproape identic, cu cateva diferente importante:
+
+| Aspect | Zmeur rosu (al tau) | Zmeur galben remontant (cel nou) |
+|---|---|---|
+| Culoare fruct | Rosu la coacere | Galben-auriu la coacere — NU astepti sa se "inroseasca"! |
+| Recolta | Iunie-iulie (clasic) | August-octombrie (remontant, tuns la sol) |
+| Tundere | Selectiva (pastrezi lujeri de 1 an) | TOTALA la sol in noiembrie — mult mai simplu! |
+| Conservare fruct | 2-3 zile la frigider | 1-2 zile la frigider — recolteaza mai des! |
+| Gandacul zmeurului | Risc moderat (inflorire mai-iunie) | Risc minim (infloreste iulie-august, dupa zborul gandacului) |
+| Tratamente | Calendar standard | Aproape deloc — lujeri noi in fiecare an |
+
+### H2. Cum recunosti coacerea — provocarea principala a zmeurului galben
+
+**Aceasta este greseala numarul 1:** Incepatorii asteapta sa se "coloreze mai intens" sau sa se "faca rosu". Zmeurul galben nu se va face niciodata rosu!
+
+**Testul corect de coacere:**
+1. Atinge usor fructul cu 2 degete
+2. Daca se desprinde SINGUR la atingere usoara — COPT, recolteaza acum
+3. Daca trebuie sa tragi sau sa rasucesti — mai asteapta 1-2 zile
+
+**Aspectul vizual al coacerii:**
+- Galben-pal → galben-mediu → galben-intens/chihlimbariu = progresul coacerii
+- Fructul se inmoaie treptat — devine moale dar nu moale-zdrobit
+- Un lujer poate avea fructe la toate stadiile — recolteaza selectiv, nu toata rama dintr-o data
+
+### H3. Strategia de tundere pentru primul tau an (2026)
+
+Ai plantat in martie 2026. Iata ce urmeaza:
+
+**Vara 2026 (iulie-octombrie):**
+- Lujerii cresc rapid (pana la 1.5-2 m inaltime)
+- Leaga-i de palisat saptamanal cu sfoara moale
+- Pot aparea primele fructe toamna (august-octombrie) — bucura-te de ele, nu sunt daunatoare!
+- Selecteaza: pastreaza 8-10 lujeri vigurosi per metru liniar, elimina-i pe cei slabi
+
+**Noiembrie 2026:**
+- Taie TOTI lujerii la 2-3 cm de la sol — FARA EXCEPTIE
+- Aduna resturile si arde-le (nu composta!)
+- Mulceste cu 15 cm paie sau tocatura de lemn
+- Stropeste solul si cioatele cu zeama bordeleza 1%
+
+**Primavara 2027:**
+- Din cioate pornesc lujeri complet noi
+- Aceasta este prima ta recolta "serioasa" toamna (august-octombrie)
+- Productie asteptata: 0.5-1.5 kg/planta
+
+### H4. Pozitionarea in livada — factor de succes adesea ignorat
+
+**Expunere recomandata pentru zona Nadlac:**
+- Soare dimineata + umbra partiala dupa-amiaza = IDEAL (evita arsurile solare pe fructele galbene)
+- Soare total toata ziua = acceptabil, dar pe canicula >35°C fructele se pot "fierbe"
+- Pozitionat la adapost de vantul predominant dinspre vest = mai putine probleme cu ruperea lujerilor
+
+**Protectie in canicula (35°C+):**
+- Plasa de umbrire 30-40% montata deasupra — reduce temperatura cu 3-5°C
+- Irigare suplimentara dimineata devreme (creste umiditatea locala)
+- Zmeurul galben e mai sensibil la arsuri solare decat cel rosu — lipsa antocianinelor = mai putina protectie UV
+
+### H5. Vanzarea zmeurului galben — sfaturi practice pentru Nadlac
+
+Zmeurul galben este o NISA in Romania. In 2026, putini cultivatori il au pe piata locala din zona Arad.
+
+**Pretul de vanzare recomandat:** 30-50 lei/kg (fata de 15-25 lei/kg pentru zmeurul rosu obisnuit). Justificat de raritate si calitate.
+
+**Cum sa comunici produsul:**
+- Eticheta clara: "Zmeur Galben — Dulce, Aromat, Premium"
+- Mentionaza ca este tolerat de persoanele alergice la fructele rosii
+- Ofera o degustare la primul contact — gustul ii convinge instant pe cumparatori
+- Pe Facebook/OLX: fotografii cu fructele aurii in lumina naturala — aspectul vizual este un argument de vanzare puternic
+
+**Cand sa vinzi:**
+- August-octombrie = zmeurul galben este practic singurul zmeur proaspat pe piata (zmeurul rosu clasic s-a terminat in iulie)
+- Lipsa concurentei directe = pret mai bun

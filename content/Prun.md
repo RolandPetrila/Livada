@@ -481,4 +481,48 @@ Taierea drastica a peste 50% din coroana slabeste grav pomul, produce sute de la
 
 ---
 
+## H. SFATURI PRACTICE PENTRU INCEPATORI — PRUN
+
+### Cele 5 lucruri pe care trebuie sa le stii INAINTE de a planta un prun
+
+**1. Prunul este cel mai iertator pom din livada — dar nu inseamna ca nu are nevoie de ingrijire.**
+Da, prunul creste si produce chiar si neglijat. Dar diferenta intre un prun ingrijit si unul lasat de izbeliste este enorma: 40 kg/pom fata de 8 kg/pom, fructe mari si frumoase fata de fructe mici si viermanoase. Ingrijirea de baza (2-3 stropiri, tundere anuala, curatarea mumiilor) se face in 5-6 zile pe an si transforma radical productia.
+
+**2. Alege soiuri romanesti ca baza a livezii.**
+Soiuri ca Tuleu Gras, Gras Ameliorat, Stanley si Vinete Romanesti sunt adaptate perfect la clima din zona Arad. Nu au nevoie de conditii speciale, rezista la ger si boli mai bine decat soiurile straine, si se vand bine pe piata locala. Soiurile exotice (President, Anna Spath) sunt bune ca completare, nu ca baza.
+
+**3. Monilioza si viermele prunelor sunt cei doi inamici principali — sunt gestionabili cu masuri simple.**
+Nu ai nevoie de un program complicat. Doua reguli rezolva 80% din probleme: (a) Colecteaza si distruge TOATE fructele mumifiate toamna — asta taie lantul infectios al moniliozei. (b) Monteaza capcane cu feromoni in mai si trateaza cand zborul depaseste pragul de 5-7 fluturasi/saptamana — asta controleaza viermele prunelor.
+
+**4. Sarka (Plum Pox Virus) este incurabila — cumpara material saditor certificat.**
+Aceasta este singura boala la care nu exista remediu dupa infectare. Pomul trebuie eliminat si ars. Preventie: cumpara pomi din pepiniere cu certificat fitosanitar (livret verde), combate afidele eficient (sunt vectorii bolii), si nu altoi niciodata din material necertificat. Principalii vectori in zona Arad sunt Myzus persicae (afida verde a piersicului) si Hyalopterus pruni (paduchele cenusiu al prunului — specific prunului).
+
+**5. Nu da azot dupa 15 iunie.**
+Aceasta este regula cea mai adesea incalcata de incepatori. Azotul dat tarziu produce lastari lungi, verzi, moi, care nu se aoiesc inainte de iarna si ingheata. Rezultatul: pom slabit, sensibil la boli, cu productie redusa anul urmator. Toata fertilizarea cu azot se termina in prima jumatate a lui iunie.
+
+### Intrebari frecvente de la incepatori
+
+**"Prunul meu are gauri in frunze — ce are?"**
+Cel mai probabil ciuruire (Stigmina carpophila). Este frecventa si vizibila, dar rar grava. Tratamentul standard cu zeama bordelez primavara tine boala sub control. Daca gaurile sunt insotite de galerie in interior, verifica daca nu e atacul unui daunator (afide, acarienii).
+
+**"Fructele cad inainte sa se coaca — de ce?"**
+Doua cauze principale: (1) Viermele prunelor — verifica daca ai gaura de intrare si larva in fruct. Trateaza cu Coragen sau BT. (2) Seceta — prunul arunca fructele cand nu are apa. Iriga in lunile iulie-august.
+
+**"Am pomul plin de prune dar sunt mici — ce fac?"**
+Rarire (eliminare partiala a fructelor in mai-iunie) si fertilizare cu potasiu (sulfat de potasiu 200g/pom in iulie). Prunul nu necesita rarire sistematica ca marul sau parul, dar in anii cu inflorire abundenta, rarirea manuala a fructelor prea indesate creste calibrul cu 20-30%.
+
+**"Ce fac cu excesul de prune?"**
+Optiuni: magiun (se fierbe fara zahar, se pastreaza ani), tuica (soiuri bogate in zahar: Tuleu Gras, Stanley), uscare (soiul Agen este cel mai bun pentru uscare, dar Tuleu Gras si Stanley functioneaza excelent), congelare (curati samburii, portionezi si congelezi direct).
+
+### O nota despre monilioza la prun — clarificare importanta
+
+In Romania sunt prezente trei specii de Monilinia care ataca prunul:
+- **Monilinia laxa** — ataca florile si lastarele tinere primavara (monilioza florilor)
+- **Monilinia fructigena** — ataca fructele in crestere si la maturare (mumificarea fructelor)
+- **Monilinia fructicola** — specie mai agresiva, introdusa din America, in expansiune in Europa — ataca atat florile cat si fructele, cu potential de infectie mai rapid
+
+Toate trei se controleaza prin aceleasi produse (Chorus, Switch, Topsin M) si aceeasi igiena (colectarea mumiilor). Insa prezenta lui M. fructicola impune o vigilenta crescuta in anii cu primavara calda si umeda — tratamentele nu trebuie omise in perioadele de risc ridicat.
+
+---
+
 *Ghid elaborat pentru conditiile climatice specifice zonei Nadlac-Arad, Romania. Doze orientative — citeste intotdeauna eticheta produsului. Respecta pauzele de securitate inainte de recoltare.*

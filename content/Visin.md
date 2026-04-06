@@ -340,6 +340,7 @@ Visinul (mai ales pe portaltoi franc sau pe mahaleb) produce drajoni numerosi.
 
 **Combatere — strategia corecta:**
 - [CONV] Topsin M 7g/10L sau Score 2ml/10L — aplicat de la dezmugurire; continuat POST-RECOLTARE (cel mai important!)
+- [CONV] Dodifun SC (dodina 400g/l) 0.05% (5ml/10L) — fungicid specific pentru Blumeriella jaapii la visin si cires. Actiune preventiva si curative, eficient mai ales post-recoltare. Alterneaza cu Score si Topsin pentru prevenirea rezistentei.
 - [BIO] Zeama bordelez 0.5-1% (50-100g/10L) — preventiv de 3-4 ori pe sezon; post-recoltare este cel mai important moment
 - Uree foliar 5% la caderea frunzelor — descompune frunzele infectate rapid pe sol
 

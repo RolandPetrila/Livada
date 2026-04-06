@@ -463,3 +463,66 @@ Iepurii si soarecii pot roade scoarta lujerilor iarna. Solutii:
 - **Nu planta zmeur dupa zmeur** sau dupa capsuni, mur, cartofi, tomate, ardei, vinete — aceeasi boli (Verticillium, Phytophthora). Respecta o pauza de 4-5 ani.
 - **Rabdare in anul 1:** Plantele nou plantate se stabilizeaza. Nu te astepta la productie mare. Focusul e pe sistem radicular sanatos.
 - **Congeleaza surplusul:** Intinde zmeurele intr-un singur strat pe tava, congeleaza 2 ore, apoi transfera in pungi. Pastreaza calitatea 12 luni.
+
+---
+
+## H. SFATURI PRACTICE PENTRU INCEPATORI
+
+### H1. Intelege ciclul bienal — totul porneste de aici
+
+Cea mai frecventa greseala a incepatorilor la zmeur este sa nu inteleaga ca lujerul creste un an si rodeste al doilea an, apoi moare. Daca intelegi asta, tunderea devine logica si simpla.
+
+**Retine acest tablou:**
+- **Lujer verde** = are 1 an, NU produce fructe, trebuie PASTRAT
+- **Lujer maro** = are 2 ani, produce fructe, dupa recoltare TAIAT la sol
+
+La soiurile remontante gestionate cu tundere totala la sol, regula se simplifica si mai mult: tai TOTUL in noiembrie, planta o ia de la zero in primavara. Nicio confuzie posibila.
+
+### H2. Primele semne de boala — ce sa cauti
+
+| Ce vezi | Boala probabla | Ce faci |
+|---|---|---|
+| Pete violacee pe lujeri, scoarta crapata | Antracnoza | Taie lujerii afectati, aplica zeama bordeleza |
+| Pete mari maro la baza lujerilor, scoarta exfoliata | Didymella | Taie la sol, dezinfecteaza foarfeca, zeama bordeleza toamna |
+| Pustule portocalii pe fata inferioara a frunzelor | Rugina | Folicur 10ml/10L la primele semne |
+| Mucegai cenusiu pe fructe | Botrytis | Recolteaza imediat tot ce e copt, Switch 8g/10L (pauza 3 zile) |
+| Musculite mici in jurul fructelor coapte | Drosophila suzukii | Capcane cu otet + recoltare zilnica |
+
+### H3. Calendarul minimal pentru un incepator
+
+Nu vrei un program complex? Iata minimul absolut pentru zmeur sanatos:
+
+| Luna | Ce faci |
+|---|---|
+| Noiembrie | Taie TOTI lujerii la sol (remontant) sau lujerii care au rodit (clasic). Mulceste cu 15 cm paie. |
+| Martie | Imprastie 5 litri compost la baza fiecarei plante. Stropeste cu zeama bordeleza 1% (solul si cioatele). |
+| Aprilie-Mai | Leaga lujerii de palisat pe masura cresterii. Selecteaza: pastreaza 8-10 lujeri vigurosi/m. |
+| August-Octombrie (remontant) | Recolteaza la 2 zile. |
+| Iunie-Iulie (clasic) | Recolteaza la 2 zile. Dupa recoltare: taie imediat lujerii roditi. |
+
+**Asta e tot minimul.** Tratamentele chimice devin necesare doar daca apar probleme vizibile.
+
+### H4. Zmeurul si solul din Nadlac — ce trebuie corectat
+
+Solul cernoziom din zona Nadlac are pH 7.0-7.5 — usor alcalin fata de optimul zmeurului (5.5-6.5). Nu e o situatie catastrofala (spre deosebire de afin!), dar merita atentie.
+
+**Semn de alarma — cloroza ferica:** Frunzele devin galbene intre nervuri (nervurile raman verzi). Apare cand pH-ul depaseste 7.5 si fierul devine indisponibil.
+
+**Solutii practice:**
+1. **La plantare:** Incorporeaza 2-3 kg turba acida/m de rand in santul de plantare
+2. **Mulci permanent:** Paie, tocatura de lemn — descompunerea acidifica usor solul in timp
+3. **Daca apare cloroza:** Chelat de fier (EDDHA) 20g/10L la radacina, de 2 ori pe an (aprilie + iunie)
+4. **Fertilizator cu reactie acida:** Sulfat de amoniu (nu azotat de calciu!) ca sursa de azot
+
+### H5. Controlul Drosophila suzukii — daunator tot mai frecvent in Romania
+
+Musculita cu aripi patate (Drosophila suzukii) este un daunator emergent confirmat in Romania, cu risc ridicat la zmeur, mur si afin. Spre deosebire de musca obisnuita a otetului care ataca fructele stricate, D. suzukii depune oua IN fructele INTREGI, inca pe planta.
+
+**Semn de infestare:** Fructe care se inmoaie rapid, cu larve albe minuscule (1-2 mm) in interior. Fructele par sanatoase la exterior, dar la taierea cu cutitul se vad larvele.
+
+**Combatere integrata (confirmat eficient in Romania):**
+- **Capcane de monitorizare** (din mai): pahar transparent cu 100 ml otet de mere + 2-3 picaturi sapun de vase + gauri mici in capac (2-3 mm). Schimba lichidul saptamanal.
+- **Recoltare zilnica** in perioadele calde — cel mai eficient control
+- **Plase anti-insecta** (mesh sub 1mm) pe structura de palisat daca infestarea e severa
+- **Spinosad** (produs BIO, ex. Exalt SC sau Laser 240 SC): 5 ml/10L, maxim 2 aplicari/sezon, pauza 3 zile inainte de recoltare
+- **Nu lasa fructe cazute la sol** — se composteaza larve

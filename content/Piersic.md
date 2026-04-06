@@ -326,13 +326,19 @@ Am descris-o detaliat in Sectiunile A si B. Rezumat:
 
 **Natural:** Buburuze, gangurelele (Chrysoperla), pasari (titei, mierle) — atrage-i cu plante nectarifere si netratat excesiv cu chimicale.
 
-#### 3. Viermele piersicului (Cydia molesta)
+#### 3. Viermele piersicului (Cydia molesta — molia orientala a fructelor)
 
 **Simptome:** Similar cu molia vargata — lastari uscati si fructe cu galerie interioara. Se deosebeste de Anarsia prin aceea ca galeria e spre sambure, nu spre exterior.
 
-**Combatere chimica:** Coragen 20 SC (1.75ml/10L), Calypso (2ml/10L)
+**Biologie importanta pentru calendar:** Cydia molesta are **pana la 4 generatii pe an** in zona Arad (versus Anarsia care are 2-3). Prima generatie: mai (atac pe lastari). Generatiile 2-4: iulie-septembrie (atac pe fructe). Zborul adultilor: **10 aprilie — 30 septembrie**.
+
+**Monitorizare cu capcane feromoni:** Instaleaza capcane cu feromoni specifici Cydia molesta din 10-15 aprilie, in coroana pomului, la minim 2m inaltime. La 5-7 exemplare capturate consecutiv/saptamana — aplica tratament chimic. Inlocuieste feromona la 4-6 saptamani.
+
+**Combatere chimica:** Coragen 20 SC (1.75ml/10L), Calypso (2ml/10L) — aplica in prima zi a fiecarei generatii (monitorizat prin capcana).
 
 **Combatere BIO:** Bt 1-2g/10L, capcane feromoni Cydia molesta
+
+**Metoda avansata — confuzie sexuala (pentru livezi > 0.5 ha):** Dispersoare de feromoni (BASF Rak 5, Isomate OFM rosso, Ecodian CM) amplasati in coroana pomilor reduc copularea masculilor cu 70-80%. Cost initial mai mare, dar fara reziduri pe fructe si fara tratamente chimice repetate. Recomandat la livezi semi-comerciale odata ce infestarea este confirmata.
 
 #### 4. Acarienii (Panonychus ulmi — paianjenul rosu)
 

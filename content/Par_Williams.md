@@ -601,6 +601,48 @@ Williams este autosteril. Fără alt soi de păr în raza de 30–40 m, producț
 
 ---
 
+## H. SFATURI PRACTICE PENTRU ÎNCEPĂTORI — PĂR WILLIAMS
+
+### Cele 5 lucruri pe care trebuie să le știi ÎNAINTE de a planta Williams
+
+**1. Williams este cel mai aromat păr din lume — dar și cel mai pretențios la îngrijire din livada ta.**
+Nu este un soi pentru abandonat. Williams răsplătește generozitate exact cât primește: irigare, tratamente, rărire fructe, fertilizare cu potasiu. Fiecare pas omis se vede direct în calitatea și cantitatea recoltei.
+
+**2. Recoltează verde-gălbui, coace în casă — aceasta este tehnica, nu o greșeală.**
+Williams nu se coace bine pe pom. Fructul lăsat complet galben pe ramură devine făinos și perisabil. Regula simplă: recoltezi ferm, verde-gălbui, depozitezi 5–7 zile la temperatura camerei, și obții o pară fondantă, parfumată, excepțională. Trucul profesionist: pui perele într-o pungă de hârtie cu un măr (merii emit etilenă care accelerează coacerea).
+
+**3. Focul bacterian în timpul înfloririi — există o soluție bio de urgență.**
+Williams înflorește la mijlocul lui aprilie, perioadă când nu se pot aplica insecticide (albinele!). Dacă primăvara este caldă și ploioasă (risc maxim de foc bacterian), soluția bio autorizată în România este **Blossom Protect** (Aureobasidium pullulans) — o drojdie antagonistă care colonizează florile și blochează instalarea bacteriei. Se aplică în 2–3 reprize în timpul înfloririi, dimineața devreme sau seara (nu la prânz). Este certificat organic și funcționează și în sistem convențional ca parte a programului integrat.
+
+**4. Incompatibilitatea cu gutuiul — verifică OBLIGATORIU la cumpărare.**
+Williams pe portaltoi de gutui (BA-29) poate necesita un intermediar de altoire (Beurré Hardy sau similar). Fără intermediar, legătura de altoire este fragilă și pomul poate muri brusc după câțiva ani. La cumpărare din pepiniere, întreabă explicit: „Are intermediar de altoire?" Pepinierele serioase știu și confirmă. Dacă nu știu, caută în altă parte.
+
+**5. Williams și palinca de pere — oportunitate economică reală în zona Arad.**
+Dacă ai 10+ pomi Williams și acces la un cazan legal, pălinca de pere Williams este probabil cel mai valoros produs per litru din întreaga livadă. Aria Arad–Timișoara are tradiție în rachiuri de fructe de calitate, iar cererea pentru pălincă de pere Williams artizanală este în creștere. 100 kg pere → 8–12 litri rachiu la 50% alcool.
+
+### Întrebări frecvente de la începători
+
+**„Irigatul la Williams e chiar obligatoriu sau e opțional?"**
+Obligatoriu pentru fructe de calitate în zona Nădlac. Precipitațiile de ~558 mm/an sunt insuficiente în lunile iulie–august. Fără irigare: pere de 80–100g, pieloase, fără aromă. Cu irigare: pere de 180–230g, fondante, parfumate. Diferența este de 2–3 ori în valoare comercială.
+
+**„Câte tratamente are nevoie Williams pe sezon?"**
+Minim 10–12 stropiri bine aplicate: 2 în repaus (cupru + ulei), 1 la dezmugurit, 1 la buton floral, 1 la căderea petalelor (CRITIC — Aliette!), 4–5 în mai–iulie (rapăn + psila + viermele fructelor), 1–2 post-recoltare. Calitatea aplicării contează mai mult decât numărul — o stropire bine executată (acoperire completă, doze corecte, timp fără ploaie) face cât trei proaste.
+
+**„Ce fac cu surplus de Williams?"**
+Prioritate: vânzare proaspătă (preț de 2–3 ori față de perele comune). Compot de Williams — excelent. Gem cu pere Williams și ghimbir — produs premium pentru piețe de nișă. Pălincă — dacă ai cazan legal. Deshidratare — felii fine, uscate, parfumate. Nu lăsa niciodată să putrezească pe pom sau jos — este pierdere de valoare și sursă de boli.
+
+### Particularitățile tehnice față de alți peri din livadă
+
+| Caracteristică | Williams | Clapp | Napoca | Hosui |
+|---|---|---|---|---|
+| Recoltare | Verde-gălbui, coacere off-tree | Verde-gălbui, coacere off-tree | Verde-gălbui, coacere parțial off-tree | **Pe pom, la maturitate deplină** |
+| Irigare | **Obligatorie** | Recomandată | Recomandată | **Obligatorie** |
+| Sensibilitate foc bacterian | **Ridicată** | **Foarte ridicată** | Moderată | Moderată |
+| Compatibilitate gutui fără intermediar | **Uneori nu** | Da | Da | Nu |
+| Aromă de referință | **DA — parfum muscat iconic** | Bună | Bună | Diferită (crocantă, dulce, neaspecifică) |
+
+---
+
 > **Disclaimer:** Acest ghid este elaborat cu scop informativ, pe baza literaturii de specialitate în pomicultură și adaptare la condițiile pedoclimatice din zona Nădlac/Arad. Dozele produselor fitosanitare sunt orientative — consultați ÎNTOTDEAUNA eticheta producătorului și respectați legislația în vigoare. Pentru diagnosticarea bolilor și dăunătorilor, consultarea unui specialist (inginer agronom, OSPA Arad) este recomandată. Autorul nu își asumă responsabilitatea pentru rezultatele aplicării tratamentelor fără verificare profesională.
 
 ---

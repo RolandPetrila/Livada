@@ -486,12 +486,14 @@ Fara tundere, kaki-ul tinde sa devina:
 | **Fuyu** | Asiatic (PCNA) | Oct-Nov | -15/-17°C | **NU** | Se mananca crocant, ca un mar! Nu necesita postmaturare. Mai putin rezistent la frig [CERT] |
 | **Jiro** | Asiatic (PCNA) | Sept-Oct | -15°C | **NU** | Similar cu Fuyu, maturare mai timpurie, fruct turtit [CERT] |
 | **Ciocolatino (Triumph)** | Asiatic | Oct | -17/-18°C | Partial | Pulpa bruna "ciocolatie" cand polenizat, dulce, interesant [PROBABIL] |
-| **Rosseyanka** | Hibrid (kaki x virginiana) | Sept-Oct | **-25/-28°C** | **DA** | CEL MAI REZISTENT la frig! Hibrid rusesc, fruct mic (80-120g) dar sigur la Nadlac [CERT] |
-| **Nikita's Gift** | Hibrid (kaki x virginiana) | Sept-Oct | **-25/-28°C** | Partial | Hibrid ucrainean, rezistenta excelenta, fruct mediu [CERT] |
+| **Rosseyanka** | Hibrid (kaki x virginiana) | Sept-Oct | **-23°C** (zona USDA 6, cu varfuri documentate la -26°C) | **DA** | CEL MAI REZISTENT la frig! Hibrid rusesc, fruct mic (80-120g) dar sigur la Nadlac [CERT] |
+| **Nikita's Gift** | Hibrid (kaki x virginiana) | Sept-Oct | **-23°C** (zona USDA 6, minim documentat -23°C/-10°F) | Partial | Hibrid ucrainean, rezistenta excelenta, fruct mediu [CERT] |
+
+> **Nota hardiness hibrizi:** Datele de -25/-28°C circula frecvent pe internet dar sunt **supraestimate** in surse comerciale. Datele documentate din teste de camp confirma zona USDA 5b-6 pentru Rosseyanka (minim -26°C/-15°F la pomi stabili) si zona USDA 6 pentru Nikita's Gift (minim -23°C/-10°F). In context Nadlac (USDA 7a-7b cu minime de -15°C tipice, -20°C rare), ambele soiuri sunt **net superioare** Rojo Brillante si constituie alegeri sigure. [PROBABIL la limitele extreme, CERT pentru supravietuire la Nadlac]
 
 ### Recomandari pentru zona Nadlac — TOP 3 alternative
 
-1. **Rosseyanka** [RECOMANDAT #1 ca pom de SIGURANTA] — Daca vrei un kaki care sa supravietuiasca **garantat** la Nadlac, chiar si la -25°C, aceasta este varianta cea mai sigura. Fructul e mai mic decat Rojo Brillante si e astringent, dar pomul e aproape indestructibil la ger. Ideal ca al doilea pom de kaki in livada. [CERT]
+1. **Rosseyanka** [RECOMANDAT #1 ca pom de SIGURANTA] — Daca vrei un kaki care sa supravietuiasca **garantat** la Nadlac, chiar si la -20°C, aceasta este varianta cea mai sigura. Fructul e mai mic decat Rojo Brillante si e astringent, dar pomul e aproape indestructibil la ger in conditii locale. Ideal ca al doilea pom de kaki in livada. Rezistenta documentata zona 5b-6 USDA. [CERT]
 
 2. **Tipo (Hachiya)** [RELEVANT] — Cel mai raspandit soi de kaki astringent din lume. Rezistenta la frig cu 2-3°C mai buna decat Rojo Brillante. Fruct alungit, in forma de inima, calitate excelenta dupa postmaturare. Disponibil in pepinierele romanesti. [CERT]
 
@@ -717,6 +719,41 @@ Kaki-ul are lemn fragil si ramuri care se rup usor sub vant puternic sau sub gre
 | **Octombrie** | Pregatire iarna, mulci proaspat, bandaj trunchi | MARE |
 | **Noiembrie** | Varuire, protectie completa iarna, zeama bordelez 3% | MAXIMA |
 | **Decembrie** | Verificare protectie, monitorizare temperaturi | MARE |
+
+---
+
+## H. Sfaturi Practice pentru Incepatori — Kaki la Nadlac
+
+### Tabel PHI (Pauza de Recoltare) — produse folosite la kaki
+
+| Produs | Substanta activa | PHI (zile) | Observatii |
+|---|---|---|---|
+| Zeama bordeleza | Cupru (sulfat) | 3 | Aplicata doar in repaus sau dupa recoltare |
+| Chorus 50 WG | Cyprodinil | 7 | Preventiv boli foliare, primavara |
+| Score 25 EC | Difenoconazol | 14 | Cercosporioza, antracnoza |
+| Mancozeb (Dithane M-45) | Mancozeb | 28 | Stop strict cu 4 saptamani inainte de recoltare! |
+| Captadin 50 WP / Captan | Captan | 7 | Putregai cenusiu |
+| Switch 62.5 WG | Cyprodinil + Fludioxonil | 7 | Putregai cenusiu fructe mature |
+| Confidor (imidacloprid) | Imidacloprid | 14 | Cochinile — interzis pe plante in floare! |
+| Ulei horticol | — | 0 | Numai in repaus vegetativ |
+| Envidor 240 SC | Spirodiclofen | 7 | Acarieni |
+
+> **IMPORTANT:** Kaki-ul se recolteaza **octombrie-noiembrie** la Nadlac. Daca aplici Mancozeb/Dithane in iulie, PHI de 28 de zile inseamna ca poti recolta dupa 25 august cel devreme — nu e problema. Dar nu aplica Mancozeb dupa 1 octombrie! Respecta PHI cu strictete pe fructe comestibile.
+
+### Evaluare realism pentru zona Nadlac — Rojo Brillante vs alternative
+
+| Soi | Risc iarna Nadlac | Recomandare |
+|---|---|---|
+| Rojo Brillante | MEDIU-MARE (risc pierdere la -20°C) | Planteaza in loc protejat, investeste in protectie |
+| Rosseyanka | SCAZUT (-23°C documentat) | Cel mai sigur kaki pentru Nadlac |
+| Nikita's Gift | SCAZUT (-23°C documentat) | Alternativa sigura, fruct mai bun decat Rosseyanka |
+| Tipo (Hachiya) | MEDIU (cu 2-3°C mai rezistent decat Rojo) | Optiune de compromis |
+
+**Concluzie pentru Roland (livada Nadlac):** Rojo Brillante plantat in 2026 este o aventura valoroasa dar cu risc real. Recomandare pe termen lung: adauga un Rosseyanka sau Nikita's Gift ca "asigurare" — daca Rojo supravietuieste, ai diversitate; daca nu, ai totusi kaki in livada.
+
+### Productivitatea estimata realista la Nadlac
+
+Productia citata in ghiduri (50-100 kg/pom la maturitate) este pentru conditii optime (Spania, Italia, zona 8-9 USDA). La Nadlac, din cauza iernilor la limita, estimeaza **30-50% mai putin** in anii normali si potentiale pierderi complete in iernile exceptionale. Un pom de kaki matur si bine stabilit la Nadlac poate produce realist **30-60 kg/an** in anii favorabili.
 
 ---
 

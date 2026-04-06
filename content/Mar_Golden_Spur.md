@@ -566,6 +566,45 @@ Frunzele de sub pom sunt "incubatorul" rapanului. Le strangi si le distrugi toam
 
 ---
 
+## H. SFATURI PRACTICE PENTRU INCEPATORI — MAR GOLDEN SPUR
+
+### Cele 5 lucruri pe care trebuie sa le stii INAINTE de a planta Golden Spur
+
+**1. Rapanul este inamicul principal si trebuie gestionat activ pe tot sezonul.**
+Spre deosebire de Florina (rezistenta la rapan), Golden Spur necesita un program riguros de 10-14 stropiri fungicide pe sezon. Nu este negociabil: intr-un an ploios fara tratamente, pierzi 80-100% din recolta. Daca nu esti pregatit pentru acest nivel de implicare, inlocuieste Golden Spur cu Florina sau alt soi rezistent.
+
+**2. Frunzele de sub pomi toamna = principal rezervor de rapan.**
+Cel mai simplu si eficient gest preventiv: adunati si distrugeti (compostati adanc sau ardeti) TOATE frunzele cazute de sub Golden Spur toamna. Frunzele contin pseudotecii (structuri de rezistenta ale ciupercii Venturia inaequalis) care produc ascospori primavara. Eliminarea frunzelor reduce infectia primara cu 60-80% — echivalentul a 3-4 tratamente fugicide.
+
+**3. Raritul fructelor previne alternanta — este obligatoriu, nu optional.**
+Golden Spur are tendinta de a produce masiv un an si aproape nimic in anul urmator (alternanta). Raritul manual in iunie (1 fruct per buchet, la 15-20 cm distanta) previne aceasta alternanta, creste calibrul fructelor si prelungeste durata productiva a pomului. Este munca de 1-2 zile dar face diferenta pe 10+ ani.
+
+**4. Golden Spur pe M9 necesita tutore permanent si irigare regulata.**
+Portaltoiul M9 are sistem radicular superficial si fragil. Fara tutore metalic bine ancorat, pomul se rastourna la prima furtuna. Fara irigare in iulie-august, fructele raman mici si fade. Aceste doua elemente nu sunt optionale — sunt parte din infrastructura de baza.
+
+**5. Combinatia Florina + Golden Spur este una dintre cele mai bune posibile.**
+Daca ai deja Florina in livada, Golden Spur este partenerul logic: se polenizeaza reciproc, au perioda de coacere usor esalonata (Florina: octombrie devreme, Golden Spur: octombrie mijloc), si se completeaza comercial — Florina pentru clientii care vor mere sanatoase cu ingrijire redusa, Golden Spur pentru clientii care vor gustul premium de Golden.
+
+### Intrebari frecvente de la incepatori
+
+**„Cat costa intretinerea unui Golden Spur pe sezon?"**
+Orientativ pentru 10 pomi pe M9 (spalier mic): produse fitosanitare 300-500 lei/an (mai ales fungicide anti-rapan), irigare (costul energiei pentru pompa picurare) 50-100 lei/an, munca (tratamente, rarire, recoltare) ~15-20 ore/sezon. Total: 400-600 lei/an pentru 10 pomi. La o productie de 150-250 kg, pret de vanzare 5-8 lei/kg = 750-2000 lei/an — rentabila de la primul an de productie buna.
+
+**„Ce fac daca vad rapan pe frunzele mele Golden Spur?"**
+Actiune imediata: (1) Aplica Score 250 EC (2ml/10L) sau Delan 700 WDG (5g/10L) in maxim 48 ore de la detectare. (2) Verifica cand a plouat ultima data si repeta tratamentul la 10-14 zile daca conditiile de infectie continua (ploaie + 12-25°C). (3) Nu elimina frunzele atacate in timpul vegetatiei — sporizeaza si raspandesc. Aduna-le DUPA caderea naturala din toamna si distruge-le.
+
+**„Golden Spur se poate cultiva fara chimice?"**
+Teoretic da, practic extrem de dificil. Productia in sistem ecologic cu Golden Spur (soi fara rezistenta genetica la rapan) necesita: zeama bordelez intensiva (limitata la 6 kg Cu/ha/an prin regulamentele bio), sulf, bicarbonat de potasiu, eliminarea totala a frunzelor bolnave, capcane feromonale, si acceptarea unor pierderi de 20-40% in anii umezi. Daca vrei agricultura ecologica la mar, Florina este alegerea logica, nu Golden Spur.
+
+### Gustul Golden Spur — de ce merita efortul
+
+Golden Spur produce un mar cu unul dintre cele mai rafinate gusturi din livada temperata: dulce-aromat, cu o nota de miere, pulpa ferma si suculenta, coaja galben-aurie. Este marul care se vinde singur: clientul il gusta o data si revine. In zona Arad, cu verile calde care intensifica acumularea zaharurilor, Golden Spur atinge calitate de desert superior — superior chiar si exemplarelor din zone mai reci.
+
+**Secretul calupului maxim la Golden Spur:**
+Potasiu + Calciu + Irigare regulata + Rarire agresiva = mere de 200-220g, aurii, dense, cu gust intens. Fiecare element omis reduce calibrul si calitatea.
+
+---
+
 > **Disclaimer:** Informatiile din acest ghid sunt compilate din surse pomicole romanesti si internationale (ICDP Pitesti-Maracineni, USAMV Cluj-Napoca, USAMV Timisoara, extensie universitara, ghiduri MADR, literatura de specialitate europeana). Dozele si recomandarile sunt orientative pentru zona Nadlac/Arad. Consultati intotdeauna eticheta produsului fitosanitar inainte de aplicare si respectati legislatia in vigoare privind utilizarea produselor de protectia plantelor. Pentru diagnosticare precisa a bolilor si daunatorilor, contactati Directia Fitosanitara Arad sau un specialist pomicol.
 >
 > Acest document este destinat uzului personal si nu inlocuieste consultanta profesionala de specialitate.

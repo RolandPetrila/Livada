@@ -305,14 +305,18 @@ In plus, caisul este **predispus la scurgere de clei (gomoza)** — un suc galbe
 | **Bergeron** | Franta | Medie | Tardiv (iul) | **DA, tarziu** | Buna | **RECOMANDAT #1 pentru Nadlac** |
 | **Harcot** | Canada | Medie | Timpuriu-mijlociu | **DA, tarziu** | Buna | Rezistenta boli excelenta |
 | **Goldrich** | SUA | Mare | Mijlociu-tardiv | Partial | Medie | Fruct mare, calitate premium |
+| **Hargrand** | Canada | Medie | Mijlociu-tardiv (iul-aug) | **DA, tarzie** | **Buna** | **AUTOFERTIL + rezistenta -30°C + inflorire tarzie = ideal Nadlac** |
+| **Harogem** | Canada | Medie | Mijlociu (iun-iul) | DA | Buna | Soi canadian, rezistenta boli buna, disponibil in pepiniere RO |
 
-### Soiuri recomandate pentru Nadlac — TOP 3
+### Soiuri recomandate pentru Nadlac — TOP 4
 
 1. **Bergeron** — Cel mai bun pentru zona cu risc de inghete tarzii. Inflorire cu 7-10 zile mai tarzie decat soiurile timpurii. Fruct de calitate excelenta, rezistenta buna la monilioza.
 
-2. **Harcot** — Soi canadian, creat tocmai pentru climate cu ierni grele si inghet tardiv. Rezistenta la boli superioara majoritatii soiurilor. Fruct mediu-mare, dulce.
+2. **Hargrand** — Soi canadian (Ontario, 1979), autofertil, rezistent la -30°C si la seceta. Inflorire in aprilie (tarzie). Fruct 70-80g, portocaliu-rosu aprins, aromat, excelent pentru consum proaspat si procesare. Harvest: iulie-august. Disponibil in pepinierele romanesti (AgroDenmar, Pepinierele Roman). **De preferat Harcot-ului** daca gasesti ambele soiuri — autofertilitatea elimina grija polenizatorului.
 
-3. **Neptun** — Soi romanesc, adaptat conditiilor locale, inflorire relativ tardie, bun randament.
+3. **Harcot** — Soi canadian, creat tocmai pentru climate cu ierni grele si inghet tardiv. Rezistenta la boli superioara majoritatii soiurilor. Fruct mediu-mare, dulce.
+
+4. **Neptun** — Soi romanesc, adaptat conditiilor locale, inflorire relativ tardie, bun randament.
 
 ### Polenizarea caisului
 
