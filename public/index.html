@@ -12624,7 +12624,7 @@ function renderTreePanel(speciesId) {
         '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
         '<strong style="font-size:0.85rem;">' + escapeHtml(t.label || t.id) + '</strong>' +
         '<button onclick="editTreeNote('' + t.id + '','' + speciesId + '')" style="font-size:0.7rem;padding:3px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);">✏️ Edit</button></div>' +
-        (t.planted ? '<div style="font-size:0.72rem;color:var(--text-dim);">Plantat: ' + t.planted + age + '</div>' : '') +
+        (t.planted ? '<div style="font-size:0.72rem;color:var(--text-dim);">Plantat: ' + escapeHtml(t.planted) + age + '</div>' : '') +
         (t.notes ? '<div style="font-size:0.82rem;margin-top:3px;">' + escapeHtml(t.notes) + '</div>' : '') +
         '</div>';
     });
