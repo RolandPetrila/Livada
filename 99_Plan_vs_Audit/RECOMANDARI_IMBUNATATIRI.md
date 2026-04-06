@@ -54,14 +54,14 @@
 
 ### FAZA 5 — Backend modernizare (5h)
 - ✅ **S6** Open-Meteo parametri agricultura (uv_index, soil_moisture, et0) — DONE S17
-- ⬜ **S10** photos.js Edge Runtime (testeaza upload Blob)
+- ✅ **S10** photos.js Edge Runtime (testeaza upload Blob)
 - ✅ **S11** Report caching Redis TTL 1h — DONE S17
 
 ### FAZA 6 — Features noi (6h)
-- ⬜ **II1** Cost Tracker (cheltuieli sezon)
+- ✅ **II1** Cost Tracker (cheltuieli sezon)
 - ✅ **II3** SW Update Notification (toast versiune noua + buton Reincarca) — DONE S17
-- ⬜ **II2/S13** Push Notifications inghet (Notification API)
-- ⬜ **II4** Import jurnal CSV
+- ✅ **II2/S13** Push Notifications inghet (Notification API)
+- ✅ **II4** Import jurnal CSV
 - ✅ **P3-5** Jurnal filtru per specie — DONE S17
 - ✅ **P3-6** Keyboard shortcuts (J/C/M/K/?/Esc) + help overlay — DONE S17
 - ✅ **P3-7** localStorage Quota Monitor (warning >80%) — DONE S17
@@ -88,7 +88,7 @@
 - ✅ **T6** Groq Llama 4 upgrade — Scout/Maverick mai rapid
 - ✅ **T7** Report cache invalidation — Reset TTL la jurnal nou
 - ✅ **T8** Meteo deduplicare request — Nu refetch < 5 min
-- ⬜ **T9** Manifest PNG icons — iOS nu suporta SVG maskable pe toate versiunile
+- ✅ **T9** Manifest PNG icons — iOS nu suporta SVG maskable pe toate versiunile
 
 ---
 
