@@ -12,7 +12,7 @@ const FONT_CACHE   = 'livada-fonts-v1';
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(STATIC_CACHE)
-      .then(cache => cache.addAll(['/icon.svg', '/manifest.json']))
+      .then(cache => cache.addAll(['/icon.svg', '/icon-192.png', '/icon-512.png', '/manifest.json']))
       .then(() => self.skipWaiting())
   );
 });
@@ -56,7 +56,7 @@ self.addEventListener('fetch', event => {
   }
 
   // Icon + Manifest — cache-first (asset static, nu se schimba)
-  if (url.endsWith('/icon.svg') || url.endsWith('/manifest.json')) {
+  if (url.endsWith('/icon.svg') || url.endsWith('/icon-192.png') || url.endsWith('/icon-512.png') || url.endsWith('/manifest.json')) {
     event.respondWith(
       caches.match(event.request).then(cached => cached || fetch(event.request))
     );

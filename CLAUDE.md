@@ -59,9 +59,9 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | diagnose-test.js | Edge | 12s | Gemini |
 | frost-alert.js | Edge | 5s | Redis |
 | journal.js | Edge | 5s | Redis |
-| meteo-cron.js | **Node.js** | 8s | Open-Meteo + Redis (*Edge Runtime necesar*) |
+| meteo-cron.js | Edge | 25s | Open-Meteo + Redis |
 | meteo-history.js | Edge | 5s | Redis |
-| photos.js | Node.js 60s | — | Vercel Blob |
+| photos.js | Edge | 28s | Vercel Blob |
 | ping.js | Edge | — | — |
 | report.js | Edge | 25s | Redis + Groq |
 | _auth.js | Utility | — | — |
