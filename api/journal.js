@@ -1,11 +1,5 @@
 import { Redis } from "@upstash/redis";
-import {
-  corsHeaders,
-  handleOptions,
-  checkAuth,
-  rateLimit,
-  checkOrigin,
-} from "./_auth.js";
+import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
 
 // Edge Runtime: raspunsul e trimis imediat, fetch-ul Redis background e abandonat
 export const config = { runtime: "edge" };
@@ -26,8 +20,6 @@ export default async function handler(req) {
   const originErr = checkOrigin(req);
   if (originErr) return originErr;
 
-  const authErr = checkAuth(req);
-  if (authErr) return authErr;
   const limitErr = await rateLimit(req);
   if (limitErr) return limitErr;
 

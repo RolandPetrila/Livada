@@ -135,15 +135,20 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
         ms,
       );
 
+    const tAI = Date.now();
+    const logR = (msg) => console.log(`[report] ${msg} t+${Date.now() - tAI}ms`);
+
+    // Primary: llama-4-scout (Llama 4, disponibil free tier Groq)
+    logR("start → llama-4-scout");
     let groqRes = await callGroqReport(
-      "meta-llama/llama-4-maverick-17b-128e-instruct",
+      "meta-llama/llama-4-scout-17b-16e-instruct",
       23000,
     );
     let usedFallback = false;
-    let fallbackModel = "";
+    let activeModel = "llama-4-scout";
 
     if (!groqRes.ok && groqRes.status !== 401 && groqRes.status !== 403) {
-      console.error("[report] llama-4-maverick failed", groqRes.status);
+      logR(`llama-4-scout failed ${groqRes.status} → llama-3.3-70b`);
       let anyFbOk = false;
 
       // Fallback 1: llama-3.3-70b-versatile
@@ -152,15 +157,16 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
         anyFbOk = groqRes.ok;
         if (anyFbOk) {
           usedFallback = true;
-          fallbackModel = "llama-3.3-70b-versatile";
+          activeModel = "llama-3.3-70b-versatile";
+          logR("llama-3.3-70b ok");
         }
       } catch (e) {
-        console.error("[report] fb1 err:", e.message);
+        logR(`llama-3.3-70b err: ${e.message}`);
       }
 
       // Fallback 2: Cerebras
       if (!anyFbOk) {
-        console.error("[report] groq failed — try Cerebras llama-3.3-70b");
+        logR("all groq failed → Cerebras");
         try {
           const cerebrasRes = await callCerebras(
             reportMessages,
@@ -173,7 +179,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
             const report =
               result.choices?.[0]?.message?.content ||
               "Nu am putut genera raportul.";
-            // H7: _fallbackModel nu se expune in raspuns public
+            logR("cerebras ok");
             const payload = {
               report,
               year,
@@ -181,12 +187,13 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
               meteoDays: meteoEntries.length,
               generatedAt: Date.now(),
               _fallback: true,
+              _fallbackModel: "cerebras-llama-3.3-70b",
             };
             await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});
             return Response.json(payload, { headers: corsHeaders(req) });
           }
         } catch (cerebrasErr) {
-          console.error("[report] cerebras err:", cerebrasErr.message);
+          logR(`cerebras err: ${cerebrasErr.message}`);
         }
         return Response.json(
           { error: "Serviciul AI nu a raspuns. Incearca din nou." },
@@ -197,13 +204,12 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
 
     if (!groqRes.ok) {
       const errText = await groqRes.text().catch(() => "");
-      console.error("[report] Groq", groqRes.status, errText.substring(0, 200));
+      logR(`Groq eroare ${groqRes.status}: ${errText.substring(0, 200)}`);
       if (groqRes.status === 429)
         return Response.json(
           { error: "AI suprasolicitat. Incearca din nou." },
           { status: 503, headers: corsHeaders(req) },
         );
-      // H7: nu expune status code in raspuns public
       return Response.json(
         { error: "AI indisponibil. Incearca din nou." },
         { status: 503, headers: corsHeaders(req) },
@@ -213,15 +219,15 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
     const result = await groqRes.json();
     const report =
       result.choices?.[0]?.message?.content || "Nu am putut genera raportul.";
+    logR(`ok model=${activeModel} tokens=${result.usage?.total_tokens || "?"}`);
 
-    // H7: _fallbackModel nu se expune in raspuns public
     const payload = {
       report,
       year,
       journalCount: yearEntries.length,
       meteoDays: meteoEntries.length,
       generatedAt: Date.now(),
-      ...(usedFallback ? { _fallback: true } : {}),
+      ...(usedFallback ? { _fallback: true, _fallbackModel: activeModel } : {}),
     };
 
     // Salveaza in cache Redis cu TTL 1h

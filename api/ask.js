@@ -103,34 +103,39 @@ Specia curenta: ${species || "general (toate speciile)"}`;
     { role: "user", content: userMsg },
   ];
 
+  const t0 = Date.now();
+  const log = (msg) => console.log(`[ask] ${msg} t+${Date.now() - t0}ms`);
+
   try {
-    // Primary: llama-4-maverick (mai capabil, 128k context) — M9: 22s (buffer 6s pana la limita Edge)
+    // Primary: llama-4-scout (Llama 4, disponibil free tier Groq)
+    log("start → llama-4-scout");
     let groqRes = await callGroq(
-      "meta-llama/llama-4-maverick-17b-128e-instruct",
+      "meta-llama/llama-4-scout-17b-16e-instruct",
       22000,
     );
     let usedFallback = false;
-    let fallbackModel = "";
+    let activeModel = "llama-4-scout";
 
     if (!groqRes.ok && groqRes.status !== 401 && groqRes.status !== 403) {
-      console.error("[ask] llama-4-maverick failed", groqRes.status);
+      log(`llama-4-scout failed ${groqRes.status} → llama-3.3-70b`);
 
-      // Fallback 1: llama-3.3-70b-versatile
+      // Fallback 1: llama-3.3-70b-versatile (confirmat functional)
       let fb1Ok = false;
       try {
         groqRes = await callGroq("llama-3.3-70b-versatile", 22000);
         fb1Ok = groqRes.ok;
         if (fb1Ok) {
           usedFallback = true;
-          fallbackModel = "llama-3.3-70b-versatile";
+          activeModel = "llama-3.3-70b-versatile";
+          log("llama-3.3-70b ok");
         }
       } catch (e) {
-        console.error("[ask] fb1 err:", e.message);
+        log(`llama-3.3-70b err: ${e.message}`);
       }
 
       // Fallback 2: Cerebras llama-3.3-70b
       if (!fb1Ok) {
-        console.error("[ask] all groq failed — try Cerebras");
+        log("all groq failed → Cerebras");
         try {
           const cerebrasRes = await callCerebras(cerebrasMessages, 20000);
           if (cerebrasRes.ok) {
@@ -138,13 +143,18 @@ Specia curenta: ${species || "general (toate speciile)"}`;
             const answer =
               result.choices?.[0]?.message?.content ||
               "Nu am putut genera un raspuns.";
+            log("cerebras ok");
             return Response.json(
-              { answer, _fallback: true },
+              {
+                answer,
+                _fallback: true,
+                _fallbackModel: "cerebras-llama-3.3-70b",
+              },
               { headers: corsHeaders(req) },
             );
           }
         } catch (e) {
-          console.error("[ask] cerebras err:", e.message);
+          log(`cerebras err: ${e.message}`);
         }
         return Response.json(
           { error: "AI indisponibil temporar. Incearca din nou." },
@@ -155,12 +165,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
 
     if (!groqRes.ok) {
       const errText = await groqRes.text().catch(() => "");
-      // H7: nu expune status code sau provider in raspuns public
-      console.error(
-        "[ask] Groq eroare:",
-        groqRes.status,
-        errText.substring(0, 200),
-      );
+      log(`Groq eroare ${groqRes.status}: ${errText.substring(0, 200)}`);
       return Response.json(
         {
           error:
@@ -175,9 +180,14 @@ Specia curenta: ${species || "general (toate speciile)"}`;
     const result = await groqRes.json();
     const answer =
       result.choices?.[0]?.message?.content || "Nu am putut genera un raspuns.";
-    // H7: _fallbackModel nu e expus in raspuns public (detaliu intern)
+    log(`ok model=${activeModel} tokens=${result.usage?.total_tokens || "?"}`);
     return Response.json(
-      { answer, ...(usedFallback ? { _fallback: true } : {}) },
+      {
+        answer,
+        ...(usedFallback
+          ? { _fallback: true, _fallbackModel: activeModel }
+          : {}),
+      },
       { headers: corsHeaders(req) },
     );
   } catch (err) {
