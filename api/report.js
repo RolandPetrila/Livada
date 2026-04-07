@@ -23,8 +23,6 @@ export default async function handler(req) {
     );
   }
 
-  const authErr = checkAuth(req);
-  if (authErr) return authErr;
   const limitErr = rateLimit(req, 10); // M8: AI endpoint — limita 10 req/min
   if (limitErr) return limitErr;
 
