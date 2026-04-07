@@ -479,9 +479,7 @@
               var lastTr = prevTreatments[0];
               var daysDiff = Math.floor((new Date(date + 'T12:00') - new Date(lastTr.date + 'T12:00')) / 86400000);
               if (daysDiff < 7) {
-                var ok = confirm('⚠️ Atentie: Ultimul tratament a fost pe ' + lastTr.date + ' (' + daysDiff + ' zile).
-      Interval recomandat intre tratamente fitosanitare: minim 7-10 zile.
-      Continui inregistrarea?');
+                var ok = confirm('Atentie: Ultimul tratament a fost pe ' + lastTr.date + ' (' + daysDiff + ' zile).\nInterval recomandat intre tratamente fitosanitare: minim 7-10 zile.\nContinui inregistrarea?');
                 if (!ok) { debounceBtn(btn, 0); return; }
               }
             }
