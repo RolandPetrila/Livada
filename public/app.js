@@ -1688,6 +1688,95 @@ function authHeaders(extra) {
   if (extra) for (var k in extra) h[k] = extra[k];
   return h;
 }
+// ====== AI STATUS PANEL ======
+var AI_PANEL_CONFIG = {
+  ask: [
+    { name: "Groq llama-4-scout", key: "groq", role: "primar" },
+    { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
+    { name: "Cerebras llama-3.3-70b", key: "cerebras", role: "rezerva" },
+  ],
+  diagnose: [
+    { name: "Gemini 2.5-flash", key: "gemini", role: "primar" },
+    { name: "GPT-4.1", key: "github_models", role: "paralel" },
+    { name: "Plant.id v3", key: "plant_id", role: "bonus" },
+  ],
+  identify: [
+    { name: "PlantNet", key: "plantnet", role: "primar" },
+    { name: "Gemini 2.5-flash", key: "gemini", role: "paralel" },
+    { name: "GPT-4.1", key: "github_models", role: "paralel" },
+  ],
+  report: [
+    { name: "Groq llama-4-scout", key: "groq", role: "primar" },
+    { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
+    { name: "Cerebras llama-3.3-70b", key: "cerebras", role: "rezerva" },
+  ],
+};
+var _aiStatus = null,
+  _aiStatusTs = 0;
+
+function loadAiStatus() {
+  if (_aiStatus && Date.now() - _aiStatusTs < 600000)
+    return Promise.resolve(_aiStatus);
+  return fetch("/api/ai-status")
+    .then(function (r) {
+      return r.ok ? r.json() : null;
+    })
+    .then(function (data) {
+      if (data && data.status) {
+        _aiStatus = data.status;
+        _aiStatusTs = Date.now();
+      }
+      return _aiStatus || {};
+    })
+    .catch(function (e) {
+      console.warn("[ai-status]", e.message);
+      return {};
+    });
+}
+
+function renderAiStatusPanel(tabName, anchorId, position) {
+  // position: "beforebegin" | "afterbegin" | "beforeend" | "afterend" (default: "beforebegin")
+  var anchor = document.getElementById(anchorId);
+  if (!anchor) return;
+  // Sterge panelul existent daca exista
+  var existing = document.getElementById("ai-panel-" + tabName);
+  if (existing) existing.remove();
+
+  loadAiStatus().then(function (status) {
+    var config = AI_PANEL_CONFIG[tabName] || [];
+    if (!config.length) return;
+    var html =
+      '<div id="ai-panel-' +
+      tabName +
+      '" style="' +
+      "display:flex;flex-wrap:wrap;gap:5px;align-items:center;" +
+      "margin:0 0 10px;padding:6px 10px;background:var(--bg-surface);" +
+      'border-radius:8px;border:1px solid var(--border);font-size:0.72rem;">' +
+      '<span style="color:var(--text-dim);font-weight:600;margin-right:2px;flex-shrink:0;">AI:</span>';
+    config.forEach(function (ai) {
+      var active = status[ai.key] !== false;
+      html +=
+        '<span style="display:flex;align-items:center;gap:3px;opacity:' +
+        (active ? "1" : "0.5") +
+        ";" +
+        'background:var(--bg);padding:2px 7px;border-radius:12px;border:1px solid var(--border);">' +
+        '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;' +
+        "background:" +
+        (active ? "#22c55e" : "#ef4444") +
+        ';" title="' +
+        (active ? "Activ" : "Cheie lipsa") +
+        '"></span>' +
+        escapeHtml(ai.name) +
+        '<span style="color:var(--text-dim);margin-left:2px;font-size:0.68rem;">[' +
+        ai.role +
+        "]</span>" +
+        "</span>";
+    });
+    html += "</div>";
+    anchor.insertAdjacentHTML(position || "beforebegin", html);
+  });
+}
+
 async function authFetch(url, opts, ms) {
   ms = ms || 15000;
   opts = opts || {};
@@ -1828,6 +1917,7 @@ function injectReportButton() {
   div.innerHTML =
     '<h2 class="section-title" style="cursor:default;">\uD83D\uDCCA Raport Anual AI</h2>' +
     '<div class="section-body">' +
+    '<div id="ai-panel-report-anchor"></div>' +
     "<p>Genereaz\u0103 un raport anual bazat pe jurnalul de interven\u021Bii \u0219i datele meteo.</p>" +
     '<button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="generateReport()" id="reportBtn">Genereaz\u0103 Raport ' +
     new Date().getFullYear() +
@@ -1836,6 +1926,7 @@ function injectReportButton() {
     '<div id="reportResult" class="report-box" style="display:none;"></div>' +
     "</div>";
   tc.appendChild(div);
+  renderAiStatusPanel("report", "ai-panel-report-anchor", "afterend");
 }
 
 // ====== II-2: STATISTICI INTERVENTII ======
@@ -2358,6 +2449,7 @@ function openDiagnoseModal() {
   document.getElementById("diagChatSection").style.display = "none";
   document.getElementById("diagChatMessages").innerHTML = "";
   _diagChatHistory["diag"] = [];
+  renderAiStatusPanel("diagnose", "diagLoading", "beforebegin");
   openModal("diagnose");
 }
 // Comprimare robusta pentru diagnoza — foloseste toDataURL (synchronous, functioneaza pe orice browser/telefon)
@@ -2513,6 +2605,7 @@ function openAskModal() {
   document.getElementById("askLoading").style.display = "none";
   document.getElementById("askCopyRow").style.display = "none";
   document.getElementById("askInput").value = "";
+  renderAiStatusPanel("ask", "askLoading", "beforebegin");
   openModal("ask");
 }
 async function submitAsk() {
@@ -5697,6 +5790,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var btn = document.getElementById("voiceDictateBtn");
     if (btn) btn.style.display = "none";
   }
+  // Panel AI Status pe sectiunea Identificare specie (statica in HTML)
+  renderAiStatusPanel("identify", "aiIdentLoading", "beforebegin");
 });
 
 // ====== II4: IMPORT CSV JURNAL ======

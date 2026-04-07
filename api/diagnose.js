@@ -189,9 +189,20 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
       log("plant.id parse err");
     }
   } else {
-    log(
-      `plant.id skip: ${plantIdSettled.reason?.message || plantIdSettled.value?.status}`,
-    );
+    const skipStatus = plantIdSettled.value?.status;
+    const skipMsg = plantIdSettled.reason?.message || "";
+    log(`plant.id skip: ${skipStatus || skipMsg}`.substring(0, 120));
+    // Citeste body exact pt depanare 4xx
+    if (plantIdSettled.status === "fulfilled" && plantIdSettled.value) {
+      plantIdSettled.value
+        .text()
+        .then((body) =>
+          console.log(
+            `[diagnose] plant.id err body: ${body.substring(0, 300)}`,
+          ),
+        )
+        .catch(() => {});
+    }
   }
 
   // Extrage rezultat Gemini primary
@@ -240,6 +251,9 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
       ? plantIdPrefix + diagnosisText
       : diagnosisText;
     if (plantIdPrefix) diagnosisMeta._plantid = true;
+    log(
+      `ok — gemini=${!diagnosisMeta._fallback} gpt41=${!!diagnosisMeta._fallback} plantid=${!!plantIdPrefix}`,
+    );
     return Response.json(
       { diagnosis: finalText, ...diagnosisMeta },
       { headers: corsHeaders(req) },

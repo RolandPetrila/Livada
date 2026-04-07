@@ -8,19 +8,20 @@
 
 ## LEGENDA STATUS
 
-| Simbol | Semnificatie |
-|--------|-------------|
-| ✅ | DONE — Implementat si testat |
-| 🔄 | IN PROGRESS — In curs de implementare |
-| ⬜ | TODO — De implementat |
-| 🔵 | VIITOR — Planificat strategic, nu urgent |
-| ❌ | ANULAT — Nu se mai implementeaza |
+| Simbol | Semnificatie                             |
+| ------ | ---------------------------------------- |
+| ✅     | DONE — Implementat si testat             |
+| 🔄     | IN PROGRESS — In curs de implementare    |
+| ⬜     | TODO — De implementat                    |
+| 🔵     | VIITOR — Planificat strategic, nu urgent |
+| ❌     | ANULAT — Nu se mai implementeaza         |
 
 ---
 
 ## CHECKLIST MASTER — Toate fazele (viziune rapida)
 
 ### FAZA 1 — Securitate critica (~25 min)
+
 - ✅ **S1** `index.html:8948` DOMPurify pin @3.3.3 + fallback XSS safe — DONE S16
 - ✅ **S5** `api/_auth.js:20` CORS reject origini necunoscute — DONE S17
 - ✅ **S7** `api/meteo-cron.js:22` CRON_SECRET enforce non-empty — DONE S16
@@ -28,15 +29,18 @@
 - ✅ **T4** `api/meteo-history.js` Error detection robusta + validare date Redis — DONE S17
 
 ### FAZA 2 — Stabilitate API + Modele AI (~30 min)
+
 - ✅ **S2** `api/meteo-cron.js` Edge Runtime — DONE S16
 - ✅ **S3** `api/diagnose.js` Gemini 2.5-flash primary + 2.5-flash-lite fallback — DONE S16/S17
 - ✅ **S4** `api/ask.js` + `api/diagnose.js` AbortController + fallback modele — DONE S16
 
 ### FAZA 3 — Memory leaks + cleanup (~30 min)
+
 - ✅ **S8** `index.html` compressImage ObjectURL revoke — DONE S16
 - ✅ **S9** `index.html` Lightbox singleton + event cleanup — DONE S16
 
 ### FAZA 4 — UX improvements v5 (4–6h)
+
 - ✅ **R1** generateReport() filtru an curent — DONE
 - ✅ **R2** checkAlerts() offline fallback — DONE S15
 - ✅ **R3** Spray score humidity real — DONE
@@ -53,11 +57,13 @@
 - ✅ **I10** printFisa() popup blocker check — DONE
 
 ### FAZA 5 — Backend modernizare (5h)
+
 - ✅ **S6** Open-Meteo parametri agricultura (uv_index, soil_moisture, et0) — DONE S17
-- ✅ **S10** photos.js Edge Runtime (testeaza upload Blob)
+- ❌ **S10** photos.js Edge Runtime — ANULAT: @vercel/blob incompatibil cu Edge (undici intern)
 - ✅ **S11** Report caching Redis TTL 1h — DONE S17
 
 ### FAZA 6 — Features noi (6h)
+
 - ✅ **II1** Cost Tracker (cheltuieli sezon)
 - ✅ **II3** SW Update Notification (toast versiune noua + buton Reincarca) — DONE S17
 - ✅ **II2/S13** Push Notifications inghet (Notification API)
@@ -67,16 +73,18 @@
 - ✅ **P3-7** localStorage Quota Monitor (warning >80%) — DONE S17
 
 ### FAZA 7 — Strategic / Viitor
+
 - 🔵 **T1/S12** Offline Queue delete/edit + Background Sync API
 - 🔵 **T2/S14** Rate limiting Redis-backed (distribuit)
 - 🔵 **T5/S15** Teste unitare vitest
 
 ### FAZA 8 — Noi (din analiza runda 8) — v8
+
 - ✅ **V1** renderStats() — Recolta kg per specie vizuala + comparatie ani
 - ✅ **V2** injectSpeciesHistory() — Interval de la ultimul tratament + warning
 - ⬜ **V3** submitDiagnose() — Buton "Calculeaza doza" post-diagnostic
 - ✅ **V4** addJurnalEntry() — Warning interval minim intre tratamente
-- ⬜ **V5** generateReport() — Invalidare cache la adaugare jurnal
+- ✅ **V5** generateReport() — Invalidare cache la adaugare jurnal — DONE S18 (livada:journal:last-update)
 - ✅ **V6** loadGallery() — Data upload vizibila + sortare cronologica
 - ⬜ **N1** PHI Calculator — Alerta pauza securitate inainte de recoltare
 - ⬜ **N2** Spray Window 7 zile — Calendar cu zile optime stropire din prognoza
@@ -90,23 +98,41 @@
 - ✅ **T8** Meteo deduplicare request — Nu refetch < 5 min
 - ✅ **T9** Manifest PNG icons — iOS nu suporta SVG maskable pe toate versiunile
 
+### RUNDA AUDIT (S18) — Depanare + AI Upgrade
+
+- ✅ **SA1** journal.js: eliminat checkAuth — fix 401 la orice sync jurnal (CRITIC)
+- ✅ **SA2** ask.js + report.js: primary model llama-4-maverick → llama-4-scout (disponibil free tier)
+- ✅ **SA3** ask.js + report.js: logging structurat (model activ, tokens, timing) in Vercel logs
+- ✅ **SA4** app.js: copyText() functie lipsa adaugata (ReferenceError la butonul Copiaza AI Identify)
+- ✅ **SA5** app.js: showToast duplicat eliminat (versiunea avansata cu culori/animatie pastrata)
+- ✅ **SA6** app.js: model fallback default corectat (llama-3.1-8b-instant → llama-3.3-70b-versatile)
+
+### FAZA 10 — AI Status Indicators + Plant.id Fix + Logging complet
+
+- ⬜ **AI1** Panel AI Status (verde/rosu) pe fiecare tab cu AI
+- ⬜ **AI2** /api/ai-status endpoint — health check toate serviciile AI
+- ⬜ **AI3** Plant.id fix — debug eroare 4xx + validare key + test live
+- ⬜ **AI4** Logging complet pe diagnose.js + identify.js (identic cu ask.js)
+- ⬜ **AI5** Audit modele free tier — confirmare cele mai capabile modele disponibile
+
 ---
 
 ## PROGRES SESIUNI ANTERIOARE
 
-| Sesiune | Items | Categorie | Status |
-|---------|-------|-----------|--------|
-| S1-S8 | Faze 1-4 | Infrastructura + continut specii + AI | ✅ DONE |
-| S9 | 10 items P0/P1 | Spray score, prognoza, securitate, UX | ✅ DONE |
-| S10 | 6 items UX | Imbunatatiri UX | ✅ DONE |
-| S11 | 20 items | Audit standard — securitate + calitate | ✅ DONE |
-| S12 | 12 items P0 | 3 specii noi + securitate critica | ✅ DONE |
-| S13 | 13 items P1 | Securitate medie + search, lightbox, quick-add | ✅ DONE |
-| S14 | 13 items P2 | Performanta + statistici, dark mode, compress | ✅ DONE |
-| S15 | 7 items | 504 fix, offline alerts, retry, visibilitychange, copy/print | ✅ DONE |
-| S16 | 12 items | Faza 3+4: recolta multi-an, lightbox, sync badge, risc micoze, toast AI, gemini 2.5-flash | ✅ DONE |
-| S17 | 11 items | CORS fix, Gemini fallback lite, meteo agro, report cache, SW toast, jurnal filtru specie, kb shortcuts, quota monitor | ✅ DONE |
-| **Total** | **118+ items** | | **Sesiuni 1-17 complete** |
+| Sesiune       | Items          | Categorie                                                                                                             | Status                                |
+| ------------- | -------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| S1-S8         | Faze 1-4       | Infrastructura + continut specii + AI                                                                                 | ✅ DONE                               |
+| S9            | 10 items P0/P1 | Spray score, prognoza, securitate, UX                                                                                 | ✅ DONE                               |
+| S10           | 6 items UX     | Imbunatatiri UX                                                                                                       | ✅ DONE                               |
+| S11           | 20 items       | Audit standard — securitate + calitate                                                                                | ✅ DONE                               |
+| S12           | 12 items P0    | 3 specii noi + securitate critica                                                                                     | ✅ DONE                               |
+| S13           | 13 items P1    | Securitate medie + search, lightbox, quick-add                                                                        | ✅ DONE                               |
+| S14           | 13 items P2    | Performanta + statistici, dark mode, compress                                                                         | ✅ DONE                               |
+| S15           | 7 items        | 504 fix, offline alerts, retry, visibilitychange, copy/print                                                          | ✅ DONE                               |
+| S16           | 12 items       | Faza 3+4: recolta multi-an, lightbox, sync badge, risc micoze, toast AI, gemini 2.5-flash                             | ✅ DONE                               |
+| S17           | 11 items       | CORS fix, Gemini fallback lite, meteo agro, report cache, SW toast, jurnal filtru specie, kb shortcuts, quota monitor | ✅ DONE                               |
+| **S18 Audit** | **6 items**    | journal 401 fix, llama-4-scout primary, logging ask+report, 3 bug-uri frontend                                        | ✅ DONE                               |
+| **Total**     | **124+ items** |                                                                                                                       | **Sesiuni 1-17 + Audit S18 complete** |
 
 ---
 
@@ -122,6 +148,7 @@
 **Problema actuala:** Sectiunea de statistici afiseaza `Total: X kg` ca text simplu la sfarsit. Nu exista breakdown per specie, nu se poate vedea care specie a produs cel mai mult, nu exista comparatie vizuala intre ani.
 
 **Imbunatatire propusa:**
+
 - Adauga un grafic cu bare orizontale pentru kg recoltati per specie in anul selectat
 - Afiseaza speciile sortate descrescator dupa productie
 - Bara colorata proportional cu cel mai productiv an ca referinta
@@ -132,28 +159,50 @@
 ```javascript
 // Adauga dupa linia: var recoltaKg = ...
 var recoltaPerSpecie = {};
-yearEntries.filter(function(e){ return e.type === 'recoltare' && e.kg > 0; }).forEach(function(e) {
-  var sp = e.species || 'necunoscut';
-  if (!recoltaPerSpecie[sp]) recoltaPerSpecie[sp] = { kg: 0, count: 0 };
-  recoltaPerSpecie[sp].kg += e.kg || 0;
-  recoltaPerSpecie[sp].count++;
-});
-var maxKg = Math.max.apply(null, Object.values(recoltaPerSpecie).map(function(v){ return v.kg; }).concat([1]));
+yearEntries
+  .filter(function (e) {
+    return e.type === "recoltare" && e.kg > 0;
+  })
+  .forEach(function (e) {
+    var sp = e.species || "necunoscut";
+    if (!recoltaPerSpecie[sp]) recoltaPerSpecie[sp] = { kg: 0, count: 0 };
+    recoltaPerSpecie[sp].kg += e.kg || 0;
+    recoltaPerSpecie[sp].count++;
+  });
+var maxKg = Math.max.apply(
+  null,
+  Object.values(recoltaPerSpecie)
+    .map(function (v) {
+      return v.kg;
+    })
+    .concat([1]),
+);
 var recoltaSpecieHTML = Object.entries(recoltaPerSpecie)
-  .sort(function(a,b){ return b[1].kg - a[1].kg; })
-  .map(function(p) {
+  .sort(function (a, b) {
+    return b[1].kg - a[1].kg;
+  })
+  .map(function (p) {
     var spName = SPECIES[p[0]] || p[0];
-    var pct = Math.round(p[1].kg / maxKg * 100);
-    return '<div style="margin-bottom:7px;">' +
+    var pct = Math.round((p[1].kg / maxKg) * 100);
+    return (
+      '<div style="margin-bottom:7px;">' +
       '<div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:2px;">' +
-        '<span>' + escapeHtml(spName) + '</span>' +
-        '<span style="color:var(--accent);font-weight:700;">' + p[1].kg.toFixed(1) + ' kg</span>' +
-      '</div>' +
+      "<span>" +
+      escapeHtml(spName) +
+      "</span>" +
+      '<span style="color:var(--accent);font-weight:700;">' +
+      p[1].kg.toFixed(1) +
+      " kg</span>" +
+      "</div>" +
       '<div style="height:12px;background:var(--bg-surface);border-radius:4px;overflow:hidden;">' +
-        '<div style="width:' + pct + '%;height:100%;background:var(--accent);border-radius:4px;transition:width 0.5s;"></div>' +
-      '</div>' +
-    '</div>';
-  }).join('');
+      '<div style="width:' +
+      pct +
+      '%;height:100%;background:var(--accent);border-radius:4px;transition:width 0.5s;"></div>' +
+      "</div>" +
+      "</div>"
+    );
+  })
+  .join("");
 
 // Adauga in return-ul final, dupa graficul pe luna:
 // ... + (recoltaSpecieHTML ? '<h3 style="margin:14px 0 8px;font-size:0.9rem;">Recolta per specie (' + selectedYear + ')</h3>' + recoltaSpecieHTML : '')
@@ -169,6 +218,7 @@ var recoltaSpecieHTML = Object.entries(recoltaPerSpecie)
 **Problema actuala:** Afiseaza ultimele 8 interventii per specie, dar nu arata cat timp a trecut de la ultimul tratament. Un fermier vrea sa stie instant "Am mai stropit acum 5 zile, pot sa stropesc din nou?". Intervalul minim intre tratamente (7-14 zile) nu e verificat nicaieri.
 
 **Imbunatatire propusa:**
+
 - Adauga un "Interval de la ultimul tratament: X zile" deasupra listei
 - Coloreaza in rosu daca < 7 zile, galben 7-10 zile, verde > 10 zile
 - Afiseaza tipul ultimului tratament (ex: "Tratament fitosanitar acum 5 zile")
@@ -177,15 +227,34 @@ var recoltaSpecieHTML = Object.entries(recoltaPerSpecie)
 
 ```javascript
 // Adauga inainte de history.map(...)
-var lastTreatment = history.find(function(e){ return e.type === 'tratament'; });
-var intervalHtml = '';
+var lastTreatment = history.find(function (e) {
+  return e.type === "tratament";
+});
+var intervalHtml = "";
 if (lastTreatment && lastTreatment.date) {
-  var daysSince = Math.floor((Date.now() - new Date(lastTreatment.date)) / 86400000);
-  var color = daysSince < 7 ? 'var(--danger)' : daysSince < 10 ? 'var(--warning)' : 'var(--accent)';
-  var msg = daysSince < 7
-    ? '⚠️ Ultimul tratament acum ' + daysSince + ' zile — interval minim 7 zile nerespect!'
-    : '✓ Ultimul tratament acum ' + daysSince + ' zile';
-  intervalHtml = '<div style="padding:6px 10px;border-radius:8px;background:var(--bg-surface);border-left:3px solid ' + color + ';font-size:0.8rem;color:' + color + ';margin-bottom:8px;">' + msg + '</div>';
+  var daysSince = Math.floor(
+    (Date.now() - new Date(lastTreatment.date)) / 86400000,
+  );
+  var color =
+    daysSince < 7
+      ? "var(--danger)"
+      : daysSince < 10
+        ? "var(--warning)"
+        : "var(--accent)";
+  var msg =
+    daysSince < 7
+      ? "⚠️ Ultimul tratament acum " +
+        daysSince +
+        " zile — interval minim 7 zile nerespect!"
+      : "✓ Ultimul tratament acum " + daysSince + " zile";
+  intervalHtml =
+    '<div style="padding:6px 10px;border-radius:8px;background:var(--bg-surface);border-left:3px solid ' +
+    color +
+    ";font-size:0.8rem;color:" +
+    color +
+    ';margin-bottom:8px;">' +
+    msg +
+    "</div>";
 }
 // Adauga intervalHtml la inceputul section-body
 ```
@@ -200,6 +269,7 @@ if (lastTreatment && lastTreatment.date) {
 **Problema actuala:** Dupa ce AI-ul diagnosticheaza "Rapan — Dithane M-45 0.2%", utilizatorul trebuie sa inchida modalul, sa deschida calculatorul, sa caute manual produsul. Fluxul e intrerupt. Este cel mai frecvent workflow din aplicatie (diagnostic → tratament).
 
 **Imbunatatire propusa:**
+
 - Dupa afisarea diagnosticului, adauga sub butonul "Copiaza" un buton "Adauga tratament in jurnal"
 - Click deschide modalul de jurnal cu data = azi, tip = tratament, nota pre-populata cu "Tratament dupa diagnostic AI: [prima linie din diagnostic]"
 - Permite fermierului sa completeze/editeze inainte de salvare
@@ -208,26 +278,31 @@ if (lastTreatment && lastTreatment.date) {
 
 ```javascript
 // Dupa: document.getElementById('diagCopyRow').style.display = 'block';
-var addTreatBtn = document.getElementById('diagAddTreatment');
+var addTreatBtn = document.getElementById("diagAddTreatment");
 if (!addTreatBtn) {
-  addTreatBtn = document.createElement('div');
-  addTreatBtn.id = 'diagAddTreatment';
-  addTreatBtn.style.cssText = 'margin-top:8px;text-align:right;';
-  document.getElementById('diagCopyRow').parentNode.appendChild(addTreatBtn);
+  addTreatBtn = document.createElement("div");
+  addTreatBtn.id = "diagAddTreatment";
+  addTreatBtn.style.cssText = "margin-top:8px;text-align:right;";
+  document.getElementById("diagCopyRow").parentNode.appendChild(addTreatBtn);
 }
-var diagText = (document.getElementById('diagResult').textContent || '').split('\n')[0].substring(0, 120);
-addTreatBtn.innerHTML = '<button class="btn btn-primary" style="font-size:0.8rem;padding:6px 14px;" ' +
-  'onclick="closeModal(\'diagnose\');openModal(\'jurnal\');" ' +
-  'data-note="' + escapeHtml('Tratament dupa diagnostic AI: ' + diagText) + '">' +
-  '+ Adauga tratament in jurnal</button>';
-addTreatBtn.style.display = 'block';
+var diagText = (document.getElementById("diagResult").textContent || "")
+  .split("\n")[0]
+  .substring(0, 120);
+addTreatBtn.innerHTML =
+  '<button class="btn btn-primary" style="font-size:0.8rem;padding:6px 14px;" ' +
+  "onclick=\"closeModal('diagnose');openModal('jurnal');\" " +
+  'data-note="' +
+  escapeHtml("Tratament dupa diagnostic AI: " + diagText) +
+  '">' +
+  "+ Adauga tratament in jurnal</button>";
+addTreatBtn.style.display = "block";
 // Event listener pe buton pentru pre-populare nota
-addTreatBtn.querySelector('button').addEventListener('click', function() {
-  setTimeout(function() {
-    var noteEl = document.getElementById('jurnalNote');
-    var typeEl = document.getElementById('jurnalType');
-    if (noteEl) noteEl.value = addTreatBtn.querySelector('button').dataset.note;
-    if (typeEl) typeEl.value = 'tratament';
+addTreatBtn.querySelector("button").addEventListener("click", function () {
+  setTimeout(function () {
+    var noteEl = document.getElementById("jurnalNote");
+    var typeEl = document.getElementById("jurnalType");
+    if (noteEl) noteEl.value = addTreatBtn.querySelector("button").dataset.note;
+    if (typeEl) typeEl.value = "tratament";
   }, 200);
 });
 ```
@@ -242,6 +317,7 @@ addTreatBtn.querySelector('button').addEventListener('click', function() {
 **Problema actuala:** Nu exista nicio validare. Fermierul poate adauga "Tratament Dithane" in 3 zile consecutive accidental (re-introdus de doua ori sau greseala). Fungicidele au interval minim 7-14 zile, insecticidele 10-21 zile.
 
 **Imbunatatire propusa:**
+
 - La salvare tip=tratament, verifica daca in ultimele 5 zile exista deja un tratament inregistrat
 - Daca da, afiseaza un toast warning (nu blocant) cu "Atentie: ai mai inregistrat un tratament acum X zile"
 - Utilizatorul poate ignora si salva oricum
@@ -250,17 +326,24 @@ addTreatBtn.querySelector('button').addEventListener('click', function() {
 
 ```javascript
 // Adauga inainte de var entries = getJurnalEntries(); (la final de addJurnalEntry)
-if (type === 'tratament') {
+if (type === "tratament") {
   var existing = getJurnalEntries();
   var newDate = new Date(date);
-  var recentTreatment = existing.find(function(e) {
-    if (e.type !== 'tratament') return false;
+  var recentTreatment = existing.find(function (e) {
+    if (e.type !== "tratament") return false;
     var daysDiff = Math.abs((newDate - new Date(e.date)) / 86400000);
     return daysDiff < 7 && daysDiff > 0;
   });
   if (recentTreatment) {
-    var daysDiff = Math.round(Math.abs((newDate - new Date(recentTreatment.date)) / 86400000));
-    showToast('⚠️ Ai mai inregistrat un tratament acum ' + daysDiff + ' zile. Intervalul recomandat e 7-14 zile.', 'warning');
+    var daysDiff = Math.round(
+      Math.abs((newDate - new Date(recentTreatment.date)) / 86400000),
+    );
+    showToast(
+      "⚠️ Ai mai inregistrat un tratament acum " +
+        daysDiff +
+        " zile. Intervalul recomandat e 7-14 zile.",
+      "warning",
+    );
     // Nu blocam — utilizatorul poate continua
   }
 }
@@ -276,6 +359,7 @@ if (type === 'tratament') {
 **Problema actuala:** Raportul e cacheat 1h in Redis (implementat S17). Daca adaugi 10 intrari in jurnal si generezi imediat raportul, primesti versiunea veche (din cache). Cache-ul nu stie ca s-au adaugat date noi.
 
 **Imbunatatire propusa:**
+
 - Salveaza in Redis `livada:journal:last-update` timestamp la fiecare sync
 - In `report.js`, compara `generatedAt` cu `journal:last-update` — daca raportul e mai vechi, ignora cache-ul
 - Pe frontend, adauga un indicator "(din cache)" sau "(actualizat)" langa raport
@@ -284,18 +368,25 @@ if (type === 'tratament') {
 
 ```javascript
 // Dupa: if (cached && cached.generatedAt) {
-const journalLastUpdate = await kv.get('livada:journal:last-update').catch(() => 0);
-const cacheIsStale = journalLastUpdate && cached.generatedAt < journalLastUpdate;
+const journalLastUpdate = await kv
+  .get("livada:journal:last-update")
+  .catch(() => 0);
+const cacheIsStale =
+  journalLastUpdate && cached.generatedAt < journalLastUpdate;
 if (!cacheIsStale && ageMs < 3600_000) {
   // cache valid
-  return Response.json({ ...cached, _cached: true }, { headers: corsHeaders(req) });
+  return Response.json(
+    { ...cached, _cached: true },
+    { headers: corsHeaders(req) },
+  );
 }
 // ...
 ```
 
 **In `api/journal.js`**, adauga la POST success:
+
 ```javascript
-await kv.set('livada:journal:last-update', Date.now());
+await kv.set("livada:journal:last-update", Date.now());
 ```
 
 **Complexitate:** Mica | **Impact:** Mediu — raportul reflecta intotdeauna datele reale
@@ -308,6 +399,7 @@ await kv.set('livada:journal:last-update', Date.now());
 **Problema actuala:** Fotografiile nu au data vizibila, sunt afisate in ordinea returnata de API (nedeterminista). Fermierul nu poate corela "poza cu pete din 15 martie" cu "aplicat Dithane pe 16 martie". Galeria nu are nicio referinta temporala.
 
 **Imbunatatire propusa:**
+
 - Afiseaza data extrasă din URL-ul Blob (care contine timestamp) sau din metadata
 - Grupare optionala pe luna (header "Aprilie 2026 — 3 poze")
 - Counter vizibil: "3 poze" deasupra galeriei
@@ -316,26 +408,52 @@ await kv.set('livada:journal:last-update', Date.now());
 
 ```javascript
 // In loadGallery(), inlocuire render photos:
-grid.innerHTML = '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">' +
-  photos.length + ' ' + (photos.length === 1 ? 'fotografie' : 'fotografii') + '</div>' +
-  photos.map(function(p) {
-    // Vercel Blob URL contine timestamp in path: .../foto_1712345678901.jpg
-    var ts = null;
-    var m = (p.url || '').match(/[_-](\d{13})/);
-    if (m) ts = new Date(parseInt(m[1]));
-    var dateLabel = ts && !isNaN(ts) ? ts.toLocaleDateString('ro-RO', {day:'2-digit', month:'short', year:'2-digit'}) : '';
-    return '<div class="gal-item">' +
-      '<img src="' + escapeHtml(p.url) + '" alt="Foto livada" loading="lazy">' +
-      (dateLabel ? '<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;padding:2px 4px;text-align:center;">' + dateLabel + '</div>' : '') +
-      '<button class="gal-del" data-url="' + escapeHtml(p.url) + '">✕</button>' +
-      '</div>';
-  }).join('');
+grid.innerHTML =
+  '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">' +
+  photos.length +
+  " " +
+  (photos.length === 1 ? "fotografie" : "fotografii") +
+  "</div>" +
+  photos
+    .map(function (p) {
+      // Vercel Blob URL contine timestamp in path: .../foto_1712345678901.jpg
+      var ts = null;
+      var m = (p.url || "").match(/[_-](\d{13})/);
+      if (m) ts = new Date(parseInt(m[1]));
+      var dateLabel =
+        ts && !isNaN(ts)
+          ? ts.toLocaleDateString("ro-RO", {
+              day: "2-digit",
+              month: "short",
+              year: "2-digit",
+            })
+          : "";
+      return (
+        '<div class="gal-item">' +
+        '<img src="' +
+        escapeHtml(p.url) +
+        '" alt="Foto livada" loading="lazy">' +
+        (dateLabel
+          ? '<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;padding:2px 4px;text-align:center;">' +
+            dateLabel +
+            "</div>"
+          : "") +
+        '<button class="gal-del" data-url="' +
+        escapeHtml(p.url) +
+        '">✕</button>' +
+        "</div>"
+      );
+    })
+    .join("");
 // Nota: .gal-item trebuie sa aiba position:relative in CSS
 ```
 
 **CSS necesar:**
+
 ```css
-.gal-item { position: relative; }
+.gal-item {
+  position: relative;
+}
 ```
 
 **Complexitate:** Mica | **Impact:** Mediu — galeria devine un istoric vizual cu referinta temporala
@@ -348,6 +466,7 @@ grid.innerHTML = '<div style="font-size:0.75rem;color:var(--text-dim);margin-bot
 **Problema actuala:** Calendarul afiseaza fazele fenologice si evenimentele de tratament, dar nu marcheaza vizual zilele in care fermierul A EFECTUAT tratamente (din jurnal). Exista `showDayJournal(day)` pentru click, dar fara indicatori vizuali pe zilele cu interventii.
 
 **Imbunatatire propusa:**
+
 - Adauga un dot verde pe zilele care au interventii in jurnal (luna curenta)
 - Dot rosu/portocaliu pentru tratamente, verde pentru observatii, albastru pentru recoltare
 - Afiseaza numarul de interventii in colt daca > 1
@@ -357,10 +476,10 @@ grid.innerHTML = '<div style="font-size:0.75rem;color:var(--text-dim);margin-bot
 ```javascript
 // Adauga inainte de renderCalendar, calcul map de interventii
 var journalByDay = {};
-var monthStr = String(calYear) + '-' + String(calMonth + 1).padStart(2, '0');
-getJurnalEntries().forEach(function(e) {
-  if ((e.date || '').startsWith(monthStr)) {
-    var day = parseInt(e.date.split('-')[2]);
+var monthStr = String(calYear) + "-" + String(calMonth + 1).padStart(2, "0");
+getJurnalEntries().forEach(function (e) {
+  if ((e.date || "").startsWith(monthStr)) {
+    var day = parseInt(e.date.split("-")[2]);
     if (!journalByDay[day]) journalByDay[day] = [];
     journalByDay[day].push(e.type);
   }
@@ -368,12 +487,18 @@ getJurnalEntries().forEach(function(e) {
 
 // In constructia fiecarui .cal-day, adauga:
 var dayInterventions = journalByDay[dayNum] || [];
-var dotColor = dayInterventions.includes('tratament') ? 'var(--danger)'
-  : dayInterventions.includes('recoltare') ? 'var(--accent)'
-  : dayInterventions.length > 0 ? 'var(--info)' : '';
+var dotColor = dayInterventions.includes("tratament")
+  ? "var(--danger)"
+  : dayInterventions.includes("recoltare")
+    ? "var(--accent)"
+    : dayInterventions.length > 0
+      ? "var(--info)"
+      : "";
 var dotHtml = dotColor
-  ? '<span style="display:block;width:6px;height:6px;border-radius:50%;background:' + dotColor + ';margin:2px auto 0;"></span>'
-  : '';
+  ? '<span style="display:block;width:6px;height:6px;border-radius:50%;background:' +
+    dotColor +
+    ';margin:2px auto 0;"></span>'
+  : "";
 // Adauga dotHtml in HTML-ul celulei de calendar
 ```
 
@@ -398,36 +523,66 @@ var dotHtml = dotColor
 ```javascript
 // Map PHI zile pentru produse comune (adauga ca constanta globala)
 var PHI_DAYS = {
-  'dithane': 28, 'score': 14, 'chorus': 7, 'switch': 7,
-  'topsin': 14, 'mospilan': 7, 'fastac': 14, 'karate': 14,
-  'decis': 21, 'confidor': 14, 'calypso': 14, 'movento': 14,
-  'zeama bordeleza': 28, 'copper': 28, 'oxiclorura': 14,
-  'thiovit': 3, 'sulf': 3, 'tratament': 10  // default
+  dithane: 28,
+  score: 14,
+  chorus: 7,
+  switch: 7,
+  topsin: 14,
+  mospilan: 7,
+  fastac: 14,
+  karate: 14,
+  decis: 21,
+  confidor: 14,
+  calypso: 14,
+  movento: 14,
+  "zeama bordeleza": 28,
+  copper: 28,
+  oxiclorura: 14,
+  thiovit: 3,
+  sulf: 3,
+  tratament: 10, // default
 };
 
 // Adauga in addJurnalEntry(), cand type === 'recoltare'
-if (type === 'recoltare') {
+if (type === "recoltare") {
   var entries = getJurnalEntries();
   var harvestDate = new Date(date);
   var phiViolations = [];
-  entries.filter(function(e) {
-    return e.type === 'tratament' && e.date;
-  }).forEach(function(e) {
-    var treatDate = new Date(e.date);
-    var daysDiff = Math.round((harvestDate - treatDate) / 86400000);
-    if (daysDiff < 0 || daysDiff > 30) return;
-    // Cauta produsul in nota
-    var noteL = (e.note || '').toLowerCase();
-    var phi = 10; // default
-    for (var prod in PHI_DAYS) {
-      if (noteL.includes(prod)) { phi = PHI_DAYS[prod]; break; }
-    }
-    if (daysDiff < phi) {
-      phiViolations.push('Tratament din ' + e.date + ' (pauza: ' + phi + ' zile, au trecut: ' + daysDiff + ' zile)');
-    }
-  });
+  entries
+    .filter(function (e) {
+      return e.type === "tratament" && e.date;
+    })
+    .forEach(function (e) {
+      var treatDate = new Date(e.date);
+      var daysDiff = Math.round((harvestDate - treatDate) / 86400000);
+      if (daysDiff < 0 || daysDiff > 30) return;
+      // Cauta produsul in nota
+      var noteL = (e.note || "").toLowerCase();
+      var phi = 10; // default
+      for (var prod in PHI_DAYS) {
+        if (noteL.includes(prod)) {
+          phi = PHI_DAYS[prod];
+          break;
+        }
+      }
+      if (daysDiff < phi) {
+        phiViolations.push(
+          "Tratament din " +
+            e.date +
+            " (pauza: " +
+            phi +
+            " zile, au trecut: " +
+            daysDiff +
+            " zile)",
+        );
+      }
+    });
   if (phiViolations.length > 0) {
-    var ok = confirm('⚠️ ATENTIE PAUZA SECURITATE!\n\n' + phiViolations.join('\n') + '\n\nSigur vrei sa inregistrezi recoltarea?');
+    var ok = confirm(
+      "⚠️ ATENTIE PAUZA SECURITATE!\n\n" +
+        phiViolations.join("\n") +
+        "\n\nSigur vrei sa inregistrezi recoltarea?",
+    );
     if (!ok) return;
   }
 }
@@ -447,20 +602,26 @@ if (type === 'recoltare') {
 
 ```javascript
 async function renderSprayWindow() {
-  var container = document.getElementById('sprayWindow');
+  var container = document.getElementById("sprayWindow");
   if (!container) return;
   try {
     var res = await fetchWithTimeout(
-      'https://api.open-meteo.com/v1/forecast?latitude=' + LIVADA_LAT + '&longitude=' + LIVADA_LON +
-      '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,relative_humidity_2m_mean,weather_code' +
-      '&timezone=Europe/Bucharest&forecast_days=7', {}, 8000
+      "https://api.open-meteo.com/v1/forecast?latitude=" +
+        LIVADA_LAT +
+        "&longitude=" +
+        LIVADA_LON +
+        "&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,relative_humidity_2m_mean,weather_code" +
+        "&timezone=Europe/Bucharest&forecast_days=7",
+      {},
+      8000,
     );
     if (!res.ok) return;
     var d = await res.json();
-    var ZILE = ['Du','Lu','Ma','Mi','Jo','Vi','Sa'];
-    var html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">';
+    var ZILE = ["Du", "Lu", "Ma", "Mi", "Jo", "Vi", "Sa"];
+    var html =
+      '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">';
     for (var i = 0; i < 7; i++) {
-      var dt = new Date(d.daily.time[i] + 'T12:00');
+      var dt = new Date(d.daily.time[i] + "T12:00");
       var tMax = d.daily.temperature_2m_max[i];
       var tMin = d.daily.temperature_2m_min[i];
       var prec = d.daily.precipitation_sum[i];
@@ -468,29 +629,51 @@ async function renderSprayWindow() {
       var hum = d.daily.relative_humidity_2m_mean[i];
       var score = calculateSprayScore((tMax + tMin) / 2, wind, prec, hum);
       var sl = sprayLabel(score);
-      var isToday = d.daily.time[i] === new Date().toISOString().split('T')[0];
-      html += '<div style="text-align:center;padding:6px 2px;border-radius:8px;' +
-        (score >= 80 ? 'background:rgba(106,191,105,0.15);border:1px solid var(--accent);' :
-         score >= 50 ? 'background:var(--bg-surface);' : 'opacity:0.5;') +
-        (isToday ? 'outline:2px solid var(--accent);' : '') + '">' +
-        '<div style="font-size:0.65rem;color:var(--text-dim);">' + ZILE[dt.getDay()] + '</div>' +
-        '<div style="font-size:1rem;">' + wmoEmoji(d.daily.weather_code[i]) + '</div>' +
-        '<div style="font-size:0.7rem;">' + Math.round(tMax) + '°</div>' +
-        '<div class="' + sl.cls + '" style="font-size:0.6rem;font-weight:700;margin-top:2px;">' + score + '</div>' +
-        '</div>';
+      var isToday = d.daily.time[i] === new Date().toISOString().split("T")[0];
+      html +=
+        '<div style="text-align:center;padding:6px 2px;border-radius:8px;' +
+        (score >= 80
+          ? "background:rgba(106,191,105,0.15);border:1px solid var(--accent);"
+          : score >= 50
+            ? "background:var(--bg-surface);"
+            : "opacity:0.5;") +
+        (isToday ? "outline:2px solid var(--accent);" : "") +
+        '">' +
+        '<div style="font-size:0.65rem;color:var(--text-dim);">' +
+        ZILE[dt.getDay()] +
+        "</div>" +
+        '<div style="font-size:1rem;">' +
+        wmoEmoji(d.daily.weather_code[i]) +
+        "</div>" +
+        '<div style="font-size:0.7rem;">' +
+        Math.round(tMax) +
+        "°</div>" +
+        '<div class="' +
+        sl.cls +
+        '" style="font-size:0.6rem;font-weight:700;margin-top:2px;">' +
+        score +
+        "</div>" +
+        "</div>";
     }
-    html += '</div><p style="font-size:0.68rem;color:var(--text-dim);margin-top:6px;">Scor stropire 0-100 (verde=ideal)</p>';
+    html +=
+      '</div><p style="font-size:0.68rem;color:var(--text-dim);margin-top:6px;">Scor stropire 0-100 (verde=ideal)</p>';
     container.innerHTML = html;
-  } catch(e) { container.innerHTML = '<p style="font-size:0.78rem;color:var(--text-dim);">Indisponibil offline</p>'; }
+  } catch (e) {
+    container.innerHTML =
+      '<p style="font-size:0.78rem;color:var(--text-dim);">Indisponibil offline</p>';
+  }
 }
 ```
 
 **HTML necesar** (in sectiunea "Ce fac azi?"):
+
 ```html
 <div class="section">
   <h2 class="section-title">🌤️ Ferestre Stropire — 7 Zile</h2>
   <div class="section-body">
-    <div id="sprayWindow"><p style="color:var(--text-dim);font-size:0.8rem;">Se incarca...</p></div>
+    <div id="sprayWindow">
+      <p style="color:var(--text-dim);font-size:0.8rem;">Se incarca...</p>
+    </div>
   </div>
 </div>
 ```
@@ -509,49 +692,87 @@ async function renderSprayWindow() {
 
 ```javascript
 // Stocare localStorage
-var STOC_KEY = 'livada-stoc-produse';
+var STOC_KEY = "livada-stoc-produse";
 
 function getStoc() {
-  try { return JSON.parse(localStorage.getItem(STOC_KEY) || '[]'); } catch(e) { return []; }
+  try {
+    return JSON.parse(localStorage.getItem(STOC_KEY) || "[]");
+  } catch (e) {
+    return [];
+  }
 }
 function saveStoc(stoc) {
   localStorage.setItem(STOC_KEY, JSON.stringify(stoc));
 }
 function addProdus(name, cantitate, unitate, dataExpirare) {
   var stoc = getStoc();
-  stoc.push({ id: Date.now(), name: name, cantitate: cantitate, unitate: unitate || 'g', dataExpirare: dataExpirare || '' });
+  stoc.push({
+    id: Date.now(),
+    name: name,
+    cantitate: cantitate,
+    unitate: unitate || "g",
+    dataExpirare: dataExpirare || "",
+  });
   saveStoc(stoc);
   renderStoc();
 }
 function renderStoc() {
-  var container = document.getElementById('stocList');
+  var container = document.getElementById("stocList");
   if (!container) return;
   var stoc = getStoc();
   if (stoc.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-dim);font-size:0.82rem;">Niciun produs adaugat.</p>';
+    container.innerHTML =
+      '<p style="color:var(--text-dim);font-size:0.82rem;">Niciun produs adaugat.</p>';
     return;
   }
   var today = new Date();
-  container.innerHTML = stoc.map(function(p) {
-    var expired = p.dataExpirare && new Date(p.dataExpirare) < today;
-    var expSoon = p.dataExpirare && (new Date(p.dataExpirare) - today) < 30 * 86400000;
-    var borderColor = expired ? 'var(--danger)' : expSoon ? 'var(--warning)' : 'var(--border)';
-    return '<div style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid ' + borderColor + ';border-radius:8px;margin-bottom:6px;">' +
-      '<div style="flex:1;">' +
-        '<div style="font-size:0.85rem;font-weight:600;">' + escapeHtml(p.name) + '</div>' +
-        '<div style="font-size:0.75rem;color:var(--text-dim);">' + p.cantitate + ' ' + p.unitate +
-          (p.dataExpirare ? ' · Exp: ' + p.dataExpirare : '') +
-          (expired ? ' ⚠️ EXPIRAT' : '') + '</div>' +
-      '</div>' +
-      '<button onclick="deleteStocProdus(' + p.id + ')" style="background:none;border:none;color:var(--danger);font-size:1.1rem;cursor:pointer;padding:4px;">✕</button>' +
-    '</div>';
-  }).join('');
+  container.innerHTML = stoc
+    .map(function (p) {
+      var expired = p.dataExpirare && new Date(p.dataExpirare) < today;
+      var expSoon =
+        p.dataExpirare && new Date(p.dataExpirare) - today < 30 * 86400000;
+      var borderColor = expired
+        ? "var(--danger)"
+        : expSoon
+          ? "var(--warning)"
+          : "var(--border)";
+      return (
+        '<div style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid ' +
+        borderColor +
+        ';border-radius:8px;margin-bottom:6px;">' +
+        '<div style="flex:1;">' +
+        '<div style="font-size:0.85rem;font-weight:600;">' +
+        escapeHtml(p.name) +
+        "</div>" +
+        '<div style="font-size:0.75rem;color:var(--text-dim);">' +
+        p.cantitate +
+        " " +
+        p.unitate +
+        (p.dataExpirare ? " · Exp: " + p.dataExpirare : "") +
+        (expired ? " ⚠️ EXPIRAT" : "") +
+        "</div>" +
+        "</div>" +
+        '<button onclick="deleteStocProdus(' +
+        p.id +
+        ')" style="background:none;border:none;color:var(--danger);font-size:1.1rem;cursor:pointer;padding:4px;">✕</button>' +
+        "</div>"
+      );
+    })
+    .join("");
   // Alert stoc redus
-  var expiredCount = stoc.filter(function(p) { return p.dataExpirare && new Date(p.dataExpirare) < today; }).length;
-  if (expiredCount > 0) showToast('⚠️ ' + expiredCount + ' produse din stoc au expirat!', 'warning');
+  var expiredCount = stoc.filter(function (p) {
+    return p.dataExpirare && new Date(p.dataExpirare) < today;
+  }).length;
+  if (expiredCount > 0)
+    showToast(
+      "⚠️ " + expiredCount + " produse din stoc au expirat!",
+      "warning",
+    );
 }
 function deleteStocProdus(id) {
-  var stoc = getStoc().filter(function(p){ return p.id !== id; });
+  var stoc = getStoc().filter(function (p) {
+    return p.id !== id;
+  });
   saveStoc(stoc);
   renderStoc();
 }
@@ -572,32 +793,62 @@ function deleteStocProdus(id) {
 ```html
 <!-- Adauga dupa textarea jurnalNote in modal-jurnal -->
 <div id="costField" style="margin-top:8px;">
-  <label for="jurnalCost" style="font-size:0.8rem;color:var(--text-dim);">Cost (RON) — optional</label>
-  <input type="number" id="jurnalCost" placeholder="0.00" min="0" step="0.01"
-    style="padding:6px 10px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-size:0.85rem;width:100%;">
+  <label for="jurnalCost" style="font-size:0.8rem;color:var(--text-dim);"
+    >Cost (RON) — optional</label
+  >
+  <input
+    type="number"
+    id="jurnalCost"
+    placeholder="0.00"
+    min="0"
+    step="0.01"
+    style="padding:6px 10px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-size:0.85rem;width:100%;"
+  />
 </div>
 ```
 
 ```javascript
 // In addJurnalEntry(), adauga campul cost la entry:
-var cost = parseFloat(document.getElementById('jurnalCost')?.value) || 0;
+var cost = parseFloat(document.getElementById("jurnalCost")?.value) || 0;
 if (cost > 0) entry.cost = cost;
 
 // In renderStats(), adauga sumar cheltuieli:
-var totalCost = yearEntries.reduce(function(sum, e){ return sum + (e.cost || 0); }, 0);
+var totalCost = yearEntries.reduce(function (sum, e) {
+  return sum + (e.cost || 0);
+}, 0);
 var costByType = {};
-yearEntries.filter(function(e){ return e.cost > 0; }).forEach(function(e){
-  costByType[e.type] = (costByType[e.type] || 0) + e.cost;
-});
-var costHtml = totalCost > 0
-  ? '<h3 style="margin:14px 0 8px;font-size:0.9rem;">💰 Cheltuieli (' + selectedYear + ')</h3>' +
-    Object.entries(costByType).sort(function(a,b){ return b[1]-a[1]; }).map(function(p){
-      return '<div style="display:flex;justify-content:space-between;font-size:0.8rem;padding:3px 0;border-bottom:1px solid var(--border);">' +
-        '<span>' + p[0] + '</span><span style="color:var(--accent);font-weight:700;">' + p[1].toFixed(2) + ' RON</span></div>';
-    }).join('') +
-    '<div style="display:flex;justify-content:space-between;font-size:0.85rem;font-weight:700;margin-top:6px;padding-top:6px;border-top:2px solid var(--border);">' +
-    '<span>TOTAL</span><span style="color:var(--accent);">' + totalCost.toFixed(2) + ' RON</span></div>'
-  : '';
+yearEntries
+  .filter(function (e) {
+    return e.cost > 0;
+  })
+  .forEach(function (e) {
+    costByType[e.type] = (costByType[e.type] || 0) + e.cost;
+  });
+var costHtml =
+  totalCost > 0
+    ? '<h3 style="margin:14px 0 8px;font-size:0.9rem;">💰 Cheltuieli (' +
+      selectedYear +
+      ")</h3>" +
+      Object.entries(costByType)
+        .sort(function (a, b) {
+          return b[1] - a[1];
+        })
+        .map(function (p) {
+          return (
+            '<div style="display:flex;justify-content:space-between;font-size:0.8rem;padding:3px 0;border-bottom:1px solid var(--border);">' +
+            "<span>" +
+            p[0] +
+            '</span><span style="color:var(--accent);font-weight:700;">' +
+            p[1].toFixed(2) +
+            " RON</span></div>"
+          );
+        })
+        .join("") +
+      '<div style="display:flex;justify-content:space-between;font-size:0.85rem;font-weight:700;margin-top:6px;padding-top:6px;border-top:2px solid var(--border);">' +
+      '<span>TOTAL</span><span style="color:var(--accent);">' +
+      totalCost.toFixed(2) +
+      " RON</span></div>"
+    : "";
 ```
 
 ---
@@ -614,36 +865,62 @@ var costHtml = totalCost > 0
 
 ```javascript
 async function renderSpeciesTimeline(speciesId, container) {
-  var prev = document.getElementById('sp-timeline');
+  var prev = document.getElementById("sp-timeline");
   if (prev) prev.remove();
-  var spName = (SPECIES[speciesId] || '').toLowerCase();
+  var spName = (SPECIES[speciesId] || "").toLowerCase();
 
   // Colecteaza interventii din jurnal
-  var journalItems = getJurnalEntries().filter(function(e) {
-    return (e.note || '').toLowerCase().includes(spName) || e.species === speciesId;
-  }).map(function(e) {
-    return { date: e.date, type: 'jurnal', icon: '📋', label: e.type, desc: e.note, id: e.id };
-  });
+  var journalItems = getJurnalEntries()
+    .filter(function (e) {
+      return (
+        (e.note || "").toLowerCase().includes(spName) || e.species === speciesId
+      );
+    })
+    .map(function (e) {
+      return {
+        date: e.date,
+        type: "jurnal",
+        icon: "📋",
+        label: e.type,
+        desc: e.note,
+        id: e.id,
+      };
+    });
 
   // Combina si sorteaza
-  var allItems = journalItems.sort(function(a, b) { return b.date.localeCompare(a.date); });
+  var allItems = journalItems.sort(function (a, b) {
+    return b.date.localeCompare(a.date);
+  });
   if (allItems.length === 0) return;
 
-  var div = document.createElement('div');
-  div.id = 'sp-timeline';
-  div.className = 'section';
-  div.style.marginTop = '12px';
-  div.innerHTML = '<h2 class="section-title" style="cursor:default;">🕐 Timeline</h2>' +
+  var div = document.createElement("div");
+  div.id = "sp-timeline";
+  div.className = "section";
+  div.style.marginTop = "12px";
+  div.innerHTML =
+    '<h2 class="section-title" style="cursor:default;">🕐 Timeline</h2>' +
     '<div class="section-body">' +
-    allItems.map(function(item) {
-      return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">' +
-        '<div style="font-size:1.2rem;flex-shrink:0;">' + item.icon + '</div>' +
-        '<div>' +
-          '<div style="font-size:0.72rem;color:var(--text-dim);">' + escapeHtml(item.date) + ' · ' + escapeHtml(item.label) + '</div>' +
-          '<div style="font-size:0.82rem;margin-top:2px;">' + escapeHtml((item.desc || '').substring(0, 100)) + '</div>' +
-        '</div></div>';
-    }).join('') +
-    '</div>';
+    allItems
+      .map(function (item) {
+        return (
+          '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">' +
+          '<div style="font-size:1.2rem;flex-shrink:0;">' +
+          item.icon +
+          "</div>" +
+          "<div>" +
+          '<div style="font-size:0.72rem;color:var(--text-dim);">' +
+          escapeHtml(item.date) +
+          " · " +
+          escapeHtml(item.label) +
+          "</div>" +
+          '<div style="font-size:0.82rem;margin-top:2px;">' +
+          escapeHtml((item.desc || "").substring(0, 100)) +
+          "</div>" +
+          "</div></div>"
+        );
+      })
+      .join("") +
+    "</div>";
   container.appendChild(div);
 }
 // Apeleaza din injectSpeciesTools() dupa injectSpeciesHistory()
@@ -666,26 +943,49 @@ function importCSV(input) {
   var file = input.files[0];
   if (!file) return;
   var reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     try {
       var text = e.target.result;
-      var lines = text.split('\n').filter(function(l){ return l.trim(); });
-      if (lines.length < 2) { showToast('CSV gol sau invalid', 'error'); return; }
+      var lines = text.split("\n").filter(function (l) {
+        return l.trim();
+      });
+      if (lines.length < 2) {
+        showToast("CSV gol sau invalid", "error");
+        return;
+      }
       // Detecteaza daca prima linie e header
-      var startIdx = lines[0].toLowerCase().includes('data') ? 1 : 0;
-      var imported = 0, errors = 0;
+      var startIdx = lines[0].toLowerCase().includes("data") ? 1 : 0;
+      var imported = 0,
+        errors = 0;
       var entries = getJurnalEntries();
-      var existingDates = new Set(entries.map(function(e){ return e.date + e.note; }));
-      lines.slice(startIdx).forEach(function(line) {
+      var existingDates = new Set(
+        entries.map(function (e) {
+          return e.date + e.note;
+        }),
+      );
+      lines.slice(startIdx).forEach(function (line) {
         // Suporta separator , si ;
-        var sep = line.includes(';') ? ';' : ',';
-        var parts = line.split(sep).map(function(p){ return p.trim().replace(/^"|"$/g,''); });
-        var date = parts[0], type = parts[1] || 'observatie', note = parts[2] || '';
-        var species = parts[3] || '', kg = parseFloat(parts[4]) || 0;
-        if (!date.match(/^\d{4}-\d{2}-\d{2}$/) || !note) { errors++; return; }
+        var sep = line.includes(";") ? ";" : ",";
+        var parts = line.split(sep).map(function (p) {
+          return p.trim().replace(/^"|"$/g, "");
+        });
+        var date = parts[0],
+          type = parts[1] || "observatie",
+          note = parts[2] || "";
+        var species = parts[3] || "",
+          kg = parseFloat(parts[4]) || 0;
+        if (!date.match(/^\d{4}-\d{2}-\d{2}$/) || !note) {
+          errors++;
+          return;
+        }
         var key = date + note;
         if (existingDates.has(key)) return; // skip duplicat
-        var entry = { id: Date.now() + imported, date: date, type: type, note: note };
+        var entry = {
+          id: Date.now() + imported,
+          date: date,
+          type: type,
+          note: note,
+        };
         if (species) entry.species = species;
         if (kg > 0) entry.kg = kg;
         entries.push(entry);
@@ -693,28 +993,51 @@ function importCSV(input) {
         imported++;
       });
       if (imported > 0) {
-        entries.sort(function(a,b){ return b.id - a.id; });
+        entries.sort(function (a, b) {
+          return b.id - a.id;
+        });
         saveJurnalEntries(entries);
         renderJurnal();
         syncJournal();
-        showToast('✓ Importat ' + imported + ' interventii' + (errors > 0 ? ' (' + errors + ' erori)' : ''));
+        showToast(
+          "✓ Importat " +
+            imported +
+            " interventii" +
+            (errors > 0 ? " (" + errors + " erori)" : ""),
+        );
       } else {
-        showToast('Nicio intrare noua de importat' + (errors > 0 ? ' (' + errors + ' linii invalide)' : ''), 'warning');
+        showToast(
+          "Nicio intrare noua de importat" +
+            (errors > 0 ? " (" + errors + " linii invalide)" : ""),
+          "warning",
+        );
       }
-    } catch(err) {
-      showToast('Eroare la parsarea CSV: ' + err.message, 'error');
+    } catch (err) {
+      showToast("Eroare la parsarea CSV: " + err.message, "error");
     }
   };
-  reader.readAsText(file, 'UTF-8');
-  input.value = ''; // reset pentru re-upload
+  reader.readAsText(file, "UTF-8");
+  input.value = ""; // reset pentru re-upload
 }
 ```
 
 **HTML necesar** (adauga in butoanele din modal-jurnal):
+
 ```html
-<button class="btn btn-secondary" style="padding:4px 10px;font-size:0.72rem;"
-  onclick="document.getElementById('csvImportInput').click()">⬆ Import CSV</button>
-<input type="file" id="csvImportInput" accept=".csv,text/csv" style="display:none" onchange="importCSV(this)">
+<button
+  class="btn btn-secondary"
+  style="padding:4px 10px;font-size:0.72rem;"
+  onclick="document.getElementById('csvImportInput').click()"
+>
+  ⬆ Import CSV
+</button>
+<input
+  type="file"
+  id="csvImportInput"
+  accept=".csv,text/csv"
+  style="display:none"
+  onchange="importCSV(this)"
+/>
 ```
 
 ---
@@ -731,23 +1054,23 @@ function importCSV(input) {
 
 ```javascript
 // In sw.js — adauga la final:
-self.addEventListener('push', event => {
+self.addEventListener("push", (event) => {
   const data = event.data ? event.data.json() : {};
   event.waitUntil(
-    self.registration.showNotification(data.title || 'Livada Mea', {
-      body: data.body || 'Notificare noua',
-      icon: '/icon.svg',
-      badge: '/icon.svg',
-      tag: data.tag || 'livada-alert',
+    self.registration.showNotification(data.title || "Livada Mea", {
+      body: data.body || "Notificare noua",
+      icon: "/icon.svg",
+      badge: "/icon.svg",
+      tag: data.tag || "livada-alert",
       renotify: true,
-      data: { url: data.url || '/' }
-    })
+      data: { url: data.url || "/" },
+    }),
   );
 });
 
-self.addEventListener('notificationclick', event => {
+self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  event.waitUntil(clients.openWindow(event.notification.data.url || '/'));
+  event.waitUntil(clients.openWindow(event.notification.data.url || "/"));
 });
 ```
 
@@ -755,17 +1078,25 @@ self.addEventListener('notificationclick', event => {
 
 ```javascript
 async function requestPushPermission() {
-  if (!('Notification' in window) || !('serviceWorker' in navigator)) {
-    showToast('Push notifications nu sunt suportate pe acest dispozitiv', 'warning');
+  if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+    showToast(
+      "Push notifications nu sunt suportate pe acest dispozitiv",
+      "warning",
+    );
     return;
   }
   var perm = await Notification.requestPermission();
-  if (perm !== 'granted') {
-    showToast('Notificarile au fost refuzate. Le poti activa din setarile browserului.', 'warning');
+  if (perm !== "granted") {
+    showToast(
+      "Notificarile au fost refuzate. Le poti activa din setarile browserului.",
+      "warning",
+    );
     return;
   }
-  showToast('✓ Notificari activate! Vei fi alertat la inghet si tratamente urgente.');
-  localStorage.setItem('livada-push-enabled', '1');
+  showToast(
+    "✓ Notificari activate! Vei fi alertat la inghet si tratamente urgente.",
+  );
+  localStorage.setItem("livada-push-enabled", "1");
 }
 ```
 
@@ -797,16 +1128,21 @@ async function requestPushPermission() {
 
 **Problema:** `fetchMeteo()` si `initDashboardAzi()` fac amandoua request la Open-Meteo independent. Daca utilizatorul deschide modalul Meteo si tab-ul Azi in interval scurt, se fac 2 request-uri identice la Open-Meteo in cateva secunde.
 **Solutie:** Cache in-memory (nu localStorage) cu TTL 5 minute:
+
 ```javascript
-var _meteoCache = null, _meteoCacheTs = 0;
+var _meteoCache = null,
+  _meteoCacheTs = 0;
 async function fetchMeteoWithCache() {
   if (_meteoCache && Date.now() - _meteoCacheTs < 300000) return _meteoCache;
-  var res = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?...');
+  var res = await fetchWithTimeout(
+    "https://api.open-meteo.com/v1/forecast?...",
+  );
   _meteoCache = await res.json();
   _meteoCacheTs = Date.now();
   return _meteoCache;
 }
 ```
+
 **Complexitate:** Mica | **Impact:** Performanta — reduce request-urile externe cu ~50%
 
 ---
@@ -815,6 +1151,7 @@ async function fetchMeteoWithCache() {
 
 **Problema:** `manifest.json` contine un singur icon SVG cu `purpose: "any maskable"`. iOS Safari (< 16) nu suporta SVG icons in manifest si poate afisa o icoana alba la install. Android accepta SVG dar unele launcher-e vechi nu.
 **Solutie:** Genereaza PNG la 192x192 si 512x512 din SVG (tool: `sharp`, `svgexport` sau manual). Adauga in `manifest.json`:
+
 ```json
 "icons": [
   { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
@@ -822,6 +1159,7 @@ async function fetchMeteoWithCache() {
   { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
 ]
 ```
+
 **Complexitate:** Mica | **Impact:** Compatibilitate — install PWA perfect pe toate platformele
 
 ---
@@ -838,12 +1176,17 @@ async function fetchMeteoWithCache() {
 
 **Problema:** `syncJournal()` trimite intregul jurnal la fiecare sync (POST cu body = JSON entries). Daca jurnalul creste la 500+ entries, payload-ul poate depasi limita Edge Runtime (4MB request body pe Vercel).
 **Solutie:** Adauga validare in `api/journal.js`:
+
 ```javascript
 const bodyText = await req.text();
 if (bodyText.length > 3 * 1024 * 1024) {
-  return Response.json({ error: 'Jurnal prea mare. Exporta si arhiveaza entries vechi.' }, { status: 413, headers: corsHeaders(req) });
+  return Response.json(
+    { error: "Jurnal prea mare. Exporta si arhiveaza entries vechi." },
+    { status: 413, headers: corsHeaders(req) },
+  );
 }
 ```
+
 **Complexitate:** Mica | **Impact:** Stabilitate — previne erori silentioase la jurnal mare
 
 ---
@@ -852,6 +1195,7 @@ if (bodyText.length > 3 * 1024 * 1024) {
 
 **Problema:** Scorul de stropire foloseste temp/wind/rain/humidity. De la S17, Redis contine si `uv_index` si `soil_moisture` per zi. Un UV index ridicat (>7) creste riscul de fitotoxicitate la stropire in amiaza. Soil moisture scazut indica necesitate irigare.
 **Solutie:** Extinde functia sa accepte optional `uvIndex`:
+
 ```javascript
 function calculateSprayScore(temp, wind, rain, humidity, uvIndex) {
   // ... codul existent ...
@@ -859,6 +1203,7 @@ function calculateSprayScore(temp, wind, rain, humidity, uvIndex) {
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 ```
+
 **Complexitate:** Mica | **Impact:** Precizie — recomandari stropire mai exacte
 
 ---
@@ -867,9 +1212,11 @@ function calculateSprayScore(temp, wind, rain, humidity, uvIndex) {
 
 **Problema:** `STATIC_CACHE = 'livada-static-v1'` e hardcodat. La fiecare deploy, daca nu schimbi manual `v1` → `v2`, sw.js serveste assets vechi din cache pana expirace. Strategia Network-First pentru HTML evita problema principala, dar icon-urile pot ramane vechi.
 **Solutie:** Genereaza automat cache name cu hash din data deploy:
+
 ```javascript
-const BUILD_HASH = 'livada-static-20260406'; // Actualizat la fiecare deploy relevant
+const BUILD_HASH = "livada-static-20260406"; // Actualizat la fiecare deploy relevant
 ```
+
 Sau mai elegant, importa din `APP_BUILD` care e deja calculat din `document.lastModified`.
 **Complexitate:** Mica | **Impact:** Mentenanta — elimina cache stale dupa deploy
 
@@ -877,29 +1224,29 @@ Sau mai elegant, importa din `APP_BUILD` care e deja calculat din `document.last
 
 ## SUMAR PRIORITATI
 
-| Prioritate | # | Nume | Complexitate | Impact | Categorie |
-|---|---|---|---|---|---|
-| **P0 — URGENT** | V5 | Report cache invalidation la jurnal nou | Mica | Calitate | Backend |
-| **P0 — URGENT** | T6 | Groq Llama 4 upgrade | Mica | Performanta | Backend |
-| **P1 — IMPORTANT** | N1 | PHI Calculator pauza securitate | Mica | Maxim | Siguranta |
-| **P1 — IMPORTANT** | V3 | Diagnostic → buton "Adauga tratament" | Mica | Mare | UX/Flow |
-| **P1 — IMPORTANT** | V2 | Interval de la ultimul tratament | Mica | Mare | UX |
-| **P1 — IMPORTANT** | V1 | Recolta kg per specie vizuala | Mica | Mediu | UX |
-| **P1 — IMPORTANT** | N2 | Spray Window 7 zile | Medie | Mare | Feature |
-| **P1 — IMPORTANT** | T8 | Meteo deduplicare request | Mica | Performanta | Tehnic |
-| **P2 — VALOROS** | V4 | Warning interval minim tratamente | Mica | Mediu | UX |
-| **P2 — VALOROS** | V6 | Galerie date upload + sortare | Mica | Mediu | UX |
-| **P2 — VALOROS** | V7 | Calendar dots jurnal | Mica | Mediu | UX |
-| **P2 — VALOROS** | N4 | Cost per tratament + sumar financiar | Mica | Mare | Feature |
-| **P2 — VALOROS** | N6 | Import CSV jurnal | Medie | Mediu | Feature |
-| **P2 — VALOROS** | T7 | Journal size validation server-side | Mica | Stabilitate | Tehnic |
-| **P2 — VALOROS** | T9 | Manifest PNG icons | Mica | Compatibilitate | Tehnic |
-| **P3 — STRATEGIC** | N3 | Stoc produse fitosanitare | Medie | Mare | Feature |
-| **P3 — STRATEGIC** | N5 | Timeline specie integrata | Medie | Mare | Feature |
-| **P3 — STRATEGIC** | T10 | calculateSprayScore + UV Index | Mica | Precizie | Tehnic |
-| **P3 — STRATEGIC** | S10 | photos.js Edge Runtime testare | Medie | Stabilitate | Tehnic |
-| **P4 — NICE-TO-HAVE** | N7 | Push Notifications (inghet + tratamente) | Mare | Maxim | Feature |
-| **P4 — NICE-TO-HAVE** | T11 | SW cache versioning automat | Mica | Mentenanta | Tehnic |
+| Prioritate            | #   | Nume                                     | Complexitate | Impact          | Categorie |
+| --------------------- | --- | ---------------------------------------- | ------------ | --------------- | --------- |
+| **P0 — URGENT**       | V5  | Report cache invalidation la jurnal nou  | Mica         | Calitate        | Backend   |
+| **P0 — URGENT**       | T6  | Groq Llama 4 upgrade                     | Mica         | Performanta     | Backend   |
+| **P1 — IMPORTANT**    | N1  | PHI Calculator pauza securitate          | Mica         | Maxim           | Siguranta |
+| **P1 — IMPORTANT**    | V3  | Diagnostic → buton "Adauga tratament"    | Mica         | Mare            | UX/Flow   |
+| **P1 — IMPORTANT**    | V2  | Interval de la ultimul tratament         | Mica         | Mare            | UX        |
+| **P1 — IMPORTANT**    | V1  | Recolta kg per specie vizuala            | Mica         | Mediu           | UX        |
+| **P1 — IMPORTANT**    | N2  | Spray Window 7 zile                      | Medie        | Mare            | Feature   |
+| **P1 — IMPORTANT**    | T8  | Meteo deduplicare request                | Mica         | Performanta     | Tehnic    |
+| **P2 — VALOROS**      | V4  | Warning interval minim tratamente        | Mica         | Mediu           | UX        |
+| **P2 — VALOROS**      | V6  | Galerie date upload + sortare            | Mica         | Mediu           | UX        |
+| **P2 — VALOROS**      | V7  | Calendar dots jurnal                     | Mica         | Mediu           | UX        |
+| **P2 — VALOROS**      | N4  | Cost per tratament + sumar financiar     | Mica         | Mare            | Feature   |
+| **P2 — VALOROS**      | N6  | Import CSV jurnal                        | Medie        | Mediu           | Feature   |
+| **P2 — VALOROS**      | T7  | Journal size validation server-side      | Mica         | Stabilitate     | Tehnic    |
+| **P2 — VALOROS**      | T9  | Manifest PNG icons                       | Mica         | Compatibilitate | Tehnic    |
+| **P3 — STRATEGIC**    | N3  | Stoc produse fitosanitare                | Medie        | Mare            | Feature   |
+| **P3 — STRATEGIC**    | N5  | Timeline specie integrata                | Medie        | Mare            | Feature   |
+| **P3 — STRATEGIC**    | T10 | calculateSprayScore + UV Index           | Mica         | Precizie        | Tehnic    |
+| **P3 — STRATEGIC**    | S10 | photos.js Edge Runtime testare           | Medie        | Stabilitate     | Tehnic    |
+| **P4 — NICE-TO-HAVE** | N7  | Push Notifications (inghet + tratamente) | Mare         | Maxim           | Feature   |
+| **P4 — NICE-TO-HAVE** | T11 | SW cache versioning automat              | Mica         | Mentenanta      | Tehnic    |
 
 ---
 
@@ -915,7 +1262,6 @@ Sau mai elegant, importa din `APP_BUILD` care e deja calculat din `document.last
 4. **Ce NU se schimba:** Arhitectura Edge Runtime, stack Groq+Gemini, structura localStorage, API routes existente (exceptie journal.js pentru V5), layout general HTML.
 5. **Gemini 2.5-flash-lite:** Model non-confirmat oficial la data analizei — verifica disponibilitatea inainte de implementare. Alternativa sigura: `gemini-2.0-flash-lite` (confirmata disponibila).
 6. **Rate limit Groq free tier:** La upgrade Llama 4, verifica noile limite — modelele noi pot avea RPM mai mici pe free tier.
-
 
 ---
 
@@ -966,57 +1312,57 @@ var GDD_BASE_TEMP = 10;
 // Milestones fenologice orientative pentru clima continentala (Nadlac/Arad)
 var GDD_MILESTONES = {
   cais: [
-    { gdd: 80,   label: 'Dezmugurit',     icon: '🌱' },
-    { gdd: 120,  label: 'Inflorire',       icon: '🌸' },
-    { gdd: 170,  label: 'Cadere petale',   icon: '🍃' },
-    { gdd: 230,  label: 'Legare fructe',   icon: '🔵' },
-    { gdd: 700,  label: 'Recolta posibila',icon: '🍑' },
+    { gdd: 80, label: "Dezmugurit", icon: "🌱" },
+    { gdd: 120, label: "Inflorire", icon: "🌸" },
+    { gdd: 170, label: "Cadere petale", icon: "🍃" },
+    { gdd: 230, label: "Legare fructe", icon: "🔵" },
+    { gdd: 700, label: "Recolta posibila", icon: "🍑" },
   ],
   piersic: [
-    { gdd: 100,  label: 'Dezmugurit',     icon: '🌱' },
-    { gdd: 150,  label: 'Inflorire',       icon: '🌸' },
-    { gdd: 210,  label: 'Cadere petale',   icon: '🍃' },
-    { gdd: 280,  label: 'Legare fructe',   icon: '🔵' },
-    { gdd: 1050, label: 'Recolta posibila',icon: '🍑' },
+    { gdd: 100, label: "Dezmugurit", icon: "🌱" },
+    { gdd: 150, label: "Inflorire", icon: "🌸" },
+    { gdd: 210, label: "Cadere petale", icon: "🍃" },
+    { gdd: 280, label: "Legare fructe", icon: "🔵" },
+    { gdd: 1050, label: "Recolta posibila", icon: "🍑" },
   ],
   cires: [
-    { gdd: 70,   label: 'Dezmugurit',     icon: '🌱' },
-    { gdd: 100,  label: 'Inflorire',       icon: '🌸' },
-    { gdd: 150,  label: 'Cadere petale',   icon: '🍃' },
-    { gdd: 600,  label: 'Recolta posibila',icon: '🍒' },
+    { gdd: 70, label: "Dezmugurit", icon: "🌱" },
+    { gdd: 100, label: "Inflorire", icon: "🌸" },
+    { gdd: 150, label: "Cadere petale", icon: "🍃" },
+    { gdd: 600, label: "Recolta posibila", icon: "🍒" },
   ],
   visin: [
-    { gdd: 80,   label: 'Dezmugurit',     icon: '🌱' },
-    { gdd: 120,  label: 'Inflorire',       icon: '🌸' },
-    { gdd: 700,  label: 'Recolta posibila',icon: '🍒' },
+    { gdd: 80, label: "Dezmugurit", icon: "🌱" },
+    { gdd: 120, label: "Inflorire", icon: "🌸" },
+    { gdd: 700, label: "Recolta posibila", icon: "🍒" },
   ],
-  'par-clapp': [
-    { gdd: 130,  label: 'Dezmugurit',     icon: '🌱' },
-    { gdd: 180,  label: 'Inflorire',       icon: '🌸' },
-    { gdd: 250,  label: 'Legare fructe',   icon: '🔵' },
-    { gdd: 1100, label: 'Recolta posibila',icon: '🍐' },
+  "par-clapp": [
+    { gdd: 130, label: "Dezmugurit", icon: "🌱" },
+    { gdd: 180, label: "Inflorire", icon: "🌸" },
+    { gdd: 250, label: "Legare fructe", icon: "🔵" },
+    { gdd: 1100, label: "Recolta posibila", icon: "🍐" },
   ],
-  'mar-florina': [
-    { gdd: 150,  label: 'Dezmugurit',     icon: '🌱' },
-    { gdd: 200,  label: 'Inflorire',       icon: '🌸' },
-    { gdd: 270,  label: 'Legare fructe',   icon: '🔵' },
-    { gdd: 1300, label: 'Recolta posibila',icon: '🍎' },
+  "mar-florina": [
+    { gdd: 150, label: "Dezmugurit", icon: "🌱" },
+    { gdd: 200, label: "Inflorire", icon: "🌸" },
+    { gdd: 270, label: "Legare fructe", icon: "🔵" },
+    { gdd: 1300, label: "Recolta posibila", icon: "🍎" },
   ],
   prun: [
-    { gdd: 100,  label: 'Dezmugurit',     icon: '🌱' },
-    { gdd: 140,  label: 'Inflorire',       icon: '🌸' },
-    { gdd: 900,  label: 'Recolta posibila',icon: '🫐' },
+    { gdd: 100, label: "Dezmugurit", icon: "🌱" },
+    { gdd: 140, label: "Inflorire", icon: "🌸" },
+    { gdd: 900, label: "Recolta posibila", icon: "🫐" },
   ],
   migdal: [
-    { gdd: 60,   label: 'Dezmugurit (TIMPURIU!)', icon: '⚠️' },
-    { gdd: 90,   label: 'Inflorire',       icon: '🌸' },
-    { gdd: 800,  label: 'Recolta posibila',icon: '🌰' },
+    { gdd: 60, label: "Dezmugurit (TIMPURIU!)", icon: "⚠️" },
+    { gdd: 90, label: "Inflorire", icon: "🌸" },
+    { gdd: 800, label: "Recolta posibila", icon: "🌰" },
   ],
 };
 
 function calculateGDD(meteoHistory) {
   var year = new Date().getFullYear();
-  var startDate = year + '-03-01';
+  var startDate = year + "-03-01";
   var total = 0;
   var dates = Object.keys(meteoHistory).sort();
   for (var i = 0; i < dates.length; i++) {
@@ -1031,41 +1377,70 @@ function calculateGDD(meteoHistory) {
 }
 
 function renderGDDSection(speciesId, containerEl) {
-  var history = JSON.parse(localStorage.getItem('livada-meteo-history') || '{}');
+  var history = JSON.parse(
+    localStorage.getItem("livada-meteo-history") || "{}",
+  );
   var gdd = calculateGDD(history);
   var milestones = GDD_MILESTONES[speciesId];
   if (!milestones || !Object.keys(history).length) return;
 
-  var currentStage = null, nextStage = null;
+  var currentStage = null,
+    nextStage = null;
   for (var i = 0; i < milestones.length; i++) {
     if (gdd >= milestones[i].gdd) currentStage = milestones[i];
-    else { nextStage = milestones[i]; break; }
+    else {
+      nextStage = milestones[i];
+      break;
+    }
   }
-  var progressPct = nextStage ? Math.min(100, Math.round((gdd / nextStage.gdd) * 100)) : 100;
+  var progressPct = nextStage
+    ? Math.min(100, Math.round((gdd / nextStage.gdd) * 100))
+    : 100;
 
-  var gddEl = document.createElement('div');
-  gddEl.className = 'alert alert-info';
-  gddEl.style.cssText = 'margin:10px 0;padding:10px 14px;';
+  var gddEl = document.createElement("div");
+  gddEl.className = "alert alert-info";
+  gddEl.style.cssText = "margin:10px 0;padding:10px 14px;";
   gddEl.innerHTML =
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
-    '<strong>🌡️ Caldura acumulata (GDD)</strong>' +
-    '<span style="font-size:1.1rem;font-weight:700;color:var(--accent);">' + Math.round(gdd) + ' GDD</span>' +
-    '</div>' +
-    (currentStage ? '<div style="font-size:0.82rem;margin-bottom:4px;">' +
-      currentStage.icon + ' Stadiu curent: <strong>' + currentStage.label + '</strong></div>' : '') +
-    (nextStage ? '<div style="font-size:0.78rem;color:var(--text-dim);">Urmator: ' +
-      nextStage.icon + ' ' + nextStage.label + ' la ' + nextStage.gdd +
-      ' GDD (' + (nextStage.gdd - Math.round(gdd)) + ' GDD ramase)</div>' : '') +
+    "<strong>🌡️ Caldura acumulata (GDD)</strong>" +
+    '<span style="font-size:1.1rem;font-weight:700;color:var(--accent);">' +
+    Math.round(gdd) +
+    " GDD</span>" +
+    "</div>" +
+    (currentStage
+      ? '<div style="font-size:0.82rem;margin-bottom:4px;">' +
+        currentStage.icon +
+        " Stadiu curent: <strong>" +
+        currentStage.label +
+        "</strong></div>"
+      : "") +
+    (nextStage
+      ? '<div style="font-size:0.78rem;color:var(--text-dim);">Urmator: ' +
+        nextStage.icon +
+        " " +
+        nextStage.label +
+        " la " +
+        nextStage.gdd +
+        " GDD (" +
+        (nextStage.gdd - Math.round(gdd)) +
+        " GDD ramase)</div>"
+      : "") +
     '<div style="margin-top:6px;height:4px;background:var(--bg-surface);border-radius:2px;">' +
-    '<div style="height:4px;background:var(--accent);border-radius:2px;width:' + progressPct + '%;transition:width 0.5s;"></div>' +
-    '</div>';
+    '<div style="height:4px;background:var(--accent);border-radius:2px;width:' +
+    progressPct +
+    '%;transition:width 0.5s;"></div>' +
+    "</div>";
   containerEl.insertBefore(gddEl, containerEl.firstChild);
 }
 ```
 
 **CSS necesar** (daca `.alert-info` nu exista deja):
+
 ```css
-.alert-info { background: rgba(90,159,212,0.12); border-left: 3px solid var(--info); }
+.alert-info {
+  background: rgba(90, 159, 212, 0.12);
+  border-left: 3px solid var(--info);
+}
 ```
 
 **Integrare:** Apeleaza `renderGDDSection(activeSpeciesId, sectionBodyEl)` la afisarea fiecarui tab de specie. Necesita `loadMeteoHistory()` la init (deja exista). Salveaza rezultatul in `livada-meteo-history` din localStorage.
@@ -1084,23 +1459,25 @@ function renderGDDSection(speciesId, containerEl) {
 
 ```javascript
 async function openWeeklyPlanner() {
-  openModal('planner');
-  var body = document.getElementById('plannerBody');
-  body.innerHTML = '<div class="ai-load"><div class="ai-spin"></div><br>Se incarca prognoza...</div>';
+  openModal("planner");
+  var body = document.getElementById("plannerBody");
+  body.innerHTML =
+    '<div class="ai-load"><div class="ai-spin"></div><br>Se incarca prognoza...</div>';
 
   try {
     var meteoRes = await fetchWithTimeout(
-      'https://api.open-meteo.com/v1/forecast?latitude=46.17&longitude=20.75' +
-      '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,' +
-      'relative_humidity_2m_max,weather_code&timezone=Europe%2FBucharest&forecast_days=7',
-      {}, 8000
+      "https://api.open-meteo.com/v1/forecast?latitude=46.17&longitude=20.75" +
+        "&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max," +
+        "relative_humidity_2m_max,weather_code&timezone=Europe%2FBucharest&forecast_days=7",
+      {},
+      8000,
     );
     var data = await meteoRes.json();
     var journal = getJurnalEntries();
     var today = todayLocal();
     var monthNow = new Date().getMonth() + 1;
 
-    var rows = '';
+    var rows = "";
     for (var i = 0; i < 7; i++) {
       var dateStr = data.daily.time[i];
       var tmax = data.daily.temperature_2m_max[i];
@@ -1109,53 +1486,103 @@ async function openWeeklyPlanner() {
       var wind = data.daily.wind_speed_10m_max[i];
       var hum = data.daily.relative_humidity_2m_max[i];
       var score = calculateSprayScore(tmax, wind, rain, hum);
-      var scoreColor = score >= 70 ? 'color:var(--accent-glow)' : score >= 40 ? 'color:var(--warning)' : 'color:var(--danger)';
-      var jEntries = journal.filter(function(e) { return e.date === dateStr; });
+      var scoreColor =
+        score >= 70
+          ? "color:var(--accent-glow)"
+          : score >= 40
+            ? "color:var(--warning)"
+            : "color:var(--danger)";
+      var jEntries = journal.filter(function (e) {
+        return e.date === dateStr;
+      });
       var isToday = dateStr === today;
-      var dateObj = new Date(dateStr + 'T12:00:00');
-      var dayName = ['Dum','Lun','Mar','Mie','Joi','Vin','Sam'][dateObj.getDay()];
-      var dayNum = dateObj.getDate() + '.' + String(dateObj.getMonth() + 1).padStart(2, '0');
+      var dateObj = new Date(dateStr + "T12:00:00");
+      var dayName = ["Dum", "Lun", "Mar", "Mie", "Joi", "Vin", "Sam"][
+        dateObj.getDay()
+      ];
+      var dayNum =
+        dateObj.getDate() +
+        "." +
+        String(dateObj.getMonth() + 1).padStart(2, "0");
 
       rows +=
         '<div style="padding:10px 0;border-bottom:1px solid var(--border);' +
-        (isToday ? 'background:rgba(106,191,105,0.06);border-radius:8px;padding:10px;margin:2px 0;' : '') + '">' +
+        (isToday
+          ? "background:rgba(106,191,105,0.06);border-radius:8px;padding:10px;margin:2px 0;"
+          : "") +
+        '">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
-        '<div><strong' + (isToday ? ' style="color:var(--accent-glow)"' : '') + '>' +
-        (isToday ? '📍 ' : '') + dayName + ' ' + dayNum + '</strong>' +
+        "<div><strong" +
+        (isToday ? ' style="color:var(--accent-glow)"' : "") +
+        ">" +
+        (isToday ? "📍 " : "") +
+        dayName +
+        " " +
+        dayNum +
+        "</strong>" +
         '<span style="font-size:0.75rem;color:var(--text-dim);margin-left:6px;">' +
-        Math.round(tmin) + '°/' + Math.round(tmax) + '°' +
-        (rain > 0 ? ' | 🌧 ' + Math.round(rain * 10) / 10 + 'mm' : '') +
-        ' | 💨 ' + Math.round(wind) + 'km/h</span></div>' +
-        '<span style="font-size:0.85rem;font-weight:700;' + scoreColor + '">Spray ' + score + '%</span>' +
-        '</div>';
+        Math.round(tmin) +
+        "°/" +
+        Math.round(tmax) +
+        "°" +
+        (rain > 0 ? " | 🌧 " + Math.round(rain * 10) / 10 + "mm" : "") +
+        " | 💨 " +
+        Math.round(wind) +
+        "km/h</span></div>" +
+        '<span style="font-size:0.85rem;font-weight:700;' +
+        scoreColor +
+        '">Spray ' +
+        score +
+        "%</span>" +
+        "</div>";
 
       if (jEntries.length > 0) {
-        rows += '<div style="font-size:0.78rem;color:var(--accent);margin-top:3px;">📝 ' +
-          jEntries.map(function(e) {
-            return '[' + e.type + '] ' + (e.note ? e.note.substring(0, 45) + (e.note.length > 45 ? '…' : '') : '');
-          }).join(' | ') + '</div>';
+        rows +=
+          '<div style="font-size:0.78rem;color:var(--accent);margin-top:3px;">📝 ' +
+          jEntries
+            .map(function (e) {
+              return (
+                "[" +
+                e.type +
+                "] " +
+                (e.note
+                  ? e.note.substring(0, 45) + (e.note.length > 45 ? "…" : "")
+                  : "")
+              );
+            })
+            .join(" | ") +
+          "</div>";
       }
-      rows += '</div>';
+      rows += "</div>";
     }
 
     body.innerHTML =
       '<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:10px;">' +
       'Scor spray: <span style="color:var(--accent-glow)">verde ≥70% ideal</span> | ' +
       '<span style="color:var(--warning)">galben 40-69%</span> | ' +
-      '<span style="color:var(--danger)">rosu &lt;40% evita</span></p>' + rows;
-  } catch(e) {
-    body.innerHTML = '<p style="color:var(--danger);">Eroare la incarcare prognoza. Verifica conexiunea.</p>';
+      '<span style="color:var(--danger)">rosu &lt;40% evita</span></p>' +
+      rows;
+  } catch (e) {
+    body.innerHTML =
+      '<p style="color:var(--danger);">Eroare la incarcare prognoza. Verifica conexiunea.</p>';
   }
 }
 ```
 
 **HTML modal:**
+
 ```html
 <div class="modal-overlay" role="dialog" aria-modal="true" id="modal-planner">
   <div class="modal">
     <div class="modal-header">
       <h2>📅 Planner 7 Zile</h2>
-      <button class="modal-close" aria-label="Inchide" onclick="closeModal('planner')">✕</button>
+      <button
+        class="modal-close"
+        aria-label="Inchide"
+        onclick="closeModal('planner')"
+      >
+        ✕
+      </button>
     </div>
     <div class="modal-body" id="plannerBody"></div>
   </div>
@@ -1163,8 +1590,13 @@ async function openWeeklyPlanner() {
 ```
 
 **Buton** (adauga in sectiunea Azi, langa butonul Meteo):
+
 ```html
-<button class="btn btn-secondary" onclick="openWeeklyPlanner()" style="font-size:0.8rem;padding:8px 14px;">
+<button
+  class="btn btn-secondary"
+  onclick="openWeeklyPlanner()"
+  style="font-size:0.8rem;padding:8px 14px;"
+>
   📅 Planner 7 Zile
 </button>
 ```
@@ -1184,97 +1616,117 @@ async function openWeeklyPlanner() {
 ```javascript
 var DISEASE_RULES = [
   {
-    id: 'monilioza',
-    label: 'Monilioza (putregai brun)',
-    species: 'Cais, Piersic, Cires, Visin, Prun',
-    condition: function(avgT, avgH, rainyH) {
+    id: "monilioza",
+    label: "Monilioza (putregai brun)",
+    species: "Cais, Piersic, Cires, Visin, Prun",
+    condition: function (avgT, avgH, rainyH) {
       return avgT >= 15 && avgT <= 28 && rainyH >= 3 && avgH >= 75;
     },
-    isHigh: function(avgT, avgH, rainyH) {
+    isHigh: function (avgT, avgH, rainyH) {
       return avgT >= 18 && rainyH >= 5 && avgH >= 80;
     },
-    treatment: 'Teldor 500 SC (1g/L) sau Switch 62.5 WG (0.8g/L)',
-    timing: '24-48h dupa ploaie (preventiv > curativ)',
+    treatment: "Teldor 500 SC (1g/L) sau Switch 62.5 WG (0.8g/L)",
+    timing: "24-48h dupa ploaie (preventiv > curativ)",
   },
   {
-    id: 'rapan',
-    label: 'Rapan (Venturia)',
-    species: 'Mar, Par',
-    condition: function(avgT, avgH, rainyH) {
+    id: "rapan",
+    label: "Rapan (Venturia)",
+    species: "Mar, Par",
+    condition: function (avgT, avgH, rainyH) {
       return avgT >= 8 && avgT <= 22 && rainyH >= 4 && avgH >= 80;
     },
-    isHigh: function(avgT, avgH, rainyH) {
+    isHigh: function (avgT, avgH, rainyH) {
       return avgT >= 12 && rainyH >= 6 && avgH >= 85;
     },
-    treatment: 'Captan 80 WG (2g/L) sau Merpan 80 WDG (2g/L)',
-    timing: 'INAINTE de ploaie (preventiv!) sau max 24h dupa',
+    treatment: "Captan 80 WG (2g/L) sau Merpan 80 WDG (2g/L)",
+    timing: "INAINTE de ploaie (preventiv!) sau max 24h dupa",
   },
   {
-    id: 'fainare',
-    label: 'Fainare (Podosphaera)',
-    species: 'Mar, Par, Piersic, Cires',
-    condition: function(avgT, avgH, rainyH) {
+    id: "fainare",
+    label: "Fainare (Podosphaera)",
+    species: "Mar, Par, Piersic, Cires",
+    condition: function (avgT, avgH, rainyH) {
       return avgT >= 18 && avgT <= 28 && avgH >= 50 && avgH <= 75 && rainyH < 2;
     },
-    isHigh: function(avgT, avgH, rainyH) {
+    isHigh: function (avgT, avgH, rainyH) {
       return avgT >= 22 && avgH >= 55 && rainyH === 0;
     },
-    treatment: 'Topas 100 EC (0.4ml/L) sau sulf muiabil 0.3%',
-    timing: 'Timp uscat, dimineata devreme',
+    treatment: "Topas 100 EC (0.4ml/L) sau sulf muiabil 0.3%",
+    timing: "Timp uscat, dimineata devreme",
   },
   {
-    id: 'patarea_frunzelor',
-    label: 'Patarea frunzelor (Blumeriella)',
-    species: 'Visin, Cires',
-    condition: function(avgT, avgH, rainyH) {
+    id: "patarea_frunzelor",
+    label: "Patarea frunzelor (Blumeriella)",
+    species: "Visin, Cires",
+    condition: function (avgT, avgH, rainyH) {
       return avgT >= 16 && rainyH >= 3 && avgH >= 78;
     },
-    isHigh: function(avgT, avgH, rainyH) {
+    isHigh: function (avgT, avgH, rainyH) {
       return avgT >= 20 && rainyH >= 5;
     },
-    treatment: 'Merpan 80 WDG (2g/L) sau zeama bordelez 0.5%',
-    timing: '24h dupa ploaie continua',
+    treatment: "Merpan 80 WDG (2g/L) sau zeama bordelez 0.5%",
+    timing: "24h dupa ploaie continua",
   },
 ];
 
 // Apeleaza cu datele hourly din prognoza Open-Meteo (disponibile in fetchMeteoData())
 function assessDiseaseRisks(hourlyTemp, hourlyHumidity, hourlyPrecip) {
   var n = Math.min(48, hourlyTemp.length);
-  var sumT = 0, sumH = 0, rainyH = 0;
+  var sumT = 0,
+    sumH = 0,
+    rainyH = 0;
   for (var i = 0; i < n; i++) {
     sumT += hourlyTemp[i] || 0;
     sumH += hourlyHumidity[i] || 0;
     if ((hourlyPrecip[i] || 0) > 0.1) rainyH++;
   }
-  var avgT = sumT / n, avgH = sumH / n;
-  return DISEASE_RULES.filter(function(r) { return r.condition(avgT, avgH, rainyH); })
-    .map(function(r) {
-      return {
-        label: r.label,
-        level: r.isHigh(avgT, avgH, rainyH) ? 'MARE' : 'MEDIU',
-        levelColor: r.isHigh(avgT, avgH, rainyH) ? 'var(--danger)' : 'var(--warning)',
-        species: r.species,
-        treatment: r.treatment,
-        timing: r.timing,
-      };
-    });
+  var avgT = sumT / n,
+    avgH = sumH / n;
+  return DISEASE_RULES.filter(function (r) {
+    return r.condition(avgT, avgH, rainyH);
+  }).map(function (r) {
+    return {
+      label: r.label,
+      level: r.isHigh(avgT, avgH, rainyH) ? "MARE" : "MEDIU",
+      levelColor: r.isHigh(avgT, avgH, rainyH)
+        ? "var(--danger)"
+        : "var(--warning)",
+      species: r.species,
+      treatment: r.treatment,
+      timing: r.timing,
+    };
+  });
 }
 
 function renderSpecificDiseaseAlerts(risks, containerEl) {
   if (!risks || risks.length === 0) return;
-  var html = '<div style="margin:10px 0;"><strong style="font-size:0.85rem;">⚠️ Riscuri specifice detectate (48h):</strong>';
-  risks.forEach(function(r) {
+  var html =
+    '<div style="margin:10px 0;"><strong style="font-size:0.85rem;">⚠️ Riscuri specifice detectate (48h):</strong>';
+  risks.forEach(function (r) {
     html +=
       '<div style="margin:6px 0;padding:8px 12px;background:var(--bg-surface);' +
-      'border-left:3px solid ' + r.levelColor + ';border-radius:0 8px 8px 0;">' +
-      '<div style="font-weight:700;font-size:0.82rem;color:' + r.levelColor + ';">' +
-      r.label + ' — RISC ' + r.level + '</div>' +
-      '<div style="font-size:0.78rem;color:var(--text-dim);">Specii: ' + r.species + '</div>' +
-      '<div style="font-size:0.78rem;">🧪 ' + r.treatment + '</div>' +
-      '<div style="font-size:0.75rem;color:var(--text-dim);">⏱ ' + r.timing + '</div>' +
-      '</div>';
+      "border-left:3px solid " +
+      r.levelColor +
+      ';border-radius:0 8px 8px 0;">' +
+      '<div style="font-weight:700;font-size:0.82rem;color:' +
+      r.levelColor +
+      ';">' +
+      r.label +
+      " — RISC " +
+      r.level +
+      "</div>" +
+      '<div style="font-size:0.78rem;color:var(--text-dim);">Specii: ' +
+      r.species +
+      "</div>" +
+      '<div style="font-size:0.78rem;">🧪 ' +
+      r.treatment +
+      "</div>" +
+      '<div style="font-size:0.75rem;color:var(--text-dim);">⏱ ' +
+      r.timing +
+      "</div>" +
+      "</div>";
   });
-  html += '</div>';
+  html += "</div>";
   containerEl.innerHTML += html;
 }
 ```
@@ -1295,18 +1747,18 @@ function renderSpecificDiseaseAlerts(risks, containerEl) {
 
 ```javascript
 var CHILL_REQUIREMENTS = {
-  cais:          { min: 400,  max: 800,  label: 'Cais' },
-  piersic:       { min: 600,  max: 1200, label: 'Piersic' },
-  migdal:        { min: 300,  max: 600,  label: 'Migdal' },
-  cires:         { min: 800,  max: 1200, label: 'Cires' },
-  visin:         { min: 600,  max: 1000, label: 'Visin' },
-  prun:          { min: 700,  max: 1200, label: 'Prun' },
-  'par-clapp':   { min: 900,  max: 1500, label: 'Par Clapp' },
-  'par-williams':{ min: 800,  max: 1400, label: 'Par Williams' },
-  'mar-florina': { min: 900,  max: 1500, label: 'Mar Florina' },
-  'mar-golden':  { min: 800,  max: 1400, label: 'Mar Golden' },
-  kaki:          { min: 200,  max: 500,  label: 'Kaki Rojo' },
-  rodiu:         { min: 100,  max: 300,  label: 'Rodiu' },
+  cais: { min: 400, max: 800, label: "Cais" },
+  piersic: { min: 600, max: 1200, label: "Piersic" },
+  migdal: { min: 300, max: 600, label: "Migdal" },
+  cires: { min: 800, max: 1200, label: "Cires" },
+  visin: { min: 600, max: 1000, label: "Visin" },
+  prun: { min: 700, max: 1200, label: "Prun" },
+  "par-clapp": { min: 900, max: 1500, label: "Par Clapp" },
+  "par-williams": { min: 800, max: 1400, label: "Par Williams" },
+  "mar-florina": { min: 900, max: 1500, label: "Mar Florina" },
+  "mar-golden": { min: 800, max: 1400, label: "Mar Golden" },
+  kaki: { min: 200, max: 500, label: "Kaki Rojo" },
+  rodiu: { min: 100, max: 300, label: "Rodiu" },
 };
 
 // Estimare ore < 7°C din date zilnice (model sinusoidal simplificat)
@@ -1321,13 +1773,13 @@ function estimateChillHours(tempMin, tempMax) {
 
 function calculateChillHours(meteoHistory) {
   var year = new Date().getFullYear();
-  var startDate = (year - 1) + '-11-01';
+  var startDate = year - 1 + "-11-01";
   var total = 0;
   var dates = Object.keys(meteoHistory).sort();
   for (var i = 0; i < dates.length; i++) {
     var d = dates[i];
     if (d < startDate) continue;
-    var month = parseInt(d.split('-')[1]);
+    var month = parseInt(d.split("-")[1]);
     if (month >= 4) continue; // dupa 1 aprilie nu mai conteaza
     var m = meteoHistory[d];
     if (!m || m.temp_min == null) continue;
@@ -1337,7 +1789,9 @@ function calculateChillHours(meteoHistory) {
 }
 
 function renderChillHoursWidget(containerEl) {
-  var history = JSON.parse(localStorage.getItem('livada-meteo-history') || '{}');
+  var history = JSON.parse(
+    localStorage.getItem("livada-meteo-history") || "{}",
+  );
   if (!Object.keys(history).length) return;
   var month = new Date().getMonth() + 1;
   if (month >= 4 && month <= 10) return; // afiseaza doar nov-mar
@@ -1346,28 +1800,48 @@ function renderChillHoursWidget(containerEl) {
   var html =
     '<div style="margin:12px 0;padding:12px;background:var(--bg-surface);border-radius:10px;">' +
     '<div style="font-weight:700;margin-bottom:8px;">❄️ Ore de frig: <span style="color:var(--info);">' +
-    chillH + 'h</span> <span style="font-size:0.75rem;color:var(--text-dim);">(din 1 nov, estimat)</span></div>';
+    chillH +
+    'h</span> <span style="font-size:0.75rem;color:var(--text-dim);">(din 1 nov, estimat)</span></div>';
 
-  Object.entries(CHILL_REQUIREMENTS).forEach(function(entry) {
-    var id = entry[0], req = entry[1];
+  Object.entries(CHILL_REQUIREMENTS).forEach(function (entry) {
+    var id = entry[0],
+      req = entry[1];
     var pct = Math.min(100, Math.round((chillH / req.min) * 100));
-    var barColor = pct >= 100 ? 'var(--accent)' : pct >= 70 ? 'var(--warning)' : 'var(--danger)';
-    var status = pct >= 100 ? '✅' : pct >= 70 ? '🟡' : '🔴';
+    var barColor =
+      pct >= 100
+        ? "var(--accent)"
+        : pct >= 70
+          ? "var(--warning)"
+          : "var(--danger)";
+    var status = pct >= 100 ? "✅" : pct >= 70 ? "🟡" : "🔴";
     html +=
       '<div style="margin:5px 0;">' +
       '<div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:2px;">' +
-      '<span>' + status + ' ' + req.label + '</span>' +
-      '<span style="color:var(--text-dim);">' + pct + '% din ' + req.min + 'h</span></div>' +
+      "<span>" +
+      status +
+      " " +
+      req.label +
+      "</span>" +
+      '<span style="color:var(--text-dim);">' +
+      pct +
+      "% din " +
+      req.min +
+      "h</span></div>" +
       '<div style="height:4px;background:var(--border);border-radius:2px;">' +
-      '<div style="height:4px;background:' + barColor + ';border-radius:2px;width:' + pct + '%;"></div>' +
-      '</div></div>';
+      '<div style="height:4px;background:' +
+      barColor +
+      ";border-radius:2px;width:" +
+      pct +
+      '%;"></div>' +
+      "</div></div>";
   });
 
   if (chillH < 500) {
-    html += '<div style="margin-top:8px;font-size:0.8rem;color:var(--warning);">' +
-      '⚠️ Iarna calda! Piersicul si caisul pot inflori neregulat — monitorizeaza muguri din februarie.</div>';
+    html +=
+      '<div style="margin-top:8px;font-size:0.8rem;color:var(--warning);">' +
+      "⚠️ Iarna calda! Piersicul si caisul pot inflori neregulat — monitorizeaza muguri din februarie.</div>";
   }
-  html += '</div>';
+  html += "</div>";
   containerEl.innerHTML = html + containerEl.innerHTML;
 }
 ```
@@ -1392,43 +1866,63 @@ var _voiceRec = null;
 function startVoiceInput(targetInputId) {
   var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRec) {
-    showToast('Dictarea vocala nu e suportata in acest browser. Foloseste Chrome pe Android.', 'warning');
+    showToast(
+      "Dictarea vocala nu e suportata in acest browser. Foloseste Chrome pe Android.",
+      "warning",
+    );
     return;
   }
-  if (_voiceRec) { try { _voiceRec.stop(); } catch(e) {} _voiceRec = null; }
+  if (_voiceRec) {
+    try {
+      _voiceRec.stop();
+    } catch (e) {}
+    _voiceRec = null;
+  }
 
-  var btn = document.getElementById('voiceDictateBtn');
+  var btn = document.getElementById("voiceDictateBtn");
   var inputEl = document.getElementById(targetInputId);
   if (!inputEl) return;
 
   _voiceRec = new SpeechRec();
-  _voiceRec.lang = 'ro-RO';
+  _voiceRec.lang = "ro-RO";
   _voiceRec.interimResults = false;
   _voiceRec.maxAlternatives = 1;
   _voiceRec.continuous = false;
 
-  if (btn) { btn.textContent = '🎤 Ascult…'; btn.style.background = 'var(--danger)'; }
+  if (btn) {
+    btn.textContent = "🎤 Ascult…";
+    btn.style.background = "var(--danger)";
+  }
 
-  _voiceRec.onresult = function(e) {
+  _voiceRec.onresult = function (e) {
     var text = e.results[0][0].transcript;
-    inputEl.value = (inputEl.value ? inputEl.value.trim() + '. ' : '') +
-      text.charAt(0).toUpperCase() + text.slice(1);
+    inputEl.value =
+      (inputEl.value ? inputEl.value.trim() + ". " : "") +
+      text.charAt(0).toUpperCase() +
+      text.slice(1);
   };
 
-  _voiceRec.onend = function() {
+  _voiceRec.onend = function () {
     _voiceRec = null;
-    if (btn) { btn.textContent = '🎤 Dictez'; btn.style.background = ''; }
+    if (btn) {
+      btn.textContent = "🎤 Dictez";
+      btn.style.background = "";
+    }
   };
 
-  _voiceRec.onerror = function(e) {
+  _voiceRec.onerror = function (e) {
     _voiceRec = null;
-    if (btn) { btn.textContent = '🎤 Dictez'; btn.style.background = ''; }
+    if (btn) {
+      btn.textContent = "🎤 Dictez";
+      btn.style.background = "";
+    }
     var ERRORS = {
-      'not-allowed': 'Permisiune microfon refuzata — activeaza din setarile browserului.',
-      'no-speech': 'Nicio voce detectata. Incearca din nou.',
-      'network': 'Eroare retea la recunoastere vocala.',
+      "not-allowed":
+        "Permisiune microfon refuzata — activeaza din setarile browserului.",
+      "no-speech": "Nicio voce detectata. Incearca din nou.",
+      network: "Eroare retea la recunoastere vocala.",
     };
-    showToast(ERRORS[e.error] || 'Eroare dictare: ' + e.error, 'error');
+    showToast(ERRORS[e.error] || "Eroare dictare: " + e.error, "error");
   };
 
   _voiceRec.start();
@@ -1436,28 +1930,36 @@ function startVoiceInput(targetInputId) {
 ```
 
 **HTML** (adauga langa textarea nota din modal-jurnal):
+
 ```html
 <div style="display:flex;gap:8px;align-items:flex-start;">
-  <textarea id="jurnalNote" rows="3"
+  <textarea
+    id="jurnalNote"
+    rows="3"
     placeholder="Nota (ex: 2L zeama bordelez, pomii cu simptome vizibile...)"
     style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:8px;
-    background:var(--bg-surface);color:var(--text);font-size:0.9rem;resize:vertical;"></textarea>
-  <button id="voiceDictateBtn" onclick="startVoiceInput('jurnalNote')"
+    background:var(--bg-surface);color:var(--text);font-size:0.9rem;resize:vertical;"
+  ></textarea>
+  <button
+    id="voiceDictateBtn"
+    onclick="startVoiceInput('jurnalNote')"
     title="Dicteaza nota (Chrome/Android)"
     style="padding:10px;background:var(--bg-surface);border:1px solid var(--border);
     border-radius:8px;cursor:pointer;font-size:0.9rem;min-height:44px;min-width:44px;
-    color:var(--text);transition:background 0.2s;" aria-label="Dicteaza nota vocala">
+    color:var(--text);transition:background 0.2s;"
+    aria-label="Dicteaza nota vocala"
+  >
     🎤 Dictez
   </button>
 </div>
 <script>
-// Ascunde butonul daca Web Speech API nu e disponibila
-if (!(window.SpeechRecognition || window.webkitSpeechRecognition)) {
-  document.addEventListener('DOMContentLoaded', function() {
-    var b = document.getElementById('voiceDictateBtn');
-    if (b) b.style.display = 'none';
-  });
-}
+  // Ascunde butonul daca Web Speech API nu e disponibila
+  if (!(window.SpeechRecognition || window.webkitSpeechRecognition)) {
+    document.addEventListener("DOMContentLoaded", function () {
+      var b = document.getElementById("voiceDictateBtn");
+      if (b) b.style.display = "none";
+    });
+  }
 </script>
 ```
 
@@ -1480,79 +1982,118 @@ if (!(window.SpeechRecognition || window.webkitSpeechRecognition)) {
 // Structura: specie -> luna (1-12) -> array tratamente
 var SPECIES_TREATMENTS_MONTHLY = {
   cais: {
-    2: ['Zeama bordelez 1%'],
-    3: ['Zeama bordelez 1%', 'Topas 0.4ml/L la inflorire'],
-    4: ['Switch 10g/10L post-inflorire', 'Teldor 1g/L'],
-    5: ['Teldor 1g/L preventiv'],
-    6: ['Switch daca ploaie'],
+    2: ["Zeama bordelez 1%"],
+    3: ["Zeama bordelez 1%", "Topas 0.4ml/L la inflorire"],
+    4: ["Switch 10g/10L post-inflorire", "Teldor 1g/L"],
+    5: ["Teldor 1g/L preventiv"],
+    6: ["Switch daca ploaie"],
   },
   piersic: {
-    2: ['Zeama bordelez 1%', 'Dithan M-45 (basculare preventiv)'],
-    3: ['Topas 0.4ml/L la inflorire'],
-    4: ['Confidor 0.5ml/L afide', 'Topas fainare'],
-    5: ['Switch monilioza', 'Teldor fructe'],
-    6: ['Optasol sau Bumper la nevoie'],
+    2: ["Zeama bordelez 1%", "Dithan M-45 (basculare preventiv)"],
+    3: ["Topas 0.4ml/L la inflorire"],
+    4: ["Confidor 0.5ml/L afide", "Topas fainare"],
+    5: ["Switch monilioza", "Teldor fructe"],
+    6: ["Optasol sau Bumper la nevoie"],
   },
-  'mar-florina': {
-    2: ['Zeama bordelez 1.5%'],
-    3: ['Captan 2g/L pre-inflorire'],
-    4: ['Captan 2g/L post-inflorire', 'Topas fainare'],
-    5: ['Captan sau Merpan preventiv'],
-    6: ['Score 2ml/L la nevoie'],
-    9: ['Zeama bordelez 0.5% post-recolta'],
+  "mar-florina": {
+    2: ["Zeama bordelez 1.5%"],
+    3: ["Captan 2g/L pre-inflorire"],
+    4: ["Captan 2g/L post-inflorire", "Topas fainare"],
+    5: ["Captan sau Merpan preventiv"],
+    6: ["Score 2ml/L la nevoie"],
+    9: ["Zeama bordelez 0.5% post-recolta"],
   },
   // Adauga mai multe specii dupa aceleasi date din CLAUDE.md
 };
 
 function renderSpeciesComparator() {
-  var sel1 = document.getElementById('compSp1').value;
-  var sel2 = document.getElementById('compSp2').value;
+  var sel1 = document.getElementById("compSp1").value;
+  var sel2 = document.getElementById("compSp2").value;
   if (!sel1 || !sel2 || sel1 === sel2) {
-    document.getElementById('comparatorResult').innerHTML =
+    document.getElementById("comparatorResult").innerHTML =
       '<p style="color:var(--text-dim);text-align:center;">Selecteaza doua specii diferite.</p>';
     return;
   }
 
-  var MONTHS = ['', 'Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var MONTHS = [
+    "",
+    "Ian",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mai",
+    "Iun",
+    "Iul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   var t1 = SPECIES_TREATMENTS_MONTHLY[sel1] || {};
   var t2 = SPECIES_TREATMENTS_MONTHLY[sel2] || {};
   var currentMonth = new Date().getMonth() + 1;
 
-  var html = '<div style="overflow-x:auto;">' +
+  var html =
+    '<div style="overflow-x:auto;">' +
     '<table style="width:100%;border-collapse:collapse;font-size:0.8rem;">' +
     '<tr><th style="padding:5px 8px;border:1px solid var(--border);">Luna</th>' +
     '<th style="padding:5px 8px;border:1px solid var(--border);color:var(--accent);">' +
-    sel1.toUpperCase().replace('-', ' ') + '</th>' +
+    sel1.toUpperCase().replace("-", " ") +
+    "</th>" +
     '<th style="padding:5px 8px;border:1px solid var(--border);color:var(--info);">' +
-    sel2.toUpperCase().replace('-', ' ') + '</th>' +
+    sel2.toUpperCase().replace("-", " ") +
+    "</th>" +
     '<th style="padding:5px 8px;border:1px solid var(--border);">Combinat</th></tr>';
 
   for (var m = 1; m <= 12; m++) {
-    var tr1 = t1[m] || [], tr2 = t2[m] || [];
+    var tr1 = t1[m] || [],
+      tr2 = t2[m] || [];
     var hasBoth = tr1.length > 0 && tr2.length > 0;
     var isCurrent = m === currentMonth;
-    var bg = isCurrent ? 'background:rgba(106,191,105,0.1);' : m % 2 === 0 ? 'background:var(--bg-surface);' : '';
+    var bg = isCurrent
+      ? "background:rgba(106,191,105,0.1);"
+      : m % 2 === 0
+        ? "background:var(--bg-surface);"
+        : "";
 
-    html += '<tr style="' + bg + '">' +
-      '<td style="padding:5px 8px;border:1px solid var(--border);font-weight:' + (isCurrent ? '700' : 'normal') + ';">' +
-      (isCurrent ? '📍 ' : '') + MONTHS[m] + '</td>' +
+    html +=
+      '<tr style="' +
+      bg +
+      '">' +
+      '<td style="padding:5px 8px;border:1px solid var(--border);font-weight:' +
+      (isCurrent ? "700" : "normal") +
+      ';">' +
+      (isCurrent ? "📍 " : "") +
+      MONTHS[m] +
+      "</td>" +
       '<td style="padding:5px 8px;border:1px solid var(--border);color:var(--accent-dim);">' +
-      (tr1.length ? tr1.join('<br>') : '<span style="opacity:0.3">—</span>') + '</td>' +
+      (tr1.length ? tr1.join("<br>") : '<span style="opacity:0.3">—</span>') +
+      "</td>" +
       '<td style="padding:5px 8px;border:1px solid var(--border);color:var(--info);">' +
-      (tr2.length ? tr2.join('<br>') : '<span style="opacity:0.3">—</span>') + '</td>' +
+      (tr2.length ? tr2.join("<br>") : '<span style="opacity:0.3">—</span>') +
+      "</td>" +
       '<td style="padding:5px 8px;border:1px solid var(--border);text-align:center;">' +
-      (hasBoth ? '<span style="color:var(--accent);">✓</span>' : '') + '</td></tr>';
+      (hasBoth ? '<span style="color:var(--accent);">✓</span>' : "") +
+      "</td></tr>";
   }
-  html += '</table></div>' +
+  html +=
+    "</table></div>" +
     '<p style="font-size:0.75rem;color:var(--text-dim);margin-top:6px;">✓ = luni cu tratamente la ambele specii — combina intr-o singura tura (verifica compatibilitatea produselor).</p>';
 
-  document.getElementById('comparatorResult').innerHTML = html;
+  document.getElementById("comparatorResult").innerHTML = html;
 }
 ```
 
 **HTML modal:**
+
 ```html
-<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-comparator">
+<div
+  class="modal-overlay"
+  role="dialog"
+  aria-modal="true"
+  id="modal-comparator"
+>
   <div class="modal">
     <div class="modal-header">
       <h2>🔄 Comparator Specii</h2>
@@ -1560,23 +2101,37 @@ function renderSpeciesComparator() {
     </div>
     <div class="modal-body">
       <div style="display:flex;gap:10px;margin-bottom:12px;">
-        <select id="compSp1" onchange="renderSpeciesComparator()"
+        <select
+          id="compSp1"
+          onchange="renderSpeciesComparator()"
           style="flex:1;padding:8px;border-radius:8px;background:var(--bg-surface);
-          border:1px solid var(--border);color:var(--text);">
+          border:1px solid var(--border);color:var(--text);"
+        >
           <option value="">Specia 1...</option>
-          <option value="cais">Cais</option><option value="piersic">Piersic</option>
-          <option value="cires">Cires</option><option value="visin">Visin</option>
-          <option value="mar-florina">Mar Florina</option><option value="par-clapp">Par Clapp</option>
-          <option value="prun">Prun</option><option value="migdal">Migdal</option>
+          <option value="cais">Cais</option>
+          <option value="piersic">Piersic</option>
+          <option value="cires">Cires</option>
+          <option value="visin">Visin</option>
+          <option value="mar-florina">Mar Florina</option>
+          <option value="par-clapp">Par Clapp</option>
+          <option value="prun">Prun</option>
+          <option value="migdal">Migdal</option>
         </select>
-        <select id="compSp2" onchange="renderSpeciesComparator()"
+        <select
+          id="compSp2"
+          onchange="renderSpeciesComparator()"
           style="flex:1;padding:8px;border-radius:8px;background:var(--bg-surface);
-          border:1px solid var(--border);color:var(--text);">
+          border:1px solid var(--border);color:var(--text);"
+        >
           <option value="">Specia 2...</option>
-          <option value="cais">Cais</option><option value="piersic">Piersic</option>
-          <option value="cires">Cires</option><option value="visin">Visin</option>
-          <option value="mar-florina">Mar Florina</option><option value="par-clapp">Par Clapp</option>
-          <option value="prun">Prun</option><option value="migdal">Migdal</option>
+          <option value="cais">Cais</option>
+          <option value="piersic">Piersic</option>
+          <option value="cires">Cires</option>
+          <option value="visin">Visin</option>
+          <option value="mar-florina">Mar Florina</option>
+          <option value="par-clapp">Par Clapp</option>
+          <option value="prun">Prun</option>
+          <option value="migdal">Migdal</option>
         </select>
       </div>
       <div id="comparatorResult"></div>
@@ -1599,76 +2154,120 @@ function renderSpeciesComparator() {
 
 ```javascript
 var TREE_SPECIES_ICONS = {
-  cais:'🍑', piersic:'🍑', cires:'🍒', visin:'🍒', prun:'🫐',
-  'mar-florina':'🍎', 'mar-golden':'🍎', 'par-clapp':'🍐', 'par-williams':'🍐',
-  'par-hosui':'🍐', 'par-napoca':'🍐', migdal:'🌰', rodiu:'🪷', kaki:'🟠',
-  afin:'🫐', zmeur:'🍓', 'zmeur-galben':'🍓', mur:'⚫', 'mur-copac':'⚫', alun:'🌰',
+  cais: "🍑",
+  piersic: "🍑",
+  cires: "🍒",
+  visin: "🍒",
+  prun: "🫐",
+  "mar-florina": "🍎",
+  "mar-golden": "🍎",
+  "par-clapp": "🍐",
+  "par-williams": "🍐",
+  "par-hosui": "🍐",
+  "par-napoca": "🍐",
+  migdal: "🌰",
+  rodiu: "🪷",
+  kaki: "🟠",
+  afin: "🫐",
+  zmeur: "🍓",
+  "zmeur-galben": "🍓",
+  mur: "⚫",
+  "mur-copac": "⚫",
+  alun: "🌰",
 };
 
-function getTreeMap() { return JSON.parse(localStorage.getItem('livada-tree-map') || '{}'); }
-function saveTreeMap(map) { localStorage.setItem('livada-tree-map', JSON.stringify(map)); }
+function getTreeMap() {
+  return JSON.parse(localStorage.getItem("livada-tree-map") || "{}");
+}
+function saveTreeMap(map) {
+  localStorage.setItem("livada-tree-map", JSON.stringify(map));
+}
 
 function renderTreeMap() {
   var map = getTreeMap();
-  var rows = 10, cols = 12; // configurabil
-  var container = document.getElementById('treemapGrid');
-  var STATUS_COLOR = { ok:'var(--accent)', warning:'var(--warning)', sick:'var(--danger)' };
+  var rows = 10,
+    cols = 12; // configurabil
+  var container = document.getElementById("treemapGrid");
+  var STATUS_COLOR = {
+    ok: "var(--accent)",
+    warning: "var(--warning)",
+    sick: "var(--danger)",
+  };
 
-  var html = '<div style="display:grid;grid-template-columns:repeat(' + cols + ',1fr);gap:3px;">';
+  var html =
+    '<div style="display:grid;grid-template-columns:repeat(' +
+    cols +
+    ',1fr);gap:3px;">';
   for (var r = 1; r <= rows; r++) {
     for (var c = 1; c <= cols; c++) {
-      var key = 'r' + r + 'c' + c;
+      var key = "r" + r + "c" + c;
       var tree = map[key];
-      var icon = tree ? (TREE_SPECIES_ICONS[tree.species] || '🌳') : '+';
-      var border = tree ? 'border:2px solid ' + (STATUS_COLOR[tree.status || 'ok']) : 'border:1px dashed var(--border)';
-      html += '<button onclick="openTreeCell(\'' + key + '\')" ' +
-        'title="' + (tree ? escapeHtml(tree.name || key) : 'Gol — click sa adaugi') + '" ' +
-        'style="aspect-ratio:1;' + border + ';border-radius:6px;background:' +
-        (tree ? 'rgba(106,191,105,0.06)' : 'transparent') +
-        ';cursor:pointer;font-size:' + (tree ? '1.1rem' : '0.9rem') +
-        ';min-height:32px;padding:0;color:' + (tree ? 'inherit' : 'var(--border)') + ';">' +
-        icon + '</button>';
+      var icon = tree ? TREE_SPECIES_ICONS[tree.species] || "🌳" : "+";
+      var border = tree
+        ? "border:2px solid " + STATUS_COLOR[tree.status || "ok"]
+        : "border:1px dashed var(--border)";
+      html +=
+        "<button onclick=\"openTreeCell('" +
+        key +
+        "')\" " +
+        'title="' +
+        (tree ? escapeHtml(tree.name || key) : "Gol — click sa adaugi") +
+        '" ' +
+        'style="aspect-ratio:1;' +
+        border +
+        ";border-radius:6px;background:" +
+        (tree ? "rgba(106,191,105,0.06)" : "transparent") +
+        ";cursor:pointer;font-size:" +
+        (tree ? "1.1rem" : "0.9rem") +
+        ";min-height:32px;padding:0;color:" +
+        (tree ? "inherit" : "var(--border)") +
+        ';">' +
+        icon +
+        "</button>";
     }
   }
-  html += '</div>';
+  html += "</div>";
   container.innerHTML = html;
 }
 
 function openTreeCell(key) {
   var map = getTreeMap();
   var t = map[key] || {};
-  document.getElementById('treeCellKey').value = key;
-  document.getElementById('treeCellName').value = t.name || '';
-  document.getElementById('treeCellSpecies').value = t.species || '';
-  document.getElementById('treeCellPlanted').value = t.planted || '';
-  document.getElementById('treeCellNotes').value = t.notes || '';
-  document.getElementById('treeCellStatus').value = t.status || 'ok';
-  openModal('treecell');
+  document.getElementById("treeCellKey").value = key;
+  document.getElementById("treeCellName").value = t.name || "";
+  document.getElementById("treeCellSpecies").value = t.species || "";
+  document.getElementById("treeCellPlanted").value = t.planted || "";
+  document.getElementById("treeCellNotes").value = t.notes || "";
+  document.getElementById("treeCellStatus").value = t.status || "ok";
+  openModal("treecell");
 }
 
 function saveTreeCell() {
-  var key = document.getElementById('treeCellKey').value;
+  var key = document.getElementById("treeCellKey").value;
   var map = getTreeMap();
-  var species = document.getElementById('treeCellSpecies').value;
-  var name = document.getElementById('treeCellName').value.trim();
-  if (!species && !name) { delete map[key]; }
-  else {
+  var species = document.getElementById("treeCellSpecies").value;
+  var name = document.getElementById("treeCellName").value.trim();
+  if (!species && !name) {
+    delete map[key];
+  } else {
     map[key] = {
-      species: species, name: name,
-      planted: document.getElementById('treeCellPlanted').value,
-      notes: document.getElementById('treeCellNotes').value.trim(),
-      status: document.getElementById('treeCellStatus').value,
+      species: species,
+      name: name,
+      planted: document.getElementById("treeCellPlanted").value,
+      notes: document.getElementById("treeCellNotes").value.trim(),
+      status: document.getElementById("treeCellStatus").value,
       updatedAt: todayLocal(),
     };
   }
   saveTreeMap(map);
-  closeModal('treecell');
+  closeModal("treecell");
   renderTreeMap();
-  showToast(name ? 'Pom "' + name + '" salvat.' : 'Celula curatata.');
+  showToast(name ? 'Pom "' + name + '" salvat.' : "Celula curatata.");
 }
 ```
 
 **HTML modals** (doi mici: unul pentru harta, unul pentru detalii pom):
+
 ```html
 <!-- Modal harta -->
 <div class="modal-overlay" role="dialog" aria-modal="true" id="modal-treemap">
@@ -1678,7 +2277,10 @@ function saveTreeCell() {
       <button class="modal-close" onclick="closeModal('treemap')">✕</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:8px;">Click pe orice celula pentru a adauga/edita un pom. Chenar colorat = status sanatate.</p>
+      <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:8px;">
+        Click pe orice celula pentru a adauga/edita un pom. Chenar colorat =
+        status sanatate.
+      </p>
       <div id="treemapGrid"></div>
     </div>
   </div>
@@ -1692,27 +2294,59 @@ function saveTreeCell() {
       <button class="modal-close" onclick="closeModal('treecell')">✕</button>
     </div>
     <div class="modal-body">
-      <input type="hidden" id="treeCellKey">
-      <input id="treeCellName" placeholder="Nume (ex: Cais #3)" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);">
-      <select id="treeCellSpecies" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);">
+      <input type="hidden" id="treeCellKey" />
+      <input
+        id="treeCellName"
+        placeholder="Nume (ex: Cais #3)"
+        style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);"
+      />
+      <select
+        id="treeCellSpecies"
+        style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);"
+      >
         <option value="">Specia...</option>
-        <option value="cais">Cais</option><option value="piersic">Piersic</option>
-        <option value="cires">Cires</option><option value="visin">Visin</option>
-        <option value="prun">Prun</option><option value="mar-florina">Mar Florina</option>
-        <option value="par-clapp">Par Clapp</option><option value="migdal">Migdal</option>
-        <option value="rodiu">Rodiu</option><option value="kaki">Kaki</option>
-        <option value="afin">Afin</option><option value="alun">Alun</option>
+        <option value="cais">Cais</option>
+        <option value="piersic">Piersic</option>
+        <option value="cires">Cires</option>
+        <option value="visin">Visin</option>
+        <option value="prun">Prun</option>
+        <option value="mar-florina">Mar Florina</option>
+        <option value="par-clapp">Par Clapp</option>
+        <option value="migdal">Migdal</option>
+        <option value="rodiu">Rodiu</option>
+        <option value="kaki">Kaki</option>
+        <option value="afin">Afin</option>
+        <option value="alun">Alun</option>
       </select>
-      <input id="treeCellPlanted" type="number" min="1990" max="2030" placeholder="An plantat (ex: 2018)"
-        style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);">
-      <select id="treeCellStatus" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);">
+      <input
+        id="treeCellPlanted"
+        type="number"
+        min="1990"
+        max="2030"
+        placeholder="An plantat (ex: 2018)"
+        style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);"
+      />
+      <select
+        id="treeCellStatus"
+        style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);"
+      >
         <option value="ok">✅ Sanatos</option>
         <option value="warning">⚠️ Atentie</option>
         <option value="sick">🔴 Bolnav</option>
       </select>
-      <textarea id="treeCellNotes" rows="2" placeholder="Note (ex: monilioza 2024, productie slaba)"
-        style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);resize:vertical;"></textarea>
-      <button class="btn btn-primary" style="width:100%;" onclick="saveTreeCell()">Salveaza</button>
+      <textarea
+        id="treeCellNotes"
+        rows="2"
+        placeholder="Note (ex: monilioza 2024, productie slaba)"
+        style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text);resize:vertical;"
+      ></textarea>
+      <button
+        class="btn btn-primary"
+        style="width:100%;"
+        onclick="saveTreeCell()"
+      >
+        Salveaza
+      </button>
     </div>
   </div>
 </div>
@@ -1734,49 +2368,93 @@ function saveTreeCell() {
 // localStorage: 'livada-trees' = array de { id, species, label, notes, status, planted, updatedAt }
 
 function getTrees(species) {
-  var all = JSON.parse(localStorage.getItem('livada-trees') || '[]');
-  return species ? all.filter(function(t) { return t.species === species; }) : all;
+  var all = JSON.parse(localStorage.getItem("livada-trees") || "[]");
+  return species
+    ? all.filter(function (t) {
+        return t.species === species;
+      })
+    : all;
 }
-function saveTrees(list) { localStorage.setItem('livada-trees', JSON.stringify(list)); }
+function saveTrees(list) {
+  localStorage.setItem("livada-trees", JSON.stringify(list));
+}
 
 function openTreePanel(speciesId) {
-  var panel = document.getElementById('treePanel-' + speciesId);
+  var panel = document.getElementById("treePanel-" + speciesId);
   if (!panel) return;
   var trees = getTrees(speciesId);
-  var html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
-    '<strong style="font-size:0.85rem;">🌳 Pomi: ' + trees.length + '</strong>' +
+  var html =
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+    '<strong style="font-size:0.85rem;">🌳 Pomi: ' +
+    trees.length +
+    "</strong>" +
     '<button class="btn btn-primary" style="font-size:0.75rem;padding:5px 10px;" ' +
-    'onclick="addTree(\'' + speciesId + '\')">+ Adauga pom</button></div>';
+    "onclick=\"addTree('" +
+    speciesId +
+    "')\">+ Adauga pom</button></div>";
 
   if (trees.length === 0) {
-    html += '<p style="color:var(--text-dim);font-size:0.82rem;">Niciun pom inregistrat. Adauga primul pentru tracking individual.</p>';
+    html +=
+      '<p style="color:var(--text-dim);font-size:0.82rem;">Niciun pom inregistrat. Adauga primul pentru tracking individual.</p>';
   } else {
-    trees.forEach(function(t) {
-      var sc = { ok:'var(--accent)', warning:'var(--warning)', sick:'var(--danger)' }[t.status || 'ok'];
-      var age = t.planted ? ' | ' + (new Date().getFullYear() - parseInt(t.planted)) + ' ani' : '';
-      html += '<div style="padding:8px 10px;margin:4px 0;background:var(--bg-surface);border-radius:8px;border-left:3px solid ' + sc + ';">' +
+    trees.forEach(function (t) {
+      var sc = {
+        ok: "var(--accent)",
+        warning: "var(--warning)",
+        sick: "var(--danger)",
+      }[t.status || "ok"];
+      var age = t.planted
+        ? " | " + (new Date().getFullYear() - parseInt(t.planted)) + " ani"
+        : "";
+      html +=
+        '<div style="padding:8px 10px;margin:4px 0;background:var(--bg-surface);border-radius:8px;border-left:3px solid ' +
+        sc +
+        ';">' +
         '<div style="display:flex;justify-content:space-between;">' +
-        '<strong style="font-size:0.85rem;">' + escapeHtml(t.label) + '</strong>' +
-        '<button onclick="editTree(\'' + t.id + '\',\'' + speciesId + '\')" ' +
+        '<strong style="font-size:0.85rem;">' +
+        escapeHtml(t.label) +
+        "</strong>" +
+        "<button onclick=\"editTree('" +
+        t.id +
+        "','" +
+        speciesId +
+        "')\" " +
         'style="font-size:0.7rem;padding:2px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);">✏️</button>' +
-        '</div>' +
-        (t.planted ? '<div style="font-size:0.72rem;color:var(--text-dim);">Plantat: ' + t.planted + age + '</div>' : '') +
-        (t.notes ? '<div style="font-size:0.8rem;margin-top:2px;">' + escapeHtml(t.notes) + '</div>' : '') +
-        '</div>';
+        "</div>" +
+        (t.planted
+          ? '<div style="font-size:0.72rem;color:var(--text-dim);">Plantat: ' +
+            t.planted +
+            age +
+            "</div>"
+          : "") +
+        (t.notes
+          ? '<div style="font-size:0.8rem;margin-top:2px;">' +
+            escapeHtml(t.notes) +
+            "</div>"
+          : "") +
+        "</div>";
     });
   }
 
   panel.innerHTML = html;
-  panel.style.display = panel.style.display === 'none' || !panel.style.display ? 'block' : 'none';
+  panel.style.display =
+    panel.style.display === "none" || !panel.style.display ? "block" : "none";
 }
 
 function addTree(speciesId) {
   var trees = getTrees();
   var newTree = {
-    id: speciesId + '-' + Date.now(),
+    id: speciesId + "-" + Date.now(),
     species: speciesId,
-    label: speciesId.charAt(0).toUpperCase() + speciesId.slice(1) + ' #' + (getTrees(speciesId).length + 1),
-    notes: '', status: 'ok', planted: '', updatedAt: todayLocal(),
+    label:
+      speciesId.charAt(0).toUpperCase() +
+      speciesId.slice(1) +
+      " #" +
+      (getTrees(speciesId).length + 1),
+    notes: "",
+    status: "ok",
+    planted: "",
+    updatedAt: todayLocal(),
   };
   trees.push(newTree);
   saveTrees(trees);
@@ -1800,121 +2478,191 @@ function addTree(speciesId) {
 
 ```javascript
 var INSPECTION_GUIDE = {
-  2: { // Februarie
+  2: {
+    // Februarie
     general: [
-      'Ultima sansa pentru taieri de iarna inainte de dezmugurit',
-      'Zeama bordelez preventiva la specii sensibile (cais, piersic, migdal)',
+      "Ultima sansa pentru taieri de iarna inainte de dezmugurit",
+      "Zeama bordelez preventiva la specii sensibile (cais, piersic, migdal)",
     ],
-    migdal: ['⚠️ Dezmugurit timpuriu posibil — verifica zilnic, protejeaza la inghet'],
-    piersic: ['Verifica muguri pentru semne de basculare (umflati, rozii, deformati)'],
-    cais: ['Muguri gata de deschidere? Prognoza inghet = acoperire agrotextil urgent!'],
-  },
-  3: { // Martie
-    general: [
-      '⚠️ INGHET: verifica prognoza in fiecare dimineata (inghet floral = pierdere totala productie)',
-      'Prima stropire preventiva: zeama bordelez 1% la umezirea mugurelui',
-    ],
-    cais: [
-      'Monilinia inflorescente: muguri negri, ramuri cu inflorescente ofilite = taie si arde IMEDIAT',
-      'Scurgeri de guma (gomoza) pe ramuri principale — semne de ciupercuri sau soc mecanic',
+    migdal: [
+      "⚠️ Dezmugurit timpuriu posibil — verifica zilnic, protejeaza la inghet",
     ],
     piersic: [
-      'Bascularea: frunze umflate, rosiatice, deformate = Dithan M-45 sau Score URGENT',
-      'Inflorire in curs — nu stropi cu insecticide (protejezi albinele!)',
-    ],
-    'mar-florina': [
-      'Primele semne de rapan pe lastari noi (pete mici, uleiose) = Captan 2g/L preventiv',
-      'Fainare: varfuri albe-fainoase pe lastari = Topas 0.4ml/L',
-    ],
-    zmeur: ['Curata tulpinile vechi (care au rodit) pana la pamant — sursa de boli'],
-  },
-  4: { // Aprilie
-    general: [
-      'Saptamanal in livada obligatoriu — evolutie rapida',
-      'Irigat daca nu a plouat 10+ zile (radacini superficiale la zmeur, afin)',
+      "Verifica muguri pentru semne de basculare (umflati, rozii, deformati)",
     ],
     cais: [
-      'Monilioza fructe verzi (dupa ploaie + caldura >15°C): tratament Switch 10g/10L urgent',
-      'Afide: colonii pe lastari noi = sapun potasic 2% sau Confidor 0.5ml/L',
+      "Muguri gata de deschidere? Prognoza inghet = acoperire agrotextil urgent!",
+    ],
+  },
+  3: {
+    // Martie
+    general: [
+      "⚠️ INGHET: verifica prognoza in fiecare dimineata (inghet floral = pierdere totala productie)",
+      "Prima stropire preventiva: zeama bordelez 1% la umezirea mugurelui",
+    ],
+    cais: [
+      "Monilinia inflorescente: muguri negri, ramuri cu inflorescente ofilite = taie si arde IMEDIAT",
+      "Scurgeri de guma (gomoza) pe ramuri principale — semne de ciupercuri sau soc mecanic",
     ],
     piersic: [
-      'Taiere in verde: indeparteaza lastarii verticali excesivi (lacomi)',
-      'Afide: sapun potasic 2% sau Confidor 0.5ml/L pe colonii vizibile',
+      "Bascularea: frunze umflate, rosiatice, deformate = Dithan M-45 sau Score URGENT",
+      "Inflorire in curs — nu stropi cu insecticide (protejezi albinele!)",
     ],
-    'mar-florina': [
-      'Rapan activ! Verifica fata INFERIOARA a frunzelor — pete brune-cenusii',
-      'Mucegai fainosi pe lastari noi (alb-prafuit) = Topas 0.4ml/L',
+    "mar-florina": [
+      "Primele semne de rapan pe lastari noi (pete mici, uleiose) = Captan 2g/L preventiv",
+      "Fainare: varfuri albe-fainoase pe lastari = Topas 0.4ml/L",
     ],
-    cires: ['Monilioza florilor: flori ingalbenite, ramuri cu flori moarte = Switch urgent'],
-    visin: ['Patarea frunzelor (Blumeriella): pete mici brune = Merpan 2g/L preventiv'],
+    zmeur: [
+      "Curata tulpinile vechi (care au rodit) pana la pamant — sursa de boli",
+    ],
   },
-  5: { // Mai
+  4: {
+    // Aprilie
     general: [
-      'Nu stropi cand albinele sunt active (stropeste dimineata la 6-8 sau seara la 19+)',
-      'Scor spray sub 40%: evita tratamentele — risc fitotoxicitate',
+      "Saptamanal in livada obligatoriu — evolutie rapida",
+      "Irigat daca nu a plouat 10+ zile (radacini superficiale la zmeur, afin)",
     ],
-    cais: ['Fructe verzi: monilioza posibila dupa ploaie. Teldor 1g/L preventiv'],
-    piersic: ['Rareala fructe: max 1 fruct la 5-8cm distanta (soiuri Grand August, Collins)'],
-    cires: ['⚠️ Musca ciresului activa! Instaleaza capcane cromotrope galbene ACUM'],
-    'mar-florina': ['Rapan pe fructele in formare (pete circulare): Merpan sau Score'],
-    rodiu: ['Prima stropire preventiva zeama bordelez 0.5% dupa caderea petalelor'],
+    cais: [
+      "Monilioza fructe verzi (dupa ploaie + caldura >15°C): tratament Switch 10g/10L urgent",
+      "Afide: colonii pe lastari noi = sapun potasic 2% sau Confidor 0.5ml/L",
+    ],
+    piersic: [
+      "Taiere in verde: indeparteaza lastarii verticali excesivi (lacomi)",
+      "Afide: sapun potasic 2% sau Confidor 0.5ml/L pe colonii vizibile",
+    ],
+    "mar-florina": [
+      "Rapan activ! Verifica fata INFERIOARA a frunzelor — pete brune-cenusii",
+      "Mucegai fainosi pe lastari noi (alb-prafuit) = Topas 0.4ml/L",
+    ],
+    cires: [
+      "Monilioza florilor: flori ingalbenite, ramuri cu flori moarte = Switch urgent",
+    ],
+    visin: [
+      "Patarea frunzelor (Blumeriella): pete mici brune = Merpan 2g/L preventiv",
+    ],
+  },
+  5: {
+    // Mai
+    general: [
+      "Nu stropi cand albinele sunt active (stropeste dimineata la 6-8 sau seara la 19+)",
+      "Scor spray sub 40%: evita tratamentele — risc fitotoxicitate",
+    ],
+    cais: [
+      "Fructe verzi: monilioza posibila dupa ploaie. Teldor 1g/L preventiv",
+    ],
+    piersic: [
+      "Rareala fructe: max 1 fruct la 5-8cm distanta (soiuri Grand August, Collins)",
+    ],
+    cires: [
+      "⚠️ Musca ciresului activa! Instaleaza capcane cromotrope galbene ACUM",
+    ],
+    "mar-florina": [
+      "Rapan pe fructele in formare (pete circulare): Merpan sau Score",
+    ],
+    rodiu: [
+      "Prima stropire preventiva zeama bordelez 0.5% dupa caderea petalelor",
+    ],
   },
   6: {
-    general: ['Caniculara posibila: nu stropi intre 10-18 (fitotoxicitate risc ridicat)'],
-    cires: ['RECOLTA CIRES — verifica zilnic. Crapaturi = recolta prea tarzie sau ploaie dupa seceta'],
-    visin: ['RECOLTA VISIN + capcane Drosophila suzukii verificate saptamanal'],
-    cais: ['RECOLTA CAIS — monilioza apare rapid pe fructe coapte dupa ploaie'],
+    general: [
+      "Caniculara posibila: nu stropi intre 10-18 (fitotoxicitate risc ridicat)",
+    ],
+    cires: [
+      "RECOLTA CIRES — verifica zilnic. Crapaturi = recolta prea tarzie sau ploaie dupa seceta",
+    ],
+    visin: ["RECOLTA VISIN + capcane Drosophila suzukii verificate saptamanal"],
+    cais: ["RECOLTA CAIS — monilioza apare rapid pe fructe coapte dupa ploaie"],
   },
 };
 
 function openInspectionChecklist() {
-  openModal('inspection');
+  openModal("inspection");
   var month = new Date().getMonth() + 1;
   var guide = INSPECTION_GUIDE[month];
-  var MONTHS = ['','Ian','Feb','Mar','Apr','Mai','Iun','Iul','Aug','Sep','Oct','Nov','Dec'];
-  var body = document.getElementById('inspectionBody');
+  var MONTHS = [
+    "",
+    "Ian",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mai",
+    "Iun",
+    "Iul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  var body = document.getElementById("inspectionBody");
 
   if (!guide) {
-    body.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:20px 0;">Ghid de inspectie disponibil pentru lunile Februarie — Iunie.<br>In celelalte luni, consulta calendarul tratamente din tab-ul speciei.</p>';
+    body.innerHTML =
+      '<p style="color:var(--text-dim);text-align:center;padding:20px 0;">Ghid de inspectie disponibil pentru lunile Februarie — Iunie.<br>In celelalte luni, consulta calendarul tratamente din tab-ul speciei.</p>';
     return;
   }
 
   var items = [];
-  Object.keys(guide).forEach(function(key) {
-    (guide[key] || []).forEach(function(text) {
-      items.push({ id: key + items.length, text: text, cat: key === 'general' ? 'GENERAL' : key.toUpperCase().replace('-', ' ') });
+  Object.keys(guide).forEach(function (key) {
+    (guide[key] || []).forEach(function (text) {
+      items.push({
+        id: key + items.length,
+        text: text,
+        cat:
+          key === "general" ? "GENERAL" : key.toUpperCase().replace("-", " "),
+      });
     });
   });
 
-  var html = '<p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:12px;">' +
-    MONTHS[month] + ' — ' + items.length + ' puncte de verificat</p>';
-  items.forEach(function(item, idx) {
-    html += '<label style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;">' +
-      '<input type="checkbox" id="insp-' + idx + '" style="margin-top:3px;min-width:18px;height:18px;">' +
+  var html =
+    '<p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:12px;">' +
+    MONTHS[month] +
+    " — " +
+    items.length +
+    " puncte de verificat</p>";
+  items.forEach(function (item, idx) {
+    html +=
+      '<label style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;">' +
+      '<input type="checkbox" id="insp-' +
+      idx +
+      '" style="margin-top:3px;min-width:18px;height:18px;">' +
       '<div><div style="font-size:0.7rem;color:var(--accent-dim);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1px;">' +
-      item.cat + '</div>' +
-      '<div style="font-size:0.85rem;line-height:1.4;">' + escapeHtml(item.text) + '</div></div></label>';
+      item.cat +
+      "</div>" +
+      '<div style="font-size:0.85rem;line-height:1.4;">' +
+      escapeHtml(item.text) +
+      "</div></div></label>";
   });
-  html += '<button class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="finishInspection()">✓ Finalizeaza tura — adauga in jurnal</button>';
+  html +=
+    '<button class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="finishInspection()">✓ Finalizeaza tura — adauga in jurnal</button>';
   body.innerHTML = html;
 }
 
 function finishInspection() {
   var cbs = document.querySelectorAll('#inspectionBody input[type="checkbox"]');
-  var total = cbs.length, done = 0;
-  cbs.forEach(function(cb) { if (cb.checked) done++; });
-  var note = 'Tura inspectie: ' + done + '/' + total + ' puncte verificate.';
-  var jNote = document.getElementById('jurnalNote');
+  var total = cbs.length,
+    done = 0;
+  cbs.forEach(function (cb) {
+    if (cb.checked) done++;
+  });
+  var note = "Tura inspectie: " + done + "/" + total + " puncte verificate.";
+  var jNote = document.getElementById("jurnalNote");
   if (jNote) jNote.value = note;
-  closeModal('inspection');
-  openModal('jurnal');
-  showToast('Tura finalizata! Adauga observatii in jurnal.');
+  closeModal("inspection");
+  openModal("jurnal");
+  showToast("Tura finalizata! Adauga observatii in jurnal.");
 }
 ```
 
 **HTML modal:**
+
 ```html
-<div class="modal-overlay" role="dialog" aria-modal="true" id="modal-inspection">
+<div
+  class="modal-overlay"
+  role="dialog"
+  aria-modal="true"
+  id="modal-inspection"
+>
   <div class="modal">
     <div class="modal-header">
       <h2>🔍 Tura Saptamanala</h2>
@@ -1939,77 +2687,133 @@ function finishInspection() {
 
 ```javascript
 function printSpeciesReport(speciesId) {
-  var speciesLabel = speciesId.charAt(0).toUpperCase() + speciesId.slice(1).replace(/-/g, ' ');
+  var speciesLabel =
+    speciesId.charAt(0).toUpperCase() + speciesId.slice(1).replace(/-/g, " ");
   var year = new Date().getFullYear();
   var journal = getJurnalEntries();
 
   // Filtreaza: intrari din an curent, pentru specia activa SAU generale (fara specie specificata)
-  var entries = journal.filter(function(e) {
-    if (!e.date || !e.date.startsWith(String(year))) return false;
-    if (!e.species) return true;
-    return e.species === speciesId || e.species.toLowerCase() === speciesLabel.toLowerCase();
-  }).sort(function(a, b) { return a.date.localeCompare(b.date); });
+  var entries = journal
+    .filter(function (e) {
+      if (!e.date || !e.date.startsWith(String(year))) return false;
+      if (!e.species) return true;
+      return (
+        e.species === speciesId ||
+        e.species.toLowerCase() === speciesLabel.toLowerCase()
+      );
+    })
+    .sort(function (a, b) {
+      return a.date.localeCompare(b.date);
+    });
 
-  var totalKg = 0, stropiri = 0, tunderi = 0;
-  entries.forEach(function(e) {
-    var t = (e.type || '').toLowerCase();
-    if (t.indexOf('recolt') >= 0) {
-      var m = (e.note || '').match(/(\d+(?:[.,]\d+)?)\s*kg/i);
-      if (m) totalKg += parseFloat(m[1].replace(',', '.'));
+  var totalKg = 0,
+    stropiri = 0,
+    tunderi = 0;
+  entries.forEach(function (e) {
+    var t = (e.type || "").toLowerCase();
+    if (t.indexOf("recolt") >= 0) {
+      var m = (e.note || "").match(/(\d+(?:[.,]\d+)?)\s*kg/i);
+      if (m) totalKg += parseFloat(m[1].replace(",", "."));
     }
-    if (t.indexOf('stropire') >= 0 || t.indexOf('tratament') >= 0) stropiri++;
-    if (t.indexOf('taiere') >= 0 || t.indexOf('tundere') >= 0) tunderi++;
+    if (t.indexOf("stropire") >= 0 || t.indexOf("tratament") >= 0) stropiri++;
+    if (t.indexOf("taiere") >= 0 || t.indexOf("tundere") >= 0) tunderi++;
   });
 
-  var dateGenerat = new Date().toLocaleDateString('ro-RO', { day:'2-digit', month:'2-digit', year:'numeric' });
+  var dateGenerat = new Date().toLocaleDateString("ro-RO", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 
-  var html = '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8">' +
-    '<title>Fisa Cultura ' + speciesLabel + ' ' + year + '</title><style>' +
-    'body{font-family:Arial,sans-serif;font-size:11pt;color:#222;margin:20mm;}' +
-    'h1{font-size:16pt;border-bottom:2px solid #2d8a2d;padding-bottom:6px;color:#1a5f1a;}' +
-    'h2{font-size:12pt;color:#2d8a2d;margin-top:16px;}' +
-    '.box{background:#f0f9f0;border:1px solid #b8d8b8;border-radius:4px;padding:10px 14px;margin:10px 0;}' +
-    '.stats{display:flex;gap:20px;flex-wrap:wrap;}' +
-    '.stat{text-align:center;padding:8px 16px;background:#e8f5e8;border-radius:6px;}' +
-    '.stat .val{font-size:1.4rem;font-weight:700;color:#1a5f1a;}' +
-    '.stat .lbl{font-size:0.8rem;color:#555;}' +
-    'table{width:100%;border-collapse:collapse;margin-top:8px;page-break-inside:auto;}' +
-    'th{background:#e8f5e8;padding:6px 8px;text-align:left;border:1px solid #b8d8b8;font-size:10pt;}' +
-    'td{padding:5px 8px;border:1px solid #d8e8d8;font-size:10pt;vertical-align:top;}' +
-    'tr:nth-child(even){background:#f8fdf8;}' +
-    '.footer{margin-top:20px;font-size:9pt;color:#888;border-top:1px solid #ddd;padding-top:8px;}' +
-    '@media print{body{margin:15mm}.no-print{display:none!important}}' +
-    '</style></head><body>' +
-    '<h1>Fisa Cultura — ' + speciesLabel + ' | ' + year + '</h1>' +
-    '<p><strong>Proprietar:</strong> Roland Petrila &nbsp;|&nbsp; <strong>Locatie:</strong> Nadlac, jud. Arad ' +
-    '&nbsp;|&nbsp; <strong>Generat:</strong> ' + dateGenerat + '</p>' +
+  var html =
+    '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8">' +
+    "<title>Fisa Cultura " +
+    speciesLabel +
+    " " +
+    year +
+    "</title><style>" +
+    "body{font-family:Arial,sans-serif;font-size:11pt;color:#222;margin:20mm;}" +
+    "h1{font-size:16pt;border-bottom:2px solid #2d8a2d;padding-bottom:6px;color:#1a5f1a;}" +
+    "h2{font-size:12pt;color:#2d8a2d;margin-top:16px;}" +
+    ".box{background:#f0f9f0;border:1px solid #b8d8b8;border-radius:4px;padding:10px 14px;margin:10px 0;}" +
+    ".stats{display:flex;gap:20px;flex-wrap:wrap;}" +
+    ".stat{text-align:center;padding:8px 16px;background:#e8f5e8;border-radius:6px;}" +
+    ".stat .val{font-size:1.4rem;font-weight:700;color:#1a5f1a;}" +
+    ".stat .lbl{font-size:0.8rem;color:#555;}" +
+    "table{width:100%;border-collapse:collapse;margin-top:8px;page-break-inside:auto;}" +
+    "th{background:#e8f5e8;padding:6px 8px;text-align:left;border:1px solid #b8d8b8;font-size:10pt;}" +
+    "td{padding:5px 8px;border:1px solid #d8e8d8;font-size:10pt;vertical-align:top;}" +
+    "tr:nth-child(even){background:#f8fdf8;}" +
+    ".footer{margin-top:20px;font-size:9pt;color:#888;border-top:1px solid #ddd;padding-top:8px;}" +
+    "@media print{body{margin:15mm}.no-print{display:none!important}}" +
+    "</style></head><body>" +
+    "<h1>Fisa Cultura — " +
+    speciesLabel +
+    " | " +
+    year +
+    "</h1>" +
+    "<p><strong>Proprietar:</strong> Roland Petrila &nbsp;|&nbsp; <strong>Locatie:</strong> Nadlac, jud. Arad " +
+    "&nbsp;|&nbsp; <strong>Generat:</strong> " +
+    dateGenerat +
+    "</p>" +
     '<div class="box stats">' +
-    '<div class="stat"><div class="val">' + entries.length + '</div><div class="lbl">Interventii</div></div>' +
-    '<div class="stat"><div class="val">' + stropiri + '</div><div class="lbl">Tratamente</div></div>' +
-    (tunderi > 0 ? '<div class="stat"><div class="val">' + tunderi + '</div><div class="lbl">Tunderi</div></div>' : '') +
-    (totalKg > 0 ? '<div class="stat"><div class="val">' + totalKg.toFixed(1) + ' kg</div><div class="lbl">Recolta</div></div>' : '') +
-    '</div>';
+    '<div class="stat"><div class="val">' +
+    entries.length +
+    '</div><div class="lbl">Interventii</div></div>' +
+    '<div class="stat"><div class="val">' +
+    stropiri +
+    '</div><div class="lbl">Tratamente</div></div>' +
+    (tunderi > 0
+      ? '<div class="stat"><div class="val">' +
+        tunderi +
+        '</div><div class="lbl">Tunderi</div></div>'
+      : "") +
+    (totalKg > 0
+      ? '<div class="stat"><div class="val">' +
+        totalKg.toFixed(1) +
+        ' kg</div><div class="lbl">Recolta</div></div>'
+      : "") +
+    "</div>";
 
   if (entries.length > 0) {
-    html += '<h2>Registru Interventii ' + year + '</h2>' +
-      '<table><tr><th>Data</th><th>Tip</th><th>Nota</th></tr>';
-    entries.forEach(function(e) {
-      html += '<tr><td style="white-space:nowrap;">' + e.date + '</td><td>' +
-        escapeHtml(e.type || '—') + '</td><td>' + escapeHtml(e.note || '—') + '</td></tr>';
+    html +=
+      "<h2>Registru Interventii " +
+      year +
+      "</h2>" +
+      "<table><tr><th>Data</th><th>Tip</th><th>Nota</th></tr>";
+    entries.forEach(function (e) {
+      html +=
+        '<tr><td style="white-space:nowrap;">' +
+        e.date +
+        "</td><td>" +
+        escapeHtml(e.type || "—") +
+        "</td><td>" +
+        escapeHtml(e.note || "—") +
+        "</td></tr>";
     });
-    html += '</table>';
+    html += "</table>";
   } else {
-    html += '<p style="color:#888;">Nicio interventie inregistrata in jurnal pentru ' + speciesLabel + ' in ' + year + '.</p>';
+    html +=
+      '<p style="color:#888;">Nicio interventie inregistrata in jurnal pentru ' +
+      speciesLabel +
+      " in " +
+      year +
+      ".</p>";
   }
 
-  html += '<div class="footer">Generat de Livada Mea Dashboard (livada-mea-psi.vercel.app) pe ' +
-    dateGenerat + ' &nbsp;|&nbsp; Date din jurnalul personal de cultura &nbsp;|&nbsp; Roland Petrila</div>' +
-    '<script>window.print();window.onafterprint=function(){window.close();};<\/script>' +
-    '</body></html>';
+  html +=
+    '<div class="footer">Generat de Livada Mea Dashboard (livada-mea-psi.vercel.app) pe ' +
+    dateGenerat +
+    " &nbsp;|&nbsp; Date din jurnalul personal de cultura &nbsp;|&nbsp; Roland Petrila</div>" +
+    "<script>window.print();window.onafterprint=function(){window.close();};<\/script>" +
+    "</body></html>";
 
-  var popup = window.open('', '_blank', 'width=800,height=600');
+  var popup = window.open("", "_blank", "width=800,height=600");
   if (!popup) {
-    showToast('Popup blocat! Permite popup-uri pentru livada-mea-psi.vercel.app in browser.', 'error');
+    showToast(
+      "Popup blocat! Permite popup-uri pentru livada-mea-psi.vercel.app in browser.",
+      "error",
+    );
     return;
   }
   popup.document.write(html);
@@ -2018,9 +2822,13 @@ function printSpeciesReport(speciesId) {
 ```
 
 **Integrare:** Adauga butonul in fiecare tab de specie, langa butonul `printFisa()` existent:
+
 ```html
-<button onclick="printSpeciesReport(activeTab)"
-  style="font-size:0.8rem;padding:8px 14px;" class="btn btn-secondary">
+<button
+  onclick="printSpeciesReport(activeTab)"
+  style="font-size:0.8rem;padding:8px 14px;"
+  class="btn btn-secondary"
+>
   🖨️ Raport Cultura
 </button>
 ```
@@ -2029,18 +2837,18 @@ function printSpeciesReport(speciesId) {
 
 ## SUMAR PRIORITATI — Runda 9
 
-| Prioritate | # | Nume | Complexitate | Impact | Categorie |
-|---|---|---|---|---|---|
-| **P1 — IMPORTANT** | N8 | GDD Calculator — predictie fenologica | Medie | Maxim | Feature |
-| **P1 — IMPORTANT** | N9 | Planner Saptamanal 7 zile | Medie | Mare | UX/Feature |
-| **P1 — IMPORTANT** | N10 | Risc boala per specie specific | Mica | Mare | Feature |
-| **P2 — VALOROS** | N11 | Chill Hours Tracker | Medie | Mare | Feature |
-| **P2 — VALOROS** | N12 | Jurnal Vocal — Web Speech API | Mica | Mediu | UX |
-| **P2 — VALOROS** | N15 | Note per pom individual | Mica | Mediu-Mare | Feature |
-| **P2 — VALOROS** | N16 | Tura saptamanala checklist | Medie | Mare | Feature |
-| **P2 — VALOROS** | N17 | Raport printabil per specie | Mica | Mare | Feature |
-| **P3 — STRATEGIC** | N13 | Comparator specii calendare | Mica | Mediu | UX/Feature |
-| **P3 — STRATEGIC** | N14 | Harta livada vizuala — grid 100+ pomi | Mare | Mare | Feature |
+| Prioritate         | #   | Nume                                  | Complexitate | Impact     | Categorie  |
+| ------------------ | --- | ------------------------------------- | ------------ | ---------- | ---------- |
+| **P1 — IMPORTANT** | N8  | GDD Calculator — predictie fenologica | Medie        | Maxim      | Feature    |
+| **P1 — IMPORTANT** | N9  | Planner Saptamanal 7 zile             | Medie        | Mare       | UX/Feature |
+| **P1 — IMPORTANT** | N10 | Risc boala per specie specific        | Mica         | Mare       | Feature    |
+| **P2 — VALOROS**   | N11 | Chill Hours Tracker                   | Medie        | Mare       | Feature    |
+| **P2 — VALOROS**   | N12 | Jurnal Vocal — Web Speech API         | Mica         | Mediu      | UX         |
+| **P2 — VALOROS**   | N15 | Note per pom individual               | Mica         | Mediu-Mare | Feature    |
+| **P2 — VALOROS**   | N16 | Tura saptamanala checklist            | Medie        | Mare       | Feature    |
+| **P2 — VALOROS**   | N17 | Raport printabil per specie           | Mica         | Mare       | Feature    |
+| **P3 — STRATEGIC** | N13 | Comparator specii calendare           | Mica         | Mediu      | UX/Feature |
+| **P3 — STRATEGIC** | N14 | Harta livada vizuala — grid 100+ pomi | Mare         | Mare       | Feature    |
 
 ---
 
@@ -2064,3 +2872,363 @@ function printSpeciesReport(speciesId) {
 7. **Jurnal Vocal (N12):** Testeaza pe Android Chrome — Web Speech API nu functioneaza offline (necesita conexiune pentru recunoastere Google). Afiseaza butonul conditionat cu verificare suport.
 
 8. **Ce NU se schimba:** Arhitectura Edge Runtime, stack Groq+Gemini, API routes existente, structura localStorage existenta (`livada-jurnal`, `livada-theme`, etc.), layout general HTML, single-file constraint.
+
+
+---
+
+---
+
+# RECOMANDARI IMBUNATATIRI v10 — Faza 10: AI Status + Plant.id + Logging
+
+**Data:** 2026-04-08 | **Versiune:** v10 (post-Audit S18)
+**Context:** Depanare completa S18 — journal 401 rezolvat, llama-4-scout activ, logging ask+report
+**Cerinta noua:** Indicatori vizuali AI activ/inactiv pe fiecare tab + Plant.id fix + audit modele
+
+---
+
+## CHECKLIST RAPID — Faza 10
+
+- ⬜ **AI1** Panel AI Status (verde/rosu) pe fiecare tab cu AI
+- ⬜ **AI2** /api/ai-status — health check endpoint toate serviciile
+- ⬜ **AI3** Plant.id fix — debug 4xx + validare key + test
+- ⬜ **AI4** Logging complet pe diagnose.js + identify.js
+- ⬜ **AI5** Audit modele free tier 2026 + update chain AI
+
+---
+
+## STARE AI ACTUALA (verificata 2026-04-08)
+
+| Serviciu | Endpoint | Model | Status log | Observatie |
+|---------|---------|-------|-----------|-----------|
+| Groq primary | /api/ask, /api/report | llama-4-scout-17b-16e-instruct | OK | Confirmat in log |
+| Groq fallback 1 | /api/ask, /api/report | llama-3.3-70b-versatile | OK | Confirmat functional |
+| Cerebras fallback 2 | /api/ask, /api/report | llama-3.3-70b | OK | Nu a fost necesar recent |
+| Gemini 2.5-flash | /api/diagnose, /api/identify | gemini-2.5-flash | OK | Primary vision AI |
+| GPT-4.1 | /api/diagnose, /api/identify | gpt-4.1 | OK (fallback) | Parallel, fallback Gemini |
+| PlantNet | /api/identify | — | OK | 3 rezultate confirmate |
+| Plant.id | /api/diagnose | v3/identification | EROARE 4xx | Cheia setata dar API respinge |
+
+---
+
+## FAZA 10 — PLAN DE EXECUTIE
+
+---
+
+### AI1 + AI2. Panel AI Status + Health Check Endpoint
+
+**Problema:** Utilizatorul nu stie care AI-uri sunt active inainte de a rula. Un indicator vizual elimina confuzia si ajuta la depanare rapida.
+
+**Solutie in 2 parti:**
+
+**Partea A — /api/ai-status (backend, fisier nou)**
+
+```javascript
+// api/ai-status.js
+import { corsHeaders, handleOptions, checkOrigin } from "./_auth.js";
+export const config = { runtime: "edge" };
+
+export default async function handler(req) {
+  if (req.method === "OPTIONS") return handleOptions(req);
+  const originErr = checkOrigin(req);
+  if (originErr) return originErr;
+
+  const t0 = Date.now();
+
+  const checks = {
+    groq: !!process.env.GROQ_API_KEY,
+    gemini: !!process.env.GOOGLE_AI_API_KEY,
+    gemini2: !!process.env.GOOGLE_AI_API_KEY_2,
+    github_models: !!process.env.GITHUB_MODELS_TOKEN,
+    cerebras: !!process.env.CEREBRAS_API_KEY,
+    plantnet: !!process.env.PLANTNET_API_KEY,
+    plant_id: !!process.env.PLANT_ID_API_KEY,
+    redis: !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN),
+    blob: !!process.env.BLOB_READ_WRITE_TOKEN,
+  };
+
+  console.log(`[ai-status] checks: ${JSON.stringify(checks)} t+${Date.now()-t0}ms`);
+
+  return Response.json(
+    { status: checks, ts: Date.now() },
+    { headers: corsHeaders(req) }
+  );
+}
+```
+
+**Nota:** Verificam doar prezenta cheilor (nu facem ping real la API). Un ping real e disponibil
+optional pe un buton manual "Verifica acum" — evita costuri si latenta la fiecare incarcare pagina.
+
+**Partea B — Panel vizual (frontend public/app.js)**
+
+```javascript
+// Configuratia AI per tab — ce servicii se apeleaza la fiecare tab
+var AI_CONFIG = {
+  ask: [
+    { name: "Groq llama-4-scout", key: "groq", role: "primar" },
+    { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
+    { name: "Cerebras llama-3.3-70b", key: "cerebras", role: "rezerva" },
+  ],
+  diagnose: [
+    { name: "Gemini 2.5-flash", key: "gemini", role: "primar" },
+    { name: "GPT-4.1", key: "github_models", role: "paralel" },
+    { name: "Plant.id v3", key: "plant_id", role: "bonus" },
+  ],
+  identify: [
+    { name: "PlantNet", key: "plantnet", role: "primar" },
+    { name: "Gemini 2.5-flash", key: "gemini", role: "paralel" },
+    { name: "GPT-4.1", key: "github_models", role: "paralel" },
+  ],
+  report: [
+    { name: "Groq llama-4-scout", key: "groq", role: "primar" },
+    { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
+    { name: "Cerebras llama-3.3-70b", key: "cerebras", role: "rezerva" },
+  ],
+};
+
+// Cache status 10 minute
+var _aiStatus = null, _aiStatusTs = 0;
+
+async function loadAiStatus() {
+  if (_aiStatus && Date.now() - _aiStatusTs < 600000) return _aiStatus;
+  try {
+    var res = await fetch("/api/ai-status");
+    if (res.ok) {
+      var data = await res.json();
+      _aiStatus = data.status;
+      _aiStatusTs = Date.now();
+    }
+  } catch(e) {
+    console.warn("[ai-status] fetch err:", e.message);
+  }
+  return _aiStatus || {};
+}
+
+function renderAiStatusPanel(tabName, containerId) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  loadAiStatus().then(function(status) {
+    var config = AI_CONFIG[tabName] || [];
+    if (!config.length) return;
+
+    var html = '<div id="ai-status-' + tabName + '" style="' +
+      'display:flex;flex-wrap:wrap;gap:5px;align-items:center;' +
+      'margin:8px 0 10px;padding:6px 10px;background:var(--bg-surface);' +
+      'border-radius:8px;border:1px solid var(--border);font-size:0.72rem;">' +
+      '<span style="color:var(--text-dim);font-weight:600;margin-right:2px;flex-shrink:0;">AI:</span>';
+
+    config.forEach(function(ai) {
+      var active = status[ai.key] !== false;
+      var dotColor = active ? "#22c55e" : "#ef4444";
+      var dotTitle = active ? "Activ" : "Inactiv - cheie lipsa";
+      var opacity = active ? "1" : "0.5";
+      html += '<span style="display:flex;align-items:center;gap:3px;opacity:' + opacity + ';' +
+        'background:var(--bg);padding:2px 7px;border-radius:12px;border:1px solid var(--border);">' +
+        '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;' +
+        'background:' + dotColor + ';flex-shrink:0;" title="' + dotTitle + '"></span>' +
+        escapeHtml(ai.name) +
+        '<span style="color:var(--text-dim);margin-left:2px;">[' + ai.role + ']</span>' +
+        '</span>';
+    });
+
+    html += '</div>';
+    var existing = document.getElementById("ai-status-" + tabName);
+    if (existing) existing.outerHTML = html;
+    else container.insertAdjacentHTML("afterbegin", html);
+  });
+}
+```
+
+**Integrare in cele 4 taburi:**
+- Tab "Intreaba AI" → apeleaza `renderAiStatusPanel("ask", "askSection")` la deschidere
+- Tab "Diagnostic Foto" → `renderAiStatusPanel("diagnose", "diagnoseSection")`
+- Tab "Identificare" → `renderAiStatusPanel("identify", "identifySection")`
+- Tab "Raport" → `renderAiStatusPanel("report", "reportSection")`
+
+ID-urile `containerId` trebuie sa corespunda cu ID-urile div-urilor existente in index.html — verifica
+si ajusteaza la implementare.
+
+**Test:**
+1. Deschide fiecare tab cu AI si verifica ca apare bannerul cu puncte verzi
+2. Simuleaza o cheie lipsa: seteaza o var de mediu falsa in Vercel Preview si verifica punct rosu
+3. Pe mobile (360px viewport): verifica ca badge-urile se wrap corect si nu sparg layout-ul
+
+---
+
+### AI3. Plant.id Fix — Debug eroare 4xx
+
+**Problema:** Log `[diagnose] plant.id skip: 4...` confirmat in productie. Cheia este setata
+(altfel ar loga "no key") dar API returneaza 4xx.
+
+**Cauze posibile si solutii:**
+
+| Cod | Cauza | Fix |
+|-----|-------|-----|
+| 401 | Cheie invalida sau expirata | Regenereaza din https://web.plant.id/account/api/ si actualizeaza in Vercel |
+| 402 | Limita free tier depasita (100/luna) | Asteapta resetul lunar sau upgrade cont |
+| 400 | Format body incorect pentru API v3 | Verifica structura body: `images` trebuie sa fie array de strings base64 cu prefix data URI |
+| 403 | IP blocat sau cont suspendat | Contacteaza Plant.id support |
+
+**Pasul 1 — citeste body-ul exact al erorii** (adauga in diagnose.js):
+
+```javascript
+// In blocul else de la plant.id skip, inlocuieste log-ul simplu cu:
+} else {
+  const skipStatus = plantIdSettled.value?.status;
+  const skipMsg = plantIdSettled.reason?.message || "";
+  log(`plant.id skip: ${skipStatus || skipMsg}`.substring(0, 100));
+  // Citeste body pentru 4xx ca sa stim exact ce respinge Plant.id
+  if (plantIdSettled.status === "fulfilled" && plantIdSettled.value) {
+    plantIdSettled.value.text().then(body =>
+      console.log(`[diagnose] plant.id err body: ${body.substring(0, 300)}`)
+    ).catch(() => {});
+  }
+}
+```
+
+**Pasul 2 — test direct al cheii** (adauga in api/diagnose-test.js sau ping.js):
+
+```javascript
+// Adauga in ping.js ca sa testezi cheia fara a incarca o poza:
+const PLANT_ID_KEY = process.env.PLANT_ID_API_KEY;
+// Returneaza doar statusul cheii (nu expune key-ul)
+plantIdKeySet: !!PLANT_ID_KEY,
+plantIdKeyLen: PLANT_ID_KEY ? PLANT_ID_KEY.length : 0,
+```
+
+**Dupa fix:** In log trebuie sa apara:
+- `[diagnose] plant.id ok — prefix: da` — cand detecteaza boli
+- `[diagnose] plant.id ok — prefix: nu` — cand planta e sanatoasa
+
+---
+
+### AI4. Logging complet pe diagnose.js + identify.js
+
+**Problema:** diagnose.js si identify.js nu au logging structurat — nu se vede in Vercel Runtime
+Logs ce model a raspuns, cat a durat, ce a returnat.
+
+**Implementare diagnose.js** (adauga imediat dupa `const t0 = Date.now();` la linia 79):
+
+```javascript
+// Dupa linia: const t0 = Date.now();
+// Adauga:
+const logD = (msg) => console.log(`[diagnose] ${msg} t+${Date.now() - t0}ms`);
+```
+
+Apoi inlocuieste `log(...)` cu `logD(...)` peste tot in fisier (log e deja definit mai jos, dar
+mai tarziu — muta definitia inainte). La final, inaintea return-ului principal:
+
+```javascript
+logD(`ok — gemini=${diagnosisText && !diagnosisMeta._fallback} gpt41=${!!diagnosisMeta._fallback} plantid=${!!plantIdPrefix}`);
+```
+
+**Implementare identify.js** (adauga la inceputul handler-ului):
+
+```javascript
+const t0 = Date.now();
+const log = (msg) => console.log(`[identify] ${msg} t+${Date.now() - t0}ms`);
+```
+
+La final:
+```javascript
+log(`ok — plantnet=${plantnetOk} gemini=${geminiOk} gpt41=${gpt41Ok}`);
+```
+
+**Rezultat asteptat in Vercel Runtime Logs:**
+```
+[diagnose] start — base64 45000chars, cais, t+0ms
+[diagnose] plant.id ok — prefix: da t+1100ms
+[diagnose] gemini-2.5-flash key1 ok t+3700ms
+[diagnose] ok — gemini=true gpt41=false plantid=true t+3800ms
+
+[identify] plantnet ok — 3 results t+2200ms
+[identify] gemini-2.5-flash key1 ok t+4100ms
+[identify] ok — plantnet=true gemini=true gpt41=false t+4200ms
+```
+
+---
+
+### AI5. Audit Modele Free Tier 2026 — Status si Recomandari
+
+**Modele confirmate disponibile (testate in productie 2026-04-08):**
+
+| Provider | Model | Free tier | Calitate | Viteza | Rol actual |
+|---------|-------|----------|---------|-------|-----------|
+| Groq | llama-4-scout-17b-16e-instruct | DA | Buna | Foarte rapid | primary ask+report |
+| Groq | llama-3.3-70b-versatile | DA | Foarte buna | Rapid | fallback 1 ask+report |
+| Cerebras | llama-3.3-70b | DA | Buna | Rapid | fallback 2 ask+report |
+| Google | gemini-2.5-flash | DA (1500/zi) | Excelenta | Medie | primary diagnose+identify |
+| GitHub Models | gpt-4.1 | DA (limitat) | Excelenta | Medie | parallel diagnose+identify |
+| PlantNet | gratuit | DA | Buna | Medie | primary identify |
+| Plant.id | v3 | 100/luna | Foarte buna | Medie | bonus diagnose (in reparatie) |
+
+**Sugestii upgrade modele (cu justificare):**
+
+1. **[RECOMANDAT] Gemini 2.5-pro pentru diagnose** — Pro are precizie superioara la analiza
+   vizuala detaliata fata de flash. Disponibil pe free tier (50 req/zi). Implementare: adauga ca
+   prima optiune in diagnose.js, pastreaza 2.5-flash ca fallback imediat. Util mai ales pentru
+   diagnostice pe imagini cu detalii fine (pete mici, colori subtile).
+
+2. **[DE MONITORIZAT] llama-4-maverick pe Groq** — Groq a anuntat maverick ca model superior.
+   Pe free tier era indisponibil (404) la 2026-04-07. Verifica lunar — cand devine disponibil,
+   e un upgrade direct pentru ask+report.
+
+3. **[RELEVANT] Cerebras llama-4-scout** — Cerebras ofera si ei llama-4-scout (mai recent decat
+   llama-3.3-70b). La urmatoarea actualizare a fallback chain-ului, considera upgrade si la Cerebras.
+
+4. **[OVERKILL] Groq llama-3.1-8b** — Eliminat corect din chain. Model prea mic (8B) pentru
+   raspunsuri pomicole detaliate. Nu re-adauga.
+
+---
+
+## ITEMS RAMASE NEIMPLEMENTATE (inventar complet)
+
+| # | Item | Faza | Prioritate | Complexitate | Note |
+|---|------|------|-----------|-------------|------|
+| V3 | Doza Calculator post-diagnostic | 8 | P1 | Medie | UI dupa raspuns diagnose |
+| N1 | PHI Calculator pauza securitate | 8 | P1 | Mica | Tabel produs → zile pauza |
+| N2 | Spray Window 7 zile | 8 | P1 | Medie | Prognoza → zile optime |
+| N3 | Stoc Produse Fitosanitare | 8 | P3 | Medie | localStorage, alert expirat |
+| N4 | Cost per tratament + sumar | 8 | P2 | Mica | Camp optional in jurnal |
+| N5 | Timeline Specie integrata | 8 | P3 | Medie | foto+jurnal+diagnose corelate |
+| N7 | Push Notifications inghet | 8 | P4 | Mare | Necesita VAPID keys + API nou |
+| T1 | Offline Queue delete/edit | 7 | P3 | Mare | Background Sync API |
+| T2 | Rate limit Redis distribuit | 7 | P3 | Medie | Partial rezolvat |
+| T5 | Teste unitare vitest | 7 | P3 | Mare | Strategic viitor |
+| T10 | Spray score + UV Index | v8 | P3 | Mica | Date disponibile, neintegrate |
+| T11 | SW cache versioning automat | v8 | P4 | Mica | Nice-to-have |
+
+**Ordine recomandata sesiuni urmatoare:**
+- **Sesiunea 19 (Faza 10):** AI3 + AI4 + AI2 + AI1 (2-3h total)
+- **Sesiunea 20:** N1 (PHI, 45min) + N4 (Cost, 30min) + V3 (Doza, 1h)
+- **Sesiunea 21:** N2 (Spray Window, 2h) + T10 (UV Index spray, 30min)
+- **Sesiunea 22:** N5 (Timeline, 2h) + N3 (Stoc, 2h)
+- **Sesiunea 23+:** N7 (Push Notifications, 4h+)
+
+---
+
+## SUGESTII PROPRII CONTEXT-AWARE
+
+1. **[CRITIC] Plant.id limita lunara**: Daca eroarea e 402 (quota 100/luna epuizata), se
+   reseteaza automat la 1 ale lunii urmatoare. Monitorizeaza prin log. Pana la reset, diagnose
+   merge perfect cu Gemini + GPT-4.1, Plant.id e doar un bonus cu detalii suplimentare.
+
+2. **[IMPORTANT] Logging panel in UI**: Pe langa indicatorii verde/rosu, considera un buton
+   "Info AI" care afiseaza (in modal sau tooltip) detalii despre ultimul raspuns AI: model folosit,
+   timp raspuns, tokens consumati. Util pentru debugging de pe telefon fara Vercel Dashboard.
+
+3. **[RECOMANDAT] Cache ai-status mai agresiv**: 10 minute e corect. Adauga un buton mic
+   "Refresh" langa panelul de status pentru recheck manual — util dupa un deployment nou sau
+   dupa adaugarea unei chei noi in Vercel Dashboard.
+
+4. **[RELEVANT] Plant.id v3 vs v2 ca fallback intern**: Daca v3 continua sa respinga dupa fix,
+   endpoint-ul v2 (https://api.plant.id/v2/identify) are format diferit si poate fi mai tolerant.
+   Implementeaza v2 ca fallback intern in callPlantId() — zero cost suplimentar, zero API key nou.
+
+5. **[IMPORTANT] Gemini 2.5-pro test**: Inainte de upgrade la Pro in productie, testeaza cu
+   `api/diagnose-test.js` — Pro are latenta mai mare si limita mai mica. Pe mobile cu conexiune
+   slaba, 2.5-flash poate fi mai practic chiar daca Pro e mai precis.
+
+6. **[CONTEXT-AWARE] Rate limit per-device**: Actualul rate limit e per-IP. Pe Android cu date
+   mobile, mai multi utilizatori pot aparea de pe acelasi IP (CGNAT). La scara actuala (uz personal
+   + familie), e irelevant. Daca aplicatia se extinde la vecini/comunitate, considera token
+   per-device in localStorage trimis in header custom.

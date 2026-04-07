@@ -136,7 +136,8 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
       );
 
     const tAI = Date.now();
-    const logR = (msg) => console.log(`[report] ${msg} t+${Date.now() - tAI}ms`);
+    const logR = (msg) =>
+      console.log(`[report] ${msg} t+${Date.now() - tAI}ms`);
 
     // Primary: llama-4-scout (Llama 4, disponibil free tier Groq)
     logR("start → llama-4-scout");
