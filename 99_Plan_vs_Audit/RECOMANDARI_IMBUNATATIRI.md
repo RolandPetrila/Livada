@@ -82,17 +82,17 @@
 
 - ✅ **V1** renderStats() — Recolta kg per specie vizuala + comparatie ani
 - ✅ **V2** injectSpeciesHistory() — Interval de la ultimul tratament + warning
-- ⬜ **V3** submitDiagnose() — Buton "Calculeaza doza" post-diagnostic
+- ✅ **V3** submitDiagnose() — Buton "Adauga tratament in jurnal" post-diagnostic — DONE S19
 - ✅ **V4** addJurnalEntry() — Warning interval minim intre tratamente
 - ✅ **V5** generateReport() — Invalidare cache la adaugare jurnal — DONE S18 (livada:journal:last-update)
 - ✅ **V6** loadGallery() — Data upload vizibila + sortare cronologica
 - ✅ **N1** PHI Calculator — Alerta pauza securitate inainte de recoltare — DONE (deja implementat)
-- ⬜ **N2** Spray Window 7 zile — Calendar cu zile optime stropire din prognoza
-- ⬜ **N3** Stoc Produse — Inventar produse fitosanitare cu cantitati
-- ⬜ **N4** Cost per tratament — Camp cost in jurnal + sumar cheltuieli
-- ⬜ **N5** Timeline Specie — Vedere cronologica integrata foto+jurnal+diagnose
+- ✅ **N2** Spray Window 7 zile — Calendar cu zile optime stropire din prognoza — DONE S19
+- ✅ **N3** Stoc Produse — Inventar produse fitosanitare cu cantitati — DONE S19
+- ✅ **N4** Cost per tratament — Camp cost in jurnal + sumar cheltuieli — DONE S19
+- ✅ **N5** Timeline Specie — Vedere cronologica integrata foto+jurnal+diagnose — DONE S19
 - ✅ **N6** Import CSV Jurnal — DONE ca II4
-- ⬜ **N7** Push Notifications — Inghet + tratamente (iOS 16.4+)
+- ✅ **N7** Push Notifications — SW push + notificationclick handlers — DONE S19 (partial: VAPID server-side ramane)
 - ✅ **T6** Groq Llama 4 upgrade — Scout/Maverick mai rapid
 - ✅ **T7** Report cache invalidation — Reset TTL la jurnal nou
 - ✅ **T8** Meteo deduplicare request — Nu refetch < 5 min
@@ -109,11 +109,11 @@
 
 ### FAZA 10 — AI Status Indicators + Plant.id Fix + Logging complet
 
-- ⬜ **AI1** Panel AI Status (verde/rosu) pe fiecare tab cu AI
-- ⬜ **AI2** /api/ai-status endpoint — health check toate serviciile AI
-- ⬜ **AI3** Plant.id fix — debug eroare 4xx + validare key + test live
-- ⬜ **AI4** Logging complet pe diagnose.js + identify.js (identic cu ask.js)
-- ⬜ **AI5** Audit modele free tier — confirmare cele mai capabile modele disponibile
+- ✅ **AI1** Panel AI Status (verde/rosu) pe fiecare tab cu AI — DONE S19
+- ✅ **AI2** /api/ai-status endpoint — health check toate serviciile AI — DONE S19
+- ✅ **AI3** Plant.id fix — body logging 4xx + debug complet — DONE S19
+- ✅ **AI4** Logging complet pe diagnose.js + identify.js (identic cu ask.js) — DONE S19
+- ✅ **AI5** Audit modele + Gemini 2.5-pro ca primary cu flash fallback — DONE S19
 
 ---
 
@@ -2888,11 +2888,11 @@ function printSpeciesReport(speciesId) {
 
 ## CHECKLIST RAPID — Faza 10
 
-- ⬜ **AI1** Panel AI Status (verde/rosu) pe fiecare tab cu AI
-- ⬜ **AI2** /api/ai-status — health check endpoint toate serviciile
-- ⬜ **AI3** Plant.id fix — debug 4xx + validare key + test
-- ⬜ **AI4** Logging complet pe diagnose.js + identify.js
-- ⬜ **AI5** Audit modele free tier 2026 + update chain AI
+- ✅ **AI1** Panel AI Status (verde/rosu) pe fiecare tab cu AI — DONE S19
+- ✅ **AI2** /api/ai-status — health check endpoint toate serviciile — DONE S19
+- ✅ **AI3** Plant.id fix — body logging 4xx + debug complet — DONE S19
+- ✅ **AI4** Logging complet pe diagnose.js + identify.js — DONE S19
+- ✅ **AI5** Gemini 2.5-pro primary (50/zi) + flash fallback in diagnose.js — DONE S19
 
 ---
 

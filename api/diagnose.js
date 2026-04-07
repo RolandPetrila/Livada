@@ -147,20 +147,33 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
 
   const log = (msg) => console.log(`[diagnose] ${msg} t+${Date.now() - t0}ms`);
 
+  // ── AI5: Gemini 2.5-pro → flash fallback (pro mai precis la analiza vizuala) ─
+  async function callGeminiProWithFallback(key, b64, mime, pr, timeout, opts) {
+    const proRes = await callGemini(
+      key,
+      "gemini-2.5-pro-preview-03-25",
+      b64,
+      mime,
+      pr,
+      timeout,
+      opts,
+    );
+    if (proRes.ok) {
+      log("gemini-2.5-pro key1 ok");
+      return proRes;
+    }
+    log(`gemini-2.5-pro quota/fail (${proRes.status}), fallback flash`);
+    return callGemini(key, "gemini-2.5-flash", b64, mime, pr, timeout, opts);
+  }
+
   // ── Plant.id + Gemini + GPT-4.1 IN PARALEL ──────────────────────────────────
   const PLANT_ID_KEY = process.env.PLANT_ID_API_KEY;
   const GH_TOKEN = process.env.GITHUB_MODELS_TOKEN;
   const [geminiSettled, plantIdSettled, gpt41Settled] =
     await Promise.allSettled([
-      callGemini(
-        GEMINI_KEY1,
-        "gemini-2.5-flash",
-        base64,
-        mimeType,
-        prompt,
-        20000,
-        { maxTokens: 8192 },
-      ),
+      callGeminiProWithFallback(GEMINI_KEY1, base64, mimeType, prompt, 20000, {
+        maxTokens: 8192,
+      }),
       PLANT_ID_KEY
         ? callPlantId(PLANT_ID_KEY, base64, mimeType, 18000)
         : Promise.reject(new Error("no key")),
@@ -214,14 +227,14 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
       const text = geminiText(await geminiSettled.value.json());
       if (text) {
         diagnosisText = text;
-        log("gemini-2.5-flash key1 ok");
+        log("gemini ok (pro or flash key1)");
       }
     } catch {
       log("gemini parse err");
     }
   } else {
     log(
-      `gemini-2.5-flash key1 failed: ${geminiSettled.reason?.name || geminiSettled.value?.status}`,
+      `gemini key1 failed: ${geminiSettled.reason?.name || geminiSettled.value?.status}`,
     );
   }
 
