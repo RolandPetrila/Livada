@@ -26,7 +26,7 @@ Raspunde DIRECT cu structura de mai jos, fara introducere sau text generic inain
 
 Daca nu poti identifica cu certitudine, spune ce grupuri/familii sunt posibile.`;
 
-const IDENTIFY_OPTS = { maxTokens: 2048, temperature: 0.2 };
+const IDENTIFY_OPTS = { maxTokens: 8192, temperature: 0.2 };
 
 // ── Fallback AI chain ─────────────────────────────────────────────────────────
 async function tryAiFallbacks(base64, mimeType, log) {

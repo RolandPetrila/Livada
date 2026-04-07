@@ -159,7 +159,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         mimeType,
         prompt,
         20000,
-        { maxTokens: 4096 },
+        { maxTokens: 8192 },
       ),
       PLANT_ID_KEY
         ? callPlantId(PLANT_ID_KEY, base64, mimeType, 18000)
@@ -173,7 +173,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
             mimeType,
             prompt,
             18000,
-            { maxTokens: 4096 },
+            { maxTokens: 8192 },
           )
         : Promise.reject(new Error("no github token")),
     ]);
@@ -271,8 +271,8 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         base64,
         mimeType,
         prompt,
-        15000,
-        { maxTokens: 4096 },
+        20000,
+        { maxTokens: 8192 },
       );
       log(`gemini-2.5-flash key2 → ${res.status}`);
       if (res.ok) {
@@ -300,7 +300,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         mimeType,
         prompt,
         20000,
-        { maxTokens: 4096 },
+        { maxTokens: 8192 },
       );
       log(`pixtral-12b → ${res.status}`);
       if (res.ok) {
@@ -327,8 +327,8 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         base64,
         mimeType,
         prompt,
-        15000,
-        { maxTokens: 4096 },
+        20000,
+        { maxTokens: 8192 },
       );
       log(`grok-2-vision → ${res.status}`);
       if (res.ok) {

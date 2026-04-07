@@ -9,7 +9,7 @@ export async function callGemini(
   mimeType,
   prompt,
   timeoutMs,
-  { maxTokens = 2048, temperature = 0.3 } = {},
+  { maxTokens = 8192, temperature = 0.3 } = {},
 ) {
   return fetchWithTimeout(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
@@ -40,7 +40,7 @@ export async function callOpenAIVision(
   mimeType,
   prompt,
   timeoutMs,
-  { maxTokens = 2048, temperature = 0.3 } = {},
+  { maxTokens = 8192, temperature = 0.3 } = {},
 ) {
   return fetchWithTimeout(
     endpoint,

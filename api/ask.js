@@ -132,7 +132,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
       if (!fb1Ok) {
         console.error("[ask] all groq failed — try Cerebras");
         try {
-          const cerebrasRes = await callCerebras(cerebrasMessages, 15000);
+          const cerebrasRes = await callCerebras(cerebrasMessages, 20000);
           if (cerebrasRes.ok) {
             const result = await cerebrasRes.json();
             const answer =

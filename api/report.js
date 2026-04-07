@@ -128,7 +128,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
           body: JSON.stringify({
             model,
             messages: reportMessages,
-            max_tokens: 2048,
+            max_tokens: 8192,
             temperature: 0.4,
           }),
         },
@@ -164,8 +164,8 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
         try {
           const cerebrasRes = await callCerebras(
             reportMessages,
-            18000,
-            2048,
+            20000,
+            8192,
             0.4,
           );
           if (cerebrasRes.ok) {
