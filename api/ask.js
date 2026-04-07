@@ -112,7 +112,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
     let usedFallback = false;
     let fallbackModel = "";
 
-    if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
+    if (!groqRes.ok && groqRes.status !== 401 && groqRes.status !== 403) {
       console.error("[ask] llama-4-maverick failed", groqRes.status);
 
       // Fallback 1: llama-3.3-70b-versatile

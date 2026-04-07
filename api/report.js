@@ -142,7 +142,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
     let usedFallback = false;
     let fallbackModel = "";
 
-    if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
+    if (!groqRes.ok && groqRes.status !== 401 && groqRes.status !== 403) {
       console.error("[report] llama-4-maverick failed", groqRes.status);
       let anyFbOk = false;
 
