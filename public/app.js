@@ -716,6 +716,9 @@ function addJurnalEntry() {
       }
     }
     var entry = { id: Date.now(), date: date, type: type, note: note };
+    // N4: Cost per tratament
+    var entryCost = parseFloat(document.getElementById("jurnalCost")?.value) || 0;
+    if (entryCost > 0) { entry.cost = entryCost; document.getElementById("jurnalCost").value = ""; }
     if (type === "recoltare") {
       var sp = document.getElementById("jurnalSpecie")?.value;
       var kg = parseFloat(document.getElementById("jurnalKg")?.value) || 0;
@@ -1871,6 +1874,7 @@ function injectSpeciesTools(tabId) {
     injectReportButton();
     renderRecoltaSummary();
     injectStatsSection();
+    injectStocSection();
     return;
   }
   if (!SPECIES[tabId]) return;
@@ -1904,6 +1908,65 @@ function injectSpeciesTools(tabId) {
   injectSeasonalTip(tabId, tc);
   // II-8: inject species journal history
   injectSpeciesHistory(tabId, tc);
+  // N5: timeline cronologic per specie
+  renderSpeciesTimeline(tabId, tc);
+}
+
+
+// ====== N5: TIMELINE SPECIE ======
+function renderSpeciesTimeline(speciesId, container) {
+  var prev = document.getElementById("sp-timeline");
+  if (prev) prev.remove();
+  var spName = (SPECIES[speciesId] || "").toLowerCase();
+  if (!spName) return;
+
+  var journalItems = getJurnalEntries()
+    .filter(function(e) {
+      return (e.note || "").toLowerCase().includes(spName) || e.species === speciesId;
+    })
+    .map(function(e) {
+      var icon = e.type === "tratament" || e.type === "fitosanitar" ? "💊"
+               : e.type === "recolta" ? "🍎"
+               : e.type === "tundere" ? "✂️"
+               : e.type === "fertilizare" ? "🌿"
+               : "📋";
+      return {
+        date: e.date,
+        type: "jurnal",
+        icon: icon,
+        label: e.type || "interventie",
+        desc: e.note,
+        cost: e.cost
+      };
+    });
+
+  var allItems = journalItems.sort(function(a, b) { return b.date.localeCompare(a.date); });
+  if (allItems.length === 0) return;
+
+  var div = document.createElement("div");
+  div.id = "sp-timeline";
+  div.className = "section";
+  div.style.marginTop = "12px";
+  div.innerHTML =
+    '<h2 class="section-title" style="cursor:default;">🕐 Timeline ' + escapeHtml(SPECIES[speciesId] || speciesId) + '</h2>' +
+    '<div class="section-body">' +
+    allItems.map(function(item) {
+      return (
+        '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">' +
+        '<div style="font-size:1.2rem;flex-shrink:0;">' + item.icon + '</div>' +
+        '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:0.72rem;color:var(--text-dim);">' +
+          escapeHtml(item.date) + ' · ' + escapeHtml(item.label) +
+          (item.cost ? ' · ' + item.cost + ' RON' : '') +
+        '</div>' +
+        '<div style="font-size:0.82rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+          escapeHtml((item.desc || "").substring(0, 100)) +
+        '</div>' +
+        '</div></div>'
+      );
+    }).join('') +
+    '</div>';
+  container.appendChild(div);
 }
 
 function injectReportButton() {
@@ -2084,6 +2147,21 @@ function renderStats(selectedYear) {
         })
         .join("");
   }
+  // N4: Sumar cheltuieli per tip interventie
+  var totalCost = yearEntries.reduce(function(s, e) { return s + (e.cost || 0); }, 0);
+  var costByType = {};
+  yearEntries.filter(function(e){ return e.cost > 0; }).forEach(function(e){
+    costByType[e.type] = (costByType[e.type] || 0) + e.cost;
+  });
+  var costHtml = totalCost > 0
+    ? '<h3 style="margin:14px 0 8px;font-size:0.9rem;">💰 Cheltuieli (' + selectedYear + ')</h3>' +
+      Object.entries(costByType).sort(function(a,b){ return b[1]-a[1]; }).map(function(p){
+        return '<div style="display:flex;justify-content:space-between;font-size:0.8rem;padding:3px 0;border-bottom:1px solid var(--border);">' +
+          '<span>' + escapeHtml(p[0]) + '</span><span style="color:var(--accent);font-weight:700;">' + p[1].toFixed(2) + ' RON</span></div>';
+      }).join('') +
+      '<div style="display:flex;justify-content:space-between;font-size:0.85rem;font-weight:700;margin-top:6px;padding-top:6px;border-top:2px solid var(--border);">' +
+      '<span>TOTAL</span><span style="color:var(--accent);">' + totalCost.toFixed(2) + ' RON</span></div>'
+    : '';
   return (
     yearSelectorHtml +
     '<h3 style="margin-bottom:8px;font-size:0.9rem;">Per tip (' +
@@ -2099,7 +2177,8 @@ function renderStats(selectedYear) {
     yearEntries.length +
     "</strong> interven\u021Bii" +
     kgLine +
-    "</p>"
+    "</p>" +
+    costHtml
   );
 }
 function injectStatsSection() {
@@ -2571,6 +2650,34 @@ async function runDiagnose(input, species, prefix) {
       g(prefix + "ChatSection").style.display = "block";
       g(prefix + "ChatMessages").innerHTML = "";
       _diagChatHistory[prefix] = [];
+      // V3: Buton "Adauga tratament in jurnal" post-diagnostic
+      var addTreatBtn = document.getElementById(prefix + "AddTreatment");
+      if (!addTreatBtn) {
+        addTreatBtn = document.createElement("div");
+        addTreatBtn.id = prefix + "AddTreatment";
+        addTreatBtn.style.cssText = "margin-top:8px;text-align:right;";
+        g(prefix + "CopyRow").parentNode.appendChild(addTreatBtn);
+      }
+      var diagText = (resultEl.textContent || "").split("
+")[0].substring(0, 120);
+      var diagNote = "Tratament dupa diagnostic AI: " + diagText;
+      addTreatBtn.innerHTML = "<button class='btn btn-primary' style='font-size:0.8rem;padding:6px 14px;' " +
+        "data-note='" + escapeHtml(diagNote).replace(/'/g, "'") + "'>" +
+        "+ Adauga tratament in jurnal</button>";
+      addTreatBtn.style.display = "block";
+      addTreatBtn.querySelector("button").addEventListener("click", function() {
+        if (prefix === "diag") closeModal("diagnose");
+        var savedNote = this.dataset.note;
+        setTimeout(function() {
+          openModal("jurnal");
+          setTimeout(function() {
+            var noteEl = document.getElementById("jurnalNote");
+            var typeEl = document.getElementById("jurnalType");
+            if (noteEl) noteEl.value = savedNote || "";
+            if (typeEl) typeEl.value = "tratament";
+          }, 150);
+        }, prefix === "diag" ? 200 : 50);
+      });
     }
   } catch (e) {
     g(prefix + "Loading").style.display = "none";
@@ -3604,7 +3711,7 @@ var SFAT_LUNA = [
 ];
 
 // ====== SPRAY SCORE ======
-function calculateSprayScore(temp, wind, rain, humidity) {
+function calculateSprayScore(temp, wind, rain, humidity, uvIndex) {
   if (temp < 5 || temp > 30 || wind > 15 || rain > 2) return 0;
   var score = 100;
   if (temp < 10) score -= (10 - temp) * 8;
@@ -3612,6 +3719,8 @@ function calculateSprayScore(temp, wind, rain, humidity) {
   if (wind > 10) score -= (wind - 10) * 10;
   if (rain > 0) score -= rain * 20;
   if (humidity > 80) score -= (humidity - 80) * 2;
+  // T10: UV index ridicat (>7) + temperatura >20 grad = risc fitotoxicitate la stropire in amiaza
+  if (uvIndex && uvIndex > 7 && temp > 20) score -= (uvIndex - 7) * 5;
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 function sprayLabel(s) {
@@ -3816,6 +3925,9 @@ async function initDashboardAzi() {
       .catch(function () {});
   }
 
+  // N2: Spray window 7 zile
+  renderSprayWindow();
+
   // N10: Disease risk per species (din datele meteo deja incarcate)
   if (
     meteoRes.status === "fulfilled" &&
@@ -3849,6 +3961,57 @@ async function initDashboardAzi() {
       riskHtml += "</div>";
       alerteEl.innerHTML += riskHtml;
     }
+  }
+}
+
+
+// ====== N2: SPRAY WINDOW 7 ZILE ======
+async function renderSprayWindow() {
+  var container = document.getElementById("sprayWindow");
+  if (!container) return;
+  if (!navigator.onLine) {
+    container.innerHTML = '<p style="font-size:0.78rem;color:var(--text-dim);">Indisponibil offline</p>';
+    return;
+  }
+  try {
+    var res = await fetchWithTimeout(
+      "https://api.open-meteo.com/v1/forecast?latitude=" + LIVADA_LAT +
+      "&longitude=" + LIVADA_LON +
+      "&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,relative_humidity_2m_mean,weather_code" +
+      "&timezone=Europe/Bucharest&forecast_days=7",
+      {}, 8000
+    );
+    if (!res.ok) throw new Error("meteo " + res.status);
+    var d = await res.json();
+    var ZILE = ["Du", "Lu", "Ma", "Mi", "Jo", "Vi", "Sâ"];
+    var todayStr = new Date().toISOString().split("T")[0];
+    var html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">';
+    for (var i = 0; i < 7; i++) {
+      var dt = new Date(d.daily.time[i] + "T12:00");
+      var tMax = d.daily.temperature_2m_max[i];
+      var tMin = d.daily.temperature_2m_min[i];
+      var prec = d.daily.precipitation_sum[i];
+      var wind = d.daily.wind_speed_10m_max[i];
+      var hum = d.daily.relative_humidity_2m_mean ? d.daily.relative_humidity_2m_mean[i] : 60;
+      var score = calculateSprayScore((tMax + tMin) / 2, wind, prec, hum);
+      var sl = sprayLabel(score);
+      var isToday = d.daily.time[i] === todayStr;
+      html +=
+        '<div style="text-align:center;padding:6px 2px;border-radius:8px;' +
+        (score >= 80 ? "background:rgba(106,191,105,0.15);border:1px solid var(--accent);"
+          : score >= 50 ? "background:var(--bg-surface);border:1px solid transparent;"
+          : "opacity:0.55;border:1px solid transparent;") +
+        (isToday ? "outline:2px solid var(--accent);" : "") + '">' +
+        '<div style="font-size:0.65rem;color:var(--text-dim);">' + ZILE[dt.getDay()] + '</div>' +
+        '<div style="font-size:1rem;">' + wmoEmoji(d.daily.weather_code[i]) + '</div>' +
+        '<div style="font-size:0.7rem;">' + Math.round(tMax) + '°</div>' +
+        '<div class="' + sl.cls + '" style="font-size:0.6rem;font-weight:700;margin-top:2px;">' + score + '</div>' +
+        '</div>';
+    }
+    html += '</div><p style="font-size:0.68rem;color:var(--text-dim);margin-top:6px;">Scor stropire 0-100 (verde=ideal, gri=evita)</p>';
+    container.innerHTML = html;
+  } catch (e) {
+    container.innerHTML = '<p style="font-size:0.78rem;color:var(--text-dim);">Indisponibil offline</p>';
   }
 }
 
@@ -5782,6 +5945,97 @@ function printSpeciesReport(speciesId) {
   }
   popup.document.write(html);
   popup.document.close();
+}
+
+
+// ====== N3: STOC PRODUSE FITOSANITARE ======
+var STOC_KEY = "livada-stoc-produse";
+
+function getStoc() {
+  try { return JSON.parse(localStorage.getItem(STOC_KEY) || "[]"); } catch(e) { return []; }
+}
+function saveStoc(stoc) {
+  localStorage.setItem(STOC_KEY, JSON.stringify(stoc));
+}
+function addStocProdus() {
+  var name = (document.getElementById("stocName")?.value || "").trim();
+  var cant = parseFloat(document.getElementById("stocCant")?.value) || 0;
+  var unit = document.getElementById("stocUnit")?.value || "ml";
+  var exp = document.getElementById("stocExp")?.value || "";
+  if (!name) { showToast("Introdu numele produsului.", "warning"); return; }
+  var stoc = getStoc();
+  stoc.push({ id: Date.now(), name: name, cantitate: cant, unitate: unit, dataExpirare: exp });
+  saveStoc(stoc);
+  document.getElementById("stocName").value = "";
+  document.getElementById("stocCant").value = "";
+  document.getElementById("stocExp").value = "";
+  renderStoc();
+  showToast("Produs adaugat in stoc.");
+}
+function deleteStocProdus(id) {
+  saveStoc(getStoc().filter(function(p){ return p.id !== id; }));
+  renderStoc();
+}
+function renderStoc() {
+  var container = document.getElementById("stocList");
+  if (!container) return;
+  var stoc = getStoc();
+  if (stoc.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-dim);font-size:0.82rem;padding:8px 0;">Niciun produs adaugat.</p>';
+    return;
+  }
+  var today = new Date();
+  var expiredCount = 0;
+  container.innerHTML = stoc.map(function(p) {
+    var expired = p.dataExpirare && new Date(p.dataExpirare) < today;
+    var expSoon = p.dataExpirare && !expired && (new Date(p.dataExpirare) - today) < 30 * 86400000;
+    if (expired) expiredCount++;
+    var bc = expired ? "var(--danger)" : expSoon ? "var(--warning)" : "var(--border)";
+    return '<div style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid ' + bc + ';border-radius:8px;margin-bottom:6px;">' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:0.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(p.name) + '</div>' +
+        '<div style="font-size:0.75rem;color:var(--text-dim);">' +
+          (p.cantitate ? p.cantitate + ' ' + (p.unitate || '') : '') +
+          (p.dataExpirare ? ' &middot; Exp: ' + p.dataExpirare : '') +
+          (expired ? ' <strong style="color:var(--danger);">EXPIRAT</strong>' : '') +
+          (expSoon && !expired ? ' <strong style="color:var(--warning);">exp. curand</strong>' : '') +
+        '</div>' +
+      '</div>' +
+      '<button onclick="deleteStocProdus(' + p.id + ')" style="background:none;border:none;color:var(--danger);font-size:1.1rem;cursor:pointer;padding:4px;min-width:36px;min-height:36px;">&#10005;</button>' +
+    '</div>';
+  }).join('');
+  if (expiredCount > 0) showToast(expiredCount + ' produse din stoc au expirat!', 'warning');
+}
+function injectStocSection() {
+  if (document.getElementById("stoc-section")) {
+    renderStoc();
+    return;
+  }
+  var tc = document.getElementById("plan-livada");
+  if (!tc) return;
+  var div = document.createElement("div");
+  div.id = "stoc-section";
+  div.className = "section";
+  div.style.marginTop = "16px";
+  div.innerHTML =
+    '<h2 class="section-title" style="cursor:default;">🪣 Stoc Produse Fitosanitare</h2>' +
+    '<div class="section-body">' +
+      '<p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:10px;">Inventar produse fitosanitare. Alerta automata la produse expirate sau apropiate de expirare.</p>' +
+      '<div style="display:grid;grid-template-columns:1fr 80px 70px;gap:6px;margin-bottom:8px;">' +
+        '<input id="stocName" type="text" placeholder="Nume produs (ex: Dithane M-45)" style="padding:7px 10px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-size:0.82rem;">' +
+        '<input id="stocCant" type="number" placeholder="Cant." min="0" step="0.1" style="padding:7px 8px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-size:0.82rem;">' +
+        '<select id="stocUnit" style="padding:7px 6px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-size:0.82rem;">' +
+          '<option value="ml">ml</option><option value="L">L</option><option value="g">g</option><option value="kg">kg</option><option value="buc">buc</option>' +
+        '</select>' +
+      '</div>' +
+      '<div style="display:flex;gap:6px;margin-bottom:10px;">' +
+        '<input id="stocExp" type="date" style="flex:1;padding:7px 10px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-size:0.82rem;">' +
+        '<button class="btn btn-primary" onclick="addStocProdus()" style="padding:7px 14px;font-size:0.82rem;">+ Adauga</button>' +
+      '</div>' +
+      '<div id="stocList"></div>' +
+    '</div>';
+  tc.appendChild(div);
+  renderStoc();
 }
 
 // Initializare voice button (ascunde daca nu e suportat)

@@ -86,12 +86,12 @@
 - ✅ **V4** addJurnalEntry() — Warning interval minim intre tratamente
 - ✅ **V5** generateReport() — Invalidare cache la adaugare jurnal — DONE S18 (livada:journal:last-update)
 - ✅ **V6** loadGallery() — Data upload vizibila + sortare cronologica
-- ⬜ **N1** PHI Calculator — Alerta pauza securitate inainte de recoltare
+- ✅ **N1** PHI Calculator — Alerta pauza securitate inainte de recoltare — DONE (deja implementat)
 - ⬜ **N2** Spray Window 7 zile — Calendar cu zile optime stropire din prognoza
 - ⬜ **N3** Stoc Produse — Inventar produse fitosanitare cu cantitati
 - ⬜ **N4** Cost per tratament — Camp cost in jurnal + sumar cheltuieli
 - ⬜ **N5** Timeline Specie — Vedere cronologica integrata foto+jurnal+diagnose
-- ⬜ **N6** Import CSV Jurnal — Import din Excel/CSV
+- ✅ **N6** Import CSV Jurnal — DONE ca II4
 - ⬜ **N7** Push Notifications — Inghet + tratamente (iOS 16.4+)
 - ✅ **T6** Groq Llama 4 upgrade — Scout/Maverick mai rapid
 - ✅ **T7** Report cache invalidation — Reset TTL la jurnal nou

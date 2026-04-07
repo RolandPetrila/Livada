@@ -5,7 +5,9 @@
 // Cache FONT_CACHE: Google Fonts (nu se schimba niciodata)
 // Offline: HTML servit din cache dupa ultima vizita reusita
 
-const STATIC_CACHE = "livada-static-v1";
+// T11: BUILD_DATE actualizat la fiecare deploy — forteaza refresh cache dupa update
+const BUILD_DATE = "20260408";
+const STATIC_CACHE = "livada-static-" + BUILD_DATE;
 const FONT_CACHE = "livada-fonts-v1";
 
 // === INSTALL: cache DOAR assets statice (NU HTML) ===
@@ -130,4 +132,24 @@ self.addEventListener("fetch", (event) => {
           ),
       ),
   );
+});
+
+// ====== N7: PUSH NOTIFICATIONS ======
+self.addEventListener("push", (event) => {
+  const data = event.data ? event.data.json() : {};
+  event.waitUntil(
+    self.registration.showNotification(data.title || "Livada Mea", {
+      body: data.body || "Notificare noua",
+      icon: "/icon-192.png",
+      badge: "/icon-192.png",
+      tag: data.tag || "livada-alert",
+      renotify: true,
+      data: { url: data.url || "/" },
+    }),
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(clients.openWindow(event.notification.data?.url || "/"));
 });
