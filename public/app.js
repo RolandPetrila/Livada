@@ -2661,8 +2661,10 @@ async function submitAiIdent(input) {
           sanitizeAI(data.ai.text) +
           "</div>";
         // Extrage denumire comuna din textul AI (pentru butonul "Diagnostic foto")
-        var aiSpeciesMatch = data.ai.text.match(/Denumire comun[aă]\s+(?:in|în)\s+roman[aă]\s*[:\-]?\s*\*?\*?([^\n\*]+)/i);
-        var aiSpeciesName = aiSpeciesMatch ? aiSpeciesMatch[1].trim() : '';
+        var aiSpeciesMatch = data.ai.text.match(
+          /Denumire comun[aă]\s+(?:in|în)\s+roman[aă]\s*[:\-]?\s*\*?\*?([^\n\*]+)/i,
+        );
+        var aiSpeciesName = aiSpeciesMatch ? aiSpeciesMatch[1].trim() : "";
         // Butoane actiuni
         html +=
           '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-top:8px;">';
@@ -2673,9 +2675,7 @@ async function submitAiIdent(input) {
             escapeHtml(aiSpeciesName) +
             '" ';
           html +=
-            'aria-label="Diagnostic foto ' +
-            escapeHtml(aiSpeciesName) +
-            '" ';
+            'aria-label="Diagnostic foto ' + escapeHtml(aiSpeciesName) + '" ';
           html +=
             'style="padding:5px 12px;font-size:0.75rem;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;">Diagnostic foto \uD83D\uDCF8</button>';
         }

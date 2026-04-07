@@ -29,29 +29,7 @@ const IDENTIFY_OPTS = { maxTokens: 1024, temperature: 0.2 };
 
 // ── Fallback AI chain ─────────────────────────────────────────────────────────
 async function tryAiFallbacks(base64, mimeType, log) {
-  // Fallback 0: gemini-2.5-flash-lite cheia 1 (mai rapid la rate limit)
-  const KEY1 = process.env.GOOGLE_AI_API_KEY;
-  if (KEY1) {
-    try {
-      const res = await callGemini(
-        KEY1,
-        "gemini-2.5-flash-lite",
-        base64,
-        mimeType,
-        AI_PROMPT,
-        12000,
-        IDENTIFY_OPTS,
-      );
-      log(`gemini-flash-lite → ${res.status}`);
-      if (res.ok) {
-        const text = geminiText(await res.json());
-        if (text) return { text, model: "gemini-2.5-flash-lite" };
-      }
-    } catch (e) {
-      log(`flash-lite err: ${e.name}`);
-    }
-  }
-
+  // Fallback 1: Gemini 2.5-flash cheia 2
   const KEY2 = process.env.GOOGLE_AI_API_KEY_2;
   if (KEY2) {
     try {
@@ -71,29 +49,6 @@ async function tryAiFallbacks(base64, mimeType, log) {
       }
     } catch (e) {
       log(`gemini key2 err: ${e.name}`);
-    }
-  }
-
-  const GH = process.env.GITHUB_MODELS_TOKEN;
-  if (GH) {
-    try {
-      const res = await callOpenAIVision(
-        "https://models.inference.ai.azure.com/chat/completions",
-        GH,
-        "gpt-4o",
-        base64,
-        mimeType,
-        AI_PROMPT,
-        18000,
-        IDENTIFY_OPTS,
-      );
-      log(`gpt-4o → ${res.status}`);
-      if (res.ok) {
-        const text = openaiText(await res.json());
-        if (text) return { text, model: "gpt-4o (github)" };
-      }
-    } catch (e) {
-      log(`gpt-4o err: ${e.name}`);
     }
   }
 
@@ -223,33 +178,49 @@ export default async function handler(req) {
   // ── Pl@ntNet + Gemini IN PARALEL ─────────────────────────────────────────
   const PLANTNET_KEY = process.env.PLANTNET_API_KEY;
   const GEMINI_KEY1 = process.env.GOOGLE_AI_API_KEY;
+  const GH_TOKEN = process.env.GITHUB_MODELS_TOKEN;
 
-  const [plantnetSettled, geminiSettled] = await Promise.allSettled([
-    // Pl@ntNet — identificare specie specializata
-    PLANTNET_KEY
-      ? fetch(
-          `https://my-api.plantnet.org/v2/identify/all?api-key=${PLANTNET_KEY}&lang=ro&nb-results=5&include-related-images=false`,
-          {
-            method: "POST",
-            body: formData,
-            signal: AbortSignal.timeout(15000),
-          },
-        )
-      : Promise.reject(new Error("no plantnet key")),
+  const [plantnetSettled, geminiSettled, gpt41Settled] =
+    await Promise.allSettled([
+      // Pl@ntNet — identificare specie specializata
+      PLANTNET_KEY
+        ? fetch(
+            `https://my-api.plantnet.org/v2/identify/all?api-key=${PLANTNET_KEY}&lang=ro&nb-results=5&include-related-images=false`,
+            {
+              method: "POST",
+              body: formData,
+              signal: AbortSignal.timeout(15000),
+            },
+          )
+        : Promise.reject(new Error("no plantnet key")),
 
-    // Gemini 2.5-flash — identificare AI cu descriere in romana
-    GEMINI_KEY1
-      ? callGemini(
-          GEMINI_KEY1,
-          "gemini-2.5-flash",
-          base64,
-          mimeType,
-          AI_PROMPT,
-          18000,
-          IDENTIFY_OPTS,
-        )
-      : Promise.reject(new Error("no gemini key")),
-  ]);
+      // Gemini 2.5-flash — identificare AI cu descriere in romana
+      GEMINI_KEY1
+        ? callGemini(
+            GEMINI_KEY1,
+            "gemini-2.5-flash",
+            base64,
+            mimeType,
+            AI_PROMPT,
+            18000,
+            IDENTIFY_OPTS,
+          )
+        : Promise.reject(new Error("no gemini key")),
+
+      // GPT-4.1 via GitHub Models (gratuit, 50-150 req/zi)
+      GH_TOKEN
+        ? callOpenAIVision(
+            "https://models.inference.ai.azure.com/chat/completions",
+            GH_TOKEN,
+            "gpt-4.1",
+            base64,
+            mimeType,
+            AI_PROMPT,
+            18000,
+            IDENTIFY_OPTS,
+          )
+        : Promise.reject(new Error("no github token")),
+    ]);
 
   // ── Extrage rezultate Pl@ntNet ────────────────────────────────────────────
   let plantnetResults = [];
@@ -290,9 +261,30 @@ export default async function handler(req) {
     );
   }
 
-  // ── Daca Gemini a picat, incearca fallback-uri AI ─────────────────────────
+  // ── Extrage rezultate GPT-4.1 (parallel primary) ──────────────────────────
+  let gpt41Result = null;
+  if (gpt41Settled.status === "fulfilled" && gpt41Settled.value.ok) {
+    try {
+      const text = openaiText(await gpt41Settled.value.json());
+      if (text) {
+        gpt41Result = { text, model: "gpt-4.1 (github)" };
+        log("gpt-4.1 ok");
+      }
+    } catch {
+      log("gpt-4.1 parse err");
+    }
+  } else {
+    log(
+      `gpt-4.1 skip: ${gpt41Settled.reason?.name || gpt41Settled.value?.status}`,
+    );
+  }
+
+  // Daca Gemini a picat, foloseste GPT-4.1 (rulat deja in paralel)
+  if (!aiResult) aiResult = gpt41Result;
+
+  // ── Daca ambele primary AI au picat, incearca fallback-uri ────────────────
   if (!aiResult) {
-    log("gemini failed — try AI fallbacks");
+    log("primary AI failed — try AI fallbacks");
     aiResult = await tryAiFallbacks(base64, mimeType, log);
   }
 

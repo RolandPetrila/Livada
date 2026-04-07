@@ -147,21 +147,34 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
 
   const log = (msg) => console.log(`[diagnose] ${msg} t+${Date.now() - t0}ms`);
 
-  // ── Plant.id + Gemini primary IN PARALEL ─────────────────────────────────────
+  // ── Plant.id + Gemini + GPT-4.1 IN PARALEL ──────────────────────────────────
   const PLANT_ID_KEY = process.env.PLANT_ID_API_KEY;
-  const [geminiSettled, plantIdSettled] = await Promise.allSettled([
-    callGemini(
-      GEMINI_KEY1,
-      "gemini-2.5-flash",
-      base64,
-      mimeType,
-      prompt,
-      20000,
-    ),
-    PLANT_ID_KEY
-      ? callPlantId(PLANT_ID_KEY, base64, mimeType, 18000)
-      : Promise.reject(new Error("no key")),
-  ]);
+  const GH_TOKEN = process.env.GITHUB_MODELS_TOKEN;
+  const [geminiSettled, plantIdSettled, gpt41Settled] =
+    await Promise.allSettled([
+      callGemini(
+        GEMINI_KEY1,
+        "gemini-2.5-flash",
+        base64,
+        mimeType,
+        prompt,
+        20000,
+      ),
+      PLANT_ID_KEY
+        ? callPlantId(PLANT_ID_KEY, base64, mimeType, 18000)
+        : Promise.reject(new Error("no key")),
+      GH_TOKEN
+        ? callOpenAIVision(
+            "https://models.inference.ai.azure.com/chat/completions",
+            GH_TOKEN,
+            "gpt-4.1",
+            base64,
+            mimeType,
+            prompt,
+            18000,
+          )
+        : Promise.reject(new Error("no github token")),
+    ]);
 
   // Extrage rezultat Plant.id
   let plantIdPrefix = "";
@@ -180,17 +193,15 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
   }
 
   // Extrage rezultat Gemini primary
+  let diagnosisText = null;
+  let diagnosisMeta = {};
+
   if (geminiSettled.status === "fulfilled" && geminiSettled.value.ok) {
     try {
       const text = geminiText(await geminiSettled.value.json());
       if (text) {
+        diagnosisText = text;
         log("gemini-2.5-flash key1 ok");
-        const finalText = plantIdPrefix ? plantIdPrefix + text : text;
-        const meta = plantIdPrefix ? { _plantid: true } : {};
-        return Response.json(
-          { diagnosis: finalText, ...meta },
-          { headers: corsHeaders(req) },
-        );
       }
     } catch {
       log("gemini parse err");
@@ -199,17 +210,43 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     log(
       `gemini-2.5-flash key1 failed: ${geminiSettled.reason?.name || geminiSettled.value?.status}`,
     );
-    if (geminiSettled.reason?.name === "AbortError") {
-      return Response.json(
-        { error: "Analiza AI a durat prea mult. Incearca din nou." },
-        { status: 503, headers: corsHeaders(req) },
+  }
+
+  // Daca Gemini a picat, incearca GPT-4.1 (rulat deja in paralel)
+  if (!diagnosisText) {
+    if (gpt41Settled.status === "fulfilled" && gpt41Settled.value.ok) {
+      try {
+        const text = openaiText(await gpt41Settled.value.json());
+        if (text) {
+          diagnosisText = text;
+          diagnosisMeta._fallback = true;
+          log("gpt-4.1 ok (primary parallel)");
+        }
+      } catch {
+        log("gpt-4.1 parse err");
+      }
+    } else {
+      log(
+        `gpt-4.1 skip: ${gpt41Settled.reason?.name || gpt41Settled.value?.status}`,
       );
     }
   }
 
-  // ── Daca Gemini a picat dar Plant.id a reusit — returneaza Plant.id singur ───
+  // Returneaza daca cel putin un primar AI a raspuns
+  if (diagnosisText) {
+    const finalText = plantIdPrefix
+      ? plantIdPrefix + diagnosisText
+      : diagnosisText;
+    if (plantIdPrefix) diagnosisMeta._plantid = true;
+    return Response.json(
+      { diagnosis: finalText, ...diagnosisMeta },
+      { headers: corsHeaders(req) },
+    );
+  }
+
+  // ── Ambele primary AI au picat dar Plant.id a reusit ─────────────────────────
   if (plantIdPrefix) {
-    log("returning plant.id only (gemini failed)");
+    log("returning plant.id only (both primary AI failed)");
     return Response.json(
       {
         diagnosis:
@@ -222,30 +259,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     );
   }
 
-  // ── Fallback 2: Gemini 2.5-flash-lite cheia 1 ────────────────────────────────
-  try {
-    const res = await callGemini(
-      GEMINI_KEY1,
-      "gemini-2.5-flash-lite",
-      base64,
-      mimeType,
-      prompt,
-      15000,
-    );
-    log(`gemini-2.5-flash-lite → ${res.status}`);
-    if (res.ok) {
-      const text = geminiText(await res.json());
-      if (text)
-        return Response.json(
-          { diagnosis: text, _fallback: true },
-          { headers: corsHeaders(req) },
-        );
-    }
-  } catch (e) {
-    log(`flash-lite err: ${e.name}`);
-  }
-
-  // ── Fallback 3: Gemini 2.5-flash cheia 2 ─────────────────────────────────────
+  // ── Fallback 2: Gemini 2.5-flash cheia 2 ─────────────────────────────────────
   const GEMINI_KEY2 = process.env.GOOGLE_AI_API_KEY_2;
   if (GEMINI_KEY2) {
     try {
@@ -271,34 +285,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     }
   }
 
-  // ── Fallback 4: GPT-4o via GitHub Models ─────────────────────────────────────
-  const GITHUB_TOKEN = process.env.GITHUB_MODELS_TOKEN;
-  if (GITHUB_TOKEN) {
-    try {
-      const res = await callOpenAIVision(
-        "https://models.inference.ai.azure.com/chat/completions",
-        GITHUB_TOKEN,
-        "gpt-4o",
-        base64,
-        mimeType,
-        prompt,
-        20000,
-      );
-      log(`gpt-4o github → ${res.status}`);
-      if (res.ok) {
-        const text = openaiText(await res.json());
-        if (text)
-          return Response.json(
-            { diagnosis: text, _fallback: true },
-            { headers: corsHeaders(req) },
-          );
-      }
-    } catch (e) {
-      log(`gpt-4o err: ${e.name}`);
-    }
-  }
-
-  // ── Fallback 5: Pixtral-12B via Mistral ──────────────────────────────────────
+  // ── Fallback 4: Pixtral-12B via Mistral ──────────────────────────────────────
   const MISTRAL_KEY = process.env.MISTRAL_API_KEY;
   if (MISTRAL_KEY) {
     try {
@@ -325,7 +312,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     }
   }
 
-  // ── Fallback 6: Grok-2-vision (xAI) ──────────────────────────────────────────
+  // ── Fallback 5: Grok-2-vision (xAI) ──────────────────────────────────────────
   const XAI_KEY = process.env.XAI_API_KEY;
   if (XAI_KEY) {
     try {

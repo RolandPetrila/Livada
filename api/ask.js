@@ -128,43 +128,28 @@ Specia curenta: ${species || "general (toate speciile)"}`;
         console.error("[ask] fb1 err:", e.message);
       }
 
-      // Fallback 2: llama-3.1-8b-instant
+      // Fallback 2: Cerebras llama-3.3-70b
       if (!fb1Ok) {
-        let fb2Ok = false;
+        console.error("[ask] all groq failed — try Cerebras");
         try {
-          groqRes = await callGroq("llama-3.1-8b-instant", 12000);
-          fb2Ok = groqRes.ok;
-          if (fb2Ok) {
-            usedFallback = true;
-            fallbackModel = "llama-3.1-8b-instant";
+          const cerebrasRes = await callCerebras(cerebrasMessages, 15000);
+          if (cerebrasRes.ok) {
+            const result = await cerebrasRes.json();
+            const answer =
+              result.choices?.[0]?.message?.content ||
+              "Nu am putut genera un raspuns.";
+            return Response.json(
+              { answer, _fallback: true },
+              { headers: corsHeaders(req) },
+            );
           }
         } catch (e) {
-          console.error("[ask] fb2 err:", e.message);
+          console.error("[ask] cerebras err:", e.message);
         }
-
-        // Fallback 3: Cerebras
-        if (!fb2Ok) {
-          console.error("[ask] all groq failed — try Cerebras");
-          try {
-            const cerebrasRes = await callCerebras(cerebrasMessages, 15000);
-            if (cerebrasRes.ok) {
-              const result = await cerebrasRes.json();
-              const answer =
-                result.choices?.[0]?.message?.content ||
-                "Nu am putut genera un raspuns.";
-              return Response.json(
-                { answer, _fallback: true },
-                { headers: corsHeaders(req) },
-              );
-            }
-          } catch (e) {
-            console.error("[ask] cerebras err:", e.message);
-          }
-          return Response.json(
-            { error: "AI indisponibil temporar. Incearca din nou." },
-            { status: 503, headers: corsHeaders(req) },
-          );
-        }
+        return Response.json(
+          { error: "AI indisponibil temporar. Incearca din nou." },
+          { status: 503, headers: corsHeaders(req) },
+        );
       }
     }
 

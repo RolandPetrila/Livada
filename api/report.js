@@ -158,21 +158,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
         console.error("[report] fb1 err:", e.message);
       }
 
-      // Fallback 2: llama-3.1-8b-instant
-      if (!anyFbOk) {
-        try {
-          groqRes = await callGroqReport("llama-3.1-8b-instant", 10000);
-          anyFbOk = groqRes.ok;
-          if (anyFbOk) {
-            usedFallback = true;
-            fallbackModel = "llama-3.1-8b-instant";
-          }
-        } catch (e) {
-          console.error("[report] fb2 err:", e.message);
-        }
-      }
-
-      // Fallback 3: Cerebras
+      // Fallback 2: Cerebras
       if (!anyFbOk) {
         console.error("[report] groq failed — try Cerebras llama-3.3-70b");
         try {
