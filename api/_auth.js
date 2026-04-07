@@ -1,4 +1,5 @@
 // Shared auth, CORS, and rate-limit middleware for all API routes
+import { Redis } from "@upstash/redis";
 
 // M2: localhost permis doar in development — nu in productie
 const ALLOWED_ORIGINS = [
@@ -65,35 +66,32 @@ export function checkAuth(req) {
   return null;
 }
 
-const rateLimitMap = new Map();
-const RATE_WINDOW = 60_000;
 // M8: 30 req/min general; AI endpoints (ask, diagnose, report) folosesc rateLimit(req, 10)
 const RATE_MAX = 30;
 // H2: folosim DOAR x-real-ip (de incredere de la Vercel) — x-forwarded-for e spoofabil
-export function rateLimit(req, maxOverride) {
+// Redis-based rate limiting — persistent cross-isolate pe Vercel Edge
+export async function rateLimit(req, maxOverride) {
   const max = maxOverride !== undefined ? maxOverride : RATE_MAX;
   const ip = getHeader(req, "x-real-ip") || "unknown";
-  const now = Date.now();
+  const key = `livada:rl:${ip}`;
 
-  // Lazy cleanup: sterge entries expirate
-  for (const [key, val] of rateLimitMap) {
-    if (now > val.reset) rateLimitMap.delete(key);
-  }
+  try {
+    const kv = Redis.fromEnv();
+    // Pipeline INCR + EXPIRE atomic — evita race condition TTL
+    const pipeline = kv.pipeline();
+    pipeline.incr(key);
+    pipeline.expire(key, 60); // fereastra 60s
+    const [count] = await pipeline.exec();
 
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.reset) {
-    rateLimitMap.set(ip, { count: 1, reset: now + RATE_WINDOW });
+    if (count > max) {
+      return Response.json(
+        { error: "Prea multe cereri. Incearca din nou peste un minut." },
+        { status: 429, headers: corsHeaders(req) },
+      );
+    }
+    return null;
+  } catch {
+    // Redis indisponibil — fail open (nu bloca request-ul)
     return null;
   }
-
-  entry.count++;
-  if (entry.count > max) {
-    return Response.json(
-      { error: "Prea multe cereri. Incearca din nou peste un minut." },
-      { status: 429, headers: corsHeaders(req) },
-    );
-  }
-
-  return null;
 }

@@ -18,7 +18,7 @@ export default async function handler(req) {
   const originErr = checkOrigin(req);
   if (originErr) return originErr;
 
-  const rlErr = rateLimit(req);
+  const rlErr = await rateLimit(req);
   if (rlErr) return rlErr;
 
   let kv;

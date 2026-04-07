@@ -18,7 +18,7 @@ export default async function handler(req) {
   try {
     // GET — list photos (optionally filtered by species) — public, rate-limited
     if (req.method === "GET") {
-      const rlErr = rateLimit(req);
+      const rlErr = await rateLimit(req);
       if (rlErr) return rlErr;
       const url = new URL(req.url, "http://localhost");
       const rawSpecies = (url.searchParams.get("species") || "").replace(
@@ -43,7 +43,7 @@ export default async function handler(req) {
     // POST/DELETE require auth + rate limit
     const authErr = checkAuth(req);
     if (authErr) return authErr;
-    const limitErr = rateLimit(req);
+    const limitErr = await rateLimit(req);
     if (limitErr) return limitErr;
 
     // POST — upload a photo

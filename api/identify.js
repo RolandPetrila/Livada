@@ -159,7 +159,7 @@ export default async function handler(req) {
     );
   }
 
-  const limitErr = rateLimit(req, 10); // AI endpoint — limita 10 req/min
+  const limitErr = await rateLimit(req, 10); // AI endpoint — limita 10 req/min
   if (limitErr) return limitErr;
 
   const t0 = Date.now();

@@ -65,7 +65,7 @@ export default async function handler(req) {
     );
   }
 
-  const limitErr = rateLimit(req, 10); // M8: AI endpoint — limita 10 req/min
+  const limitErr = await rateLimit(req, 10); // M8: AI endpoint — limita 10 req/min
   if (limitErr) return limitErr;
 
   const GEMINI_KEY1 = process.env.GOOGLE_AI_API_KEY;

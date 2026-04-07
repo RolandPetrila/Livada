@@ -28,7 +28,7 @@ export default async function handler(req) {
 
   const authErr = checkAuth(req);
   if (authErr) return authErr;
-  const limitErr = rateLimit(req);
+  const limitErr = await rateLimit(req);
   if (limitErr) return limitErr;
 
   const hdrs = corsHeaders(req);
