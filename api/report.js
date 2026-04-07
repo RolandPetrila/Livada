@@ -1,26 +1,39 @@
-import { Redis } from '@upstash/redis';
-import { corsHeaders, handleOptions, checkAuth, rateLimit, checkOrigin } from './_auth.js';
+import { Redis } from "@upstash/redis";
+import {
+  corsHeaders,
+  handleOptions,
+  checkAuth,
+  rateLimit,
+  checkOrigin,
+} from "./_auth.js";
+import { fetchWithTimeout } from "./_timeout.js";
 
-export const config = { runtime: 'edge' };
+export const config = { runtime: "edge" };
 
 export default async function handler(req) {
-  if (req.method === 'OPTIONS') return handleOptions(req);
+  if (req.method === "OPTIONS") return handleOptions(req);
 
   const originErr = checkOrigin(req);
   if (originErr) return originErr;
 
-  if (req.method !== 'POST') {
-    return Response.json({ error: 'Metoda nepermisa' }, { status: 405, headers: corsHeaders(req) });
+  if (req.method !== "POST") {
+    return Response.json(
+      { error: "Metoda nepermisa" },
+      { status: 405, headers: corsHeaders(req) },
+    );
   }
 
   const authErr = checkAuth(req);
   if (authErr) return authErr;
-  const limitErr = rateLimit(req);
+  const limitErr = rateLimit(req, 10); // M8: AI endpoint — limita 10 req/min
   if (limitErr) return limitErr;
 
   const GROQ_KEY = process.env.GROQ_API_KEY;
   if (!GROQ_KEY) {
-    return Response.json({ error: 'GROQ_API_KEY lipsa' }, { status: 500, headers: corsHeaders(req) });
+    return Response.json(
+      { error: "GROQ_API_KEY lipsa" },
+      { status: 500, headers: corsHeaders(req) },
+    );
   }
 
   try {
@@ -31,49 +44,63 @@ export default async function handler(req) {
     const cacheKey = `livada:report:cache:${year}`;
     const [cached, journalLastUpdate] = await Promise.all([
       kv.get(cacheKey).catch(() => null),
-      kv.get('livada:journal:last-update').catch(() => null),
+      kv.get("livada:journal:last-update").catch(() => null),
     ]);
     if (cached && cached.generatedAt) {
       const ageMs = Date.now() - cached.generatedAt;
-      const cacheIsStale = journalLastUpdate && Number(journalLastUpdate) > cached.generatedAt;
+      const cacheIsStale =
+        journalLastUpdate && Number(journalLastUpdate) > cached.generatedAt;
       if (ageMs < 3600_000 && !cacheIsStale) {
         console.log(`[report] cache hit, age ${Math.round(ageMs / 60000)}min`);
-        return Response.json({ ...cached, _cached: true }, { headers: corsHeaders(req) });
+        return Response.json(
+          { ...cached, _cached: true },
+          { headers: corsHeaders(req) },
+        );
       }
-      if (cacheIsStale) console.log('[report] cache stale — jurnal actualizat dupa generare');
+      if (cacheIsStale)
+        console.log("[report] cache stale — jurnal actualizat dupa generare");
     }
 
-    const journal = (await kv.get('livada:journal')) || [];
-    const meteoHistory = (await kv.get('livada:meteo:history')) || {};
+    const journal = (await kv.get("livada:journal")) || [];
+    const meteoHistory = (await kv.get("livada:meteo:history")) || {};
 
     // Filter journal for current year
-    const yearEntries = journal.filter(e => e.date && e.date.startsWith(String(year)));
+    const yearEntries = journal.filter(
+      (e) => e.date && e.date.startsWith(String(year)),
+    );
     const journalSummary =
       yearEntries.length > 0
-        ? yearEntries.map(e => `${e.date}: [${e.type}] ${e.note}`).join('\n')
-        : 'Nicio interventie inregistrata in ' + year + '.';
+        ? yearEntries.map((e) => `${e.date}: [${e.type}] ${e.note}`).join("\n")
+        : "Nicio interventie inregistrata in " + year + ".";
 
     // Filter meteo for current year
-    const meteoEntries = Object.entries(meteoHistory).filter(([d]) => d.startsWith(String(year)));
+    const meteoEntries = Object.entries(meteoHistory).filter(([d]) =>
+      d.startsWith(String(year)),
+    );
     const meteoSummary =
       meteoEntries.length > 0
         ? meteoEntries
-            .map(([d, m]) => `${d}: ${m.temp_min}°C—${m.temp_max}°C, ${m.description}, umid ${m.humidity}%`)
-            .join('\n')
-        : 'Nicio inregistrare meteo in ' + year + '.';
+            .map(
+              ([d, m]) =>
+                `${d}: ${m.temp_min}°C—${m.temp_max}°C, ${m.description}, umid ${m.humidity}%`,
+            )
+            .join("\n")
+        : "Nicio inregistrare meteo in " + year + ".";
 
     // Also include locally-sent journal from the request body
-    let localJournal = '';
+    let localJournal = "";
     try {
       const body = await req.json();
       if (body.localJournal) {
-        localJournal = '\n\nJurnal local (din dispozitiv):\n' + String(body.localJournal).substring(0, 5000);
+        localJournal =
+          "\n\nJurnal local (din dispozitiv):\n" +
+          String(body.localJournal).substring(0, 5000);
       }
     } catch {}
 
     const reportMessages = [
       {
-        role: 'system',
+        role: "system",
         content: `Esti consultant pomicol expert. Genereaza un RAPORT ANUAL detaliat pentru o livada din Nadlac, judetul Arad:
 - 100+ pomi, 17 specii (cires, visin, cais, piersic, prun, migdal, par, mar, zmeur, mur, afin, alun, rodiu)
 - Proprietar: profesor, abordare semi-comerciala
@@ -90,97 +117,150 @@ Structura raportului:
 Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
       },
       {
-        role: 'user',
+        role: "user",
         content: `Genereaza raportul anual ${year}.\n\nJURNAL INTERVENTII (${yearEntries.length} inregistrari):\n${journalSummary}${localJournal}\n\nISTORIC METEO (${meteoEntries.length} zile):\n${meteoSummary}`,
       },
     ];
 
-    async function callGroqReport(model, timeoutMs) {
-      const ctrl = new AbortController();
-      const tid = setTimeout(() => ctrl.abort(), timeoutMs);
-      try {
-        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${GROQ_KEY}` },
-          body: JSON.stringify({ model, messages: reportMessages, max_tokens: 2048, temperature: 0.4 }),
-          signal: ctrl.signal,
-        });
-        clearTimeout(tid);
-        return res;
-      } catch (err) { clearTimeout(tid); throw err; }
-    }
+    // M10: foloseste fetchWithTimeout din _timeout.js
+    const callGroqReport = (model, ms) =>
+      fetchWithTimeout(
+        "https://api.groq.com/openai/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${GROQ_KEY}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: reportMessages,
+            max_tokens: 2048,
+            temperature: 0.4,
+          }),
+        },
+        ms,
+      );
 
-    async function callCerebrasReport(timeoutMs) {
+    function callCerebrasReport(timeoutMs) {
       const CEREBRAS_KEY = process.env.CEREBRAS_API_KEY;
-      if (!CEREBRAS_KEY) throw new Error('CEREBRAS_API_KEY lipsa');
-      const ctrl = new AbortController();
-      const tid = setTimeout(() => ctrl.abort(), timeoutMs);
-      try {
-        const res = await fetch('https://api.cerebras.ai/v1/chat/completions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${CEREBRAS_KEY}` },
-          body: JSON.stringify({ model: 'llama-3.3-70b', messages: reportMessages, max_tokens: 2048, temperature: 0.4 }),
-          signal: ctrl.signal,
-        });
-        clearTimeout(tid);
-        return res;
-      } catch (err) { clearTimeout(tid); throw err; }
+      if (!CEREBRAS_KEY) throw new Error("CEREBRAS_API_KEY lipsa");
+      return fetchWithTimeout(
+        "https://api.cerebras.ai/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${CEREBRAS_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "llama-3.3-70b",
+            messages: reportMessages,
+            max_tokens: 2048,
+            temperature: 0.4,
+          }),
+        },
+        timeoutMs,
+      );
     }
 
-    let groqRes = await callGroqReport('meta-llama/llama-4-maverick-17b-128e-instruct', 23000);
+    let groqRes = await callGroqReport(
+      "meta-llama/llama-4-maverick-17b-128e-instruct",
+      23000,
+    );
     let usedFallback = false;
-    let fallbackModel = '';
+    let fallbackModel = "";
 
     if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
-      console.error('[report] llama-4-maverick failed', groqRes.status);
+      console.error("[report] llama-4-maverick failed", groqRes.status);
       let groqFb2Ok = false;
 
       // Fallback 1: llama-3.3-70b-versatile
       try {
-        groqRes = await callGroqReport('llama-3.3-70b-versatile', 20000);
+        groqRes = await callGroqReport("llama-3.3-70b-versatile", 20000);
         groqFb2Ok = groqRes.ok;
-        if (groqFb2Ok) { usedFallback = true; fallbackModel = 'llama-3.3-70b-versatile'; }
-      } catch (e) { console.error('[report] fb1 err:', e.message); }
+        if (groqFb2Ok) {
+          usedFallback = true;
+          fallbackModel = "llama-3.3-70b-versatile";
+        }
+      } catch (e) {
+        console.error("[report] fb1 err:", e.message);
+      }
 
       // Fallback 2: llama-3.1-8b-instant
       if (!groqFb2Ok) {
         try {
-          groqRes = await callGroqReport('llama-3.1-8b-instant', 10000);
+          groqRes = await callGroqReport("llama-3.1-8b-instant", 10000);
           groqFb2Ok = groqRes.ok;
-          if (groqFb2Ok) { usedFallback = true; fallbackModel = 'llama-3.1-8b-instant'; }
-        } catch (e) { console.error('[report] fb2 err:', e.message); }
+          if (groqFb2Ok) {
+            usedFallback = true;
+            fallbackModel = "llama-3.1-8b-instant";
+          }
+        } catch (e) {
+          console.error("[report] fb2 err:", e.message);
+        }
       }
 
       // Fallback 2: Cerebras
       if (!groqFb2Ok) {
-        console.error('[report] groq fb2 failed — try Cerebras llama-3.3-70b');
+        console.error("[report] groq fb2 failed — try Cerebras llama-3.3-70b");
         try {
           const cerebrasRes = await callCerebrasReport(18000);
           if (cerebrasRes.ok) {
             const result = await cerebrasRes.json();
-            const report = result.choices?.[0]?.message?.content || 'Nu am putut genera raportul.';
-            const payload = { report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length, generatedAt: Date.now(), _fallback: true, _fallbackModel: 'cerebras/llama-3.3-70b' };
+            const report =
+              result.choices?.[0]?.message?.content ||
+              "Nu am putut genera raportul.";
+            // H7: _fallbackModel nu se expune in raspuns public
+            const payload = {
+              report,
+              year,
+              journalCount: yearEntries.length,
+              meteoDays: meteoEntries.length,
+              generatedAt: Date.now(),
+              _fallback: true,
+            };
             await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});
             return Response.json(payload, { headers: corsHeaders(req) });
           }
         } catch (cerebrasErr) {
-          console.error('[report] cerebras err:', cerebrasErr.message);
+          console.error("[report] cerebras err:", cerebrasErr.message);
         }
-        return Response.json({ error: 'Serviciul AI nu a raspuns. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
+        return Response.json(
+          { error: "Serviciul AI nu a raspuns. Incearca din nou." },
+          { status: 503, headers: corsHeaders(req) },
+        );
       }
     }
 
     if (!groqRes.ok) {
-      const errText = await groqRes.text().catch(() => '');
-      console.error('[report] Groq', groqRes.status, errText.substring(0, 200));
-      if (groqRes.status === 429) return Response.json({ error: 'AI suprasolicitat. Incearca din nou.' }, { status: 503, headers: corsHeaders(req) });
-      return Response.json({ error: `AI indisponibil (${groqRes.status}). Incearca din nou.` }, { status: 503, headers: corsHeaders(req) });
+      const errText = await groqRes.text().catch(() => "");
+      console.error("[report] Groq", groqRes.status, errText.substring(0, 200));
+      if (groqRes.status === 429)
+        return Response.json(
+          { error: "AI suprasolicitat. Incearca din nou." },
+          { status: 503, headers: corsHeaders(req) },
+        );
+      // H7: nu expune status code in raspuns public
+      return Response.json(
+        { error: 'AI indisponibil. Incearca din nou.' },
+        { status: 503, headers: corsHeaders(req) },
+      );
     }
 
     const result = await groqRes.json();
-    const report = result.choices?.[0]?.message?.content || 'Nu am putut genera raportul.';
+    const report =
+      result.choices?.[0]?.message?.content || "Nu am putut genera raportul.";
 
-    const payload = { report, year, journalCount: yearEntries.length, meteoDays: meteoEntries.length, generatedAt: Date.now(), ...(usedFallback ? { _fallback: true, _fallbackModel: fallbackModel } : {}) };
+    // H7: _fallbackModel nu se expune in raspuns public
+    const payload = {
+      report,
+      year,
+      journalCount: yearEntries.length,
+      meteoDays: meteoEntries.length,
+      generatedAt: Date.now(),
+      ...(usedFallback ? { _fallback: true } : {}),
+    };
 
     // Salveaza in cache Redis cu TTL 1h
     await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});
@@ -188,10 +268,16 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
     return Response.json(payload, { headers: corsHeaders(req) });
   } catch (err) {
     const msg = err.message || String(err);
-    if (msg.includes('UPSTASH')) {
-      return Response.json({ error: 'Vercel KV nu este configurat.' }, { status: 503, headers: corsHeaders(req) });
+    if (msg.includes("UPSTASH")) {
+      return Response.json(
+        { error: "Vercel KV nu este configurat." },
+        { status: 503, headers: corsHeaders(req) },
+      );
     }
-    console.error('API report error:', err);
-    return Response.json({ error: 'Eroare la procesare. Incercati din nou.' }, { status: 500, headers: corsHeaders(req) });
+    console.error("API report error:", err);
+    return Response.json(
+      { error: "Eroare la procesare. Incercati din nou." },
+      { status: 500, headers: corsHeaders(req) },
+    );
   }
 }

@@ -13,11 +13,11 @@ export default async function handler(req) {
 
   // Pas 1: verifica imediat fara sa astepte Gemini
   if (req.url && req.url.includes('ping')) {
+    // L7: nu expune lungimea cheii API
     return Response.json({
       ok: true,
       ping: true,
       hasKey: !!API_KEY,
-      keyLen: API_KEY ? API_KEY.length : 0,
       runtime: 'edge',
     }, { headers: corsHeaders(req) });
   }
