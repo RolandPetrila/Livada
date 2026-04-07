@@ -397,6 +397,24 @@ function copyTextEl(id) {
     _fallbackCopy(text);
   }
 }
+function copyText(text) {
+  if (!text || !text.trim()) {
+    showToast("Nimic de copiat.");
+    return;
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard
+      .writeText(text)
+      .then(function () {
+        showToast("\u2705 Copiat \u00een clipboard!");
+      })
+      .catch(function () {
+        _fallbackCopy(text);
+      });
+  } else {
+    _fallbackCopy(text);
+  }
+}
 function _fallbackCopy(text) {
   var ta = document.createElement("textarea");
   ta.value = text;
@@ -2534,7 +2552,7 @@ async function submitAsk() {
       showAiError(data.error);
     } else {
       if (data._fallback)
-        showAiFallback(data._fallbackModel || "llama-3.1-8b-instant");
+        showAiFallback(data._fallbackModel || "llama-3.3-70b-versatile");
       r.innerHTML = sanitizeAI(data.answer || "");
     }
     r.style.display = "block";
@@ -2759,7 +2777,7 @@ async function submitAiGenAsk() {
       showAiError(data.error);
     } else {
       if (data._fallback)
-        showAiFallback(data._fallbackModel || "llama-3.1-8b-instant");
+        showAiFallback(data._fallbackModel || "llama-3.3-70b-versatile");
       r.innerHTML = sanitizeAI(data.answer || "");
     }
     r.style.display = "block";
@@ -3423,7 +3441,7 @@ async function generateReport() {
       showAiError(data.error);
     } else {
       if (data._fallback)
-        showAiFallback(data._fallbackModel || "llama-3.1-8b-instant");
+        showAiFallback(data._fallbackModel || "llama-3.3-70b-versatile");
       result.innerHTML =
         '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">Bazat pe ' +
         data.journalCount +
@@ -4044,16 +4062,7 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-// ====== GLOBAL ERROR HANDLER + TOAST (C4) ======
-function showToast(msg) {
-  var t = document.createElement("div");
-  t.className = "toast";
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(function () {
-    t.remove();
-  }, TOAST_DURATION_MS);
-}
+// ====== GLOBAL ERROR HANDLER (C4) ======
 window.addEventListener("unhandledrejection", function (e) {
   console.error("Unhandled:", e.reason);
   if (e.reason?.name !== "AbortError")
