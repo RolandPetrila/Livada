@@ -5,12 +5,12 @@ export const config = { runtime: "edge" };
 
 const AI_PROMPT = `Esti botanist si agronom expert. Analizeaza fotografia si identifica planta.
 
-Raspunde STRUCTURAT in romana:
+Raspunde DIRECT cu structura de mai jos, fara introducere sau text generic inainte:
 
 **SPECIE IDENTIFICATA:**
-- Denumire stiintifica (italic)
-- Denumire comuna in romana
-- Familia botanica
+- Denumire stiintifica: [nume]
+- Denumire comuna in romana: [nume]
+- Familia botanica: [familie]
 
 **DESCRIERE:**
 - 2-3 propozitii despre caracteristicile vizibile in poza
@@ -25,7 +25,7 @@ Raspunde STRUCTURAT in romana:
 
 Daca nu poti identifica cu certitudine, spune ce grupuri/familii sunt posibile.`;
 
-const IDENTIFY_OPTS = { maxTokens: 1024, temperature: 0.2 };
+const IDENTIFY_OPTS = { maxTokens: 2048, temperature: 0.2 };
 
 // ── Fallback AI chain ─────────────────────────────────────────────────────────
 async function tryAiFallbacks(base64, mimeType, log) {
