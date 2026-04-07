@@ -1,5 +1,6 @@
 import { corsHeaders, handleOptions, checkOrigin, rateLimit } from "./_auth.js";
 import { callGemini, callOpenAIVision, geminiText, openaiText } from "./_ai.js";
+import { fetchWithTimeout } from "./_timeout.js";
 
 export const config = { runtime: "edge" };
 
@@ -184,13 +185,10 @@ export default async function handler(req) {
     await Promise.allSettled([
       // Pl@ntNet — identificare specie specializata
       PLANTNET_KEY
-        ? fetch(
+        ? fetchWithTimeout(
             `https://my-api.plantnet.org/v2/identify/all?api-key=${PLANTNET_KEY}&lang=ro&nb-results=5&include-related-images=false`,
-            {
-              method: "POST",
-              body: formData,
-              signal: AbortSignal.timeout(15000),
-            },
+            { method: "POST", body: formData },
+            18000,
           )
         : Promise.reject(new Error("no plantnet key")),
 
@@ -238,9 +236,18 @@ export default async function handler(req) {
       log("plantnet parse err");
     }
   } else {
-    log(
-      `plantnet skip: ${plantnetSettled.reason?.message || plantnetSettled.value?.status}`,
-    );
+    if (plantnetSettled.status === "rejected") {
+      log(
+        `plantnet err: ${plantnetSettled.reason?.name} — ${plantnetSettled.reason?.message}`,
+      );
+    } else {
+      const status = plantnetSettled.value?.status;
+      let errBody = "";
+      try {
+        errBody = await plantnetSettled.value.text();
+      } catch {}
+      log(`plantnet HTTP ${status}: ${errBody.substring(0, 120)}`);
+    }
   }
 
   // ── Extrage rezultate Gemini ──────────────────────────────────────────────
