@@ -55,7 +55,7 @@ self.addEventListener("fetch", (event) => {
   const url = event.request.url;
 
   // Ignora scheme ne-http(s): chrome-extension://, data:, blob: etc.
-  if (!url.startsWith('http://') && !url.startsWith('https://')) return;
+  if (!url.startsWith("http://") && !url.startsWith("https://")) return;
 
   // Google Fonts — cache-first (nu se schimba, economie de date)
   if (

@@ -243,7 +243,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
         );
       // H7: nu expune status code in raspuns public
       return Response.json(
-        { error: 'AI indisponibil. Incearca din nou.' },
+        { error: "AI indisponibil. Incearca din nou." },
         { status: 503, headers: corsHeaders(req) },
       );
     }
