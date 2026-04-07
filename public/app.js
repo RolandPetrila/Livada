@@ -1791,9 +1791,19 @@ function renderAiStatusPanel(tabName, anchorId, position) {
         "]</span>" +
         "</span>";
     });
+    // Buton refresh status AI (sugestia 3)
+    html += '<button onclick="refreshAiStatus(\'' + tabName + '\',\'' + anchorId + '\',\'' + (position || "beforebegin") + '\')" ' +
+      'title="Reincarca status AI" style="background:none;border:none;cursor:pointer;color:var(--text-dim);' +
+      'font-size:0.8rem;padding:0 4px;margin-left:auto;flex-shrink:0;">&#8635;</button>';
     html += "</div>";
     anchor.insertAdjacentHTML(position || "beforebegin", html);
   });
+}
+
+function refreshAiStatus(tabName, anchorId, position) {
+  _aiStatus = null;
+  _aiStatusTs = 0;
+  renderAiStatusPanel(tabName, anchorId, position);
 }
 
 async function authFetch(url, opts, ms) {

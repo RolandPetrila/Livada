@@ -4,9 +4,10 @@ import { fetchWithTimeout } from "./_timeout.js";
 
 export const config = { runtime: "edge" };
 
-// ── Helper: apel Plant.id v3 (diagnostic specializat boli) ───────────────────
-function callPlantId(apiKey, base64, mimeType, timeoutMs) {
-  return fetchWithTimeout(
+// ── Helper: apel Plant.id v3 → v2 fallback ───────────────────────────────────
+async function callPlantId(apiKey, base64, mimeType, timeoutMs) {
+  // Incearca v3 (specializat boli)
+  const v3Res = await fetchWithTimeout(
     "https://plant.id/api/v3/identification",
     {
       method: "POST",
@@ -17,36 +18,61 @@ function callPlantId(apiKey, base64, mimeType, timeoutMs) {
         similar_images: false,
       }),
     },
-    timeoutMs,
+    Math.min(timeoutMs, 12000),
+  );
+  if (v3Res.ok) return v3Res;
+
+  // Fallback la v2 daca v3 respinge (401/402/400)
+  console.log(`[diagnose] plant.id v3 fail (${v3Res.status}), trying v2`);
+  return fetchWithTimeout(
+    "https://api.plant.id/v2/identify",
+    {
+      method: "POST",
+      headers: { "Api-Key": apiKey, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        images: [`data:${mimeType};base64,${base64}`],
+        plant_details: ["common_names", "url"],
+      }),
+    },
+    Math.min(timeoutMs, 12000),
   );
 }
 
-// ── Formateaza rezultatul Plant.id in romana ──────────────────────────────────
+// ── Formateaza rezultatul Plant.id (v3 sau v2) in romana ─────────────────────
 function formatPlantIdResult(data) {
   try {
-    const result = data.result;
-    if (!result) return null;
-
-    const isPlant = result.is_plant?.binary;
-    if (!isPlant) return null;
-
-    const isHealthy = result.is_healthy?.binary;
-    const healthyProb = Math.round((result.is_healthy?.probability || 0) * 100);
-    const diseases = result.disease?.suggestions || [];
-
-    if (isHealthy && healthyProb >= 70) {
-      return `**[Plant.id] Stare sanatate: SANATOASA** (${healthyProb}% probabilitate sanatoasa)\n`;
+    // Format v3: data.result.disease.suggestions
+    if (data.result) {
+      const result = data.result;
+      const isPlant = result.is_plant?.binary;
+      if (!isPlant) return null;
+      const isHealthy = result.is_healthy?.binary;
+      const healthyProb = Math.round(
+        (result.is_healthy?.probability || 0) * 100,
+      );
+      const diseases = result.disease?.suggestions || [];
+      if (isHealthy && healthyProb >= 70) {
+        return `**[Plant.id] Stare sanatate: SANATOASA** (${healthyProb}% sanatoasa)\n`;
+      }
+      if (!diseases.length) return null;
+      let txt = `**[Plant.id] Boli detectate (diagnostic specializat):**\n`;
+      diseases.slice(0, 3).forEach((d) => {
+        txt += `- **${d.name}** — ${Math.round((d.probability || 0) * 100)}% probabilitate\n`;
+      });
+      txt += "\n---\n";
+      return txt;
     }
 
-    if (!diseases.length) return null;
+    // Format v2: data.suggestions (planta identificata, fara diagnostic boli)
+    if (data.suggestions && data.suggestions.length > 0) {
+      const top = data.suggestions[0];
+      const prob = Math.round((top.probability || 0) * 100);
+      const name = top.plant_name || "necunoscuta";
+      const common = top.plant_details?.common_names?.[0] || "";
+      return `**[Plant.id v2] Planta identificata:** ${name}${common ? " (" + common + ")" : ""} — ${prob}% probabilitate\n\n---\n`;
+    }
 
-    let txt = `**[Plant.id] Boli detectate (diagnostic specializat):**\n`;
-    diseases.slice(0, 3).forEach((d) => {
-      const prob = Math.round((d.probability || 0) * 100);
-      txt += `- **${d.name}** — ${prob}% probabilitate\n`;
-    });
-    txt += "\n---\n";
-    return txt;
+    return null;
   } catch {
     return null;
   }
