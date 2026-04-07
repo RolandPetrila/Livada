@@ -1,11 +1,6 @@
 import { Redis } from "@upstash/redis";
-import {
-  corsHeaders,
-  handleOptions,
-  checkAuth,
-  rateLimit,
-  checkOrigin,
-} from "./_auth.js";
+import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
+import { callCerebras } from "./_ai.js";
 import { fetchWithTimeout } from "./_timeout.js";
 
 export const config = { runtime: "edge" };
@@ -140,28 +135,6 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
         ms,
       );
 
-    function callCerebrasReport(timeoutMs) {
-      const CEREBRAS_KEY = process.env.CEREBRAS_API_KEY;
-      if (!CEREBRAS_KEY) throw new Error("CEREBRAS_API_KEY lipsa");
-      return fetchWithTimeout(
-        "https://api.cerebras.ai/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${CEREBRAS_KEY}`,
-          },
-          body: JSON.stringify({
-            model: "llama-3.3-70b",
-            messages: reportMessages,
-            max_tokens: 2048,
-            temperature: 0.4,
-          }),
-        },
-        timeoutMs,
-      );
-    }
-
     let groqRes = await callGroqReport(
       "meta-llama/llama-4-maverick-17b-128e-instruct",
       23000,
@@ -171,13 +144,13 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
 
     if (!groqRes.ok && (groqRes.status === 429 || groqRes.status >= 500)) {
       console.error("[report] llama-4-maverick failed", groqRes.status);
-      let groqFb2Ok = false;
+      let anyFbOk = false;
 
       // Fallback 1: llama-3.3-70b-versatile
       try {
         groqRes = await callGroqReport("llama-3.3-70b-versatile", 20000);
-        groqFb2Ok = groqRes.ok;
-        if (groqFb2Ok) {
+        anyFbOk = groqRes.ok;
+        if (anyFbOk) {
           usedFallback = true;
           fallbackModel = "llama-3.3-70b-versatile";
         }
@@ -186,11 +159,11 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
       }
 
       // Fallback 2: llama-3.1-8b-instant
-      if (!groqFb2Ok) {
+      if (!anyFbOk) {
         try {
           groqRes = await callGroqReport("llama-3.1-8b-instant", 10000);
-          groqFb2Ok = groqRes.ok;
-          if (groqFb2Ok) {
+          anyFbOk = groqRes.ok;
+          if (anyFbOk) {
             usedFallback = true;
             fallbackModel = "llama-3.1-8b-instant";
           }
@@ -199,11 +172,16 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
         }
       }
 
-      // Fallback 2: Cerebras
-      if (!groqFb2Ok) {
-        console.error("[report] groq fb2 failed — try Cerebras llama-3.3-70b");
+      // Fallback 3: Cerebras
+      if (!anyFbOk) {
+        console.error("[report] groq failed — try Cerebras llama-3.3-70b");
         try {
-          const cerebrasRes = await callCerebrasReport(18000);
+          const cerebrasRes = await callCerebras(
+            reportMessages,
+            18000,
+            2048,
+            0.4,
+          );
           if (cerebrasRes.ok) {
             const result = await cerebrasRes.json();
             const report =

@@ -76,3 +76,31 @@ export const geminiText = (json) =>
   json?.candidates?.[0]?.content?.parts?.[0]?.text || null;
 export const openaiText = (json) =>
   json?.choices?.[0]?.message?.content || null;
+
+// Shared Cerebras caller — folosit de ask.js si report.js
+export function callCerebras(
+  messages,
+  timeoutMs,
+  maxTokens = 8192,
+  temperature = 0.3,
+) {
+  const KEY = process.env.CEREBRAS_API_KEY;
+  if (!KEY) throw new Error("CEREBRAS_API_KEY lipsa");
+  return fetchWithTimeout(
+    "https://api.cerebras.ai/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${KEY}`,
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b",
+        messages,
+        max_tokens: maxTokens,
+        temperature,
+      }),
+    },
+    timeoutMs,
+  );
+}

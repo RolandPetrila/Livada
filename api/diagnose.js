@@ -1,20 +1,14 @@
-import {
-  corsHeaders,
-  handleOptions,
-  checkAuth,
-  rateLimit,
-  checkOrigin,
-} from "./_auth.js";
+import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
 import { callGemini, callOpenAIVision, geminiText, openaiText } from "./_ai.js";
+import { fetchWithTimeout } from "./_timeout.js";
 
 export const config = { runtime: "edge" };
 
 // ── Helper: apel Plant.id v3 (diagnostic specializat boli) ───────────────────
-async function callPlantId(apiKey, base64, mimeType, timeoutMs) {
-  const ctrl = new AbortController();
-  const tid = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch("https://plant.id/api/v3/identification", {
+function callPlantId(apiKey, base64, mimeType, timeoutMs) {
+  return fetchWithTimeout(
+    "https://plant.id/api/v3/identification",
+    {
       method: "POST",
       headers: { "Api-Key": apiKey, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -22,14 +16,9 @@ async function callPlantId(apiKey, base64, mimeType, timeoutMs) {
         health: "all",
         similar_images: false,
       }),
-      signal: ctrl.signal,
-    });
-    clearTimeout(tid);
-    return res;
-  } catch (err) {
-    clearTimeout(tid);
-    throw err;
-  }
+    },
+    timeoutMs,
+  );
 }
 
 // ── Formateaza rezultatul Plant.id in romana ──────────────────────────────────

@@ -1,11 +1,6 @@
-import {
-  corsHeaders,
-  handleOptions,
-  checkAuth,
-  rateLimit,
-  checkOrigin,
-} from "./_auth.js";
+import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
 import { fetchWithTimeout } from "./_timeout.js";
+import { callCerebras } from "./_ai.js";
 
 // Edge Runtime: raspunsul este trimis imediat, fara sa astepte I/O background
 export const config = { runtime: "edge" };
@@ -103,30 +98,10 @@ Specia curenta: ${species || "general (toate speciile)"}`;
     );
   }
 
-  async function callCerebras(timeoutMs) {
-    const CEREBRAS_KEY = process.env.CEREBRAS_API_KEY;
-    if (!CEREBRAS_KEY) throw new Error("CEREBRAS_API_KEY lipsa");
-    return fetchWithTimeout(
-      "https://api.cerebras.ai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${CEREBRAS_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "llama-3.3-70b",
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userMsg },
-          ],
-          max_tokens: 8192,
-          temperature: 0.3,
-        }),
-      },
-      timeoutMs,
-    );
-  }
+  const cerebrasMessages = [
+    { role: "system", content: systemPrompt },
+    { role: "user", content: userMsg },
+  ];
 
   try {
     // Primary: llama-4-maverick (mai capabil, 128k context) — M9: 22s (buffer 6s pana la limita Edge)
@@ -171,7 +146,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
         if (!fb2Ok) {
           console.error("[ask] all groq failed — try Cerebras");
           try {
-            const cerebrasRes = await callCerebras(15000);
+            const cerebrasRes = await callCerebras(cerebrasMessages, 15000);
             if (cerebrasRes.ok) {
               const result = await cerebrasRes.json();
               const answer =
