@@ -149,13 +149,14 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
 
   // ── AI5: Gemini 2.5-pro → flash fallback (pro mai precis la analiza vizuala) ─
   async function callGeminiProWithFallback(key, b64, mime, pr, timeout, opts) {
+    // Pro timeout scurt (10s) — quota/model fail returneaza rapid, economisim timp pt flash
     const proRes = await callGemini(
       key,
       "gemini-2.5-pro-preview-03-25",
       b64,
       mime,
       pr,
-      timeout,
+      Math.min(timeout, 10000),
       opts,
     );
     if (proRes.ok) {

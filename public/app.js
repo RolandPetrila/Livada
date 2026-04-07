@@ -1194,6 +1194,22 @@ function renderCalendar() {
       return true;
     });
     var hasJ = !!jByDay[d];
+    // V7: dot colorat per tip interventie
+    var dotHtml = "";
+    if (hasJ) {
+      var types = jByDay[d].map(function(e) { return e.type; });
+      var dotColor = types.some(function(t) { return t === "tratament" || t === "fitosanitar"; })
+        ? "var(--danger)"
+        : types.some(function(t) { return t === "recoltare"; })
+          ? "var(--accent)"
+          : types.some(function(t) { return t === "fertilizare"; })
+            ? "#3b82f6"
+            : "var(--warning)";
+      var cnt = jByDay[d].length;
+      dotHtml = '<span class="cal-j-dot" style="background:' + dotColor + ';">'
+        + (cnt > 1 ? '<span style="font-size:0.5rem;color:#fff;line-height:1;">' + cnt + '</span>' : '')
+        + '</span>';
+    }
     html +=
       '<div class="cal-day' +
       (isToday ? " today" : "") +
@@ -1202,7 +1218,7 @@ function renderCalendar() {
       (hasJ ? ' onclick="showDayJournal(' + d + ')"' : "") +
       ">" +
       d +
-      (hasJ ? '<span class="cal-j-dot"></span>' : "") +
+      dotHtml +
       "</div>";
   }
   grid.innerHTML = html;
