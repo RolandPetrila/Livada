@@ -1578,37 +1578,30 @@ $("#dismissBtn").addEventListener("click", () => {
 });
 
 // ====== VERSIUNE + SERVICE WORKER ======
-// Versiunea se citeste automat din HTTP Last-Modified — nu mai e hardcodata niciodata
-const APP_BUILD = (function () {
-  try {
-    var d = new Date(document.lastModified);
-    if (isNaN(d.getTime())) return "live";
-    return (
-      d.getFullYear() +
-      "-" +
-      String(d.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(d.getDate()).padStart(2, "0") +
-      " " +
-      String(d.getHours()).padStart(2, "0") +
-      ":" +
-      String(d.getMinutes()).padStart(2, "0")
-    );
-  } catch (e) {
-    return "live";
-  }
-})();
+// DEPLOY_DATE: actualizat automat la fiecare push (data hardcodata = fiabila pe orice CDN)
+const DEPLOY_DATE = "2026-04-08";
+const DEPLOY_INFO = "Glosar 114 termeni + sectiuni I-Y 20 specii";
+
+const APP_BUILD = DEPLOY_DATE;
 
 (function () {
   var el = document.getElementById("appVersionBadge");
-  if (el) el.textContent = "v" + APP_BUILD.split(" ")[0];
+  if (el) {
+    el.textContent = "actualizat " + DEPLOY_DATE;
+    el.title = "Ultima actualizare: " + DEPLOY_DATE + " — " + DEPLOY_INFO;
+  }
 })();
 
 function showAppInfo() {
   alert(
-    "Livada Mea Dashboard\nVersiune: " +
-      APP_BUILD +
-      "\n\nDeploy: Vercel (livada-mea-psi.vercel.app)\nAI: Groq llama-3.3-70b + Gemini 2.5-flash\nMeteo: Open-Meteo",
+    "🌿 Livada Mea Dashboard\n" +
+    "━━━━━━━━━━━━━━━━━━━━━━\n" +
+    "Ultima actualizare: " + DEPLOY_DATE + "\n" +
+    "Ce s-a adaugat: " + DEPLOY_INFO + "\n\n" +
+    "Deploy: Vercel (livada-mea-psi.vercel.app)\n" +
+    "AI: Groq llama-4-maverick + Gemini 2.5-flash\n" +
+    "Meteo: Open-Meteo\n" +
+    "Documentatie: 20 specii × 25 sectiuni (A-Y)"
   );
 }
 
