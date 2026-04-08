@@ -1097,8 +1097,13 @@ nu dupa. Zmeurul galben nevalorificat in 24h devine pierdere totala.
 
 ### Instructiune
 
-1. **Citeste glosarul existent** `c:\Proiecte\Livada\content\Gemini_Research\Gemini_Glosar_Pomicol_Z.md`
-   Retine toti termenii deja definiti — NU ii duplica.
+1. **Citeste si curata glosarul existent** `c:\Proiecte\Livada\content\Gemini_Research\Gemini_Glosar_Pomicol_Z.md`
+
+   Inainte de a adauga orice termen nou, fa urmatoarele verificari pe continutul EXISTENT:
+   - **Elimina duplicate interne:** daca acelasi termen apare de doua ori (cu variante de scriere sau in categorii diferite), pastreaza o singura definitie — cea mai completa
+   - **Standardizeaza formatul:** fiecare termen trebuie sa fie pe forma `**Termen** — definitie`. Daca exista termeni cu alt format, uniformizeaza
+   - **Nu modifica definitiile corecte** — doar elimina duplicate si uniformizeaza formatul
+   - Dupa curatare, retine lista completa de termeni existenti — NU ii duplica la pasul 4
 
 2. **Citeste sectiunile A-H** din urmatoarele 20 fisiere (doar A-H, nu I-Y):
    - `c:\Proiecte\Livada\content\Afin.md`
