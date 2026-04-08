@@ -38,7 +38,50 @@ Legenda: ✅ Complet | ⚠️ Partial/Vechi | ❌ Lipsa
 **Rezumat gaps:**
 
 - ~~**H lipsa la 6 specii:** Alun, Cais, Cires, Migdal, Piersic, Visin~~ ✅ **COMPLETAT 2026-04-08**
-- **I-M lipsa la TOATE cele 20 specii** — nicio specie nu are sectiunile Nadlac-specifice
+- ~~**I-M lipsa la TOATE cele 20 specii**~~ ⚠️ **Gemini Faza 1 livrat 2026-04-08 — necesita refinement Faza 2**
+
+---
+
+## 1b. AUDIT CALITATE GEMINI FAZA 1 — 2026-04-08
+
+**Scor general: 6.5/10** | **Verdict: NU se integreaza as-is — necesita refinement pe 7 probleme**
+
+### Sectiuni excelente (se pot integra direct):
+
+| Sectiune                                             | Specii                                            | Motivatie                                                  |
+| ---------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------- |
+| I (Irigare)                                          | Cires, Cais, Piersic, Visin, Par toate, Mar toate | Tabele detaliate, semne vizuale concrete, Nadlac-specific  |
+| J (Polenizare)                                       | Cires, Alun                                       | Gold standard — tabel complet, distante, soiuri universale |
+| K (Recoltare)                                        | Rodiu (testul sunetului), Cires                   | Informatii practice unice, verificabile                    |
+| N-R (Inmultire, Sol, Clima, Combinatii, Echipamente) | Toate                                             | Structura buna, fara probleme majore                       |
+| S (Procesare)                                        | Cais, Prun, Cires                                 | Cantitati reale, retete concrete                           |
+| X (Istorie, marketing)                               | Kaki                                              | Pozitionare "kaki de boutique" — valoare comerciala reala  |
+| Y (Resurse, furnizori)                               | Toate                                             | Marcate [DE CAUTAT LOCAL] unde e incert                    |
+
+### Probleme identificate (necesita refinement Gemini Faza 2):
+
+| #   | Problema                                                                                         | Fisiere afectate                        | Impact |
+| --- | ------------------------------------------------------------------------------------------------ | --------------------------------------- | ------ |
+| 1   | **Prun_IZ.md LIPSESTE** — raportul il marcheaza ✅ dar fisierul nu exista                        | Gemini_Prun_IZ.md                       | CRITIC |
+| 2   | **Afin I**: acidulare apa fara cost/viabilitate — pH Nadlac 7-7.5 = acidulare obligatorie zilnic | Gemini_Afin_IZ.md                       | HIGH   |
+| 3   | **Sectiunea T clonata** — identica la toate speciile, fara note specifice per specie             | Toate \_IZ.md                           | MEDIUM |
+| 4   | **Par Clapp J**: confuzie incompatibilitate ALTOIRE vs POLENIZARE                                | Gemini_Par_Clapp_IZ.md                  | HIGH   |
+| 5   | **Sectiunea M**: nu cross-valideaza fenologia intre specii                                       | Toate \_IZ.md                           | MEDIUM |
+| 6   | **Zmeur Galben K**: perisabilitate extrema nedocumentata = risc pierdere totala recolta          | Gemini_Zmeur_Galben_Remontant_IZ.md     | HIGH   |
+| 7   | **Migdal + Rodiu L**: preturi complet lips                                                       | Gemini_Migdal_IZ.md, Gemini_Rodiu_IZ.md | MEDIUM |
+
+### Actiune urmatoare:
+
+Trimite catre Gemini CLI cerinta de refinement din:
+`c:\Proiecte\Livada\content\Gemini_Research\Cerinta_Gemini_Research.md` — Sectiunea **FAZA 2 — CERINTA REFINEMENT**
+
+Comanda de trimis Gemini:
+
+```
+Please read the section "FAZA 2 — CERINTA REFINEMENT" from:
+c:\Proiecte\Livada\content\Gemini_Research\Cerinta_Gemini_Research.md
+and execute all 7 problems listed there. Modify only the specified files and sections.
+```
 
 ---
 

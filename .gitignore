@@ -29,8 +29,9 @@ livada-backup-*.json
 .claude-outputs/
 .playwright-mcp/
 
-# Gemini Research — DRAFT files (nu sunt documentatie finala)
-content/Gemini_Research/
+# Gemini Research — DRAFT files (nu sunt documentatie finala, fisiere mari)
+content/Gemini_Research/Gemini_*_IZ.md
+content/Gemini_Research/Gemini_*_IM.md
 
 # Exceptii — iconite PWA raman tracked
 !public/icon-192.png
