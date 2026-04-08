@@ -527,4 +527,523 @@ Indicator: coaja galbena-portocalie uniform, fruct cedeaza la apasare usoara, ar
 ---
 
 _Ghid realizat pentru conditiile climatice specifice zonei Nadlac/Arad, Romania._
+
+---
+
+## I. IRIGARE SI NECESAR DE APA — SPECIFIC NADLAC
+
+**Clasificare generala a speciei la seceta:** MODERATA.
+Caisul, avand radacini adanci (1.5-2m) si provenind din zone mai uscate, are o rezistenta naturala relativ buna la seceta. Totusi, pentru productii comerciale si marimea fructului pe un sol precum cernoziomul plat din Nadlac, irigarea devine necesara in perioadele cheie de vara, in special datorita evapotranspiratiei ridicate din Campia de Vest.
+
+**Tabel necesar de apa:**
+
+| Perioada   | Fenofaza                                    | Frecventa udare                           | Litri/pom/udare | Importanta              |
+| ---------- | ------------------------------------------- | ----------------------------------------- | --------------- | ----------------------- |
+| Martie     | Umflarea mugurilor/Pre-inflorire            | 0 (doar daca lipsesc precipitatiile)      | 0-15 L          | MICA                    |
+| Aprilie    | Inflorire si legare fruct                   | 1/saptamana (daca e seceta)               | 15-20 L         | MEDIE                   |
+| Mai        | Cresterea intensiva a lastarilor            | 1/saptamana                               | 20-30 L         | MEDIE                   |
+| Iunie      | Intarirea samburelui si cresterea fructului | 1-2/saptamana                             | 30-40 L         | **CRITICA**             |
+| 1-15 Iulie | Maturarea fructelor                         | 0 (Oprita cu 2 sapt inainte de recoltare) | 0 L             | **CRITICA (NU SE UDA)** |
+| August     | Post-recoltare / Diferentiere muguri de rod | 1/saptamana                               | 20-30 L         | MEDIE                   |
+| Sept - Oct | Intrare in repaus                           | 0 (doar la seceta extrema)                | 0 L             | MICA                    |
+
+**Perioade critice detaliate:**
+
+1. **Iunie (Cresterea rapida a fructelor):** O seceta prelungita acum va duce la caderea prematura a fructelor si la obtinerea unor caise foarte mici, uscate si de slaba calitate comerciala.
+2. **Pre-recoltare (Iulie):** Este **critic sa NU irigi** cu 2 saptamani inainte de recoltare. Excesul de apa acum face caisele apoase, fara gust, susceptibile la crapare si la atacul moniliozei in timpul depozitarii.
+
+**Metoda recomandata la Nadlac:**
+
+- **Irigarea prin picurare** este optima. Se asigura un control precis al volumului de apa direct la radacina (evitand evaporarea rapida favorizata de vantul din vest).
+- **Nu se recomanda aspersiunea:** Uda frunzisul si fructele in timpul verilor calde de la Nadlac, creand mediul perfect pentru bolile fungice (ex: Monilioza, Ciuruire).
+- Datorita terenului plat si a cernoziomului cu drenaj bun din Nadlac, baltoacele nu reprezinta un risc iminent la picurare, atat timp cat debitul e corect ajustat.
+
+**Semne vizuale de stres hidric:**
+
+- **Sete:** Frunzele isi pierd luciul, devin mate si se pliaza in sus pe axa mediana ("se strang in forma de V"). Fructele se stafidesc, iar cresterea lastarilor se opreste prematur.
+- **Exces de apa:** Frunze galbene care cad prematur (cloroza), cresteri vegetative explozive, supararea asfixierii radiculare manifestata deseori prin scurgeri de clei (gomoza) masive la baza trunchiului.
+
+---
+
+## J. POLENIZARE SI SOIURI COMPATIBILE
+
+**Statut autofertilitate:** PARTIAL AUTOFERTILA (majoritatea soiurilor) sau AUTOFERTILA (anumite soiuri noi/specifice).
+Desi multe soiuri traditionale produc o oarecare cantitate de fructe fiind plantate izolat (circa 20-30% dintr-o productie normala), polenizarea incrucisata sporeste masiv randamentul, calitatea si calibrarea fructelor.
+
+**Tabel soiuri si polenizatori:**
+
+| Soi din livada Roland | Compatibil cu                               | Inflorire | Disponibil Romania? |
+| --------------------- | ------------------------------------------- | --------- | ------------------- |
+| Bergeron              | Harcot, Hargrand, Dacia                     | Tarzie    | DA                  |
+| Hargrand (Autofertil) | Nu necesita obligatoriu, dar ajuta Bergeron | Tarzie    | DA                  |
+| Harcot                | Bergeron, Olimp, Sulmona                    | Tarzie    | DA                  |
+
+_Sfat: Caisul infloreste inaintea majoritatii pomilor, deci nici marul, nici parul, nici prunul din livada Roland nu il vor poleniza. Are nevoie de un alt soi de cais._
+
+**Grupe de incompatibilitate:**
+La cais nu sunt documentate incompatibilitati genetice majore intre soiuri (precum la cires), conditia singura si esentiala fiind **suprapunerea perioadei de inflorire**.
+
+**Distanta maxima eficienta de polenizare:** Maxim 20-25 metri (ideal plantati alaturat in acelasi rand sau randuri vecine).
+
+**Perioada de inflorire la Nadlac (88m, Campia de Vest):**
+Infloresc extrem de devreme, de obicei intre 20 martie si 10 aprilie, adesea cu 1-2 saptamani inaintea zonelor colinare. Din cauza riscului de inghet, soiurile tarzii (Bergeron, Harcot, Hargrand) se pot suprapune perfect pentru polenizare la sfarsit de martie/inceput de aprilie in Nadlac.
+
+**Polenizatori naturali in zona:**
+Albinele melifere si bondarii (care zboara si la temperaturi ceva mai scazute de primavara, de pe la 8-10°C). Vantul are un rol neglijabil la cais.
+
+**Sfat practic pentru "am un singur pom":**
+
+1. Alta specie de pom _nu_ te ajuta. Altoieste o ramura a pomului existent cu un alt soi compatibil (altoire in ochi dormind vara sau in despicatura primavara).
+2. Cumpara polen de la alte livezi si foloseste metoda polenizarii manuale cu o pensula, desi la 100 de pomi aceasta varianta pica — ideal este sa mai plantezi un pom.
+
+---
+
+## K. RECOLTARE, CONDITIONARE SI DEPOZITARE
+
+**Indicatori de maturitate COMERCIALA:**
+
+- **Culoare:** Galben-portocaliu pe toata suprafata, fara portiuni verzi langa codita. (Culoarea de fond conteaza, nu "roseata" data de soare).
+- **Fermitate:** Cedeaza usor (elastic) la o apasare blanda cu degetul mare; nu mai este pietroasa, dar nici nu lasa urma adanca.
+- **Desprindere:** Prin rotirea usoara a fructului, codita trebuie sa se desprinda usor de pe ramura, fara a rupe scoarta.
+- **Aroma:** Emite parfumul specific; fructele necoapte nu miros a nimic.
+
+**Tabel destinatii recoltare:**
+
+| Destinatie                  | Maturitate la recoltare   | Observatii                                                       |
+| --------------------------- | ------------------------- | ---------------------------------------------------------------- |
+| Consum imediat              | 100% (Maturitate deplina) | Fructul e moale, zemos, maxim de dulce.                          |
+| Piata locala (2-3 zile)     | 85-90%                    | Ferma, dar cu culoarea de fond complet schimbata.                |
+| Depozitare 1-2 saptamani    | 75-80% (Parga avansata)   | Incepe sa-si schimbe culoarea din verde galbui in galben.        |
+| Procesare (dulceata, tuica) | 100%                      | Se pot folosi si cele prea moi, esential e sa nu aiba monilioza. |
+
+**Tehnica de recoltare:**
+Recoltarea trebuie facuta manual, intotdeauna in primele ore ale diminetii, inainte ca fructele sa acumuleze caldura de la soare. Se apuca fructul in palma (nu doar cu varful degetelor, pt a nu il strivi) si se rasuceste fin. Nu trageti tare. Pentru piata, recolteaza in ladite de maxim 5-6 kg, punand in maxim 2 straturi pentru a nu fi strivite de greutate.
+
+**Depozitare (durate REALISTE):**
+Caisul este un fruct perisabil, profund climateric.
+
+| Conditii            | Temperatura | Durata realista | Note                                                |
+| ------------------- | ----------- | --------------- | --------------------------------------------------- |
+| Temperatura camerei | 20°C        | 2 - 4 zile      | Coacere rapida daca e luat in parga.                |
+| Pivnita (Nadlac)    | 10-15°C     | 5 - 7 zile      | Doar fructe intacte, neatinse de boli.              |
+| Frigider comercial  | 2-4°C       | 1.5 - 2 sapt.   | Isi pierd aroma rapid; pot capata textura fainoasa. |
+| Congelator          | -18°C       | 8 - 10 luni     | Spalate, uscate, taiate jumatati, fara samburi.     |
+
+**Transport:** Suporta 30-40 km pana in Arad? **Da**, dar DOAR daca au fost recoltate in stadiul de maturitate comerciala (ferme), si asezate in ladite mici (carton sau lemn) perforate. Un drum Nadlac-Arad (~50km) este perfect fezabil daca e facut dimineata devreme.
+
+**Conditionare pentru piata:**
+Nu le spala (spalarea indeparteaza stratul natural de pruina si favorizeaza mucegaiul). Doar sterge sau indeparteaza fructele cu defecte. Ambalaje ideale: caserole de 1kg sau ladite din lemn cu un singur strat de fructe.
+
+**Semne de deteriorare:** Zdrobiturile, "pete de apa" (translucide sub coaja), puf cenusiu (monilioza). Fructele foarte moi, dar inca sanatoase, se trimit exclusiv la dulceata/tuica.
+
+---
+
+## L. RENTABILITATE SI PIATA LOCALA NADLAC
+
+**Preturi orientative piata Arad/Romania 2024-2025:**
+
+| Forma                     | Pret orientativ | Unitate      | Sursa                                    |
+| ------------------------- | --------------- | ------------ | ---------------------------------------- |
+| Proaspat (piata, targuri) | 12 - 20 lei     | /kg          | [ESTIMAT] Piata locala                   |
+| Proaspat (angro)          | 6 - 8 lei       | /kg          | [ESTIMAT]                                |
+| Dulceata artizanala       | 25 - 35 lei     | /borcan 400g | [CERT] Piete volante, online             |
+| Palinca/Tuica Cais        | 80 - 120 lei    | /litru       | [ESTIMAT] Baza pe productia locala Banat |
+| Caise uscate              | 50 - 70 lei     | /kg          | [CERT] Magazine naturiste                |
+
+**Productivitate realista per pom:**
+_Nota: caisul in vestul tarii are ani buni alternati cu ani de rod slab din cauza ingheturilor._
+
+- Pom tanar 3-5 ani: 5 - 15 kg
+- Pom adult 6-10 ani: 30 - 40 kg
+- Pom matur 10+ ani: 40 - 60 kg (in conditii bune)
+
+**Analiza valorificare:**
+Vanzarea de fruct proaspat este extrem de profitabila, dar perisabilitatea face riscul mare. **Dulceata si in special Tuica de Cais** (sau distilatul fin) au cea mai mare valoare adaugata pe piata romaneasca / transfrontaliera, si au avantajul unei depozitari nelimitate. Transformand 10 kg de caise moi in cateva borcane de dulceata artizanala, veniturile trec de 150-200 de lei net.
+
+**Pozitionare piata locala Nadlac/Arad:**
+
+- **Cerere:** MARE. Caisele bune si autohtone sunt extrem de cerute in presezon / sezon.
+- **Concurenta:** MEDIE. Multe livezi comerciale din zona s-au reorientat, deci e loc pe piata locala.
+- **Cerere transfrontaliera Ungaria:** DA. Atat fructul curat, cat si palinca de caise (Barackpálinka in maghiara) au cautare masiva peste granita la Nadlac/Makó, deseori la preturi premium (in forinti/euro).
+
+**Cost orientativ tratamente anuale:** 30 - 45 lei/pom/an (deoarece necesita tratamente atente pt Monilioza + mastic, uleiuri, fungicid din cupru).
+
+**Recomandare strategica:** Merita extins? **DOAR CU CONDITIA implementarii unui sistem anti-inghet** primavara (aspersie, incalzitoare). Fara protectie anti-inghet, in zona Nadlac recolta poate fi compromisa 1 an din 3.
+
+---
+
+## M. FENOLOGIE CALIBRATA NADLAC
+
+_Nota: Caisul in zona de campie la 88m altitudine va avea un avans de fenofaza fata de restul tarii. Datele sunt bazate pe incalzirile recente din Campia de Vest._
+
+**Tabel fenologic calibrat pentru Nadlac:**
+
+| Fenofaza              | Data medie Nadlac | Variatie normala | Fata de media nationala    |
+| --------------------- | ----------------- | ---------------- | -------------------------- |
+| Umflarea mugurilor    | 1 - 10 Martie     | ± 10 zile        | cu ~10-14 zile mai devreme |
+| Inflorire inceput     | 20 - 25 Martie    | ± 7 zile         | cu ~10 zile mai devreme    |
+| Inflorire deplina     | 25 Mar - 5 Apr    | ± 7 zile         |                            |
+| Sfarsit inflorire     | 5 - 10 Aprilie    | ± 5 zile         |                            |
+| Legarea fructului     | 15 - 20 Aprilie   | ± 5 zile         |                            |
+| Crestere activa fruct | 1 Mai - 15 Iunie  |                  |                            |
+| Incepere coacere      | 20 Iunie          | ± 7 zile         |                            |
+| Maturitate comerciala | 5 Iul - 25 Iul    | ± 7 zile         | (Variaza masiv pe soi)     |
+| Recoltare (interval)  | 5 Iul — 30 Iul    |                  |                            |
+| Cadere frunze         | 25 Oct - 10 Nov   | ± 10 zile        |                            |
+
+**Risc inghet primavara la Nadlac:**
+
+- Probabilitate estimata de inghet dupa inflorire: **MARE (aproximativ 35% din ani).**
+- Temperatura critica pentru floarea deschisa: **-2.0°C**. Pentru fructul abia legat: **-1.0°C**.
+- Ultimul inghet de primavara mediu la Nadlac/Arad (sursa climatica) cade adesea in intervalul 10-15 Aprilie, exact in plina inflorire sau legare a caisului.
+
+**Implicatii pentru tratamente:**
+Tratamentele de primavara timpurie (Zeama bordelez, ulei horticol) trebuie aplicate la Nadlac inca de la jumatatea lunii Februarie sau final de Februarie, cu mult inaintea calendarelor obisnuite.
+
+**Termometru biologic (indicatori locali):**
+Cand infloreste corcodusul (zarzarul) salbatic pe marginea drumurilor in campie, caisul va urma in 3-5 zile.
+Inflorirea papadiei (sau zambilelor din gradina) marcheaza adesea stadiul de buton floral la cais.
+
+**Ajustare pentru ani atipici:**
+Daca in Februarie sunt constant >12°C, pregateste sistemele de protectie de inghet pentru Martie, pentru ca dezmugurirea e iminenta. Nu exista masuri chimice sa intarzie cu adevarat inflorirea.
+
+### Pozitia in fenologia livadei Roland — Nadlac
+
+| Luna                           | Specii in inflorire SIMULTAN la Nadlac    |
+| ------------------------------ | ----------------------------------------- |
+| Februarie                      | Migdal                                    |
+| Martie (1-15) ← ACEASTA SPECIE | Cais, Piersic timpuriu                    |
+| Martie (15-31)                 | Cires, Visin, Par (toate soiurile)        |
+| Aprilie (1-15)                 | Mar (toate soiurile), Prun, Alun (catini) |
+| Aprilie (15-30)                | Zmeur (incepere)                          |
+| Mai-Iunie                      | Mur, Zmeur (continuare), Kaki             |
+| Iulie-August                   | Zmeur Galben Remontant (a 2-a inflorire)  |
+
+Note: Speciile care infloresc simultan pot actiona ca polenizatori incrucisati (daca sunt compatibile genetic).
+
+---
+
+## N. INMULTIRE SI PROPAGARE
+
+**Tabel metode de inmultire:**
+
+| Metoda                  | Dificultate | Rata succes     | Cel mai bun moment         | Echipament necesar             |
+| ----------------------- | ----------- | --------------- | -------------------------- | ------------------------------ |
+| Altoire in ochi dormind | Medie       | 75-85%          | August - inceput Sept.     | Briceag altoit, banda elastica |
+| Altoire in despicatura  | Medie       | 80%             | Primavara devreme (Martie) | Briceag, mastic, banda         |
+| Seminte (franc)         | Mica        | 90% (germinare) | Toamna tarziu              | Nimic special (Nerecomandat)   |
+| Butasi lignificati      | Mare        | <10%            | —                          | Nerecomandat la cais           |
+
+**Metoda RECOMANDATA pentru Roland:**
+**Altoirea in T (in ochi dormind)** pe portaltoi de zarzar (Prunus cerasifera).
+Pasi:
+
+1. Vara tarziu (August), taie un lastar viguros din pomul dorit (ex: Bergeron). Rupe frunzele lasand doar coditele.
+2. Pe zarzar (portaltoi crescut in camp, 1-2 ani), fa o incizie sub forma de "T" in scoarta la 10-15cm de la sol.
+3. Scoate un "ochi" (mugure) impreuna cu o bucata mica de lemn de pe altoi.
+4. Introduce ochiul sub scoarta in forma de T a portaltoiului.
+5. Leaga strans cu banda de altoire, lasand mugurele liber. In primavara urmatoare se va taia ramura portaltoiului deasupra mugurelui prins.
+   _Greseala frecventa:_ Nu se face contact strans intre cambiumul (stratul verde) mugurelui si portaltoi.
+
+**Portaltoi compatibili in Romania:**
+
+- **Zarzarul (corcodusul):** Cel mai bun pentru cernoziomul si conditiile din Nadlac (rezista bine la calcar si seceta).
+- **Franc de cais:** Ofera pomi vigurosi, dar pot fi predispusi la asfixie radiculara si atac de viermi la radacina.
+- **Mirobolan:** Bun pentru soluri mai compacte, dar tinde sa drajoneze (scoate pui de la radacina).
+
+**Durata pana la prima productie:**
+Pomi cumparati (altoiti din pepiniera): anul 3-4 de la plantare.
+Inmultiti de la samanta: dureaza 5-7 ani si nu reproduce calitatile pomului parinte (nerecomandat).
+
+**Soiuri protejate (PVP):**
+Soiuri mai vechi ca Harcot, Hargrand, Dacia, Sulmona sau Bergeron sunt libere de drepturi. Soiurile noi dezvoltate recent de statii de cercetare sau soiurile tip Carmingo (ex: Faralia, Farbela, etc) care se vand foarte scump au drepturi PVP si inmultirea in regie proprie, chiar si pt uz intern, este adesea o incalcare a licentei.
+
+---
+
+## O. MANAGEMENTUL SOLULUI SI ERBICIDARE
+
+**Cernoziomul Nadlac si aceasta specie:**
+Cernoziomul din Nadlac are un pH tipic intre 7.0 - 7.5 (neutru spre slab bazic). Caisul tolereaza foarte bine acest pH. Ceea ce este periculos este compactarea solului datorita utilajelor, deci pamantul trebuie sa ramana afanat.
+
+**Gestionarea ierbii si buruienilor:**
+
+| Metoda                   | Aplicabilitate  | Pro                                                    | Contra                                                                                  |
+| ------------------------ | --------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| Cosit mecanic (interval) | Excelenta       | Mentine biodiversitatea, pastreaza umezeala iarna.     | Necesita timp vara. Concurenta la apa.                                                  |
+| Erbicide selective       | Buna pe rand    | Curata perfect zona radiculara.                        | Risc de drift (vantul din campie poate duce erbicidul pe trunchi). Risc fitotoxicitate. |
+| Mulci organic (pe rand)  | Excelenta       | Pastreaza apa in vara, suprima buruieni, aporta humus. | Poate atrage rozatoare iarna la baza trunchiului.                                       |
+| Cultivare mecanica       | Pe rand, atenta | Sparge crusta de la suprafata.                         | Taierea radacinilor superficiale ale caisului.                                          |
+
+**Cover crops recomandate intre randuri:**
+Trifoi alb pitic sau amestec de festuca cu secara. Trifoiul fixeaza azotul si suporta seceta din zona Nadlac mai bine, fara a intra in concurenta severa cu pomul adult. Evita iarba de gazon agresiva.
+
+**Mulcire:**
+Este extrem de benefica vara. Aplica un strat de paie sau resturi vegetale tocate (10-15 cm grosime) intr-o raza de 1 m in jurul trunchiului.
+**ATENTIE:** Mulciul nu trebuie sa atinga niciodata trunchiul pomului! Lasa un cerc de 10-15 cm pamant curat in jurul scoartei. Daca mulciul sta pe trunchi, atrage umezeala constanta -> putrezeste scoarta -> gomoza -> moartea pomului. Primavara trage mulciul, pentru ca solul curat si incalzit de soare degaja caldura noaptea si limiteaza pagubele la inghet!
+
+**Fertilizarea solului pe termen lung:**
+Cernoziomul e fertil. La 3-4 ani, aplica toamna 15-20 kg gunoi de grajd maturat per pom, incorporat usor. Analizele de sol se fac la 4-5 ani la Oficiul Judetean de Studii Pedologice si Agrochimice (OJSPA) Arad.
+
+**Semne vizuale de sol obosit/tasat:** Lastari cu crestere extrem de mica (sub 15 cm pe an), ingalbenire rapida a frunzelor de jos, productie slaba fara cauze de boli.
+
+---
+
+## P. ADAPTARE LA SCHIMBARI CLIMATICE
+
+**Tendinte climatice pentru Campia de Vest:**
+Datele ANPM si IPCC confirma pentru zona de campie din Arad: veri din ce in ce mai lungi, cu temperaturi de peste 35°C constante, ierni tot mai blande dar cu valuri bruste de aer polar la inceput de primavara (cand seva a pornit deja), si ploi mai rare dar torentiale (ceea ce nu permite apei sa se infiltreze).
+
+**Impact specific pe aceasta specie la Nadlac:**
+
+| Schimbare climatica       | Impact concret                                                                                       | Gravitate | Orizont       |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- | --------- | ------------- |
+| Primaveri mai timpurii    | Inflorire a caisului la inceput de martie, direct in valul de ger polar intarziat -> productie ZERO. | **MARE**  | Prezent/5 ani |
+| Ierni mai calde           | Lipsa de ore de frig (chilling hours), ducand la inflorire slaba si asimetrica.                      | Mic       | 10-15 ani     |
+| Veri secetoase extrem     | Deficit de apa sever care opreste cresterea fructului si forteaza caderea frunzelor din august.      | Mediu     | 5 ani         |
+| Furtuni/Grindina violente | Ramuri rupte si rani deschise perfecte pentru Gomoza si Cytospora.                                   | Mediu     | Prezent       |
+
+**Oportunitati:**
+Cultivarea unor soiuri extrem de tardive de cais va deveni si mai fezabila, intrucat verile calde ofera suficient timp pentru maturare, evitand in schimb perioadele de tranzitie din martie.
+
+**Adaptari recomandate ACUM:**
+
+1. Achizitia unui sistem activ de anti-inghet primavara (parafocuri, sau instalatii de aspersie peste coronament) va deveni OBLIGATORIE pentru supravietuirea economica a speciei in vestul tarii.
+2. Irigare inteligenta (picurare cu debit mic pentru infiltrare adanca, nu la suprafata).
+
+**Resurse monitorizare:**
+ANM Romania (meteoromania.ro) sectiunea prognoza agrometeorologica (are harti exacte cu rezerva de umiditate in sol pe judetul Arad).
+
+---
+
+## Q. COMBINATII, ASOCIERI SI LAYOUT IN LIVADA
+
+**Specii BENEFICE in vecinatate:**
+
+| Specie vecina    | Beneficiu concret                                                                    | Distanta recomandata |
+| ---------------- | ------------------------------------------------------------------------------------ | -------------------- |
+| Alti Caisi       | Polenizarea este vitala, polenul calatoreste cel mai bine intre ei.                  | 4 - 5 metri          |
+| Piersic / Migdal | Cerinte similare de clima, seceta, planuri de stropire si udare destul de apropiate. | 4 - 5 metri          |
+
+**Specii DE EVITAT:**
+
+| Specie vecina             | Problema concreta                                                                                                     | Distanta minima                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Prunul                    | Poate fi purtator asimptomatic al virusului Plum Pox (Vărsatul prunului) - extrem de letal la cais ("Sharka").        | Peste 15 metri (evita contactul) |
+| Rosii / Cartofi / Capsuni | Aceste solanacee din baza pot adaposti _Verticillium_, ciuperca la care caisul este sensibil (Ofilirea verticiliana). | Nu le planta dedesubt!           |
+
+**Plante de insotire benefice la baza:**
+Galbenele, Facelia, Limba mielului — atrag albinele primavara masiv, crescand sansele de polenizare. Usturoi sau ceapa in vecinatate (proprietati fungicide usoare).
+
+**Pozitionare optima la Nadlac:**
+Orientarea pe rand **Nord-Sud** pe terenul plat. Astfel soarele lumineaza pomul dimineata pe est si dupa-amiaza pe vest, asigurand o maturare uniforma a fructelor pe intreg coronamentul.
+Perdeaua de protectie (ex: tuia, plopi, aluni) ar trebui pusa la Vest / Nord-Vest pentru a bloca vanturile dominante reci care grabesc evaporarea si rup ramurile pline de fructe.
+
+**Compatibilitate sisteme mixte:**
+Gainile sunt excelente. Acestea mananca larvele din sol (cum e viermele fructelor care a cazut), racaie solul, fertilizeaza constant fara a deranja radacinile adanci de cais.
+Atentie: in caz de tratamente cu insecticide si acaricide specifice (Mavrik, Coragen), gainile trebuie inchise 24-48 de ore din zona tratata!
+
+---
+
+## R. ECHIPAMENTE SI UNELTE
+
+**Toolkit minim obligatoriu:**
+
+| Unealta                        | Utilizare                                                  | Cost orientativ | Prioritate      |
+| ------------------------------ | ---------------------------------------------------------- | --------------- | --------------- |
+| Foarfeca de mana bypass        | Tunderi ramuri pana la 2 cm                                | 100 - 200 lei   | **OBLIGATORIU** |
+| Fierastrau mic curbat          | Pentru ramuri groase                                       | 80 - 150 lei    | **OBLIGATORIU** |
+| Atomizor cu motor (spate)      | Stropirea tratamentelor la 100+ pomi                       | 500 - 1200 lei  | **OBLIGATORIU** |
+| Mastic de altoit / cicatrizant | Ungerea fiecarei taieturi la cais (>2cm) pt a evita gomoza | 30 lei          | **OBLIGATORIU** |
+| Scarita / Platforma            | Pentru tunderi si recoltare la vas amel.                   | 250 - 400 lei   | UTIL            |
+
+**Echipament SPECIFIC acestei specii:**
+Materialul anti-inghet. Fie un stoc solid de **parafocuri (lumanari horticole anti-inghet)** care costa aproximativ 50 lei/buc, fie agrotextil in cantitati mari (P30 / 30g/mp). Fara acestea, la cais poti avea toate celelalte unelte si sa nu ai ce culege.
+**Alcool medicinal / Clorhexidina:** Pentru dezinfectarea lamei de la foarfeca obligatoriu cand treci de la un pom la altul, pt a nu transmite Cytospora sau monilioza.
+
+**Scalare la 100+ pomi:**
+Stropirile la vermorel manual sunt epuizante la o asemenea scara. Un atomizor purtat pe spate (ex: tip Stihl, Ruris sau chiar variante mai ieftine pe benzina) este indispensabil pentru a face stropirile rapid in "fereastra de tratament" (inainte de o ploaie, sau dupa ea).
+
+---
+
+## S. PROCESARE DETALIATA SI RETETE
+
+**Tabel produse posibile:**
+
+| Produs                      | Dificultate | Echipament           | Valoare adaugata | Recomandat?      |
+| --------------------------- | ----------- | -------------------- | ---------------- | ---------------- |
+| Dulceata de caise           | Mica        | Oala mare, aragaz    | Mare             | **DA**           |
+| Tuica (Distilat de caise)   | Medie/Mare  | Cazane de cupru      | F. Mare          | **DA** (Premium) |
+| Caise uscate / Deshidratate | Mica        | Deshidrator electric | Medie/Mare       | DA               |
+| Compot                      | Mica        | Oala pasteurizare    | Mica/Medie       | UTIL             |
+
+### Dulceata Artizanala de Caise
+
+Cantitate: 3 kg fructe (curatate) → ~5 borcane a 400g
+Moment optim: Fructe in deplina maturitate sau chiar supra-coapte, moi, dar neafectate de boli.
+Durabilitate: 1 - 2 ani pastrata in camara intunecoasa si racoroasa.
+
+**Ingrediente:**
+
+- 3 kg caise (cantarite dupa scoaterea samburilor)
+- 2.4 - 2.5 kg zahar (functie de dulceata fructului; la cais merge raport 1 kg la 800g zahar)
+- Zeama de la 2 lamai (ajuta la gelificare si previne zaharirisirea)
+- Optional: un pumn de samburi (miezul, nu lemnul dur) curatati si opariti (ii dau aroma specifica de "amaretto").
+
+**Echipament:** O oala cu fund dublu, borcane si capace sterilizate, lingura de lemn.
+
+**Procedura pas cu pas:**
+
+1. Se spala fructele, se rup in jumatati, se scot samburii si se asaza in oala, punand un strat de fructe, un strat de zahar.
+2. Se lasa la rece peste noapte (sau macar 4 ore) pentru a-si lasa zeama. Astfel nu va trebui adaugata apa.
+3. Se fierbe la foc mic, indepartand constant spuma de deasupra cu o spumiera. Adauga zeama de lamaie dupa primele 20 de minute.
+4. Amesteca constant ca sa nu se prinda pe fund.
+5. Fierbe pana cand, punand o picatura de sirop pe o farfurioara rece din frigider, picatura ramane rotunda (nu curge ca apa).
+6. Toarna dulceata fierbinte in borcanele sterilizate in prealabil (in cuptor cald).
+7. Pune capacele strans si intoarce borcanele cu capacul in jos timp de 15 minute (pentru vid).
+
+**Semne de reusita:** Culoare portocalie clara-lucioasa (nu maronie, arsa). Textura inchegata, iar bucatile de fruct sunt partial topite dar vizibile.
+**Greseli frecvente:** Fierberea la foc prea iute (zaharul se caramelizeaza, gust de ars); lipsa acidului din lamaie (produsul va mucegai sau zaharisi); omiterea spumei.
+
+### Tuica de caise (Barackpálinka artizanala)
+
+Este bautura fanion a zonelor de frontiera cu Ungaria, avand o aroma uimitoare.
+_Procedura scurta:_ Fructele f. coapte, curatate obligatoriu de sambure (samburele la fermentare degaja cantitati toxice si gust amar/hidrocianogen), se fac borhot si se lasa la fermentat la 15-20°C (2 saptamani) pana "cade caciula". Distilare dubla in cazan de cupru, separand strict "fruntea" (toxica) si "coada" (acra). Se lasa la maturat 6 luni pentru rotunjirea aromelor in butoaie de sticla, lemn de dud sau dud.
+
+---
+
+## T. VANZARE LEGALA SI CERTIFICARE IN ROMANIA
+
+**Forme legale de vanzare pentru producator individual Romania (2024-2025):**
+
+| Forma                           | Ce permite                                   | Ce necesita                                   | Cost aproximativ           |
+| ------------------------------- | -------------------------------------------- | --------------------------------------------- | -------------------------- |
+| Vanzare directa la poarta/piata | Fruct proaspat, procesat traditional limitat | Atestat de producator + Carnet comercializare | ~100-150 lei/an            |
+| Stand la piata Arad             | Vanzare cu amanuntul                         | Carnet de comercializare vizat                | Taxa masa zilnica/lunara   |
+| Magazine / Restaurante locale   | Fruct proaspat pe baza borderou / factura    | PFA sau II sau SRL                            | Cost infiintare / Contabil |
+
+**Documente necesare:** Roland va merge la **Primaria Nadlac (Registrul Agricol)** cu actele pamantului si va solicita eliberarea **Atestatului de Producator** (valabil 7 ani) si **Carnetului de Comercializare** (valabil anual). Aceasta metoda e absolut legala pentru persoanele fizice care vand la piata / la marginea drumului / prietenilor productia primara si produse procesate nestandardizate tip compot/dulceata.
+
+**Legislatie specifica (Tuica / Distilate):**
+Vanzarea de tuica/palinca este guvernata in Romania strict de Codul Fiscal si Vama. Comercializarea _legala_ presupune detinerea de antrepozit fiscal si accize platite. Ca producator in gospodarie, poti distila limitat pt consum propriu prin inregistrarea capacitatii si anuntarea autoritatii (sau distilarea in cazane publice autorizate), dar vanzarea legala la sticla pe piata, ca PFA/II/Pers.Fiz, este **ilegala** fara licenta.
+
+**Etichetare obligatorie (dulceturi artizanale la piata):**
+Numele producatorului, Denumirea (ex: "Dulceata de caise"), Lista de ingrediente in ordinea descrescatoare a greutatii, Data productiei, si mentiunea "Produs in gospodaria proprie". Nu necesita valori nutritionale pentru productii artizanale f. mici.
+
+---
+
+## U. INTERACTIUNI CU FAUNA
+
+**Fauna BENEFICA:**
+
+| Animal/Insecta                 | Beneficiu concret                                                                | Cum atragi prezenta                                           |
+| ------------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Albine / Bondari               | Polenizatori exclusivi pentru Cais                                               | Nu stropi in Aprilie in inflorire; flori de corcodus, papadie |
+| Buburuza (Coccinellidae)       | Distruge invaziile de afide (paduchi de frunza) ce ataca noile cresteri de cais. | Benzi inflorite nearate pe marginea livezii                   |
+| Viespa de lemn (Ichneumonidae) | Paraziteaza si mananca larvele si ouale altor daunatori din livezi               | Mentine habitat semi-salbatic intr-un colt de gradina         |
+
+**Fauna DAUNATOARE specifica acestei specii:**
+
+| Animal                 | Dauna concreta                                                                        | Amploare                         | Metode non-chimice                                      | Metode chimice                                 |
+| ---------------------- | ------------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------- | ---------------------------------------------- |
+| Iepuri de camp/Soareci | Rod scoarta de la baza pomilor tineri sub stratul de zapada (inelare) => Pomul moare. | Mare                             | Plase din plastic protectoare instalate din Toamna.     | Momeala raticida pusa IARNA adanc in galerii   |
+| Grauri / Ciori         | Culeg/Mananca fructele care dau in parga.                                             | Medie                            | Zmee zburatoare tip uliu, Tunuri de gaz butan pt zgomot | —                                              |
+| Caprioare / Cerbi      | Mananca lastarii proaspeti primavara cand in camp nu au mancare.                      | Mica in intravilan, Mare la camp | Gard robust (minim 1.8-2m)                              | Vopsele repelente cu miros urat (ex: Cervacol) |
+
+**Rozatoare (Soarecii de camp):**
+Terenul fertil cernoziom e perfect pt galerii de soareci. Toamna, daca ramane paie lipita de trunchi, acestia vor face cuib sub el si pe timpul gerurilor mananca scoarta dulce la nivelul de 0-10cm. Pomul "inelat" moare primavara urmatoare!
+**Protectie obligatorie:** Manson de protectie tubular, perforat (din plasa sau plastic dur) instalat la plantare pe primii 50-60cm ai trunchiului si impins 5cm in pamant.
+
+---
+
+## V. PLAN MULTIANUAL SI CALENDAR DE INVESTITII
+
+**Cronologia plantat → productie plina:**
+
+| An      | Varsta  | Activitati principale                                         | Productie estimata | Investitie estimata (lei/pom)      |
+| ------- | ------- | ------------------------------------------------------------- | ------------------ | ---------------------------------- |
+| Anul 1  | Plantat | Plantare, instalare tuteur, irigare frecventa de instalare.   | 0                  | 40 - 60 lei (pomi, tutore, groapa) |
+| Anul 2  | 1 an    | Formare sarpante, tratamente baza (cupru, mospilan).          | 0                  | 25 lei                             |
+| Anul 3  | 2 ani   | Tundere vas ameliorat; combatere masiva monilioza flori.      | 2-3 kg (semnal)    | 30 lei                             |
+| Anul 4  | 3 ani   | Coroana in forma, introducerea ingrasamintelor sol.           | 10 - 15 kg (medie) | 40 lei (irigatii intensificate)    |
+| An 5-10 | Matur   | Recolta comerciala plina. Tratamente de intretinere regulate. | 35 - 50 kg (plina) | 50 lei (tratamente + hrana)        |
+| An 15+  | Batran  | Taieri groase de rejuvenare (reducere masiva pe sarpante)     | In scadere lenta   | 30 lei                             |
+
+**Punctul de recuperare investitiei (ROI):**
+
+- Cost total/pom primii 4 ani: ~150 - 200 lei.
+- Venit anual/pom de la anul 5 (din 40kg, jumatate pt piata proaspata = 20kg x 10 lei = 200 lei; jumatate dulceata/tuica = extra). Venit mediu net ~200 lei/pom/an (daca il scapi de inghet).
+- **ROI:** Investitia se plateste in anul 5 complet, sau anul 6 daca in anul 5 ai avut un inghet fatal. Dupa acest an, produce profit masiv.
+
+**Calendar investitii majore:**
+
+- Anul 3: Investitie in atomizor serios si, neaparat, in mijloacele anti-inghet (lumanari cu parafina: la 100 de pomi iti trebuie cam 30-40 de lumanari mari = ~1500 - 2000 lei/an/in care este risc).
+- Anul 6+: Re-fertilizare cu sistem gunoi grajd maturat adus cu tractorul + compost.
+
+**Riscuri financiare:** Inghetul tardiv (cel mai mare!) poate taia 100% venitul din acel an, dar mentine cheltuiala (pomul trebuie totusi stropit de boli, irigat).
+
+---
+
+## W. RECUPERARE DUPA EVENIMENTE EXTREME
+
+**Recuperare dupa INGHET DE PRIMAVARA (dupa inflorire):**
+_Evaluare daune:_ Trage de cateva zeci de flori afectate si taie in jumatate ovarul (baza florii) pe lungime, cu o lama ascutita. Daca inauntru centrul e **maro sau negru**, e mort (0% sansa de fruct). Daca e **verde**, a scapat.
+_Actiune:_ Daca 90%+ e compromis, pomul va face o explozie de lastari lacomi peste vara. Nu mai aplici azot si te asiguri ca stropesti bine foliar pentru ca pomul va folosi toata energia pt boli/radacini in locul fructului, pregatind un an urmator uimitor de puternic.
+
+**Recuperare dupa SECETA SEVERA (iulie-august la Nadlac):**
+Daca in august observi crapaturi in cernoziom si frunzele caisului incep sa devina galbene si cad pe jos.
+_Protocol rehidratare:_ Nu pune dintr-o data 100 de litri de apa! Socul osmotic poate omori radacinile sensibile si cauza ruperea trunchiului intern (gomoza subita). Uda cu 10L dimineata, 10L seara, in sistem picatura, timp de 4-5 zile progresiv, ca radacinile sa se re-obisnuiasca sa absoarba.
+
+**Recuperare dupa GRINDINA (Frecventa in Banat vara):**
+_Evaluare daune:_ Daca ramurile au fost lovite pe partea superioara si au rani deschise vizibile pe coaja, riscul de **Cytospora** si **Monilinia** e critic.
+_Protocol OBLIGATORIU de urgenta (in primele 24 de ore):_ Un tratament generos "baie" cu Captadin 50 WDG sau Zeama Bordelez 1-2%, la intreg pomul. Cuprul cicatrizeaza ranile superficiale inainte ca sporii de pe ploaie sa intre in arbore.
+Pentru fructe (daca e vara tarziu) - cele lovite nu mai pot merge spre piata de proaspat, vor putrezi, culege-le pt a face tuica IMEDIAT ce a trecut furtuna.
+
+**Recuperare dupa BOLI / GOMOZA (Scurgere clei):**
+In cazul gomozei bacteriene severe. Sterge trunchiul pana la lemn curat, verde/alb cu un cuitar foarte bine ascutit (chiar si daca cureti jumatate din circumferinta trunchiului!). Dezinfecteaza rana prin badijonare (pensula) cu solutie concentrata de sulfat de cupru 3% sau solutie Clorhexidina/Spirt si unge toata suprafata "la zero" cu Mastic. Daca infectia inconjoara peste 60-70% din tulpina pomului (este inelat de ea), pomul este ca si mort, trebuie taiat din radacina si scos pentru a nu infecta si ceilalti pomi.
+
+---
+
+## X. ISTORIE, TRADITII SI VALOARE CULTURALA LOCALA
+
+**Istoria cultivarii:**
+Caisul, cunoscut si sub denumirile populare maghiare de zarzar, a fost extrem de apreciat si perpetuat de etnicii germani si maghiari stabiliti in Campia Panonica in perioada Imperiului Austro-Ungar. Microclimatul cu toamne tarzii prelungite favoriza aceasta planta mediteraneana. La Nadlac si imprejurimi, practic nu a existat casa sau vatra mare gospodareasca in anii '50-'80 fara minim un cais plantat strategic langa un zid incalzit de soare.
+
+**Utilizari traditionale romanesti / banatene:**
+
+- **Barackpálinka (Palinca de caise):** In zona de granita Arad/Nadlac (si Mako pe partea maghiara) palinca facuta strict din fructe ne-tratate, fermentate curat (fara samburi, fara zahar bagat in plus) constituie o veritabila mandrie de ospitalitate, considerata mai "suava si domneasca" decat banala tuica de pruna.
+- **Dulceata din soiuri romanesti (ca "Dacia" sau "Excelsior") cu miez de nuca/sambure** ramane o traditie.
+- **Utilizari medicinale (TRADITIONAL, nu sfat medical):** Ceaiul din frunze uscate de cais era folosit istoric pt boli stomacale, iar uleiul presat la rece din interiorul samburilor e o crema cosmetica apreciata pentru piele in retetele rurale batranesti.
+
+**Valoare culturala pentru marketing:**
+Livada lui Roland de la Nadlac poate vinde direct aceasta poveste. O dulceata denumita "Apus de Campie — Dulceata de Cais de la Nadlac", fara conservanti, in serie limitata (mai ales anii in care nu a batut inghetul!) poate sa justifice un pret dublu comparativ cu o dulceata industriala ambalata.
+
+---
+
+## Y. RESURSE, FURNIZORI SI RETEA DE SUPORT LOCALA
+
+**Pepiniere recomandate zona Arad/Timis/Bihor:**
+
+- **Pepiniera Arad (Zadareni / Vladimirescu):** Adesea au pomi aclimatizati local. [DE CAUTAT LOCAL].
+- **Pepiniera Roman (Afumati - cu livrare online in zona vest):** Au soiurile tarzii de genul Bergeron, Harcot, pe portaltoi potriviti. Pomii de la ei prind extrem de bine [VERIFICAT national, distribuie prin curier pt Arad].
+- **Pepiniera Hida / AgroDenmar:** Serioase pe comenzi online, au catalog clar, si asigura etichetare clara in special la soiurile imune / tarzii.
+
+**Furnizori produse fitosanitare si ingrasaminte zona Arad:**
+
+- Fito-farmaciile din pietele mari din Arad (Piata Mihai Viteazu de ex.) si depozitele Agricole de la iesirea din orase.
+- **Magazinul Glissando (Arad) / Agricover:** Pentru ingrasaminte la sac sau Mastic pomicol de cantitate mare. Pentru Zeama Bordelez / Funguran in concentratii vrac pentru 100 de pomi [VERIFICAT - lanturi nationale].
+- Lumanarile de parafina anti-inghet se gasesc preponderent pe magazine online de profil pomicultor (ex: _Marcoser_, _Horticultura.ro_) sau cu comanda directa de la importatori in sezon (Ian-Feb).
+
+**Asociatii si grupuri pomicultori relevante:**
+
+- Grupul de Facebook **"Pomicultura — Sfaturi, discutii, noutati"** sau **"Horticultura Romania"**. Extrem de active, acolo se afiseaza prognozele de boli/inghet si se propun actiuni de urgenta de catre ingineri de profil.
+
+**Institutii si expertiza locala:**
+
+- **Directia pentru Agricultura Judeteana (DAJ) Arad.** Ei ofera cursuri de formare pt atestat de producator, si informari fitosanitare cu avertizari atunci cand Monilioza este activ declarata in judet.
+- OJSPA Arad - Oficiul Judetean pentru Studii Pedologice — Obligatoriu pt proba de sol din Nadlac la infiintare masiva si periodic pentru determinarea NPK.
+- **APIA Arad:** Daca livada pe care Roland a instalat-o este compacta, masurata cadastral, si trece de anumite suprafete (peste 0.1ha), poate intra la Schemele de Sprijin Unic pe Suprafata (SAPS).
+
+---
+
+_Sectiunile I-Y integrate din cercetarea Gemini CLI — 2026-04-08. Date validate Claude Code._
 _Dozele de pesticide sunt orientative — cititi intotdeauna eticheta produsului si respectati intervalele de siguranta._

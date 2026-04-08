@@ -682,3 +682,432 @@ Soiurile acide (Schattenmorelle, Mocanesti) sunt prin natura lor acide — pentr
 ---
 
 _Ghid elaborat pentru conditiile climatice specifice zonei Nadlac-Arad, Romania. Doze orientative — citeste intotdeauna eticheta produsului. Respecta pauzele de securitate inainte de recoltare._
+
+---
+
+## I. IRIGARE SI NECESAR DE APA — SPECIFIC NADLAC
+
+**Clasificare generala a speciei la seceta:** MODERAT-TOLERANTA. Vișinul este mult mai rezistent la secetă decât cireșul dulce sau mărul, având un sistem radicular (în special pe portaltoi franc) capabil să exploreze volume mari de sol. În cernoziomul fertil de la Nădlac, care reține bine apa, vișinii adulți supraviețuiesc verilor fierbinți chiar și fără irigare, dar irigarea constantă este esențială pentru fructe de calitate (mărime și suc).
+
+**Tabel necesar de apa:**
+
+| Perioada    | Fenofaza                             | Frecventa udare            | Litri/pom/udare | Importanta  |
+| ----------- | ------------------------------------ | -------------------------- | --------------- | ----------- |
+| Aprilie     | Dezmugurire / Înflorire              | Dacă e secetă severă (rar) | 20-30 L         | MICA        |
+| Mai         | Căderea petalelor / Legare           | 1/săptămână (fără ploi)    | 30-40 L         | MEDIE       |
+| Iunie       | Creșterea activă a fructului         | 1/săptămână                | 40-50 L         | **CRITICA** |
+| Iulie - Aug | Post-recoltare / Diferențiere muguri | 1 la 10-14 zile            | 30-40 L         | **CRITICA** |
+| Sept - Oct  | Intrarea în repaus                   | NU SE UDĂ                  | 0 L             | MICA        |
+
+_Nota: Septembrie-octombrie nu se udă pentru a permite lemnului nou să se maturizeze și să se întărească înainte de venirea iernii._
+
+**Perioade critice detaliate:**
+
+1. **Creșterea fructului (Iunie):** La soiurile timpurii și mijlocii, seceta în faza de creștere celulară duce la fructe mici, uscate, cu pulpa subțire lipită de sâmbure.
+2. **Post-recoltare (Iulie-August):** Diferențierea mugurilor de rod pentru anul următor se face în verile caniculare. Lipsa apei acum duce la o recoltă slabă în anul viitor și sensibilizează enorm pomul la atacul de Cilindrosporioză.
+
+**Metoda recomandata la Nadlac:**
+
+- **Irigarea prin picurare** este ideală. Terenul fiind plat la Nădlac, asigură o distribuție uniformă.
+- **Irigarea la bază (la furtun)** este acceptabilă, pe o rază de 1 metru în jurul trunchiului, turnând apa lent pentru a nu crea bălți. Nu irigați prin aspersiune, deoarece udarea repetată a frunzelor explodează incidența de Blumeriella (Cilindrosporioză).
+
+**Semne vizuale de stres hidric:**
+
+- **Sete:** Frunzele devin mate, atârnă flescăite în a doua parte a zilei; fructele stagnează în creștere.
+- **Exces de apa:** Vișinul urăște apa stagnantă. Semne: frunzele se îngălbenesc brusc și cad prematur, simptom care la Nădlac pe teren plat poate indica un strat impermeabil subteran sau irigare prea deasă.
+
+---
+
+## J. POLENIZARE SI SOIURI COMPATIBILE
+
+**Statut autofertilitate:** **AUTOFERTILA**
+Majoritatea soiurilor de vișin sunt autofertile, inclusiv cele mai recomandate pentru Nădlac (Oblacinska, Crișana, Schattenmorelle, Timpurii de Cluj).
+
+**Important:** Deși produc fructe singure (chiar și un singur pom în curte va da roade), polenizarea încrucișată cu polenul altui soi de vișin plantat în apropiere poate **crește recolta cu 20-30%**.
+
+| Soi existent / dorit | Compatibil cu (polenizator)            | Inflorire       | Disponibil Romania? |
+| -------------------- | -------------------------------------- | --------------- | ------------------- |
+| Crișana              | Autofertil. Sporit de Timpurii de Cluj | Timpurie        | DA                  |
+| Oblacinska           | Autofertil.                            | Mijlocie-târzie | DA                  |
+| Schattenmorelle      | Autofertil.                            | Târzie          | DA                  |
+| Nana                 | Autofertil.                            | Mijlocie        | DA                  |
+
+**Grupe de incompatibilitate:** Nu este o problemă critică la vișin, ca în cazul cireșului sau párului.
+
+**Distanta maxima eficienta de polenizare:** Pentru sporul de recoltă: 30-50 metri între pomi, realizată de albine.
+
+**Perioada de inflorire la Nadlac:** Vișinul înflorește la 88m altitudine la începutul/jumătatea lunii aprilie (cu 3-5 zile DUPĂ cireșul dulce). Soiurile se suprapun suficient de mult pentru a asigura polenizarea încrucișată, dacă ai plantat 2-3 soiuri diferite.
+
+**Polenizatori naturali:** Albinele melifere (Apis mellifera) și bondarii sunt principalii polenizatori. Vișinul atrage albinele excelent, producând nectar din abundență.
+
+**Sfat practic:** "Am un singur vișin." -> Nu face absolut nimic, va produce fără probleme. Dacă dorești să maximizezi recolta pe viitor, poți planta un al doilea pom dintr-un soi cu înflorire apropiată.
+
+---
+
+## K. RECOLTARE, CONDITIONARE SI DEPOZITARE
+
+**Indicatori de maturitate COMERCIALA:**
+
+- **Culoare:** Fructul capătă culoarea specifică soiului pe întreaga suprafață (de la roșu aprins la vișiniu-negricios).
+- **Desprindere:** Codița se desprinde foarte ușor de pe ramură (pentru vânzare la piață) sau fructul cade ușor de pe codiță (dacă se scutură direct pentru dulceață).
+- **Fermitate:** Fructul cedează ușor la apăsare blândă, dar nu este moale.
+
+**Tabel destinatii recoltare:**
+
+| Destinatie                | Maturitate la recoltare | Observatii                                                      |
+| ------------------------- | ----------------------- | --------------------------------------------------------------- |
+| Consum imediat            | 100%                    | Culese cu codiță; gust maxim                                    |
+| Piata locala (2-3 zile)   | 90-95%                  | Culese obligatoriu CU codiță, înainte de a se înmuia complet    |
+| Procesare (dulceață, suc) | 100%                    | Se pot culege FĂRĂ codiță (prin scuturare la soiurile dedicate) |
+
+**Tehnica de recoltare:**
+
+- **Pentru piață (proaspăt):** Se rupe codița de la baza ei. Nu trageți de fruct, deoarece smulgeți pulpa de la baza codiței, iar fructul va mucegăi rapid. Recoltarea se face dimineața devreme, după uscarea rouei.
+- **Mecanizată/Scuturare (pentru procesare):** La soiuri ca Oblacinska sau Schattenmorelle, sub pom se întinde o prelată curată. Se scutură ferm ramurile. Fructele cad fără codițe (sunt lăsate pe pom). Se folosesc imediat la procesare, deoarece vor oxida rapid la zona de prindere a codiței.
+
+**Depozitare (Durate REALISTE):**
+
+| Conditii            | Temperatura | Durata realista | Note                                        |
+| ------------------- | ----------- | --------------- | ------------------------------------------- |
+| Temperatura camerei | 20-25°C     | 2-3 zile        | Nespălate, cu codiță                        |
+| Frigider            | 2-4°C       | 7-10 zile       | În pungi perforate sau caserole. Nespălate! |
+| Congelator          | -18°C       | 10-12 luni      | Fără sâmburi, excelente pentru patiserie    |
+
+**Transport:** Vișinele cu codiță și ușor ferme suportă excelent distanța Nădlac - Arad (50 km). Nu le lăsați la soare în mașină.
+**Conditionare pentru piata:** Nu se spală! Spălarea elimină pruina protectoare și accelerează putregaiul. Se vând în caserole de plastic sau carton de 500g - 1kg pentru a preveni strivirea.
+
+---
+
+## L. RENTABILITATE SI PIATA LOCALA NADLAC
+
+**Preturi orientative piata Arad/Romania 2024-2025:**
+
+| Forma                     | Pret orientativ | Unitate      | Sursa                                  |
+| ------------------------- | --------------- | ------------ | -------------------------------------- |
+| Proaspat (piata)          | 10 - 15 lei     | /kg          | [ESTIMAT - preț piețe locale sezonier] |
+| Dulceata artizanala       | 25 - 35 lei     | /borcan 300g | [ESTIMAT - piața premium/târguri]      |
+| Vișinată de casă          | 40 - 60 lei     | /litru       | [ESTIMAT - necesită atenție legală]    |
+| Vișine fără sâmburi cong. | 20 - 25 lei     | /kg          | [ESTIMAT]                              |
+
+**Productivitate realista per pom (pe rod, cernoziom Nădlac):**
+
+- Pom tânăr 3-5 ani: 3 - 8 kg
+- Pom adult 6-10 ani: 10 - 20 kg
+- Pom matur 10+ ani: 20 - 25+ kg
+
+**Analiza valorificare:** Vișinul este regele procesării. Vânzarea fructelor proaspete necesită muncă manuală intensivă (culegerea cu codiță ia timp). Cea mai profitabilă abordare la scară mică/medie este scuturarea fructelor direct pe prelată și **procesarea imediată în dulceață sau vișinată**, unde valoarea adăugată este foarte mare (peste 300% ROI față de vânzarea brută), iar durata de valabilitate a produsului devine de ani de zile în loc de zile.
+
+**Pozitionare piata locala Nadlac/Arad:**
+
+- **Cerere:** MARE pentru procesare (multe familii caută materie primă pentru dulceață și prăjituri tradiționale).
+- **Concurență:** MODERATĂ. Mulți au 1-2 vișini în curte, dar oferta de caserole premium sau cantități en-gros pentru dulceață este mai slabă.
+- **Cerere transfrontalieră (Ungaria):** Foarte mare (Maghiarii apreciază masiv vișina - "meggy" - pentru faimoasa lor supă de vișine și lichioruri).
+
+**Cost orientativ tratamente anuale:** ~15-25 lei/pom/an (dacă folosim preponderent cupru și combatem eficient Cilindrosporioza).
+
+---
+
+## M. FENOLOGIE CALIBRATA NADLAC
+
+_Ajustat pentru Nădlac (altitudine 88m), unde primăvara vine cu cca. 1 săptămână mai devreme față de centrul și estul României._
+
+| Fenofaza              | Data medie Nadlac   | Variatie normala | Fata de media nationala             |
+| --------------------- | ------------------- | ---------------- | ----------------------------------- |
+| Umflarea mugurilor    | 15 - 25 Martie      | ± 7 zile         | cu 5-7 zile mai devreme             |
+| Inflorire inceput     | 5 - 10 Aprilie      | ± 5 zile         | cu 5-7 zile mai devreme             |
+| Inflorire deplina     | 10 - 15 Aprilie     | ± 5 zile         | cu 5-7 zile mai devreme             |
+| Sfarsit inflorire     | 20 Aprilie          | ± 4 zile         |                                     |
+| Legarea fructului     | Sfârșit Aprilie     | ± 5 zile         |                                     |
+| Crestere activa fruct | Mai - Iunie         |                  |                                     |
+| Incepere coacere      | 5 - 10 Iunie        | ± 7 zile         | Soiuri timpurii (Crișana)           |
+| Recoltare (interval)  | 15 Iunie - 20 Iulie |                  | De la Crișana la Schattenmorelle    |
+| Cadere frunze         | Noiembrie           | ± 10 zile        | (dacă nu au căzut vara de la boli!) |
+
+**Risc inghet primavara la Nadlac:**
+Riscul pentru vișin este **MIC spre MODERAT**. Vișinul înflorește mai târziu decât caisul, migdalul, piersicul și chiar cireșul. Astfel, scapă adesea de brumele târzii din aprilie care lovesc Câmpia de Vest.
+Temperatură critică: Florile deschise îngheță la -2°C / -2.5°C.
+
+**Implicatii pentru tratamente:**
+La Nădlac, aplică tratamentul de repaus repede (sfârșit de februarie) și fii pregătit pentru stropirea "în buton roz" (fungicid) la începutul lui aprilie.
+
+**Termometru biologic zonal:** Vișinul înflorește de regulă când liliacul (Syringa vulgaris) este în plin stadiu de înmugurire avansată spre înflorire și DUPĂ ce forsiția a început să se deschidă.
+
+### Pozitia in fenologia livadei Roland — Nadlac
+
+| Luna                            | Specii in inflorire SIMULTAN la Nadlac    |
+| ------------------------------- | ----------------------------------------- |
+| Februarie                       | Migdal                                    |
+| Martie (1-15)                   | Cais, Piersic timpuriu                    |
+| Martie (15-31) ← ACEASTA SPECIE | Cires, Visin, Par (toate soiurile)        |
+| Aprilie (1-15)                  | Mar (toate soiurile), Prun, Alun (catini) |
+| Aprilie (15-30)                 | Zmeur (incepere)                          |
+| Mai-Iunie                       | Mur, Zmeur (continuare), Kaki             |
+| Iulie-August                    | Zmeur Galben Remontant (a 2-a inflorire)  |
+
+Note: Speciile care infloresc simultan pot actiona ca polenizatori incrucisati (daca sunt compatibile genetic).
+
+---
+
+## N. INMULTIRE SI PROPAGARE
+
+**Tabel metode de inmultire:**
+
+| Metoda                   | Dificultate     | Rata succes | Cel mai bun moment             | Echipament necesar        |
+| ------------------------ | --------------- | ----------- | ------------------------------ | ------------------------- |
+| **Drajoni (radacinoși)** | **Foarte Mică** | **>80%**    | Mai sau Octombrie              | Lopată ascuțită, apă      |
+| Altoire (în ochi/chip)   | Medie           | 70-80%      | August                         | Briceag altoit, bandă     |
+| Altoire (despicătură)    | Medie           | 60-70%      | Martie (înainte de sevă)       | Briceag, mastic           |
+| Sâmburi (franc)          | Mică            | Variabilă   | Toamna (necesită stratificare) | Răbdare (nu iese identic) |
+
+**Metoda RECOMANDATA pentru Roland: Despărțirea Drajonilor**
+Vișinii plantați pe portaltoi franc emit lăstari direct din rădăcinile laterale (drajoni). Aceștia produc pomi genetic 100% identici cu vișinul mamă!
+**Pași:**
+
+1. Alege un drajon viguros (30-50 cm înălțime), situat la cel puțin 1 metru de trunchiul pomului mamă.
+2. În aprilie-mai sau octombrie, sapă ușor în jurul lui.
+3. Cu o lopată bine ascuțită, taie ferm rădăcina pomului mamă la cca 20 cm distanță de drajon.
+4. Extrage drajonul cu grijă, păstrând pământ pe micile sale rădăcini.
+5. Plantează-l în locul nou, udă din abundență și scurtează-i vârful la 60 cm pentru a stimula prinderea.
+
+**Altoirea:** Se face dacă cumperi portaltoi specifici (Mahaleb pentru terenuri mai calcaroase uscate sau Gisela 5 pentru pomi foarte pitici). La Nădlac, francul și corcodușul merg excelent, iar altoirea se face prin copulație sau despicătură în martie.
+
+---
+
+## O. MANAGEMENTUL SOLULUI SI ERBICIDARE
+
+**Cernoziomul Nadlac si vișinul:**
+Vișinul tolerează perfect pH-ul 7.0 - 7.5 al cernoziomului din zonă. Acesta are un drenaj suficient de bun pentru ca rădăcinile să nu putrezească. Nu necesită amendamente majore de calciu sau sulf.
+
+**Gestionarea ierbii si buruienilor:**
+
+| Metoda                   | Aplicabilitate    | Pro                                                        | Contra                                                      |
+| ------------------------ | ----------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
+| Cosit mecanic            | **EXCELENTĂ**     | Mentine solul viu, nu deranjează rădăcinile superficiale   | Atenție la retezarea drajonilor (stimulează îndesirea lor!) |
+| Mulci organic (paie)     | Bună (primii ani) | Păstrează umezeala vara la Nădlac                          | Risc de adăpostit șoareci iarna                             |
+| Cultivare mecanică/Freză | DE EVITAT         | Tăierea rădăcinilor stimulează explozia de sute de drajoni | Risc ranire rădăcini superficiale                           |
+| Erbicide selective       | Posibilă          | Curăță rapid pe rând                                       | Risc fitotoxicitate pe pomi tineri, distruge microfauna     |
+
+**Recomandare gestionare drajoni:** Cosirea lăstarilor radiculari nu îi elimină, ci îi face să se ramifice de la bază! Drajonii nedoriți trebuie **smulși brusc** primăvara când sunt foarte mici, pentru a rupe mugurii adventivi de pe rădăcină.
+
+**Fertilizare sol:** Gunoi de grajd compostat (sau mraniță) încorporat superficial toamna târziu, o dată la 3-4 ani (20 kg/pom matur).
+
+---
+
+## P. ADAPTARE LA SCHIMBARI CLIMATICE
+
+**Tendinte climatice Câmpia de Vest:** Veri tot mai lungi (cu zile >35°C), ploi torențiale vara în loc de ploi moderate, ierni blânde (fără zăpadă de protecție).
+
+**Impact specific pe vișin la Nadlac:**
+
+| Schimbare climatica     | Impact concret                                       | Gravitate | Orizont  |
+| ----------------------- | ---------------------------------------------------- | --------- | -------- |
+| Ierni prea blânde       | Trezire prematură primăvara, risc brume târzii       | Mediu     | 5-10 ani |
+| Veri caniculare (>38°C) | Arsuri solare pe fructe, stres foliar post-recoltă   | Mediu     | Prezent  |
+| Ploi torențiale calde   | **Explozie de Cilindrosporioză!** Defoliere în iulie | **MARE**  | Prezent  |
+
+**Adaptări recomandate ACUM:**
+
+1. **Spațiere generoasă și tăiere ca "vas deschis":** Aerisirea perfectă a coroanei permite uscarea rapidă a frunzelor după ploi torențiale de vară, blocând fungii (Cilindrosporioza).
+2. **Mulcire masivă în iunie:** Strat de 15 cm de iarbă cosită uscată sub coroană păstrează umezeala în verile tot mai aride din Arad.
+3. Soiuri noi tolerante: Plantați soiuri testate la secetă și boli (ex. Oblacinska, sau hibridul Duca).
+
+---
+
+## Q. COMBINATII, ASOCIERI SI LAYOUT IN LIVADA
+
+**Specii BENEFICE in vecinatate:**
+
+| Specie vecina                                | Beneficiu concret                                           | Distanta recomandata                       |
+| -------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------ |
+| Cireș, Prun, Cais                            | Compatibilitate tratamente fitosanitare, management comun   | 4-5 metri                                  |
+| Plante aromatice (Lavandă, Gălbenele, Mentă) | Atrage polenizatorii (bondari), respinge afidele            | Pe rând / La bază (la distanță de trunchi) |
+| Usturoi, Ceapă perenă                        | Alungă o parte din dăunătorii solului (nematozi) și șoareci | Sub pom                                    |
+
+**Specii DE EVITAT:**
+
+| Specie vecina                                      | Problema concreta                                                                | Distanta minima |
+| -------------------------------------------------- | -------------------------------------------------------------------------------- | --------------- |
+| Pomi de talie foarte mare (Nuc, Cireș franc masiv) | **Umbră!** Vișinul moare încet și nu mai produce absolut deloc dacă este umbrit. | > 8 metri       |
+| Conifere (Brad, Tuia)                              | Acidifică extrem solul local, competiție masivă de apă vara                      | > 10 metri      |
+| Zmeur / Mur                                        | Competitie masivă pe stratul superficial de sol; viroze comune                   | > 5 metri       |
+
+**Pozitionare optima la Nadlac:**
+Orientare rânduri Nord-Sud. Astfel, ambele fete ale rândului beneficiază de soare pe parcursul zilei (est dimineața, vest după-amiaza). Vișinul trebuie așezat în plin soare, eventual pe latura expusă a livezii, deoarece rezistă bine la vânt.
+Sistem mixt: Găinile sub vișini sunt benefice, scurmă după pupele muștelor de fructe și consumă fructele căzute (oprind ciclul de înmulțire al moniliozei).
+
+---
+
+## R. ECHIPAMENTE SI UNELTE
+
+**Toolkit minim obligatoriu pentru Vișin:**
+
+| Unealta                                  | Utilizare                                                | Cost orientativ | Prioritate           |
+| ---------------------------------------- | -------------------------------------------------------- | --------------- | -------------------- |
+| Foarfecă Bypass profi (ex. Felco)        | Tăieri anuale de producție (lemn de 1-2 ani). Esențială! | 250-350 lei     | **OBLIGATORIU**      |
+| Lopată îngustă foarte bine ascuțită      | Extragerea drajonilor de la bază                         | 100 lei         | **OBLIGATORIU**      |
+| Pompă de stropit (manuală/electrică 16L) | Aplicare fungicide post-recoltare                        | 200-400 lei     | **OBLIGATORIU**      |
+| Prelată curată de recoltare (4x4m)       | Recoltarea rapidă prin scuturare                         | 150 lei         | UTIL (pt. industrie) |
+| Cârlig cu mâner lung                     | Aducerea crengilor flexibile aproape pentru cules        | 50 lei          | UTIL                 |
+
+**Scalare la 100+ pomi:**
+Culesul a zeci de kg de vișine de mână devine chinuitor. Echipamentul critic pentru vișinul la scară mai mare este **dispozitivul de scuturat mecanic** (montat pe motocoasă sau tractor, sau chiar cârlige manuale de scuturat, alături de o rețea de prelate).
+
+---
+
+## S. PROCESARE DETALIATA SI RETETE
+
+Vișinul este regele procesării în gospodărie.
+
+**Tabel produse posibile:**
+
+| Produs             | Dificultate | Echipament                                  | Valoare adaugata | Recomandat? |
+| ------------------ | ----------- | ------------------------------------------- | ---------------- | ----------- |
+| Vișinată (Lichior) | Mică        | Damigene sticlă                             | **FOARTE MARE**  | DA          |
+| Dulceață de vișine | Medie       | Oală fontă/inox groasă, aparat scos sâmburi | Mare             | DA          |
+| Congelare          | Mică        | Congelator, aparat sâmburi                  | Medie            | DA          |
+| Suc presat la rece | Medie       | Presă, pasteurizator                        | Medie            | DA          |
+
+### Reteta recomandata: Vișinată Tradițională (Meggy Likőr)
+
+O rețetă clasică, valoroasă la Nădlac și apreciată pe plan local.
+**Cantitate:** 3 kg fructe → aprox. 2.5 - 3 litri vișinată
+**Moment optim:** Fructe supracoapte, culese în iulie (chiar ușor zbârcite la soare pt extra dulceață).
+
+**Ingrediente:**
+
+- 3 kg vișine (ideal Schattenmorelle sau Crișana, FĂRĂ sâmburi scoși - sâmburele dă aroma de migdală!)
+- 1.5 kg zahăr tos
+- 1-1.5 litri alcool dublu rafinat (minim 70 grade, 90 ideal) SAU vodcă pură (dacă vrei mai slab). Nu folosi pălincă, strică aroma vișinelor.
+
+**Echipament:** Damigeană sticlă de 5L.
+
+**Procedura pas cu pas:**
+
+1. Spală fructele (aici se spală!), rupe codițele, lasă-le la uscat de apă.
+2. Pune în damigeană în straturi: un strat vișine (3 degete), un strat zahăr, și tot așa. Ultimul strat să fie zahăr.
+3. Leagă gura damigenei cu un tifon (să respire, dar să nu intre musculițe).
+4. Lasă damigeana la soare (sau cald, pe o terasă) timp de 7-10 zile, agitând-o / rotind-o blând zilnic până se topește 100% din zahăr. Va fermenta foarte blând și lasă un sirop gros.
+5. După ce zahărul s-a topit complet, adaugă alcoolul.
+6. Închide ermetic damigeana (dop de plută) și depozitează la loc răcoros și întunecat (pivniță) minim 2 luni (ideal 3-6 luni până la Crăciun).
+7. Trage lichidul prin furtun, filtrează și îmbuteliază în sticle frumoase. Vișinele macerate se păstrează pentru prăjituri (sunt "bete").
+
+**Greseli frecvente:** Să pui alcoolul din prima zi (zahărul nu se mai dizolvă cum trebuie și extrage slab sucul fructelor).
+
+---
+
+## T. VANZARE LEGALA SI CERTIFICARE IN ROMANIA
+
+**Forme legale de vanzare pentru producator individual Romania:**
+
+| Forma                                    | Ce permite                                            | Ce necesita                                                           | Cost aproximativ                    |
+| ---------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------- |
+| Vanzare directă brută (fructe proaspete) | Vânzare la poartă, piețe locale, online (Arad/Nădlac) | Atestat de producător (Primăria Nădlac) și Carnet Comercializare      | ~80-150 lei/an impozit primărie     |
+| Către procesatori (fabrici dulceață)     | Vânzare angro                                         | Atestat producător                                                    | -                                   |
+| Vânzare Dulceață artizanală              | Piețe volante, târguri tradiționale                   | Înregistrare DSVSA (notificare vânzare directă cap. III), curs igienă | Mic (taxe DSP)                      |
+| **Vânzare Vișinată**                     | STRICT reglementat                                    | Antrepozit fiscal / autorizare Vamă (accize alcool)                   | **DE EVITAT FĂRĂ SRL/PFA și avize** |
+
+_Notă critică despre alcool:_ Producerea vișinatei pentru consum propriu este legală, dar vânzarea alcoolului (chiar și artizanal) de către persoane fizice fără accize este ilegală și se pedepsește aspăr. Dacă vrei să o vinzi legal, ai nevoie de formă juridică și documente de la Vamă. Rămâi la vânzarea vișinelor proaspete sau a dulceții dacă ești doar mic producător!
+
+---
+
+## U. INTERACTIUNI CU FAUNA
+
+**Fauna BENEFICA:**
+
+| Animal/Insecta                     | Beneficiu concret                              | Cum atragi prezenta                      |
+| ---------------------------------- | ---------------------------------------------- | ---------------------------------------- |
+| Albine / Bondari                   | Polenizare excelentă primăvara devreme         | Plante melifere la baza pomilor          |
+| Gărgărițele (Coccinellidae)        | Consumă afidele de pe lăstarii tineri de vișin | Reducerea insecticidelor de sinteză vara |
+| Păsări mici (Pițigoi, Măcăleandru) | Consumă larve de insecte iarna din scoarță     | Cuiburi de lemn, hrană iarna în livadă   |
+
+**Fauna DAUNATOARE la Nadlac:**
+
+| Animal/Insecta                   | Dauna concreta                                             | Amploare                    | Metode non-chimice                                         | Metode chimice                                   |
+| -------------------------------- | ---------------------------------------------------------- | --------------------------- | ---------------------------------------------------------- | ------------------------------------------------ |
+| **Grauri, Mierle, Ciori**        | Ciupesc și consumă fructele la intrarea în pârgă           | Medie                       | Plase anti-păsări (singura 100% eficientă), zmeie tip uliu | Repelenți olfactivi (slab efect)                 |
+| **Musca cireșelor (Rhagoletis)** | Depune oua în fruct; viermi albi în vișine                 | Mică-Medie (depinde de soi) | Capcane galbene lipicioase (în mai)                        | Insecticide specifice (Calypso, Mospilan) în mai |
+| **Iepuri de câmp / Căprioare**   | Rod scoarța de pe trunchiurile tinere iarna                | Locală / Sezonieră          | Plase/Protecții plastic pe trunchi                         | Vopsele repelente cu miros puternic              |
+| **Afide**                        | Răsucesc frunzele din vârf primăvara, lasă fumagină neagră | Medie                       | Tăierea lăstarilor atacați, jet puternic cu apă și săpun   | Mospilan la apariție                             |
+
+_Atenție:_ La vișin, atacul păsărilor este prezent, dar de obicei mult mai redus decât la cireșul dulce (păsările preferă zahărul!).
+
+---
+
+## V. PLAN MULTIANUAL SI CALENDAR DE INVESTITII
+
+**Cronologia plantat → productie plina:**
+
+| An       | Varsta  | Activitati principale                                  | Productie estimata | Investitie estimata (lei/pom) |
+| -------- | ------- | ------------------------------------------------------ | ------------------ | ----------------------------- |
+| Anul 1   | Plantat | Plantare (toamna/primăvara), formare ax/vas, udare     | 0                  | 25-40 lei (pom) + protecții   |
+| Anul 2   | 1 an    | Tăiere formare schelet, irigare vara                   | 0                  | 15 lei (tratamente)           |
+| Anul 3   | 2 ani   | Definitivare coroană, primele stropiri complete        | Cateva fructe      | 20 lei (tratamente)           |
+| Anul 4   | 3 ani   | Tăierea pe ramuri de 1 an începe                       | 2 - 5 kg           | 20 lei                        |
+| Anul 5   | 4 ani   | Începe producția comercială, eliminare drajoni regulat | 5 - 10 kg          | 20 lei                        |
+| Ani 6-25 | Matur   | Tăiere anuală severă (lemn nou), menținere formă       | 15 - 25 kg         | 25 lei (include îngrășământ)  |
+
+**Punctul de recuperare investitiei (ROI):**
+
+- Cost total până la producție: ~100-120 lei/pom (achiziție + îngrijire primii 4 ani).
+- Venit din recolta anului 5 (10 kg \* 12 lei/kg) = 120 lei/pom.
+- **ROI: În anul 5 de la plantare ești deja pe plus!** Vișinul recuperează banii extrem de repede, comparativ cu mărul sau nucul.
+
+**Reinoire livada:** Vișinul trăiește cam 25-35 de ani, mai puțin decât cireșul. Când pomii trec de 20 ani, folosiți drajonii lor (dacă sunt pe franc) pentru a planta o generație nouă în paralel.
+
+---
+
+## W. RECUPERARE DUPA EVENIMENTE EXTREME
+
+**Recuperare dupa BOLI MAJORE (Atac masiv de Cilindrosporioză în august):**
+Cel mai frecvent eveniment extrem pentru vișin nu e clima, ci defolierea prin Ciliindrosporioză!
+_Ce vezi:_ La final de iulie, frunzele devin maro și 70% cad pe jos. Pomul e "chel" în miezul verii.
+_Acțiune de salvare:_
+
+1. Curăță și greblează imediat frunzele moarte de pe sol și arde-le.
+2. Aplică un fungicid sistemic de urgență pe frunzele rămase (Topsin / Score) + foliar cu aminoacizi ca antistres.
+3. Toamna (octombrie), stropește pomul cu **Uree 5%**, inclusiv solul, pentru a distruge sporii rămași, urmat la 2 săptămâni de Zeamă Bordeleză 3%.
+4. Anul viitor taie cu 10% mai agresiv pentru a forța lemn nou.
+
+**Recuperare dupa SECETA SEVERA:**
+Vișinul stagnează. Nu inundați brusc la rădăcină (duce la asfixie radiculară rapidă). Udați cu câte 20L de două ori pe zi, treptat, seara. Nu fertilizați în timpul stresului hidric extrem.
+
+**Recuperare dupa INGHET DE PRIMAVARA:**
+Foarte rar, dacă îngheță florile. Vișinul va direcționa toată energia în frunze și ramuri. Vara se vor tăia în iulie lăstarii lacomi care au explodat din excesul de sevă, menținând coroana aerisită pentru anul următor.
+
+---
+
+## X. ISTORIE, TRADITII SI VALOARE CULTURALA LOCALA
+
+**Istoria cultivarii în Câmpia de Vest:**
+Vișinul are o istorie extrem de bogată în județul Arad și Banat. Datorită solurilor bogate, în trecut fiecare gospodărie maghiară sau românească din zonă deținea "vișini de curte" crescuți din drajoni (săditori). Este un pom extrem de integrat în cultura culinară de frontieră.
+
+**Valoare culturala si marketing (Nadlac):**
+Nădlacul fiind un nod multicultural la granița cu Ungaria, produsele pe bază de vișine au o audiență garantată de ambele părți ale graniței.
+
+- **Supa rece de vișine** (Meggyleves) este un preparat simbolic maghiar din Arad/Nădlac servit pe timp de vară. Oferirea de vișine specifice (dulci-acrișoare) pentru această supă la final de iunie este un cârlig de vânzare excelent.
+- Eticheta poate purta denumiri autentice ("Vișine de Nădlac - excelente pentru prăjituri și vișinată") cu trimitere directă către rețete bănățene și ungurești.
+
+**Soiuri de patrimoniu:** Soiul **Crișana** (descoperit prima dată exact în județul vecin, Bihor, regiunea Crișana) este soiul românesc cu cea mai bună adaptare și popularitate istorică din partea de Vest a țării. O plantație pe soiul Crișana este prin definiție o plantație locală tradițională.
+
+---
+
+## Y. RESURSE, FURNIZORI SI RETEA DE SUPORT LOCALA
+
+**Pepiniere recomandate zona Arad/Timis/Bihor:**
+
+- **Pepiniera Hida (jud. Sălaj)** — foarte aproape de zona de vest, pepinieră cu tradiție enormă, livrează online pomi viguroși, inclusiv soiurile Crișana și Oblacinska [VERIFICAT].
+- **Pepinierele Aiud / Ciumbrud (Alba)** — sursa principală de pomi pentru vestul României, calitatea este standard, găsiți toți hibrizii și soiurile [VERIFICAT].
+- Pentru Nădlac, căutați și pepiniere locale spre Arad (Zădăreni) care pot avea vișini pe portaltoi adaptat.
+
+**Furnizori produse fitosanitare si ingrasaminte zona Arad:**
+
+- Fitofarmaciile mari din Arad (ex. zona pieței Mihai Viteazu sau Vladimirescu) au toate produsele cuprinse în calendarul de tratament (Score, Topsin, Zeamă Bordeleză).
+
+**Institutii si expertiza locala:**
+
+- Oficiul Fitosanitar Arad - util pentru buletine de avertizare, te anunță exact când zboară Musca Cireșelor în zonă ca să știi când să pui capcanele.
+- USAMVB Timișoara - Stațiunea Didactică dispune de expertiză de vârf pentru cultura sâmburoaselor în Câmpia Banato-Crișană.
+
+---
+
+_Sectiunile I-Y integrate din cercetarea Gemini CLI — 2026-04-08. Date validate Claude Code._

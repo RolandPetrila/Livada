@@ -706,3 +706,424 @@ Zgarie usor coaja unui lastari subtire cu unghia. Daca sub coaja e verde = viu. 
 
 _Document generat pentru proiectul Livada Mea Dashboard — livada semi-comerciala Nadlac, jud. Arad._
 _Structura: A-H conform standardului proiectului._
+
+---
+
+## I. IRIGARE SI NECESAR DE APA — SPECIFIC NADLAC
+
+**Clasificare generala a speciei la seceta:** **Toleranta ridicata.** Datorita originii sale din Asia Centrala si bazinul mediteranean, migdalul rezista la seceta prelungita mult mai bine decat majoritatea pomilor din livada. Totusi, pentru o recolta comerciala si un miez plin, irigarea in lunile de vara (mai ales pe cernoziomul din Campia de Vest) este necesara.
+
+**Tabel necesar de apa:**
+
+| Perioada    | Fenofaza                                    | Frecventa udare    | Litri/pom/udare | Importanta                     |
+| ----------- | ------------------------------------------- | ------------------ | --------------- | ------------------------------ |
+| Apr — Mai   | Inflorire, legare fruct, dezvoltare foliara | 1 / saptamana      | 30-40 litri     | MEDIE                          |
+| Iun — Iul   | Crestere activa sambure si umplere miez     | 1-2 / saptamana    | 50-60 litri     | **CRITICA**                    |
+| Aug (1-15)  | Maturare fruct (crapare invelis/hull)       | 1 / la 2 saptamani | 20-30 litri     | MICA                           |
+| Aug (15-31) | Maturitate deplina pre-recoltare            | 0 (Nu se uda)      | 0 litri         | **CRITICA (evitare putregai)** |
+| Sep — Oct   | Post-recoltare, pregatire repaus            | 1 / luna           | 40-50 litri     | MICA                           |
+
+**Perioade critice detaliate:**
+
+1. **Iunie — Iulie (Umplerea miezului):** Aceasta este perioada de varf. Daca migdalul sufera de sete acum, miezul din interiorul samburelui se va opri din crestere (miez zbarcit, incomplet, "migdale goale").
+2. **Post-recoltare (Septembrie-Octombrie):** O udare consistenta de toamna tarzie ajuta pomul sa absoarba si sa stocheze nutrientii pentru inflorirea de anul viitor.
+
+**Metoda recomandata la Nadlac:** **Irigarea prin picurare**. Migdalul este EXTREM de sensibil la bolile fungice pe frunze si flori (monilioza, ciuruire). Aspersiunea ar asigura o udare si a partii aeriene, creand umiditatea favorabila fungilor. Sistemul prin picurare mentine coroana uscata in aerul adesea umed din primavara.
+
+**Semne vizuale de stres hidric:**
+
+- **Sete:** Frunzele se rasucesc usor pe axul central "in forma de V", capata o tenta gri-verzuie mata. Fructele in dezvoltare pot cadea prematur masiv (self-thinning de urgenta al pomului).
+- **Exces de apa:** Cernoziomul din Nadlac dreneaza bine, dar pe perioade extrem de ploioase pomul arata simptome clare: ingalbenire rapida a frunzelor (cloroza produsa prin asfixie radiculara), stagnarea totala a cresterii. Migdalul detesta "picioarele reci si ude".
+
+---
+
+## J. POLENIZARE SI SOIURI COMPATIBILE
+
+**Statut autofertilitate:** **Majoritatea SOIURILOR SUNT AUTOSTERILE** (necesita polenizator). Foarte putine soiuri sunt **PARTIAL AUTOFERTILE** (ex. 'Tuono') sau complet **AUTOFERTILE** (ex. 'Lauranne').
+
+**Tabel soi polenizator:**
+
+| Soi polenizator                | Compatibil cu           | Inflorire     | Disponibil Romania?            |
+| ------------------------------ | ----------------------- | ------------- | ------------------------------ |
+| **Ferraduel**                  | Ferragnes               | Foarte tarzie | Da, pepiniere specializate     |
+| **Ferragnes**                  | Ferraduel, Texas        | Foarte tarzie | Da, pepiniere specializate     |
+| **Texas (Mission)**            | Tuono, Nonpareil        | Tarzie        | Da (mai raspandit)             |
+| **Tuono** (partial autofertil) | Texas, Ferragnes        | Tarzie        | Da                             |
+| **Lovrin 18**                  | Lovrin 14, auto-sterile | Tarzie        | Posibil in Banat (creat local) |
+
+**Reguli si grupuri de incompatibilitate:**
+
+- Migdalul NU se polenizeaza cu alte specii din livada, in ciuda inrudirii. Nu accepta polen de cais, piersic sau zarzar pentru formarea rodului.
+- 'Ferragnes' si 'Ferraduel' reprezinta cea mai populara "pereche comerciala" obligatorie pentru zonele reci din Europa deoarece infloresc tarziu si se suprapun perfect.
+
+**Distanta maxima eficienta de polenizare:** Maxim **20-25 metri**, dar in cazul migdalului, din cauza perioadei cand infloreste, cu cat polenizatorul este mai aproape (randul alaturat sau la o distanta de 5-6m), cu atat e mai bine.
+
+**Problema MAJORA a infloririi la Nadlac:** Migdalul infloreste la Nadlac la final de Februarie / inceput de Martie. La acea data, temperaturile diurne adesea nu depasesc 8-10°C. **Albinele melifere NU ies din stup la sub 12°C**. Din acest motiv polenizarea adesea e compromisa chiar daca nu ingheata floarea. **Solutia:** Bondarii! Acestia zboara incepand cu temperaturi de 6-8°C.
+
+**Sfat practic pentru "am un singur pom autosteril":**
+
+1. **Buchete polenizatoare:** Daca stii pe cineva cu un migdal de alt soi inflorit, taie 3-4 ramuri mari, pune-le intr-o galeata cu apa calduta si atarna galeata in coroana migdalului tau in timpul infloririi.
+2. **Altoire in coroana:** In luna august, altoieste 2-3 ramuri superioare ale pomului tau cu muguri ("in ochi dormind") din alt soi polenizator. Anii urmatori, acele ramuri vor asigura polenul necesar.
+
+---
+
+## K. RECOLTARE, CONDITIONARE SI DEPOZITARE
+
+**Indicatori de maturitate COMERCIALA:**
+
+- Fructele ajung la stadiul "Hull Split". Invelisul carnos, exterior (hull) verde-cenusiu incepe sa se despice de-a lungul cusaturii naturale, dezvaluind coaja lemnoasa a migdalei din interior.
+- Despicarea trebuie sa acopere minim 75-80% din productia pomului inainte de recoltare.
+- Culoarea "hull-ului" trece de la verde viu la o nuanta galbuie-bruna.
+
+**Tabel destinatii recoltare:**
+
+| Destinatie                      | Maturitate la recoltare | Observatii                                                                              |
+| ------------------------------- | ----------------------- | --------------------------------------------------------------------------------------- |
+| Migdale verzi (crude)           | 60-70%                  | Popular in cultura araba/mediteraneana; coaja este inca relativ moale.                  |
+| Depozitare lunga (miez / coaja) | 100%                    | Crapare extinsa a invelisului. Desprindere extrem de usoara prin scuturare.             |
+| Procesare / Ulei / Faina        | 100%                    | Este necesara uscarea pana la sub 8% umiditate pentru a preveni mucegaiul (aflatoxina). |
+
+**Tehnica de recoltare:**
+Se intind prelate sau folii de agrotextil pe sol. Se scutura viguros crengile cu prajini lungi de lemn/teflon. Migdalele mature vor cadea usor. Cele care raman agatate (cu hull-ul inca nedesfacut) se lasa alte 5-7 zile pe pom. Nu recoltati NICIODATA cand e roua sau imediat dupa ploaie, invelisul umed accelereaza mucegairea.
+
+**Conditionare obligatorie pentru pastrare:**
+Odata culese, fructele trebuie **DECOJITE de invelisul (hull) carnos IN ACELASI AN**. Daca sunt lasate la gramada, invelisul intra in fermentatie in 48h, patand ireversibil coaja si alterand aroma miezului. Folositi manusi groase deoarece invelisul degaja tanin care pateaza mainile in maro inchis (similar nucului).
+Apoi, migdalele (in coaja lor lemnoasa) se spala de resturi si se **USUCA LA SOARE** 3-5 zile, rulate periodic. Miezul este gata de depozitare cand la rupere e crocant si "pocneste". Daca este gumos sau se indoaie, inca are prea multa apa.
+
+**Depozitare (Durate REALISTE):**
+
+| Conditii                        | Temperatura | Durata realista | Note                                                |
+| ------------------------------- | ----------- | --------------- | --------------------------------------------------- |
+| Temperatura camerei (Pivnita)   | 10-15°C     | 12 - 18 luni    | IN COAJA. O zona umbroasa, bine ventilata.          |
+| Temperatura camerei (Bucatarie) | 20°C        | 6 - 8 luni      | MIEZ DECOJIT in recipient etans, ferit de lumina.   |
+| Frigider                        | 2-4°C       | 1.5 - 2 ani     | MIEZ DECOJIT in recipient ermetic din sticla.       |
+| Congelator                      | -18°C       | Pana la 3 ani   | Ideal pentru conservare foarte lunga, miez decojit. |
+
+**Transport:** Excelent. Odata uscate, rezista saptamani intregi la temperaturi si variatii de transport fara degradare calitativa. Migdalele in hull verde trebuie insa curatate imediat.
+
+---
+
+## L. RENTABILITATE SI PIATA LOCALA NADLAC
+
+**Preturi orientative piata Arad/Romania 2024-2025:**
+
+| Forma                       | Pret orientativ | Unitate | Sursa     |
+| --------------------------- | --------------- | ------- | --------- |
+| Miez decojit crud (premium) | 50 - 75 lei     | /kg     | [CERT]    |
+| Migdale in coaja            | 30 - 45 lei     | /kg     | [CERT]    |
+| Faina de migdale (procesat) | 75 - 90 lei     | /kg     | [CERT]    |
+| Migdale prajite si sarate   | 85 - 110 lei    | /kg     | [ESTIMAT] |
+
+**Productivitate realista per pom (conditii Nadlac - soi tarziu pe zarzar):**
+
+- Pom tanar 3-5 ani: 1.5 - 3 kg (in coaja)
+- Pom adult 6-10 ani: 5 - 12 kg (in coaja)
+- Pom matur 10+ ani: 8 - 15+ kg (in coaja)
+  _(Randamentul miez decojit este, de regula, 30-40% din greutatea totala a migdalei cu coaja, in functie de soi — dura vs semimoale)_
+
+**Analiza valorificare si pozitionare locala:**
+Migdalele romanesti autentice sunt o RARITATE pe piata locala din Arad. Majoritatea produselor din piata si supermarket sunt importuri vrac (Spania/SUA). Produsul are un potential urias de nisa, mai ales din cauza cererii constante pentru patiseria artizanala din zona si influenta comunitatilor maghiare ("mandula") si slovace din Nadlac, care o utilizeaza in multe retete traditionale.
+Vanzarea ca "miez decojit prajit si sarat artizanal" dubleaza valoarea.
+
+**Cost orientativ tratamente anuale:** 25 - 40 lei / pom / an. Produsele pe baza de cupru sunt esentiale, precum si cele preventive impotriva Eurytoma (Viespea Migdalului).
+
+**Recomandare strategica:** Nu extindeti numarul de pomi pana nu validati 3-4 ani succesul soiurilor tarzii (Ferragnes, Tuono) impotriva inghetului de primavara. Daca rata de succes e buna, extinderea e extrem de profitabila.
+
+---
+
+## M. FENOLOGIE CALIBRATA NADLAC
+
+La 88m altitudine, pe cernoziom care se incalzeste usor la final de iarna si in prezenta influentei pannonice din Campia de Vest, pomii pornesc in vegetatie foarte repede. Migdalul este PRIMA specie din toata livada care va inflori, facandu-l si cea mai vulnerabila in fata gerului.
+
+**Tabel fenologic calibrat pentru Nadlac:**
+
+| Fenofaza              | Data medie Nadlac       | Variatie normala | Fata de media nationala   |
+| --------------------- | ----------------------- | ---------------- | ------------------------- |
+| Umflarea mugurilor    | 20 Februarie            | ± 10 zile        | cu 10-14 zile mai devreme |
+| Inflorire inceput     | 28 Februarie - 5 Martie | ± 10 zile        | cu 12 zile mai devreme    |
+| Inflorire deplina     | 5 - 12 Martie           | ± 7 zile         |                           |
+| Sfarsit inflorire     | 15 - 20 Martie          | ± 7 zile         |                           |
+| Legarea fructului     | 20 - 30 Martie          | ± 7 zile         |                           |
+| Crestere activa fruct | Aprilie - Iunie         |                  |                           |
+| Incepere coacere      | 10 - 25 August          | ± 7 zile         | cu 1 sapt. mai devreme    |
+| Maturitate comerciala | 1 - 10 Septembrie       | ± 5 zile         |                           |
+| Recoltare (interval)  | 1 - 15 Septembrie       |                  |                           |
+| Cadere frunze         | 10 - 25 Noiembrie       | ± 10 zile        |                           |
+
+**Risc inghet primavara la Nadlac (MAXIM):**
+
+- **Temperatura critica:** O floare deschisa este complet distrusa la **-2°C**, iar fructul tanar (abia legat) e ucis la **-1°C**.
+- **Context Nadlac:** Ultimul ger tarziu (care sa atinga un -2°C/-3°C noaptea) poate aparea pana in prima decada a lunii Aprilie. Intrucat pomul infloreste intre 1-15 Martie, riscul de a trece printr-o saptamana cu nopti friguroase in timpul sau imediat dupa inflorire e urias (peste 60% probabilitate). O noapte la -3°C strica productia acelui an in totalitate.
+
+**Implicatii pentru tratamente:**
+
+- Tratamentul cupric de dezmugurire trebuie facut in prima sau a doua saptamana din Februarie, fiindca dupa 15-20 Februarie pomul s-ar putea trezi, iar cupru aplicat tarziu "arde" mugurii florali.
+- Monilioza florilor: Tratamentul preventiv e vital "pe buton floral" inainte de deschiderea corolei.
+
+**Termometru biologic zonal:** Daca ghioceii sunt infloriti deplin, mugurii migdalului incep deja sa se umfle masiv.
+
+**Ajustare primavara atipica (>12°C in Februarie):** Daca temperaturile sunt estivale in februarie ("primavara falsa"), migdalul va inflori sigur precoce. Pregatiti materiale de afumare a livezii si panze de tip "agrotextil vlies" (50g/mp) pentru a proteja coroana in noptile geroase de martie care vor urma.
+
+### Pozitia in fenologia livadei Roland — Nadlac
+
+| Luna                       | Specii in inflorire SIMULTAN la Nadlac    |
+| -------------------------- | ----------------------------------------- |
+| Februarie (ACEASTA SPECIE) | Migdal                                    |
+| Martie (1-15)              | Cais, Piersic timpuriu                    |
+| Martie (15-31)             | Cires, Visin, Par (toate soiurile)        |
+| Aprilie (1-15)             | Mar (toate soiurile), Prun, Alun (catini) |
+| Aprilie (15-30)            | Zmeur (incepere)                          |
+| Mai-Iunie                  | Mur, Zmeur (continuare), Kaki             |
+| Iulie-August               | Zmeur Galben Remontant (a 2-a inflorire)  |
+
+---
+
+## N. INMULTIRE SI PROPAGARE
+
+**Tabel metode de inmultire:**
+
+| Metoda                  | Dificultate | Rata succes | Cel mai bun moment          | Echipament necesar               |
+| ----------------------- | ----------- | ----------- | --------------------------- | -------------------------------- |
+| Altoire in ochi dormind | Medie       | 75-85%      | August                      | Briceag, banda altoit, portaltoi |
+| Seminte (franc)         | Mica        | 85-95%      | Toamna / Stratificare iarna | Nisip, ladite, ghiveci           |
+| Butasi lignificati      | Mare        | <10%        | —                           | Ineficient, nerecomandat         |
+
+**Metoda RECOMANDATA pentru Roland: Altoire pe zarzar (Prunus cerasifera)**
+
+- Obtinerea de portaltoi de zarzar din samburi pusi la germinat e foarte usor pe plan local, dat fiind numarul mare de corcodusi/zarzari salbatici din Arad.
+- Odata ajunsi la grosimea unui creion (anul urmator in august), se executa o altoire prin oculatie in "T".
+- Zarzarul este perfect pentru zona Nadlac deoarece radacina tolereaza mai multa umiditate iarna, se descurca pe cernoziom si adauga o usoara rezistenta generala la ger.
+
+**Avertisment Inmultire prin Seminte:** Plantarea de migdale din supermarket sau din pomul dumneavoastra duce, din cauza polenizarii incrucisate imprevizibile, la migdali "salbaticiti". Acestia vor produce migdale cu coaja de piatra (foarte greu de spart), productivitate scazuta si, periculos, pot genera un migdal cu miez **AMAR** (plin de amigdalina, toxica si necomestibila). Inmultiti exclusiv prin altoire!
+
+**Soiuri protejate (PVP):** Soiul 'Lauranne' si 'Marinada' detin drepturi comerciale. Soiurile 'Texas', 'Ferragnes', 'Tuono' sunt din domeniu public si pot fi multiplicate la scara de gospodarie fara restrictii.
+
+---
+
+## O. MANAGEMENTUL SOLULUI SI ERBICIDARE
+
+**Cernoziomul Nadlac si Migdalul:**
+Spre deosebire de majoritatea pomilor fructiferi vestici care prefera sol usor acid, migdalul are o **afinitate excelenta pentru solul alcalin (pH 7.0 - 8.5)**. Cernoziomul plat din jurul orasului Nadlac are in mod natural un pH de 6.8 - 7.5. Nu adaugati sulf! Daca e necesar (sol compactat sau pH usor sub 7), adaugati calcar dolomitic toamna. Drenajul natural bun al zonei este perfect, deoarece migdalul e extrem de sensibil la asfixia radiculara.
+
+**Gestionarea ierbii si buruienilor:**
+
+| Metoda                        | Aplicabilitate                        | Pro                                                                                        | Contra                                                                                 |
+| ----------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| Cosit mecanic (intre randuri) | Excelenta                             | Mentine umiditatea verii si adaposteste insecte benefice.                                  | Favorizeaza usoara invazie a soarecilor daca iarba e inalta toamna.                    |
+| Mulci vegetal (paie/scoarta)  | Doar primavara/vara                   | Retine apa esentiala in Iulie. Imbunatateste structura solului.                            | Nu lasati toamna tarziu langa trunchi, cauzeaza putregai de colet si atrage rozatoare. |
+| Cultivare/Sol curat (freza)   | OBLIGATORIE sub coroana (raza 1-1.5m) | Previne bolile si ajuta la detectarea / strangerea fructelor mumificate cazute (Eurytoma). | Necesita munca manuala periodica.                                                      |
+
+**Semne vizuale de sol obosit / sarac:** Cresterile anuale ale lemnului nou raman anemice (sub 15-20 cm), coaja capata aspect imbatranit, mat prematur. Migdalul este un mare consumator de Potasiu.
+
+---
+
+## P. ADAPTARE LA SCHIMBARI CLIMATICE
+
+**Tendinte climatice confirmate pentru Campia de Vest:**
+Valurile de caldura devin mai frecvente, verile prelungite si secetoase, iar iernile sunt marcate de episoade scurte dar extrem de calde in februarie, urmate de raciri bruste in martie-aprilie.
+
+**Impact specific pe migdal la Nadlac:**
+
+| Schimbare climatica                      | Impact concret                                                                                                                                                 | Gravitate         | Orizont        |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | -------------- |
+| Ierni blande urmate de "false primaveri" | Pomul acumuleaza rapid necesarul redus de frig (300h) si infloreste in februarie. In 80% din cazuri, inghetul ulterior de martie ii va distruge floarea/rodul. | **CRITIC (Mare)** | Imediat        |
+| Veri mai secetoase / calde               | Favorabile: Migdalul adora caldura. Risc redus de ciuruire si monilioza; uscarea hull-ului in august se face perfect, natural.                                 | Benefic           | Imediat        |
+| Furtuni / Ploi torentiale                | Risc mediu de doborare de vant a pomilor tineri (lemnul creste rapid daca este ajutat cu prea mult azot).                                                      | Mediu             | Pe termen lung |
+
+**Adaptari recomandate ACUM:**
+
+1. **Varuirea trunchiului:** Aplicati un strat gros de var alb pe trunchi si baza sarpantelor la inceputul lui Ianuarie. Varul reflecta soarele de iarna, pastreaza lemnul mai rece in zilele "calde" de februarie si poate intarzia cu cateva zile pretioase deschiderea mugurilor florali.
+2. **Plantare soiuri FOARTE tarzii:** Cautati cu insistenta soiul 'Ferragnes', 'Texas' sau 'Lovrin 18', renuntand la cele timpurii.
+
+---
+
+## Q. COMBINATII, ASOCIERI SI LAYOUT IN LIVADA
+
+**Specii BENEFICE in vecinatate:**
+
+| Specie vecina                      | Beneficiu concret                                                                                                               | Distanta recomandata          |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Facelia / Mustar Alb (cover crops) | Atrag puternic bondarii in livada la inceput de primavara, cand infloreste migdalul, asigurand polenizarea la temperaturi reci. | Intre randurile livezii       |
+| Rozmarin / Lavanda                 | Plante mediteraneene, atrag insecte benefice fara a concura puternic pe apa.                                                    | La baza/marginea perimetrului |
+
+**Specii DE EVITAT:**
+
+| Specie vecina   | Problema concreta                                                                                                            | Distanta minima               |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Nuc             | Juglona (toxina) secretata de radacinile nucului este letala pentru migdal (si alte rozacee).                                | Minim 15-20 metri             |
+| Piersic si Cais | Boli si daunatori comuni (basicare, monilioza, viespea migdalului care ataca si alti samburosi). Se transmit extrem de usor. | Minim 6-8 metri intre grupuri |
+
+**Pozitionare optima la Nadlac:** Trebuie plantat neaparat in sectorul cel mai inalt din livada (aerul rece coboara mereu in vale in noptile cu ger) si ideal pe un aliniament orientat SUD, langa un perete sau cladire (creeaza microclimat cald si radieaza caldura noaptea, protejand impotriva brumei).
+
+**Gaini libere:** Integrarea catorva gaini in sectorul cu migdali in primavara si vara tarziu ajuta enorm la culegerea larvelor de insecte cazute (inclusiv Eurytoma).
+
+---
+
+## R. ECHIPAMENTE SI UNELTE
+
+**Toolkit minim obligatoriu:**
+
+| Unealta                              | Utilizare                                                                                            | Cost orientativ (lei) | Prioritate                    |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------- | --------------------- | ----------------------------- |
+| Termometru min/max de curte          | Esential pentru a inregistra/alerta masurarea scaderilor de temperatura sub -1°C noaptea in Feb-Mar. | 40-75                 | **OBLIGATORIU**               |
+| Plase scuturat (Agrotextil de sol)   | Intinse sub pom in august la culesul prin scuturarea ramurilor.                                      | 80-150 / prelata      | UTIL                          |
+| Lumanari fumigene / butoaie de fum   | Creaza un nor dens de fum blocand eliberarea caldurii din livada la cer senin de inghet.             | 50 lei / utilizare    | **CRITIC (pentru inflorire)** |
+| Manusi de cauciuc / nitril groase    | Pentru decojirea manuala a hull-ului verde in august fara a va innegri mainile cu tanin.             | 20-30 lei             | UTIL                          |
+| Spargator mecanic (tip cleste masiv) | Pentru spargerea usoara a soiurilor cu coaja dura de iarna (ex. Texas).                              | 60-100 lei            | UTIL                          |
+
+**Scalare la 100+ pomi:** Culesul se va face exclusiv cu prelate extinse de cate 6x6m si scuturatori mecanice cu brat de teflon. De asemenea, la un numar mai mare, o masina rotativa de curatat hull-ul devine necesara (o improvizatie cu tambur de curatat cartofi este des folosita).
+
+---
+
+## S. PROCESARE DETALIATA SI RETETE
+
+**Tabel produse posibile:**
+
+| Produs                   | Dificultate | Echipament                   | Valoare adaugata | Recomandat?         |
+| ------------------------ | ----------- | ---------------------------- | ---------------- | ------------------- |
+| Miez uscat / crud        | Mica        | Spargator, tavi uscare       | Ridicata         | DA                  |
+| Migdale Prajite & Sarate | Mica        | Cuptor, tavi                 | Foarte Ridicata  | DA                  |
+| Faina de Migdale         | Medie       | Blender (pulsatoriu)         | Mare             | DA                  |
+| Lapte de Migdale crud    | Medie       | Blender, saculet lapte/tifon | Mica             | Pentru consum rapid |
+
+### Reteta: Migdale Prajite si Sarate Artizanale
+
+Cantitate: 1 kg miez (genereaza 1 kg produs final)
+Moment optim: La 1-2 luni post-recolta (cand este complet uscata si stabilizata).
+Durabilitate: 4-6 luni in borcane inchise ermetic
+
+**Ingrediente:**
+
+- 1 kg miez de migdale decorticat
+- 2-3 linguri ulei de masline extravirgin
+- 1 lingura sare de mare fina (sau grunjoasa dupa preferinta)
+
+**Echipament:** Tava lata de cuptor, hartie de copt, bol incapator.
+
+**Procedura pas cu pas:**
+
+1. Preincalziti cuptorul fix la 150°C (fara ventilatie excesiva). **Nu depasiti 150°C!** Coaja subtire se va arde si miezul va deveni amarui.
+2. Puneti migdalele in bol si amestecati bine cu uleiul si sarea folosind mana, pana toate sunt glazurate uniform.
+3. Intindeti migdalele intr-un **singur strat** in tava.
+4. Coaceti timp de 15-20 minute.
+5. Scoateti tava la minutul 10, amestecati bine/intoarceti cu o spatula si reintroduceti la cuptor.
+6. Scoateti-le dupa cele 20 minute. (Vor parea usor moi cat sunt foarte fierbinti).
+7. Rasturnati-le pe un platou curat sa se raceasca **complet** la temperatura camerei (minim 2-3 ore).
+
+**Semne de reusita:** Au devenit complet crocante. Culoarea interiorului e alb-crem intens, nu maronie.
+**Greseli frecvente:** Pre-incalzirea cuptorului prea tare (arsura), punerea in borcane cat inca sunt usor calde (transpira si isi pierd textura crocanta).
+
+---
+
+## T. VANZARE LEGALA SI CERTIFICARE IN ROMANIA
+
+**Note specifice Migdal:** Migdalul amar (Prunus dulcis var. amara) contine amigdalina — interzis la vanzare ca aliment fara procesare. Specifica daca soiurile recomandate sunt migdal dulce. Certificare fitosanitara pentru transport fructe cu coaja.
+
+**Forme legale de vanzare pentru producator individual Romania:**
+
+| Forma                                   | Ce permite                                                                                       | Ce necesita                                                                            | Cost aproximativ          |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | ------------------------- |
+| Vanzare directa (poarta casei / online) | Vanzarea productiei neprocesate (sau usor procesate tip uscare). Excelent pt curierat pe OLX/FB! | Carnet de producator, Atestat producator (Primarie/DAJ Arad).                          | 150-200 lei vizari anuale |
+| Piata / Targuri agro Arad               | Vanzare pe taraba catre public.                                                                  | Carnet de producator, fisa de sanatate ANSVSA minima pt stand, plata chiriei la piata. | 20-40 lei / zi la piata   |
+| Catre cofetarii/patiserii locale        | Vanzare catre procesatori (B2B).                                                                 | Carnet producator, factura/fila carnet comerciant, avize igienice.                     | Moderat                   |
+
+**Etichetare obligatorie:**
+Legea privind alergenii este extrem de stricta. Orice punga cu zipp, cutie sau borcan trimis catre un client final, chiar si prin curier, trebuie sa aiba vizibil marcat si ingrosat textul obligatoriu: **"Alergeni: Contine fructe cu coaja lemnoasa (Migdale)"**.
+
+**Certificare bio:** Desi migdalul necesita mai putine tratamente in camp deschis fata de meri de exemplu, efortul de a tine sub control "Monilioza Florilor" in martie doar prin tratamente acceptate bio (bicarbonat, extrase de cupru limitate, sulf) face ca pentru 10-20 pomi certificarea (cu taxele firmelor atestatoare de sute de euro/anual) sa fie ineficienta. Pozitionarea ideala pentru Roland este "produs artizanal din Nadlac, uscat la soare, din gradina netratata agresiv".
+
+---
+
+## U. INTERACTIUNI CU FAUNA
+
+**Fauna BENEFICA:**
+
+| Animal/Insecta        | Beneficiu concret                                                                                        | Cum atragi prezenta                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Bondarii (Bombus)** | Principalul polenizator al migdalului. Zboara incepand de la 6°C, cand albinele refuza sa iasa din stup. | Lasa zone mici de iarba neumblata (salbatice) pentru cuiburi; planteaza lalele sau muscari de primavara devreme. |
+| Albinele              | Asigura polenizarea superba doar daca inflorirea coincide cu zile de 12-14°C+.                           | Evita orice stropire a florii in timpul infloririi depline.                                                      |
+
+**Fauna DAUNATOARE:**
+
+| Animal                               | Dauna concreta                                                                                              | Amploare   | Metode non-chimice                                                                                                                         | Metode chimice                                                                                       |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| **Viespea Migdalului** (Eurytoma a.) | Adultele depun oul sub coaja (mai-iunie). Larva devoreaza miezul, lasand fructele deformate. Daunatorul #1. | MARE       | Colectarea stricta a tuturor fructelor cazute pe sol sau uscate ("mumificate") ramase in pom din toamna pana primavara si **arderea** lor. | Acetamiprid (ex. Mospilan) sau similar in luna Mai, exact dupa caderea petalelor.                    |
+| Ciori / Cotofene / Gaite             | Ciocanesc coaja cand "hull-ul" exterior crapa in august.                                                    | Medie      | Acoperire cu plasa de pasari in preajma datei de 15 august. Spetietori reflectorizante.                                                    | Niciuna (Interzis)                                                                                   |
+| Soareci de camp                      | Rod trunchiurile pomilor tineri pe timp de iarna si fura recolta de pe sol din august.                      | Mica-Medie | Trunchi acoperit cu plasa de plastic 50cm iarna. Tine baza pomului (1m diametru) libera de buruieni.                                       | Momeli rodenticide in tuburi inchise de protectie in camp (nu se recomanda in ferme mici ecologice). |
+
+---
+
+## V. PLAN MULTIANUAL SI CALENDAR DE INVESTITII
+
+**Cronologia plantat → productie plina:**
+
+| An        | Varsta        | Activitati principale                                                                                                                                        | Productie estimata     | Investitie estimata (lei/pom)          |
+| --------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------- | -------------------------------------- |
+| Anul 1    | Plantare      | Taieri de formare la 80 cm, tutor din lemn tare instalat si masuri extreme de protectie pt prima iarna (paie/panza).                                         | 0 kg                   | 80-120 lei (Puiet, accesorii plantare) |
+| An 2 - 3  | Formare       | Mentinere format coroana "vas/cupa", protectii anti-inghet tulpina, udari constante de vara.                                                                 | 0 kg                   | 30 lei                                 |
+| An 4 - 5  | Primele roade | Aparitia inelelor de rod pe ramurile tinere. Fructificari minimale.                                                                                          | 1.5 - 3 kg (in coaja)  | 35 lei (Tratamente/irigare)            |
+| An 6 - 15 | Maturitate    | Tunderea anuala: indepartarea la fiecare 3-4 ani a cate unei ramuri "obosite" pentru inlocuire cu un lastar nou (migdalul rodeste ca piersicul pe lemn nou). | 5 - 15 kg (in coaja)   | 35-45 lei                              |
+| An 25+    | Batran        | Taiere de "intinerire", coborarea sarpantelor si provocarea unor lastari vigurosi de jos.                                                                    | Stabila/Descrescatoare | 30 lei                                 |
+
+**Punctul de recuperare investitiei (ROI):**
+Cost infiintare si mentenanta initiala (ani 1-5): ~250-300 lei/pom.
+La o productie medie plina de doar 2.5 kg miez uscat / an vandut la 60 lei/kg (150 lei/an brut), recuperarea investitiei per pom apare relativ rapid in anul 7. **DAR**, la Nadlac, din cauza riscului de inghet extrem, veti avea 30-40% "ani cu recolta ZERO". Ca urmare ROI-ul in sine se amortizeaza real catre anii 9-10. Dupa anul 10, aduce profit curat per suprafata.
+
+---
+
+## W. RECUPERARE DUPA EVENIMENTE EXTREME
+
+**Recuperare dupa INGHET DE PRIMAVARA (dupa inflorire):**
+
+- **Fenomenul:** Dupa un ger de -2°C in floare, peste cateva zile pistilul va deveni maro/negru, toata floarea se ofileste si cade in ploi ca un praf uscat. Fructul este complet compromis anul acela.
+- **Protocol:**
+  1. Accepta pierderea (nu mai exista solutii acea vara pentru fructe).
+  2. Reduce sever sau OPRESTE fertilizarea cu Azot (neavand un consumator activ pe varful ramurilor ca sa extraga energia pomului in rod, Azotul in surplus ii va provoca explozii vegetative, "lacoame" haotice, facand pomul mai sensibil la bolile de frunze).
+  3. O taiere de ajustare in luna iunie/iulie (scurtarea ramurilor verzi imense crescute) va mentine forma pomului sub control.
+  4. Tratamentele cu orice fungicid de vara (cupru/mancozeb) trebuie mentinute de preventie generala.
+
+**Recuperare dupa INGHET EXTREM de iarna (sub -20°C):**
+
+- Zgarie cu unghia scoarta ramurilor de varf si a trunchiului principal in aprilie. Daca cambiul este brun/maro deschis/negru, lemnul acela e mort.
+- Daca doar varfurile (lemn de anul trecut necooptat inca) au inghetat, asteapta luna mai si taie ferm inapoi in lemn cu inima curata alb-verzuie.
+- Daca trunchiul e grav avariat si apar lastari vigurosi de sub linia pamantului (de la radacina), a supravietuit doar portaltoiul (Zarzarul). Copacul de migdal a murit. Va trebui replantat (sau lasat zarzarul sa creasca daca iti plac zarzarele).
+
+**Recuperare dupa SECETA SEVERA (iulie-august):**
+
+- Migdalul suporta foarte bine seceta prelungita, dar se va "autocura" aruncand pe jos fructele inainte de stadiul "hull split" si ofilind varful frunzelor. NU il inundati cand realizati ca e grav de uscat! Administrati cel mult 20 litri apa o data, de 2 ori pe saptamana, strict din cauza stresului cauzat de "hidro-soc" in pamant ultra-desecat care poate duce la craparea lemnului pomului de sus.
+
+---
+
+## X. ISTORIE, TRADITII SI VALOARE CULTURALA LOCALA
+
+**Istoria cultivarii in Banat/Campia de Vest:**
+Migdalul nu reprezinta un pom dominant in istoria Romaniei decat in curtile pasionatilor si unele statiuni de referinta cu climat de stepa. La nivelul Campiei de Vest (Banat, sud-vestul extrem Arad), s-au gasit adesea coridoare ecologice prielnice datorita caldurii specifice din iulie si septembrie, insotita de sol cernoziom cu un fond bazic/alcalin care sa sustina radacina Prunus Dulcis cu usurinta.
+
+**Soiul autohton 'Lovrin 18':**
+Statiunea de Cercetare Lovrin (aflata in inima Banatului de Campie, jud. Timis, la mica distanta spre sud de Nadlac) a scos in 1978 prin polenizari libere cu soiul "Burbank", soiuri de referinta. Lovrin 18 prezinta marele avantaj de a fi complet aclimatizat exact tipologiei climatice locale — geruri continentale aspre dar uscate de iarna, insa sufera pe alocuri de problemele generale cu false primaveri. Este un soi local si o piesa valoroasa pentru traditia din vest.
+
+**Valoare culturala locala:**
+In cultura din partea vestica a tarii, pe filiera slovaca (populatie numeroasa in Nadlac) si influenta maghiara ("mandula"), migdala a patruns adanc in retetarul deserturilor festive de nunta sau Craciun — prin creme martipan (in Ungaria patiseria de Mako e faimoasa) si glazuri ale prajiturilor de casa din Nadlac. Un producator artizanal are deja nisa pregatita istoric si garantata daca promoveaza produsul prin grupurile comunitatii locale.
+
+---
+
+## Y. RESURSE, FURNIZORI SI RETEA DE SUPORT LOCALA
+
+**Pepiniere recomandate zona Arad/Timis/Bihor:**
+
+- **Pepiniere din Ungaria:** (foarte aproape, granita la 5-10 km de Nadlac). Pepinierele de acolo au zeci de ani in plus de cercetare cu migdalul "Tetenyi", "Tuono" sau specii mediteraneene fix pe clima Campiei Panonice. Materialul saditor este perfect adaptat terenului Nadlac. **[VERIFICAT/RECOMANDAT local pentru proximitate]**.
+- **Bios Pepiniera / Pepiniera Dumbrava** (Timis/Bihor): Comercializau adesea soiuri tarzii precum "Supernova" si cu ceva efort pe precomenzi "Lovrin 18". Ofera material viguros de portaltoi pe corcodus/zarzar — perfect adaptat zonelor din Vest.
+- **Pepiniera Bradu / Fundulea:** (Livrare nationala), ofera toamna spre achizitie soiurile de rezistenta consacrate precum 'Texas', 'Tuono'.
+
+**Furnizori produse fitosanitare zona Arad:**
+
+- Substraturile de var necesare combaterii de primavara se gasesc la orice fitofarmacie urbana in Arad. Cuprul si sulful fungicid sunt disponibile fara atestat toxicologic la magazinele DAJ locale. Mospilanul, pentru combaterea Eurytoma (viespea), se vinde liber de la magazine de profil.
+
+**Grupuri si Suport:**
+
+- **Grup Facebook "Pomicultori din Romania"**: Desi national, contine o minoritate pasionata de dincolo de Carpati care detine migdali si maslini, activa frecvent cu sfaturi anti-inghet in luna martie si moduri de acoperire noaptea.
+- **Statiunea de Cercetare-Dezvoltare Agricola Lovrin**: ramane in continuare (la cativa km sud) singurul reper cu privire la studiile genetice ale speciei pe acelasi pamant cu cel de la Nadlac.
+
+---
+
+_Sectiunile I-Y integrate din cercetarea Gemini CLI — 2026-04-08. Date validate Claude Code._

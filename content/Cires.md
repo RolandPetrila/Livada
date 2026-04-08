@@ -675,3 +675,431 @@ NU. Iarna este cel mai prost moment pentru cirese. Asteapta pana in iulie-august
 ---
 
 _Ghid elaborat pentru conditiile climatice specifice zonei Nadlac-Arad, Romania. Doze orientative — citeste intotdeauna eticheta produsului. Respecta pauzele de securitate inainte de recoltare. La soiurile timpurii (Burlat), atentie maxima la pauzele de securitate — recoltarea incepe la 4-6 saptamani dupa tratamentele de la caderea petalelor._
+
+---
+
+## I. IRIGARE SI NECESAR DE APA — SPECIFIC NADLAC
+
+**Clasificare generala a speciei la seceta:** MODERAT-PRETENTIOASA. Ciresul are un sistem radicular care nu tolereaza asfixierea (excesul de apa in sol prost drenat duce la moarte rapida), dar sufera puternic la seceta in perioada de vara, cand isi formeaza mugurii de rod pentru anul urmator. La Nadlac, pe cernoziom cu drenaj bun, irigarea in iulie-august este esentiala pentru productia de anul viitor.
+
+**Tabel necesar de apa:**
+
+| Perioada       | Fenofaza                | Frecventa udare                              | Litri/pom/udare | Importanta                        |
+| -------------- | ----------------------- | -------------------------------------------- | --------------- | --------------------------------- |
+| Aprilie        | Inflorire - Legare      | 0 (doar seceta extrema)                      | 0 - 30L         | MICA                              |
+| Mai            | Crestere fructe         | 1 / saptamana                                | 40-50 L         | MEDIE (atentie la cracare)        |
+| Iunie          | Coacere (timpurii)      | **NU SE UDA** cu 10-14 zile inainte de cules | 0               | **CRITICA (risc cracare)**        |
+| Iulie - August | Diferentiere muguri rod | 1-2 / saptamana                              | 60-80 L         | **CRITICA (recolta anul viitor)** |
+| Sept. - Oct.   | Pregatire iernare       | 1 la 2 saptamani                             | 40-50 L         | MICA-MEDIE                        |
+
+**Perioade critice detaliate:**
+
+1. **Pre-recoltare (Iunie):** Orice exces de apa (ploaie abundenta sau irigare) cand ciresele incep sa se coloreze si sa acumuleze zahar duce la **cracarea fructelor**. Coaja cedeaza presiunii osmotice. Opreste irigarea cu ~2 saptamani inainte de recoltare.
+2. **Post-recoltare (Iulie-August):** La Nadlac, verile sunt caniculare. Desi ciresele au fost culese, pomul acum formeaza mugurii de rod pentru anul viitor. Seceta acum = recolta slaba anul urmator.
+
+**Metoda recomandata la Nadlac:** **Irigare prin picurare** la baza (2-3 inele de picurare sub coroana). Evita categoric aspersiunea — umezirea frunzelor favorizeaza cilindrosporioza, iar umezirea fructelor provoaca cracare si monilioza.
+
+**Semne vizuale de stres hidric:**
+
+- **Sete:** Frunzele se pliaza (se aduna sub forma de corabie de-a lungul nervurii principale), isi pierd luciul, devin mate; lastarii anuali isi opresc cresterea prematur.
+- **Exces de apa:** Frunzele devin galbene, incepand de la baza lastarilor, si cad prematur (similar carentei de azot).
+
+---
+
+## J. POLENIZARE SI SOIURI COMPATIBILE
+
+**Statut autofertilitate:** **AUTOSTERILA** (Majoritatea soiurilor). **Sectiune CRITICA!** Ciresul necesita polenizare incrucisata obligatorie. Exceptii (Autofertile) in livada ta: Stella, Lapins, Sweetheart.
+
+**Tabel compatibilitate pentru soiurile din livada:**
+
+| Soi polenizator                    | Compatibil cu                 | Inflorire              | Disponibil Romania? |
+| ---------------------------------- | ----------------------------- | ---------------------- | ------------------- |
+| **Lapins** (Autofertil)            | Orice soi (donator universal) | Tardiva (Grupa III-IV) | DA                  |
+| **Stella** (Autofertil)            | Orice soi (donator universal) | Medie (Grupa II-III)   | DA                  |
+| **Sweetheart** (Autofertil)        | Orice soi (donator universal) | Tardiva (Grupa III-IV) | DA                  |
+| **Van** (Autosteril)               | Burlat, Stella, Summit        | Medie (Grupa II)       | DA                  |
+| **Burlat** (Autosteril)            | Van, Stella, Germersdorf      | Timpurie (Grupa I)     | DA                  |
+| **Germersdorf** (Autosteril)       | Van, Lapins, Stella           | Medie (Grupa II)       | DA                  |
+| **Kordia** (Autosteril)            | Regina, Lapins                | Tardiva (Grupa IV)     | DA                  |
+| **Regina** (Autosteril)            | Kordia, Lapins                | Tardiva (Grupa IV)     | DA                  |
+| **Boambe de Cotnari** (Autosteril) | Stella, Van                   | Timpurie-Medie         | DA                  |
+
+**Grupe de incompatibilitate:**
+
+- **DA:** Burlat NU se polenizeaza eficient cu Boambe de Cotnari. Germersdorf si Burlat sunt incompatibile partial in unele asocieri. Stella, Lapins si Sweetheart sunt parteneri siguri pentru oricine.
+
+**Distanta maxima eficienta de polenizare:** **30-40 metri**. (Recomandat 15-20m la Nadlac din cauza vanturilor care pot descuraja zborul albinelor).
+
+**Perioada de inflorire la Nadlac:** Sfarsit de martie - inceput de aprilie. Se suprapune in general bine intre grupele adiacente (I cu II, II cu III etc).
+
+**Polenizatori naturali:** Albinele melifere (Apis mellifera) si bondarii. Vantul NU polenizeaza ciresul!
+
+**Sfat practic pentru un singur cires autosteril:**
+
+1. Altoieste 1-2 ramuri din alt soi compatibil in coroana pomului tau.
+2. Atarna in coroana un pet cu apa in care pui crengute inflorite dintr-un cires vecin compatibil, in perioada infloririi.
+
+---
+
+## K. RECOLTARE, CONDITIONARE SI DEPOZITARE
+
+**Indicatori de maturitate COMERCIALA:**
+
+- Culoare completa specifica soiului (rosu aprins la Burlat, visiniu-negru la Kordia).
+- Desprindere usoara a coditei (pedunculului) de ramura.
+- **Ciresul NU se coace dupa recoltare!** Zaharul se acumuleaza doar pe pom.
+
+**Tabel destinatii recoltare:**
+
+| Destinatie               | Maturitate la recoltare | Observatii                                           |
+| ------------------------ | ----------------------- | ---------------------------------------------------- |
+| Consum imediat           | 100%                    | Recoltare cu codita. Gust optim.                     |
+| Piata locala (2-3 zile)  | 90-95%                  | Fruct ferm. Codita OBLIGATORIU atasata si verde.     |
+| Depozitare 1-2 saptamani | 90%                     | Strict la frigider, fara a le spala inainte.         |
+| Procesare                | 100%                    | Se pot recolta si fara codita (procesare in 12-24h). |
+
+**Tehnica de recoltare:**
+Miscarea corecta este rasucirea/indoirea coditei inapoi, peste ramura. Daca tragi direct, vei rupe "buchetul de mai" (formatia care va produce cirese anul urmator), reducand permanent capacitatea de productie a pomului. Recolta dimineata devreme.
+
+**Depozitare:**
+
+| Conditii            | Temperatura | Durata realista | Note                                            |
+| ------------------- | ----------- | --------------- | ----------------------------------------------- |
+| Temperatura camerei | 20°C        | 1-3 zile        | Se strica si fermenteaza rapid.                 |
+| Pivnita             | 10-15°C     | 3-5 zile        | Strat subtire.                                  |
+| Frigider            | 2-4°C       | 1-2 saptamani   | Caserole/pungi perforate. Nespalate. Cu codita. |
+| Congelator          | -18°C       | 10-12 luni      | Fara samburi, in pungi sigilate.                |
+
+**Transport:** Suporta 30-40 km spre Arad fara probleme daca sunt transportate la racoare, in ladite de plastic perforat in strat de maxim 10-15 cm grosime pentru a nu se strivi sub greutate.
+
+---
+
+## L. RENTABILITATE SI PIATA LOCALA NADLAC
+
+**Preturi orientative piata Arad/Romania 2024-2025:**
+
+| Forma                           | Pret orientativ | Unitate      | Sursa     |
+| ------------------------------- | --------------- | ------------ | --------- |
+| Proaspat (extratimpuriu Burlat) | 30-40 lei       | /kg          | [CERT]    |
+| Proaspat (sezon plin iunie)     | 15-25 lei       | /kg          | [CERT]    |
+| Proaspat (tardiv Regina/Kordia) | 25-30 lei       | /kg          | [CERT]    |
+| Dulceata artizanala             | 25-35 lei       | /borcan 400g | [ESTIMAT] |
+
+**Productivitate realista per pom (portaltoi semipitic Colt/Gisela 6):**
+
+- Pom tanar 3-5 ani: 5-15 kg
+- Pom adult 6-10 ani: 30-50 kg
+- Pom matur 10+ ani: 50-70 kg
+
+**Analiza valorificare:** Valorificarea in stare proaspata aduce clar cel mai mult venit net, in special pentru extremele sezonului (mai timpuriu si sfarsit de iulie). Procesarea in dulceata e o plasa de siguranta pentru fructele prea mici, prea moi sau cu mici defecte.
+
+**Pozitionare piata locala Nadlac/Arad:**
+
+- Cerere: FOARTE MARE.
+- Concurenta: MODERATA. Produsele locale cu peduncul verde premium bat usor ciresele de import (Grecia, Turcia, Spania) obosite de transport.
+- Cerere transfrontaliera Ungaria: DA, zona Szeged/Mako plateste bine pe calibru 28+ mm.
+
+**Cost orientativ tratamente anuale:** 40-50 lei/pom/an (tratamentele pentru musca ciresului si cilindrosporioza sunt numeroase si absolut necesare).
+**Recomandare strategica:** Merita extins cu soiuri tardive, rezistente la cracare (Regina, Kordia, Lapins).
+
+---
+
+## M. FENOLOGIE CALIBRATA NADLAC
+
+**Tabel fenologic calibrat pentru Nadlac:**
+
+| Fenofaza              | Data medie Nadlac                 | Variatie normala | Fata de media nationala  |
+| --------------------- | --------------------------------- | ---------------- | ------------------------ |
+| Umflarea mugurilor    | 15-25 Martie                      | ± 7 zile         | cu 7-10 zile mai devreme |
+| Inflorire inceput     | 30 Martie - 5 Aprilie             | ± 7 zile         |                          |
+| Inflorire deplina     | 5-12 Aprilie                      | ± 7 zile         |                          |
+| Sfarsit inflorire     | 15-20 Aprilie                     | ± 5 zile         |                          |
+| Legarea fructului     | 20-25 Aprilie                     | ± 5 zile         |                          |
+| Crestere activa fruct | Mai - Iunie                       |                  |                          |
+| Incepere coacere      | 15-20 Mai (Burlat)                | ± 7 zile         |                          |
+| Maturitate comerciala | 25 Mai (Burlat) - 10 Iul (Lapins) | ± 7 zile         |                          |
+| Recoltare (interval)  | 25 Mai - 15 Iulie                 |                  |                          |
+| Cadere frunze         | 20 Oct - 10 Nov                   | ± 10 zile        |                          |
+
+**Risc inghet primavara la Nadlac:**
+
+- Probabilitate: Moderata spre Mare (datorita infloririi timpurii in aprilie).
+- Temperatura critica pentru floare deschisa: **-2.2°C**.
+- Ultimul inghet mediu: ~10 Aprilie (exact in timpul infloririi!).
+
+**Implicatii pentru tratamente:**
+
+- Incepeti tratamentele cu Zeama Bordelez la dezmugurire in luna martie. Capcanele galbene pentru musca cireselor trebuie puse la 1-5 Mai!
+- Nu aplicati azot in vara.
+
+**Termometru biologic:** Inflorirea papadiei salbatice in livada corespunde adesea cu inceputul zborului mustei cireselor.
+
+### Pozitia in fenologia livadei Roland — Nadlac
+
+| Luna                            | Specii in inflorire SIMULTAN la Nadlac    |
+| ------------------------------- | ----------------------------------------- |
+| Februarie                       | Migdal                                    |
+| Martie (1-15)                   | Cais, Piersic timpuriu                    |
+| Martie (15-31) ← ACEASTA SPECIE | Cires, Visin, Par (toate soiurile)        |
+| Aprilie (1-15)                  | Mar (toate soiurile), Prun, Alun (catini) |
+| Aprilie (15-30)                 | Zmeur (incepere)                          |
+| Mai-Iunie                       | Mur, Zmeur (continuare), Kaki             |
+| Iulie-August                    | Zmeur Galben Remontant (a 2-a inflorire)  |
+
+Note: Speciile care infloresc simultan pot actiona ca polenizatori incrucisati (daca sunt compatibile genetic).
+
+---
+
+## N. INMULTIRE SI PROPAGARE
+
+**Tabel metode de inmultire:**
+
+| Metoda                           | Dificultate | Rata succes | Cel mai bun moment | Echipament necesar    |
+| -------------------------------- | ----------- | ----------- | ------------------ | --------------------- |
+| Altoire in ochi dormind          | Medie       | 75-85%      | August             | Briceag altoit, banda |
+| Altoire in despicatura/copulatie | Medie       | 60-80%      | Feb-Martie         | Briceag, mastic       |
+| Seminte (franc)                  | Mica        | 90%         | Toamna             | **DOAR pt portaltoi** |
+| Butasi                           | Foarte Mare | <5%         | -                  | Nerecomandat          |
+
+**Metoda RECOMANDATA pentru Roland:** Altoirea in ochi dormind in luna august pe portaltoi achizitionat (Colt, Mahaleb sau Gisela 6). Ciresul dezvolta o gomoza puternica la altoirile tarzii de primavara.
+
+**De ce nu din samburi?** Samburii de la soiurile nobile vor produce pomi uriasi (15m inaltime) care vor face cirese mici, amare si dupa 7-10 ani de la plantare.
+
+**Soiuri protejate (PVP):** Atentie, multiplicarea comerciala a soiurilor _Kordia_, _Regina_ si a noilor creatii romanesti (ex. _Daria_) fara licenta este ilegala.
+
+---
+
+## O. MANAGEMENTUL SOLULUI SI ERBICIDARE
+
+**Cernoziomul Nadlac si aceasta specie:**
+
+- pH-ul cernoziomului (~7.0-7.5) este excelent. Ciresul uraste solurile acide.
+- Nu necesita amendamente, doar asigurarea unui drenaj bun pe terenul plat.
+
+**Gestionarea ierbii si buruienilor:**
+
+| Metoda                     | Aplicabilitate        | Pro                                    | Contra                          |
+| -------------------------- | --------------------- | -------------------------------------- | ------------------------------- |
+| Cosit mecanic              | Excelenta pe interval | Mentine microclimat, utilaje pot intra | Concurenta pt apa               |
+| Mulci organic              | Buna (sub coroana)    | Pastreaza umiditatea                   | Atrage soarecii iarna           |
+| Erbicide                   | Nerecomandata         | -                                      | Radacini sensibile la suprafata |
+| Cultivare mecanica (freza) | Moderata              | Incorporeaza gunoiul de grajd          | Taie radacinile de suprafata    |
+
+**Mulcire:** 10-15 cm de resturi vegetale/paie pe o raza de 1m, DAR indepartati mulciul iarna langa trunchi pentru a nu atrage soareci de camp (ciresul e preferatul lor).
+
+**Semne vizuale de sol obosit:** Frunze mici, ingalbenite (cloroza), cauzate de exces de umiditate sau carenta de azot.
+
+---
+
+## P. ADAPTARE LA SCHIMBARI CLIMATICE
+
+**Tendinte climatice confirmate pentru Campia de Vest:**
+
+- Veri caniculare cu seceta pedologica prelungita in august-septembrie.
+- Primaveri atipice cu temperaturi de +20°C in februarie urmate de valuri reci in aprilie.
+
+**Impact specific pe aceasta specie la Nadlac:**
+
+| Schimbare climatica      | Impact concret                                       | Gravitate | Orizont |
+| ------------------------ | ---------------------------------------------------- | --------- | ------- |
+| Ierni mai calde          | Inflorire prea timpurie -> Inghet in aprilie         | **MARE**  | Prezent |
+| Veri mai secetoase       | Afecteaza diferentierea mugurilor pentru anul viitor | MARE      | Prezent |
+| Ploi torentiale in Iunie | Cracarea intregii recolte in 2-3 zile                | **MARE**  | Prezent |
+
+**Adaptari recomandate ACUM:**
+
+- Sistem de irigare prin picurare instalat de la inceput.
+- Plantare de soiuri cu inflorire si coacere mai tardiva (Regina, Kordia).
+- **Extrem de recomandat:** Plasarea unor folii anti-ploaie deasupra randului in iunie pentru soiurile valoroase.
+
+---
+
+## Q. COMBINATII, ASOCIERI SI LAYOUT IN LIVADA
+
+**Specii BENEFICE in vecinatate:**
+
+| Specie vecina           | Beneficiu concret                                              | Distanta recomandata |
+| ----------------------- | -------------------------------------------------------------- | -------------------- |
+| Visin                   | Acelasi regim fitosanitar, fara concurenta radiculara agresiva | > 4 metri            |
+| Allium (Usturoi, Ceapa) | Plantate in jurul trunchiului, alunga afidele si borerii       | 0.5 - 1 metru        |
+
+**Specii DE EVITAT:**
+
+| Specie vecina | Problema concreta                                     | Distanta minima          |
+| ------------- | ----------------------------------------------------- | ------------------------ |
+| Nuc           | Juglona (toxina in sol) si umbrire masiva             | 15 - 20 metri            |
+| Piersic/Cais  | Tratamente diferite vara, cerinte diferite de tundere | Puse pe randuri separate |
+
+**Pozitionare optima la Nadlac:**
+
+- Distante: minim 4-5 metri pe rand pe portaltoi Colt. Orientare Nord-Sud.
+- Expunere maxima la soare; ciresul la umbra va rodi exclusiv pe varful coroanei.
+
+---
+
+## R. ECHIPAMENTE SI UNELTE
+
+**Toolkit minim obligatoriu:**
+
+| Unealta                      | Utilizare                                  | Cost orientativ (lei) | Prioritate            |
+| ---------------------------- | ------------------------------------------ | --------------------- | --------------------- |
+| Plasa anti-pasari            | Salvarea recoltei in luna iunie            | 2-3 lei/mp            | **OBLIGATORIU**       |
+| Scara tip trepied            | Cules la inaltime in siguranta pe sol plat | 500-800               | OBLIGATORIU           |
+| Foarfeca bypass profesionala | Tunderi curate pentru a preveni bacterioza | 150-300               | OBLIGATORIU           |
+| Atomizor de spate            | Stropirea in varful pomilor adulti (>4m)   | 500-1500              | OBLIGATORIU (anul 4+) |
+| Alcool izopropilic / Clor    | Dezinfectarea foarfecei intre pomi         | 20                    | OBLIGATORIU           |
+
+**Intretinere unelte:** Dezinfectarea uneltelor la cires NU este optionala. Trecerea de la un pom bolnav la unul sanatos fara a dezinfecta foarfeca raspandeste imediat cancerul bacterian.
+
+---
+
+## S. PROCESARE DETALIATA SI RETETE
+
+**Tabel produse posibile:**
+
+| Produs                        | Dificultate | Echipament                   | Valoare adaugata | Recomandat?        |
+| ----------------------------- | ----------- | ---------------------------- | ---------------- | ------------------ |
+| Consum proaspat               | Mica        | -                            | Mare             | **DA (prioritar)** |
+| Dulceata de cirese (Pietrose) | Medie       | Cratita inox, borcane        | Mare             | DA                 |
+| Compot                        | Mica        | Borcane, aparat scos samburi | Medie            | DA                 |
+| Ciresata (Lichior)            | Mica        | Damigeana                    | Mare             | DA                 |
+| Congelare                     | Mica        | Pungi                        | Mica             | DA (pentru iarna)  |
+
+### Dulceata de Cirese (Din soiuri Pietrose - ex: Germersdorf, Kordia)
+
+Cantitate: 1 kg fructe -> 3-4 borcane (300g)
+Moment optim: Fructe ajunse la maturitate deplina (negre/visinii).
+Durabilitate: 2-3 ani in camara intunecata si racoroasa.
+
+Ingrediente:
+
+- 1 kg cirese fara samburi
+- 800g zahar tos
+- Zeama de la 1 lamaie
+- 1 baton vanilie (optional) sau 4-5 frunze de menta proaspata
+
+Echipament: Dispozitiv de scos samburi, cratita de inox/fonta (fara teflon), lingura lemn.
+
+Procedura pas cu pas:
+
+1. Spala ciresele, scoate samburii (ai nevoie de 1 kg fruct net) si pune-le in cratita in straturi alternative cu zaharul. Lasa peste noapte.
+2. Pune pe foc mic-mediu pana incepe sa fiarba. **Aduna spuma constant!** (E crucial pentru o dulceata limpede).
+3. Lasa sa fiarba aproximativ 40-50 minute. Testeaza consistenta: o picatura de sirop pe o farfurie scoasa de la congelator trebuie sa ramana bombata, nu sa curga ca apa.
+4. Adauga zeama de lamaie cu 5 minute inainte de a stinge focul (impiedica zaharisirea pe viitor si mentine o culoare rosie-stralucitoare).
+5. Toarna in borcane sterilizate in cuptor, la cald. Pune capacul si intoarce borcanul 10 min.
+
+Semne de reusita: Ciresele trebuie sa fie intregi ("stau ca sticla"), iar siropul sa fie vascos ca mierea lichida.
+Greseli frecvente: Cirese prea apoase fierte excesiv = magiun amarui.
+
+---
+
+## T. VANZARE LEGALA SI CERTIFICARE IN ROMANIA
+
+**Forme legale de vanzare pentru producator individual Romania:**
+
+| Forma                      | Ce permite                | Ce necesita                        | Cost aproximativ   |
+| -------------------------- | ------------------------- | ---------------------------------- | ------------------ |
+| Vanzare la poarta / Piata  | Fructe proaspete          | Atestat Producator                 | ~100 lei / an      |
+| Online / Social Media      | Fructe proaspete          | Atestat Producator                 | Gratuit            |
+| Procesate (Dulceata) legal | Vanzare evenimente locale | Notificare Punct Gastronomic Local | Timp + Dosar DSVSA |
+
+**Documente necesare:** Atestatul de Producator (emis de Primaria Nadlac pe baza declararii in Registrul Agricol) este suficient pentru a merge in pietele agroalimentare din Arad.
+
+**Etichetare obligatorie:** Pentru vanzarea la lada, scrie specia, soiul, calitatea, data recoltarii si mentiunea "Produs in Romania - Nadlac".
+
+**Certificare bio:** Foarte greu si nerentabil pentru 100 de pomi din cauza mustei ciresului si atacurilor agresive de afide care distrug recolta in anii umezi. Pretul unui cires perfect, curat, cu codita verde, romanesc ("Fara tratamente la floare/fruct") este oricum comparabil cu cel bio din supermarket.
+
+---
+
+## U. INTERACTIUNI CU FAUNA
+
+**Fauna BENEFICA:**
+
+| Animal/Insecta          | Beneficiu concret                      | Cum atragi prezenta                     |
+| ----------------------- | -------------------------------------- | --------------------------------------- |
+| Albine (Apis mellifera) | **ESENTIALE**. 90% din polenizare.     | **NU stropi in inflorire!**             |
+| Bondari                 | Zboara si la temp. mai scazute (10°C). | Lasa zone cu flora spontana.            |
+| Buburuze / Sirfide      | Mananca afidele de pe lastarii tineri. | Lasa zone necosite la marginea livezii. |
+
+**Fauna DAUNATOARE:**
+
+| Animal                      | Dauna concreta                    | Amploare   | Metode non-chimice                                                  | Metode chimice                           |
+| --------------------------- | --------------------------------- | ---------- | ------------------------------------------------------------------- | ---------------------------------------- |
+| **Pasari (Grauri, Mierle)** | Mananca/ciugulesc fructele coapte | **CRITIC** | **Plase anti-pasari** (OBLIGATORIU)                                 | Nimic                                    |
+| **Musca Ciresului**         | Larva (vierme) in fruct           | MARE       | Capcane lipicioase galbene                                          | Karate Zeon, Calypso (respectand pauza!) |
+| Soareci de camp             | Rod scoarta iarna                 | MEDIU      | Inlaturare mulci de langa trunchi, protejare trunchi cu plasa deasa | Momeala raticida (sub teava de PVC)      |
+
+---
+
+## V. PLAN MULTIANUAL SI CALENDAR DE INVESTITII
+
+**Cronologia plantat → productie plina:**
+
+| An       | Varsta  | Activitati principale                   | Productie estimata | Investitie estimata (lei/pom) |
+| -------- | ------- | --------------------------------------- | ------------------ | ----------------------------- |
+| Anul 1   | Plantat | Formare coroana (vas/piramida)          | 0                  | 40 lei pom + 30 irigatii      |
+| Anul 2   | 1 an    | Formare etaj 2                          | 0                  | 20 (tratamente)               |
+| Anul 3   | 2 ani   | Tunderi usoare. Achizitie plase pasari. | mica (<2kg)        | 50 (plase)                    |
+| Anul 4   | 3 ani   | Coroana completa.                       | medie (10kg)       | 30                            |
+| Anul 5   | 4 ani   | **ROI (Recuperarea Investitiei)**       | medie-mare (25kg)  | 30                            |
+| Ani 6-10 | Matur   | Taiere de vara pentru mentinere         | plina (40-60kg)    | 40                            |
+
+**Riscuri financiare principale la Nadlac:**
+
+1. Inghetul de revenire in aprilie.
+2. Ploi masive exact in preajma recoltarii (in iunie) care crapa productia in procent de 80%. Asigurarea agricola pentru pomiculura este esentiala pentru plantatiile > 1 ha.
+
+---
+
+## W. RECUPERARE DUPA EVENIMENTE EXTREME
+
+**Recuperare dupa INGHET DE PRIMAVARA (dupa inflorire):**
+
+- **Evaluare:** Sectionati cu lama florile a doua zi. Daca pistilul e negru/maro inchis, floarea e compromisa.
+- **Actiune:** Productia anului este compromisa. Veti avea tendinta sa abandonati pomul. **NU FACETI ASTA!** Frunzele trebuie protejate de cilindrosporioza. Aplicati ingrasaminte foliare cu aminoacizi pentru a ajuta pomul sa depaseasca stresul termic si sa pregateasca muguri pt anul viitor.
+
+**Recuperare dupa PLOI TORENTIALE IN IUNIE (Cracare Masiva):**
+
+- **Actiune:** Daca fructele crapa inainte de recoltare, instalarea Moniliozei este garantata in urmatoarele 24h. Fructele crapate trebuie date jos si procesate imediat in compot/dulceata/lichior sau aruncate afara din livada. Nu le lasati sa putrezeasca pe pom (vor infecta ramurile!).
+
+**Recuperare dupa SECETA SEVERA (Iulie-August fara ploi):**
+
+- **Protocol rehidratare:** Nu turnati brusc 200L de apa! Rehidratati in etape, cu 40L seara, in fiecare a 3-a zi. Ciresul uscat isi va lepada frunzele din centru prematur.
+
+---
+
+## X. ISTORIE, TRADITII SI VALOARE CULTURALA LOCALA
+
+**Istoria cultivarii in Campia de Vest:**
+Ciresul in Arad si Banat a reprezentat mereu "primul ban" din anul agricol al taranului din campie. Clima blanda, cu primaveri cu incalzire rapida dinspre campia pannonica, au facut zona potrivita, iar pomii falnici din curti erau motiv de mandrie.
+
+**Utilizari traditionale:**
+
+- Ciresata (o varianta locala, mai dulce si mai deschisa la culoare, decat banala visinata).
+- Lemnul de cires: Foarte pretuit in tamplaria de lux din zona Arad-Timisoara (mobilier Biedermeier etc.), datorita fibrei rosietice.
+
+**Legaturi cu piata maghiara:**
+Ciresele timpurii de pe valea Muresului si zona de campie erau adesea exportate istoric inspre Budapesta si Viena pe Mures. Bazinul pomicol Arad se inrudeste in tehnici (mai ales pe soiurile mari, pietroase - numite de maghiari _ropogós cseresznye_ - cirese crocante) cu traditia horticola maghiara.
+
+---
+
+## Y. RESURSE, FURNIZORI SI RETEA DE SUPORT LOCALA
+
+**Pepiniere recomandate zona Arad/Timis/Bihor:**
+
+- **[VERIFICAT] Pepinierele din zona Aiud** (Ciumbrud, jud. Alba): Desi la ~2h distanta, ofera cea mai larga varietate de portaltoi vegetativi (Gisela 6, Colt) si pomi certificati (CAC) la preturi excelente.
+- **[DE CAUTAT LOCAL]** Pepiniere in zona Zadareni/Secusigiu (Arad) sau in Bihor, unde traditia este puternica, pot oferi material saditor aclimatizat.
+
+**Furnizori produse fitosanitare si ingrasaminte zona Arad:**
+
+- **Agroland / Fitofarmacii locale Arad (Piete):** Veti gasi insecticidele pentru musca ciresului (Calypso, Karate Zeon - sub noile nume comerciale daca ies din omologare) si, cel mai important, capcanele lipicioase galbene Atraceras.
+- Plasele anti-pasari cu ochiuri de 1-2 cm pot fi comandate cel mai ieftin online direct de la importatorii de agrotextile.
+
+**Institutii si expertiza locala:**
+
+- **Statiunea de Cercetare-Dezvoltare Pomicola (SCDP):** Pentru expertiza tehnica excelenta, vizitati/sunati la statiuni precum SCDP Cluj sau centrele universitare Timisoara (USAMVB).
+- Grupurile online ("Pomicultura pentru incepatori") raman principala retea de diagnosticare in timp real pentru un amator in 2024-2025.
+
+---
+
+_Sectiunile I-Y integrate din cercetarea Gemini CLI — 2026-04-08. Date validate Claude Code._

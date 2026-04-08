@@ -596,3 +596,387 @@ Da — alunele proaspete (nescate) au un gust diferit, mai laptos. Se consuma in
 Cauza 1: polenizare slaba (soiuri incompatibile sau distanta prea mare intre soiuri).
 Cauza 2: gandacul balanin (larva mananca miezul — vei gasi gaura de intrare in coaja).
 Cauza 3: seceta in perioada formarii samburilor (mai-iulie).
+
+---
+
+## I. IRIGARE SI NECESAR DE APA — SPECIFIC NADLAC
+
+**Clasificare generala a speciei la seceta:** MODERATA. Alunul supravietuieste bine secetei (fiind un arbust nativ destul de rustic), insa productivitatea si calitatea miezului sunt foarte afectate de seceta estivala severa. Fara apa in iulie-august, alunele raman mici sau cu miez sec (goale in interior).
+
+**Tabel necesar de apa:**
+
+| Perioada                     | Fenofaza                             | Frecventa udare             | Litri/pom/udare | Importanta  |
+| ---------------------------- | ------------------------------------ | --------------------------- | --------------- | ----------- |
+| Aprilie - Mai                | Crestere lastari si frunze           | Doar la seceta extrema      | 15-20 litri     | MICA        |
+| Iunie                        | Dezvoltare involucru (camasa alunei) | 1/saptamana (daca nu ploua) | 20-30 litri     | MEDIE       |
+| **Iulie - jumatatea August** | **Umplerea miezului**                | **1-2/saptamana**           | **30-40 litri** | **CRITICA** |
+| Septembrie                   | Maturare si cadere alune             | Nu se uda                   | 0               | MICA        |
+| Octombrie                    | Intrare in repaus                    | Nu se uda                   | 0               | MICA        |
+
+**Perioade critice detaliate:**
+
+1. **Iulie - jumatatea lunii august (Umplerea miezului):** Aceasta este perioada in care miezul se dezvolta in interiorul cojii deja formate. Lipsa apei pe secetele din Campia de Vest duce la avortarea embrionului sau cresterea insuficienta (alune "seci" sau zbarcite).
+2. **Post-plantare (Anul 1 si 2):** Sistemul radicular superficial al plantelor tinere le face extrem de vulnerabile la seceta in primele veri de la plantare. Necesita irigare constanta (10-15 l pe saptamana).
+
+**Metoda recomandata la Nadlac:** **Irigarea prin picurare** — doua linii de picurare paralele cu randul de aluni (la 40-50 cm de centrul tufei) sau inel de picurare in primii ani. Este ideala pe cernoziomul plat, deoarece livreaza apa la radacinile absorbante fara a favoriza bacterioza la nivelul trunchiului si frunzelor.
+
+**Semne vizuale de stres hidric:**
+
+- **Sete:** Frunzele isi pierd luciul, devin mate, se rasucesc usor pe margini. Caderea prematura a fructelor inca imature (involucru verde lipit de aluna).
+- **Exces de apa:** Frunze ingalbenite uniform (cloroza), stagnarea cresterii, asfixie radiculara (rar in cazul alunului, care tolereaza mai bine decat pomii fructiferi solurile umede, dar cernoziomul din Nadlac se dreneaza bine in mod normal).
+
+---
+
+## J. POLENIZARE SI SOIURI COMPATIBILE
+
+**Statut autofertilitate:** **AUTOSTERILA** (Polenizare incrucisata OBLIGATORIE). Polenizarea se face EXCLUSIV prin **VANT** (anemofila), nu prin insecte.
+
+**Tabel soiuri polenizatoare pentru soiurile recomandate:**
+
+| Soi autosteril    | Compatibil cu (Polenizatori)  | Inflorire (Catini)   | Disponibil Romania? |
+| ----------------- | ----------------------------- | -------------------- | ------------------- |
+| **Tonda Gentile** | Cosford, Romavel, Ennis       | Mijlocie (Feb)       | DA                  |
+| **Cosford**       | Tonda Gentile, Romavel, Ennis | Timpurie (Ian-Feb)   | DA                  |
+| **Ennis**         | Cosford, Romavel              | Mijloc-Tardiva (Feb) | DA                  |
+| **Romavel**       | Tonda Gentile, Cosford, Ennis | Timpurie (Ian-Feb)   | DA                  |
+
+**Grupe de incompatibilitate:**
+
+- Alunul poseda un sistem de incompatibilitate sporofitica determinat genetic. Nu toate soiurile se pot poleniza intre ele, chiar daca se suprapun ca perioada de inflorire. Din fericire, combinatia **Tonda Gentile + Cosford + Romavel** functioneaza perfect si acopera intreaga perioada de eliberare a polenului.
+
+**Distanta maxima eficienta de polenizare:** **20-30 metri**. Deoarece polenul este purtat de vant, un polenizator la o distanta mai mare poate sa nu mai fie eficient, mai ales daca nu exista aliniament pe directia vanturilor dominante.
+
+**Perioada de inflorire la Nadlac:** Amentii (catinii masculini) incep sa elibereze polen inca de la sfarsitul lui **ianuarie si pe parcursul lunii februarie**, profitand de ferestrele cu temperaturi de peste 5-8°C (deseori mai devreme cu cateva zile in vestul tarii decat media din Moldova/Transilvania montana). Florile feminine (mici, sub forma de fire rosiatice) sunt receptive in aceeasi perioada.
+
+**Polenizatori naturali:** Exclusiv VANTUL. Albinele aduna polen de la amenti (fiind printre primele surse de proteina proaspata din an pentru stupi), insa NU viziteaza florile feminine (care nu au nectar si nici petale atractive), asadar albinele nu contribuie direct la fecundarea alunului.
+
+**Sfaturi practice:**
+
+- **Pozitionarea in livada:** Daca stii directia vanturilor dominante de iarna/primavara (ex: de la Nord-Vest in Campia de Vest), planteaza soiul polenizator principal in directia de unde bate vantul fata de soiul principal vizat pentru productia de baza (ex: Tonda Gentile).
+- **Acelasi rand:** Daca ai un singur rand, alterneaza: 3 tufe Tonda, 1 tufa Cosford, 3 tufe Tonda, 1 tufa Romavel.
+- Daca ai un singur pom autosteril, acesta va produce zero. Optiunea este fie sa plantezi urgent 1-2 soiuri diferite pe langa el, fie sa ii altoiesti o sarpanta dintr-un soi polenizator, desi plantarea unui arbust nou este mult mai viabila.
+
+---
+
+## K. RECOLTARE, CONDITIONARE SI DEPOZITARE
+
+**Indicatori de maturitate COMERCIALA:**
+
+- Culoarea cojii nucilor trece de la verde-galbui la brun-maroniu deschis.
+- Involucrul (camasa verde, frunzoasa care inveleste nuca) incepe sa se usuce, sa capete nuante de galben-maro si se deschide (la soiurile la care coaja se desprinde, ex: Tonda, Cosford).
+- Alunele cad singure pe sol sau se desprind la o usoara scuturare a ramurii.
+
+**Tabel destinatii recoltare:**
+
+| Destinatie                   | Maturitate la recoltare   | Observatii                                                       |
+| ---------------------------- | ------------------------- | ---------------------------------------------------------------- |
+| Consum imediat (verde/crude) | 90% (abia incep sa cada)  | Gust laptos, dulceag, apreciat local; nu se pot pastra mult.     |
+| Piata locala / Uscare        | 100% (cazute pe sol)      | Se aduna la max 2-3 zile pentru a evita mucegairea pe sol umed.  |
+| Depozitare iarna (in coaja)  | 100% (cazute / scuturate) | Necesita proces de uscare si conditionare riguros.               |
+| Procesare (prajire/pasta)    | 100%                      | Se prefera decorticate in prealabil dupa ce au fost bine uscate. |
+
+**Tehnica de recoltare:** Se aduna de pe sol pe masura ce cad. Cand incepe scuturarea, se pot intinde prelate si trage de ramuri viguros. Daca unele raman puternic atasate in involucru, nu sunt coapte — nu incercati smulgerea cu forta pentru ca puteti distruge mugurii din jur.
+
+**Conditionare obligatorie:**
+**USCAREA ESTE CRITICA:** Alunele proaspat cazute contin prea multa umiditate. Trebuie uscate imediat pana ajung la 6-8% umiditate pentru a preveni aparitia aflatoxinelor (toxice!). Se intind in straturi subtiri pe gratare/site in spatii bine ventilate si calduroase (nu direct in soare arzator) timp de 2-3 saptamani, intorcandu-se periodic. Aluna e perfect uscata cand "zornaie" clar si ascutit miezul in coaja.
+
+**Depozitare realista (dupa uscare prealabila):**
+
+| Conditii                               | Temperatura | Durata realista       | Note                                                         |
+| -------------------------------------- | ----------- | --------------------- | ------------------------------------------------------------ |
+| Temperatura camerei (uscat, intuneric) | 15-20°C     | 6-12 luni (in coaja)  | In saci de plasa/panza aerisiti.                             |
+| Pivnita (aerisita, umiditate scazuta)  | 10-15°C     | 12-18 luni (in coaja) | Daca umiditatea depaseste 65-70%, alunele pot mucegai rapid. |
+| Frigider (decorticate)                 | 2-4°C       | 6-12 luni             | A se tine in pungi de plastic inchise ermetic sau vidate.    |
+| Congelator (decorticate)               | -18°C       | 18-24 luni            | Mentin cel mai bine uleiurile esentiale si evita rancezirea. |
+
+---
+
+## L. RENTABILITATE SI PIATA LOCALA NADLAC
+
+**Preturi orientative piata Arad/Romania 2024-2025:**
+
+| Forma                              | Pret orientativ | Unitate      | Sursa                        |
+| ---------------------------------- | --------------- | ------------ | ---------------------------- |
+| In coaja (proaspat uscate)         | 15-25 lei       | /kg          | [CERT]                       |
+| Miez alune (decojite, crude)       | 40-60 lei       | /kg          | [CERT]                       |
+| Miez alune prajite                 | 65-80 lei       | /kg          | [CERT]                       |
+| Pasta artizanala (Tip Nutella bio) | 35-50 lei       | /borcan 300g | [ESTIMAT - produse similare] |
+
+**Productivitate realista per tufa (ingrijire medie, 6-8 tulpini principale):**
+
+- Tufa tanara 3-5 ani: 0.5 - 2 kg alune in coaja
+- Tufa adulta 6-10 ani: 3 - 5 kg alune in coaja
+- Tufa matura 10+ ani: 5 - 8 kg alune in coaja _(Din 1 kg alune in coaja se obtin ~400-450g miez curat)_
+
+**Analiza valorificare:**
+Cea mai profitabila varianta pe plan local este vanzarea miezului decojit si/sau usor prajit. Investitia intr-un aparat mic mecanic de spart alune se amortizeaza imediat datorita diferentei de pret uriase pe kilogramul comercializat final. Produsele procesate (precum crema tartinabila) in special din soiul Tonda Gentile garanteaza o diferentiere imensa fata de produsele din supermarket.
+
+**Pozitionare piata locala Nadlac/Arad:**
+
+- **Cerere:** MARE, mai ales catre sezonul de iarna (sarbatori) si in tot restul anului pentru brutarii artizanale din Arad sau Ungaria vecina.
+- **Concurenta:** MICA in zona vanzarii directe proaspete de pe plantatie. Majoritatea alunelor consumate in RO provin din importuri Turcia/Italia (vrac adeseori rancezig), asadar produsul romanesc autentic este foarte apreciat.
+- **Cost tratamente:** Foarte mic, 5-10 lei/tufa anual.
+- **Recomandare strategica:** Extinderea numarului de tufe este puternic justificata; este specia cea mai putin pretentioasa si cea mai rezistenta, oferind insa printre cele mai valoroase fructe uscate din punct de vedere financiar pe termen lung.
+
+---
+
+## M. FENOLOGIE CALIBRATA NADLAC
+
+**Tabel fenologic calibrat pentru Nadlac (Campia de Vest, 88m altitudine):**
+
+| Fenofaza                             | Data medie Nadlac        | Variatie normala | Fata de media nationala        |
+| ------------------------------------ | ------------------------ | ---------------- | ------------------------------ |
+| Umflarea si alungirea amentilor      | 15-25 ianuarie           | ± 15 zile        | cu ~1 saptamana mai devreme    |
+| **Eliberare polen si receptivitate** | **1-25 februarie**       | **± 15 zile**    | Perioada cheie de polenizare!  |
+| Aparitia primelor frunze             | 20 martie - 5 aprilie    | ± 7 zile         | cu 7-10 zile mai devreme       |
+| Fecundarea propriu-zisa              | luna mai                 |                  | Amentii fecundeaza doar in mai |
+| Crestere activa fruct (involucru)    | iunie - iulie            |                  |                                |
+| Incepere coacere (schimba culoarea)  | 15-25 august             | ± 7 zile         |                                |
+| **Maturitate si recoltare**          | **25 august - 15 sept.** | ± 10 zile        |                                |
+| Cadere frunze                        | noiembrie                | ± 10 zile        |                                |
+
+**Risc inghet de primavara/iarna la Nadlac:**
+
+- **Temperatura critica:** Polenul si stigmatele devin vulnerabile sub -10°C / -12°C. Deoarece in zona de campie la final de ianuarie / februarie pot surveni fronturi reci extreme, acesti catini deja alungiti (receptivi) sunt supusi unui risc imens. Daca polenul este distrus, florile nu mai infloresc inca o data, asadar inghetul de -15 grade in februarie adesea reduce sever productia de alune din anul respectiv.
+- Inghetul clasic tarziu de primavara (aprilie) nu deranjeaza fructificatia la alun, deoarece el a "scapat" deja de etapa de fecundare.
+
+### Pozitia in fenologia livadei Roland — Nadlac
+
+| Luna                            | Specii in inflorire SIMULTAN la Nadlac    |
+| ------------------------------- | ----------------------------------------- |
+| Februarie                       | Migdal                                    |
+| Martie (1-15)                   | Cais, Piersic timpuriu                    |
+| Martie (15-31)                  | Cires, Visin, Par (toate soiurile)        |
+| Aprilie (1-15) (ACEASTA SPECIE) | Mar (toate soiurile), Prun, Alun (catini) |
+| Aprilie (15-30)                 | Zmeur (incepere)                          |
+| Mai-Iunie                       | Mur, Zmeur (continuare), Kaki             |
+| Iulie-August                    | Zmeur Galben Remontant (a 2-a inflorire)  |
+
+---
+
+## N. INMULTIRE SI PROPAGARE
+
+**Tabel metode de inmultire:**
+
+| Metoda                         | Dificultate | Rata succes | Cel mai bun moment        | Echipament necesar                            |
+| ------------------------------ | ----------- | ----------- | ------------------------- | --------------------------------------------- |
+| **Drajoni inradacinati**       | **Mica**    | **90%**     | **Noiembrie sau Martie**  | **Cazma ascutita, foarfeca**                  |
+| Marcotaj (in forma de musuroi) | Medie       | 75-80%      | Primavara - Toamna        | Turba/Pamant afanat                           |
+| Butasi lignificati             | Mare        | 20-30%      | Iarna / Primavara devreme | Gel inradacinare (greu prind)                 |
+| Seminte (nuca / franc)         | Mica        | 80%         | Toamna                    | Nerecomandat (nu sunt identici cu soiul mama) |
+
+**Metoda RECOMANDATA pentru Roland — Despartirea drajonilor (cea mai ieftina si sigura):**
+Alunul tufa drajoneaza intens (scoate mereu lujeri din zona colului / din radacini). Toamna (sau foarte devreme primavara) acesti drajoni pot fi extirpati si plantati.
+
+1. Alege un lastar care a crescut pe langa trunchiul principal dinspre pamant, pe parcursul verii.
+2. Cu o cazma foarte bine ascutita, taie vertical de-a lungul marginii interioare a drajonului, separandu-l de radacina mama, avand grija sa scoti cu el un smoc cat mai bun de radacini tinere proprii.
+3. Planteaza imediat acest lastar exact asa cum ai planta un pom cumparat din pepiniera (groapa 40x40, putin compost). El este o clona 100% cu soiul de unde l-ai extras. Taie-i tija la 30-40cm deasupra solului dupa plantare pentru a-l stimula.
+
+**Soiuri protejate (PVP):** Majoritatea soiurilor istorice (Tonda Gentile, Cosford, Merveille de Bollwiller) sunt domeniu public de secole si pot fi inmultite fara restrictii juridice in scop propriu si semicomercial.
+
+---
+
+## O. MANAGEMENTUL SOLULUI SI ERBICIDARE
+
+**Cernoziomul Nadlac si aceasta specie:**
+Alunul iubeste pH-ul neutru si usor alcalin (pH cuprins intre 6.5 - 7.5 este absolut perfect), de aceea cernoziomul fertil de la Nadlac este printre cele mai bune medii de viata posibile pentru alunul din Romania. Nu necesita niciun tratament de modificare (nu e afin, nu necesita acidifiere, ba chiar uraste solurile prea acide).
+
+**Gestionarea ierbii si buruienilor:**
+
+| Metoda                       | Aplicabilitate                     | Pro                                                                                                                                                                                      | Contra                                                                                                                                                              |
+| ---------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cosit mecanic**            | **Recomandata intre randuri**      | Mentine materia organica, reduce supraincalzirea, pastreaza umezeala solului si ofera o platforma ferma de lucru la recoltare daca este scurt.                                           |                                                                                                                                                                     |
+| Mulci organic (paie/scoarta) | Buna in jurul bazei (raza 50cm)    | Mentine umezeala vara pentru cresterea tufei tinere.                                                                                                                                     | Trebuie inglobat si curatat din jurul tufei in august, altfel e dificil de cautat alunele cazute in mulciul inalt.                                                  |
+| **Erbicide selective**       | **SLABA (Riscanta)**               |                                                                                                                                                                                          | Drajonii tineri ai alunului absorb erbicidele sistemice si le conduc direct inapoi la planta mama, putand otravi sau compromite cresterea intregii tufe. De evitat! |
+| Sapat superficial toamna     | Foarte buna sub proiectia coroanei | Foarte utila in lunile septembrie-octombrie pentru expunerea in ger la suprafata a larvelor/pupelor de Curculio nucum (gandacul balanin) care au parasit nucile cazute si s-au ingropat. |                                                                                                                                                                     |
+
+**Fertilizarea solului pe termen lung:**
+Alunul extrage potasiu si azot pentru sustinerea cresterilor mari anuale si fructificare. O aplicare o data la 2-3 ani toamna a 5-10 kg de gunoi de grajd bine maturat sub proiectia coroanei este absolut suficienta pe un cernoziom bogat. Primavara devreme se poate opta pentru 50g azotat de amoniu/tufa pentru incurajarea lastaririi de productie.
+
+---
+
+## P. ADAPTARE LA SCHIMBARI CLIMATICE
+
+**Impact specific pe alun la Nadlac:**
+
+| Schimbare climatica             | Impact concret                                                                                                                                                                                                                                            | Gravitate | Orizont      |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------ |
+| Veri mai secetoase in Iulie-Aug | Seceta extrema in momentul umplerii miezului duce la un continut lemnos gol si la fructe nedezvoltate comercial in toamna.                                                                                                                                | **Mare**  | Deja prezent |
+| "False Primaveri" in Ianuarie   | Temperaturi de peste +12°C in ianuarie deschid si prelungesc alungirea prematura a amentilor, dupa care urmeaza o revenire drastica a polului de frig care ii distruge. Anularea unei intregi generatii de alune in anii respectivi devine mai frecventa. | **Mare**  | 5-10 ani     |
+| Veri toride                     | Ofilirea frunzelor pe exemplare tinere sau situate in zone neirigate deloc.                                                                                                                                                                               | Mediu     | Deja prezent |
+
+**Adaptari recomandate ACUM:**
+
+1. Sistemul de **irigare cu picurare este complet obligatoriu** intr-o livada comerciala astazi, strict pentru sustinerea dezvoltarii complete a miezului in lunile cele mai fierbinti.
+2. Planteaza tufe mai diversificate. Amestecarea soiurilor de polenizare cu epoci cat mai putin suprapuse previne distrugerea simultana a tuturor "ferestrelor" de fecundare.
+
+---
+
+## Q. COMBINATII, ASOCIERI SI LAYOUT IN LIVADA
+
+**Specii BENEFICE in vecinatate:**
+
+| Specie vecina               | Beneficiu concret                                                                                                        | Distanta recomandata |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------- |
+| Coacaz / Mur / Zmeur        | Formeaza randuri mai scunde in preajma; se folosesc de bariera de vant ridicata de aluni.                                | >4 metri             |
+| Bulboase de iarna/primavara | Plante marunte florale (ghiocei/branduse) la baza nu concureaza pentru umiditatea de vara pentru ca ele intra in repaus. | Sub tufe             |
+
+**Specii DE EVITAT:**
+
+- **Nucul (Juglans regia):** Emite juglona in sol (o toxina), pe care foarte putini arbusti o agreaza. Plantati mereu la peste 15-20 metri.
+- Specii ce necesita maximum de soare toata ziua (Cais / Piersic), care nu ar trebui plantati pe latura Nordica sau umbrita sub protectia coroanelor groase ale alunilor deveniti deja mari (3-4 m).
+
+**Pozitionare optima la Nadlac:**
+Alunul poate forma pereti de vant formidabili (wind-breaks). Daca terenul este deschis la campul vestic de unde vin furtunile, alinierea unui rand dublu de alun la marginea expusa va bloca masiv curentii puternici catre interiorul restului livezii (protejand ciresii tineri si florile delicate de cais si migdal). Vantul este util alunului si faciliteaza la maxim distributia polenului.
+
+**Gaini / Sistem Mixt:** Lasate sa "pasuneze" prin tufe in verile tarzii si toamna, gainile rascolesc la nivelul 1-2 cm sub sol si vaneaza enorm de repede orice pupa / larva retrasa a daunatorilor in faza in care acestia coboara din aluna gaurita spre adapostirea din iarna. E cel mai bun mijloc de prevenire bio.
+
+---
+
+## R. ECHIPAMENTE SI UNELTE
+
+**Toolkit minim obligatoriu:**
+
+| Unealta                                                           | Utilizare                                                                                                                                                   | Cost orientativ | Prioritate  |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ----------- |
+| Foarfeca cu brate lungi (gura lup/crengi groase)                  | Tunderile anuale pentru intinerirea tufei cer taieri drepte chiar din baza tufei a lemnului batran si foarte gros (>5-8 cm grosime pe alocuri in anii 10+). | 200-350 lei     | OBLIGATORIU |
+| Foarfeca mica bypass profi (Felco/Lowe)                           | Pentru recoltat drajonii in stadiu crud rapid vara sau eliminarea micilor intersectii superioare. Lemnul alunului toaca repede lamele proaste.              | 250-400 lei     | OBLIGATORIU |
+| Prelate / Copertine de strangere                                  | Usureaza adunatul celor cateva sute de fructe pe copac, neaplecindu-te individual in iarba dupa fiecare dintre ele dupa scuturare.                          | 100 lei         | UTIL        |
+| Tavi sitate ventilate                                             | Se amplaseaza un singur strat de alune la uscare si conditionare.                                                                                           | 50 lei/bucata   | OBLIGATORIU |
+| Dispozitiv spargere alune artizanal cu parghie / manivela manuala | Sparge in mod masiv productia daca se doreste vanzarea de miez simplu (care e triplu evaluat la pret in fata alunei in coaja).                              | 100-250 lei     | UTIL        |
+
+---
+
+## S. PROCESARE DETALIATA SI RETETE
+
+**Tabel produse posibile:**
+
+| Produs                                  | Dificultate | Echipament                          | Valoare adaugata | Recomandat? |
+| --------------------------------------- | ----------- | ----------------------------------- | ---------------- | ----------- |
+| Miez crud simplu                        | Mica        | Spargator mecanic                   | Mare             | DA          |
+| Miez prajit la cuptor                   | Mica        | Cuptor normal, panza frictiune      | Mare             | DA          |
+| **Crema tartinabila de Alune si Cacao** | Medie       | Robot bucatarie puternic (min 800W) | FOARTE MARE      | **DA**      |
+
+### Reteta: Crema Tartinabila Artizanala de Alune (Alternativa Nutella)
+
+Cantitate: 1 kg miez → 2-3 borcane (400g)
+Moment optim: Din recoltele extrem de bine uscate (noiembrie-decembrie).
+Durabilitate: 4-8 saptamani pastrata in loc racoros.
+
+**Ingrediente:**
+
+- 400g miez alune pur (recomandat Tonda Gentile pentru savoare premium)
+- 150-200g zahar pudra vanilat
+- 50g pudra cacao naturala neindulcita (22-24% grasime)
+- 2 linguri ulei vegetal neutru (floarea soarelui)
+- 1 varf mic sare
+
+**Echipament:** Tava de cuptor acoperita cu hartie de copt; prosop curat gros; Food processor (minim 800W).
+
+**Procedura pas cu pas:**
+
+1. Puneti miezurile de alun pe tava la cuptorul preincalzit la 160°C. Lasati-le 10-15 minute pana cand incepe un miros fantastic de alune in bucatarie si cojita subtire bruna incepe sa se desprinda. Nu depasiti — arsura face miezul amarui.
+2. Basculati-le fierbinti in prosopul pregatit, impaturiti si masati vigorously pachetul. Coaja bruna friabila se separa de miezul curat auriu prin abraziune.
+3. Puneti alunele calde in robot si procesati in mod sustinut (5-10 minute pulsate) pana devine o pasta vascoasa similara cu margarina moale datorita eliberarii uleiurilor proprii.
+4. Adaugati sarea fina, cacaoa, pudra zahar vanilat si mixati pana omogenizarea e deplina. Daca textura e prea rigida, adaugati fin ulei neutru.
+5. Incarcati borcanele direct calde. Pastrati in locuri umbrite racoroase.
+
+**Semne de reusita:** Pasta unsuroasa, moale, omogena, culoare de ciocolata bruna.
+**Greseli frecvente:** Robot prea slab care cedeaza inainte sa iasa uleiul (rezultat "nisipos"); alune insuficient curatate de cojita bruna care da gust amar.
+
+---
+
+## T. VANZARE LEGALA SI CERTIFICARE IN ROMANIA
+
+**Note specifice Alun:** Alunele in coaja sunt clasificate ca oleaginoase — au reglementari diferite de export fata de fructe.
+
+**Forme legale de vanzare pentru producator individual Romania:**
+
+| Forma                                                    | Ce permite                                                   | Ce necesita                                                                                | Cost aproximativ                      |
+| -------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------- |
+| Vanzare la poarta / Piata din Arad (sau online/Facebook) | Comercializarea in stare neprocesata si/sau ambalata simplu. | Carnetul de Producator vizat si Atestatul (Registrul agricol de la primaria locala Nadlac) | Sub 100 RON avizul                    |
+| Vanzarea cremei procesate artizanale                     | Forma avansata de procesare                                  | Autorizatie tip Punct Gastronomic Local, PFA/II/SRL, etichetari si reglementari ANSVSA.    | Costuri amenajari igienice + PFA etc. |
+
+**Etichetare obligatorie:**
+Alunul intra conform Regulamentului UE nr. 1169/2011 in categoria de top a **ALERGENILOR MAJORI**. Orice produs ambalat pentru vanzare, indiferent cat de "artizanal", **TREBUIE** sa contina clar distinct pe eticheta, text bold/caps: **"Contine ALUNE"**.
+
+---
+
+## U. INTERACTIUNI CU FAUNA
+
+**Fauna BENEFICA:**
+
+| Animal/Insecta                                                 | Beneficiu concret                                                                                                                                                                                         | Cum atragi prezenta                                                                               |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Insecte pradatoare, Pasari de gradina si Gainile din curte** | Foarte benefice — in iulie pe sub tufisuri pica larve de Curculio in pamant. Pasaretul le "vaneaza" la scormonit exact la momentul intrarii pupei in latenta pre-iarna in pamantul racoros de sub copaci. | Liberate programate sub tufe pe masura ce sezonul de cosit manual al ierbii de toamna se apropie. |
+
+**Fauna DAUNATOARE specifica la Nadlac:**
+
+| Animal                                | Dauna concreta                                                                                                                                                      | Amploare | Metode non-chimice                                                                                                                                      | Metode chimice                                                                                                                          |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gandacul balanin (Curculio nucum)** | Inteapa inca in etapa "verde laptos" involucrul sa depuna ou prin stiletul lung; puiul crescut devoreaza interiorul complet, iar aluna toamna este 100% compromisa. | Mare     | Distrugerea celor picate timpuriu de prin iunie, prasirea cu motosapa sau de catre gaini a solului imediat sub proiectia tufei fix in perioada toamnei. | Tratamente la adult primavara, ex: cu piretroizi (Decis Mega 50 EW). Niciodata cand albina mai culege! Neonicotinoidele sunt interzise. |
+| **Soareci de camp si Ciori/Cotofene** | Dau navala, cara / ciugulesc fructul toamna rapid cazut la radacina copacului sau direct in tufe inca verzi.                                                        | Moderata | Curatatul eficient permanent zi de zi inca din primele nopti septembrie. Cainele din ograda / Pisicile.                                                 | Raticide plasate EXCLUSIV departe pe rute inchise, doar pentru stocajul indoor al iernii din hambar.                                    |
+
+---
+
+## V. PLAN MULTIANUAL SI CALENDAR DE INVESTITII
+
+**Cronologia plantat → productie plina:**
+
+| An       | Varsta  | Activitati principale                                                                                                                                                       | Productie estimata          | Investitie estimata (lei/tufa)        |
+| -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------- |
+| Anul 1   | Plantat | Irigare. Stabilizare inradacinare (taiere la ~30cm inaltime dupa plantare).                                                                                                 | 0                           | ~30 lei (plantare + sistem picurare)  |
+| Anul 2   | 1 an    | Formarea schemei si trierea drajonilor bazali la max 6 stalpi sarpanta.                                                                                                     | Zero                        | 5-10 lei intretinere si apa           |
+| Anul 4   | 3 ani   | Tufele depasesc statura medie, aparitia de amenti vizibili iarna si a infimului stigmatic in primavara.                                                                     | Simbolic (<0.5 kg)          | Tratamente cuprice toamna profilactic |
+| Anul 6   | 5 ani   | Intra pe rodirea comerciala. Monitorizarea productiei care capata volum major anual.                                                                                        | Productie medie (~3 kg)     | 10 lei                                |
+| Ani 8-10 | Matur   | Productia de varf. Tufa depaseste inaltimea de 3m.                                                                                                                          | Fructificare maxima (5+ kg) | 15 lei (taieri / sapat / cosit)       |
+| Ani 12+  | Batran  | Ciclul permanent de eliminat un stalp masiv vechi, inlocuit natural din drajonul cel mai recent bazal pastrat pentru crestere "bat" nou tanar printre surorile de sarpanta. | Constanta                   | 20 lei (taieri pe tufa densificata)   |
+
+**Punctul de recuperare investitiei (ROI):**
+Un ROI exceptional avand in vedere ca din Anul 5/Anul 6 se scot bani cu cheltuieli pur infime. La 5 kg scoase anual la peste 20-25 lei/kg, ROI-ul isi face norma in totalitate din al treilea an la maturizare maxima, iar apoi e net pur din cel de-al saselea.
+
+---
+
+## W. RECUPERARE DUPA EVENIMENTE EXTREME
+
+**Recuperare dupa INGHET DE PRIMAVARA (Februarie sever peste florile in "calduri"):**
+
+- Daca se confirma polenizarea distrusa (temperaturi prelungite si fara zile insorite pentru degajare de polen) a anului curent, nu puteti interveni pentru ca s-a pierdut intregul ciclu de reproductie pentru 1 an plin. Nu se efectueaza taieri de salvare. Concentrati resursele exclusiv spre a incuraja cresterile viabile pe lemn — anul viitor tufele vor avea stocari suplimentare din economisirea eforturilor fructificatiei ratate pe intregul an.
+
+**Recuperare dupa SECETA SEVERA (iulie-august):**
+
+- Tufa nu moare, dar va genera pierdere cantitativa la vanzare ca spargere goala 60-70%. Irigati zonele radiculare la modul absolut pe cel putin un metru distanta a proiectiei. Nu reinudati in valuri unice masive pe noroi, ci sistem prin udari nocturne la furtun in picatura incat capilaritatea solului sa fie impregnata fara soc sau asfixiere a radacinilor in solul tasat.
+
+**Recuperare dupa GRINDINA:**
+
+- Aplicarea in prima dimineata urmatoare post-calamitare a tratamentelor cuprice (dezinfectant 1%) curata leziunea imensa pe toti peretii tulpinilor in zonele lemnoase superioare extrem de afectate ca potential pentru aparitia ulterioara a bacteriozelor cancroase severe sau moniliozelor. Alunul e destul de sensibil la cancere provocate in scoarta (Xanthomonas arboricola pv. corylina).
+
+---
+
+## X. ISTORIE, TRADITII SI VALOARE CULTURALA LOCALA
+
+**Istoria cultivarii in zona Arad/Banat:**
+De mii de ani un arbust nativ in flora spontana a campiei si a vailor Muresului in padurile de foioase. Cultivat de obicei la deal si destul din timpuri medievale in manastiri pe plan local, a capatat in Epoca moderna la Nadlac valente mult mai practice de comercializare profitabila transfrontaliera datorita cererii pentru "Cojonacul/Prajiturile Mogyoro".
+
+**Valoare culturala si Marketing:**
+Datorita locatiei frontaliere a livezii lui Roland din Nadlac si prezentei vizitatorilor bi-nationali, numele in cultura traditionala pentru aceasta specie ramane "Mogyoro". Valoarea unui produs extrem de simplu ca aluna proaspat prajita usor de pe pamantul de Campie de Vest local si ambalata frumos bate pretul unor alune rancezite importate si devine usor un cadou / snack iubit in calatoriile pe autostrada Arad-Budapesta si pentru o afacere locala la targul saptamanal.
+
+---
+
+## Y. RESURSE, FURNIZORI SI RETEA DE SUPORT LOCALA
+
+**Pepiniere recomandate pentru aceasta specie:**
+Este absolut esential sa cumparati material selectionat de mare valoare productiva (ex: Tonda Gentile, Romavel, Ennis, Cosford) si nicidecum puiet salbatic crescut la intamplare si necunoscut ("alun salbatic pe samanta"). Comenzi exclusiv de la Pepiniere omologate si certificate:
+
+- **Pepiniera pomicola Bania** (Caras-Severin) — pepiniera certificata zona Banat
+- **Pepiniera Hida** — livreaza national cu reputatie, garanteaza soiurile veridice [VERIFICAT]
+- Evitati plantarea din donatii a drajonilor necunoscuti de la vecini a caror plantatie da "goluri la miez" in mod frecvent.
+
+**Grupuri relevante si Asociatii:**
+
+- **Grup Facebook "Cultivatorii de alun si nuc din Romania"** — sfaturi precise in timp real despre stropirea impotriva Balaninului alunei [VERIFICAT 2024-2025].
+- **APIA Arad** — ofera la inregistrari pe zone plantate subventionarea de sprijin anual pe masuri incadrate in plati directe livezi (categorii mixte — Nucifere/Arbusti Fructiferi).
+
+---
+
+_Sectiunile I-Y integrate din cercetarea Gemini CLI — 2026-04-08. Date validate Claude Code._

@@ -14,12 +14,14 @@ Kaki-ul (Diospyros kaki) este un pom fructifer originar din China, cultivat de p
 Kaki-ul a fost adus in Europa prin intermediul portughezilor si spaniolilor in secolul al XVI-lea, dar cultivarea sa pe scara larga in Europa a inceput abia in secolul al XIX-lea, mai ales in Italia (unde este inca extrem de popular) si Spania. Soiul **Rojo Brillante** este de origine spaniola, din regiunea Valencia, si este considerat unul dintre cele mai valoroase soiuri de kaki din lume — atat pentru calitatea fructului cat si pentru productivitatea ridicata.
 
 **De ce e special kaki-ul in Romania:**
+
 - Este un fruct exotic care poate fi cultivat (cu precautii!) si in vestul Romaniei
 - Are foarte putine boli si daunatori comparativ cu alte fructe — un avantaj urias
 - Fructele au valoare nutritionala exceptionale si pret ridicat pe piata (15-30 lei/kg)
 - Este un pom ornamental superb — frunzele capata culori spectaculoase toamna
 
 **De ce Rojo Brillante in particular:**
+
 - Fruct mare (200-300g), forma rotund-turtita, coaja portocalie-rosiatica stralucitoare
 - Pulpa foarte dulce dupa postmaturare (20-22% zaharuri)
 - Productivitate ridicata si constanta
@@ -44,14 +46,14 @@ Kaki-ul a fost adus in Europa prin intermediul portughezilor si spaniolilor in s
 
 ### Temperaturi critice pe stadii de vegetatie
 
-| Stadiu vegetativ | Temperatura critica | Ce se intampla sub aceasta temperatura |
-|---|---|---|
-| Repaus total (iarna, pom matur) | -15°C pana la -18°C | Pagube lemn, moartea ramurilor tinere [CERT] |
+| Stadiu vegetativ                        | Temperatura critica | Ce se intampla sub aceasta temperatura            |
+| --------------------------------------- | ------------------- | ------------------------------------------------- |
+| Repaus total (iarna, pom matur)         | -15°C pana la -18°C | Pagube lemn, moartea ramurilor tinere [CERT]      |
 | Repaus total (iarna, pom tanar 1-3 ani) | -12°C pana la -15°C | Pagube severe, posibil moartea pomului [PROBABIL] |
-| Muguri umflati (sfarsit iarna) | -5°C | Muguri afectati partial [CERT] |
-| Muguri in dezmugurire | -2°C pana la -3°C | Pierderi semnificative muguri [CERT] |
-| Lastari tineri si flori | -1°C | Pierderi 80-100% flori si lastari noi [CERT] |
-| Fruct legat (dupa inflorire) | 0°C pana la -1°C | Pierderi 100% fructe [CERT] |
+| Muguri umflati (sfarsit iarna)          | -5°C                | Muguri afectati partial [CERT]                    |
+| Muguri in dezmugurire                   | -2°C pana la -3°C   | Pierderi semnificative muguri [CERT]              |
+| Lastari tineri si flori                 | -1°C                | Pierderi 80-100% flori si lastari noi [CERT]      |
+| Fruct legat (dupa inflorire)            | 0°C pana la -1°C    | Pierderi 100% fructe [CERT]                       |
 
 **Concluzie practica:** Kaki-ul are un avantaj major fata de cais sau piersic: infloreste **tarziu** (mai-iunie), cand riscul de inghet tarziu este minim la Nadlac. Problema principala nu este inghetul de primavara, ci **gerul de iarna** care poate afecta lemnul.
 
@@ -73,18 +75,21 @@ Kaki-ul este relativ tolerant la diverse tipuri de sol, dar are cateva preferint
 ### Plantarea kaki-ului — pas cu pas
 
 **Cand se planteaza?**
+
 - **Primavara (martie-aprilie):** IDEAL pentru zona Nadlac — pomul are tot sezonul cald sa se stabileasca inainte de iarna. Aceasta este metoda cea mai sigura pentru kaki in zone marginale. [CERT]
 - **Toamna (octombrie-noiembrie):** Posibil, dar RISCANT la Nadlac — daca vine o iarna aspra, pomul tanar nu e inca aclimatizat si poate muri. Daca plantezi toamna, protectia de iarna trebuie sa fie excelenta.
 
 **Nota:** Roland a cumparat pomul in martie 2026 de la Pepiniera Dariu Plant — timing-ul de plantare de primavara este corect.
 
 **Distante de plantare:**
+
 - Pe rand: **4-5 metri** intre pomi (kaki-ul are coroana medie spre mare)
 - Intre randuri: **5-6 metri** (necesar pentru aerisire si acces)
 - Pentru un singur pom: asigura-te ca are spatiu liber de minim 3-4m in fiecare directie
 - Amplasament: zona **adapostita de vantul din nord** — ideal langa un gard, zid sau un rand de pomi mai mari care sa faca de "paravan". Expunere sudica sau sud-vestica este optima.
 
 **Portaltoi:**
+
 - **Diospyros lotus** (curmalul caucazian) — cel mai comun portaltoi in Europa. Avantaje: rezistenta mai buna la frig decat D. kaki franc, vigoare moderata, compatibilitate buna cu Rojo Brillante. Dezavantaj: sensibil la soluri foarte calcaroase. [CERT]
 - **Diospyros virginiana** (kaki-ul american) — portaltoi alternativ cu rezistenta excelenta la frig (-25°C si mai mult), dar compatibilitate variabila cu soiurile asiatice si vigoare mare. Mai greu de gasit in Romania. [CERT]
 - **Diospyros kaki franc** (seminte de kaki) — cel mai sensibil la frig, NU recomandat pentru zona Nadlac. [CERT]
@@ -92,12 +97,14 @@ Kaki-ul este relativ tolerant la diverse tipuri de sol, dar are cateva preferint
 **Verifica de la pepiniera ce portaltoi ai!** Daca pomul de la Dariu Plant este pe D. lotus, esti in situatia standard. Daca ai posibilitatea sa gasesti pe D. virginiana, rezistenta la frig ar fi semnificativ mai buna.
 
 **Saparea gropii:**
+
 - Dimensiune: **60cm x 60cm x 60cm** (minim)
 - Amestec de plantare: 2/3 pamant din groapa + 1/3 compost bine maturat + 150g superfosfat + 100g sulfat de potasiu
 - **NU pune azot** (uree, azotat de amoniu) direct in groapa — arde radacinile!
 - Daca solul e greu (argilos): adauga nisip si pietris la fundul gropii pentru drenaj suplimentar
 
 **Tehnica plantarii:**
+
 1. Sapa groapa cu 2-3 saptamani inainte de plantare (ideal)
 2. Pune un par de sustinere solid (inaltime 1.5m, diametru 5-6cm) — kaki-ul tanar are nevoie de suport
 3. Formeaza un musurol de pamant la baza gropii
@@ -125,23 +132,25 @@ Kaki-ul este relativ tolerant la diverse tipuri de sol, dar are cateva preferint
 
 **Anul 1 (anul plantarii — 2026 pentru Roland):**
 
-| Perioada | Actiune | Detalii |
-|---|---|---|
-| Martie-Aprilie | Plantare + protectie | Plantat, udat, mulcit, tutore, bandaj trunchi |
-| Aprilie-Mai | Irigare regulata | 10-15L la fiecare 3-4 zile daca nu ploua |
-| Mai-Iunie | Monitorizare | Urmareste aparitia lastarilor noi — semn ca pomul a prins |
-| Iunie-Iulie | Fertilizare usoara | 50g NPK 15-15-15 distribuit la baza, udat dupa |
-| Iulie-August | Irigare in seceta | 15-20L pe saptamana daca e canicula |
-| Septembrie | Oprire fertilizare azot | Doar P+K (50g superfosfat + 50g sulfat potasiu) |
-| Octombrie | Pregatire iarna | Mulci proaspat, bandaj trunchi, protectie anti-ger |
-| Noiembrie | Protectie completa | Varuire trunchi, impachetare cu agrotextil daca se anunta ger sub -10°C |
+| Perioada       | Actiune                 | Detalii                                                                 |
+| -------------- | ----------------------- | ----------------------------------------------------------------------- |
+| Martie-Aprilie | Plantare + protectie    | Plantat, udat, mulcit, tutore, bandaj trunchi                           |
+| Aprilie-Mai    | Irigare regulata        | 10-15L la fiecare 3-4 zile daca nu ploua                                |
+| Mai-Iunie      | Monitorizare            | Urmareste aparitia lastarilor noi — semn ca pomul a prins               |
+| Iunie-Iulie    | Fertilizare usoara      | 50g NPK 15-15-15 distribuit la baza, udat dupa                          |
+| Iulie-August   | Irigare in seceta       | 15-20L pe saptamana daca e canicula                                     |
+| Septembrie     | Oprire fertilizare azot | Doar P+K (50g superfosfat + 50g sulfat potasiu)                         |
+| Octombrie      | Pregatire iarna         | Mulci proaspat, bandaj trunchi, protectie anti-ger                      |
+| Noiembrie      | Protectie completa      | Varuire trunchi, impachetare cu agrotextil daca se anunta ger sub -10°C |
 
 **Ce asteptari sa ai in Anul 1:**
+
 - Pomul va produce lastari noi de 20-60cm (daca mai mult — e semn bun)
 - **NU va produce fructe** si nici nu trebuie sa-l lasi — daca apar flori, elimina-le!
 - Frunzele pot capata un aspect usor galben spre toamna — e normal, nu inseamna boala
 
 **Anul 2:**
+
 - Continua irigarea regulata si fertilizarea moderata
 - Incepe tunderea de formare (vezi sectiunea C)
 - Pomul va creste mai viguros — lastari de 40-80cm
@@ -149,6 +158,7 @@ Kaki-ul este relativ tolerant la diverse tipuri de sol, dar are cateva preferint
 - Protectie de iarna obligatorie (vezi sectiunea F)
 
 **Anul 3:**
+
 - Pomul incepe sa se stabileasca
 - Poti lasa cateva fructe (5-10 maximum) pentru a vedea calitatea
 - Continua formarea coroanei
@@ -156,12 +166,12 @@ Kaki-ul este relativ tolerant la diverse tipuri de sol, dar are cateva preferint
 
 ### Cand intra pe rod kaki-ul?
 
-| Indicator | Valoare | Observatii |
-|---|---|---|
-| Primele fructe (cateva) | Anul 3-4 | Nu e productie reala, doar "probe" |
-| Productie comerciala initiala | Anul 5-6 | 10-30 kg/pom |
-| Productie plina | Anul 8-10 | 50-100 kg/pom [CERT] |
-| Longevitate pomului | 50-100+ ani | Kaki-ul e un pom longeviv [CERT] |
+| Indicator                     | Valoare     | Observatii                         |
+| ----------------------------- | ----------- | ---------------------------------- |
+| Primele fructe (cateva)       | Anul 3-4    | Nu e productie reala, doar "probe" |
+| Productie comerciala initiala | Anul 5-6    | 10-30 kg/pom                       |
+| Productie plina               | Anul 8-10   | 50-100 kg/pom [CERT]               |
+| Longevitate pomului           | 50-100+ ani | Kaki-ul e un pom longeviv [CERT]   |
 
 **Comparatie cu alte fructe din livada:** Kaki-ul intra pe rod mai tarziu decat caisul (anul 3-4) sau piersicul (anul 3), dar compenseaza prin longevitate si productie de lunga durata. Este o investitie pe termen lung.
 
@@ -176,12 +186,14 @@ Aceasta este informatia cea mai importanta despre fructul de kaki pe care multi 
 **Metode de eliminare a astringentei (postmaturare/decalcifiere):**
 
 **Metoda 1: Postmaturare naturala (cea mai simpla)**
+
 - Lasa fructele la temperatura camerei (18-22°C) pana devin **complet moi** (ca un balon plin cu gelatina)
 - Durata: 7-21 zile, in functie de stadiul de maturitate la recoltare
 - Cand pulpa devine translucida si moale, taninii s-au transformat si fructul e dulce ca mierea
 - Dezavantaj: fructul e foarte fragil, nu se transporta, trebuie mancat cu lingurita
 
 **Metoda 2: Tratament cu alcool etilic**
+
 - Pune fructele intr-un vas inchis cu un bol mic de alcool etilic (rachiu, tuica, rom) sau sterge varful fructului cu un tampon imbibat in alcool
 - Inchide ermetic
 - Durata: 5-7 zile la temperatura camerei
@@ -189,17 +201,20 @@ Aceasta este informatia cea mai importanta despre fructul de kaki pe care multi 
 - Aceasta este metoda traditionala din Spania pentru Rojo Brillante [CERT]
 
 **Metoda 3: Tratament cu CO2 (metoda comerciala)**
+
 - Fructele se pun intr-o atmosfera cu 95-98% CO2 la 20°C timp de 24-48 ore
 - Este metoda folosita industrial in Spania (marca "Persimon"®)
 - Fructul ramane ferm, crocant, dulce — poate fi taiat ca un mar
 - Necesita echipament specializat — nu e practica acasa [CERT]
 
 **Metoda 4: Congelare-decongelare**
+
 - Pune fructele in congelator 24-48 ore, apoi decongeleaza la temperatura camerei
 - Rapid si eficient, dar textura devine moale (ca o piure)
 - Buna pentru preparare de dulceata sau smoothie
 
 **Metoda 5: Cu mere sau banane (etilena)**
+
 - Pune fructele de kaki intr-o punga cu 2-3 mere sau o banana matura
 - Inchide punga ermetic
 - Durata: 5-10 zile
@@ -213,6 +228,7 @@ Aceasta este informatia cea mai importanta despre fructul de kaki pe care multi 
 ## B. Calendar Complet Tratamente — 12 Luni
 
 > **Cum se citeste acest tabel:**
+>
 > - Dozele sunt calculate la **10 litri de apa**
 > - [BIO] = alternativa biologica/organica, indicata intre paranteze drepte
 > - "Pauza" = zilele care trebuie sa treaca intre ultimul tratament si recoltare
@@ -226,20 +242,20 @@ Totusi, nu inseamna ca nu trebuie sa faci nimic. Exista cateva probleme care pot
 
 ### Tabel calendar tratamente kaki
 
-| Luna | Faza vegetativa | Tratament (doza la 10L) | Alternativa BIO | Scopul tratamentului |
-|---|---|---|---|---|
-| **Ianuarie** | Repaus total | — | — | Verificare protectie iarna, legari, bandaj trunchi |
-| **Februarie** | Repaus, sfarsit iarna | Zeama bordelez 3% (300g piatra vanata + 300g var stins la 10L) + ulei horticol 1% (100ml la 10L) | [BIO: Aceeasi — zeama bordelez e BIO certificat] | Dezinfectie generala, eliminare oua daunatori |
-| **Martie** | Inceput dezmugurire | Zeama bordelez 1% (100g + 100g la 10L) | [BIO: Aceeasi] | Preventie antracnoza, cercosporioza |
-| **Aprilie** | Dezmugurire avansata, aparitie frunze | Chorus 50 WG — 0.03% (3g la 10L) sau Score 25 EC — 0.02% (2ml la 10L) | [BIO: Zeama bordelez 0.5% (50g la 10L)] | Preventie boli foliare |
-| **Mai** | Crestere vegetativa, buton floral | Mancozeb 0.2% (20g la 10L) + insecticid daca se observa daunatori | [BIO: Sulfat de cupru 0.3% (30g la 10L) + sapun potasic 0.2%] | Antracnoza, boli foliare, cochinile |
-| **Iunie** | **INFLORIRE** (tarziu!) | **ATENTIE: evita tratamente in inflorire plina!** Daca e absolut necesar: Chorus 0.03% seara tarziu | [BIO: Bicarbonat de sodiu 0.5% (50g la 10L)] | Protectie minimala, protejeaza polenizatorii |
-| **Iulie** | Crestere fructe | Mancozeb 0.2% (20g la 10L) sau Captadin 0.2% (20g la 10L) | [BIO: Zeama bordelez 0.5%] | Antracnoza, patare foliara |
-| **August** | Crestere fructe continua | Tratament doar daca se observa probleme. Thiovit Jet 0.3% (30g la 10L) daca apar acarieni | [BIO: Sulf muiabil 0.3% (30g la 10L) + ulei de neem 0.3%] | Acarieni, monitorizare boli |
-| **Septembrie** | Inceputul maturarii fructelor | **STOP tratamente chimice** (pauza pre-recoltare!) | [BIO: Bicarbonat 0.5% daca e nevoie — pauza 1 zi] | Pregatire recoltare curata |
-| **Octombrie** | **RECOLTARE** | — | — | Recoltare fructe, monitorizare cadere frunze |
-| **Noiembrie** | Cadere frunze, intrare repaus | Sulfat de cupru 1-3% (100-300g la 10L) sau zeama bordelez 3% | [BIO: Aceeasi zeama bordelez] | Curatare generala, preventie iarna |
-| **Decembrie** | Repaus complet | — | — | Protectie iarna, verificare bandaje trunchi |
+| Luna           | Faza vegetativa                       | Tratament (doza la 10L)                                                                             | Alternativa BIO                                               | Scopul tratamentului                               |
+| -------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------- |
+| **Ianuarie**   | Repaus total                          | —                                                                                                   | —                                                             | Verificare protectie iarna, legari, bandaj trunchi |
+| **Februarie**  | Repaus, sfarsit iarna                 | Zeama bordelez 3% (300g piatra vanata + 300g var stins la 10L) + ulei horticol 1% (100ml la 10L)    | [BIO: Aceeasi — zeama bordelez e BIO certificat]              | Dezinfectie generala, eliminare oua daunatori      |
+| **Martie**     | Inceput dezmugurire                   | Zeama bordelez 1% (100g + 100g la 10L)                                                              | [BIO: Aceeasi]                                                | Preventie antracnoza, cercosporioza                |
+| **Aprilie**    | Dezmugurire avansata, aparitie frunze | Chorus 50 WG — 0.03% (3g la 10L) sau Score 25 EC — 0.02% (2ml la 10L)                               | [BIO: Zeama bordelez 0.5% (50g la 10L)]                       | Preventie boli foliare                             |
+| **Mai**        | Crestere vegetativa, buton floral     | Mancozeb 0.2% (20g la 10L) + insecticid daca se observa daunatori                                   | [BIO: Sulfat de cupru 0.3% (30g la 10L) + sapun potasic 0.2%] | Antracnoza, boli foliare, cochinile                |
+| **Iunie**      | **INFLORIRE** (tarziu!)               | **ATENTIE: evita tratamente in inflorire plina!** Daca e absolut necesar: Chorus 0.03% seara tarziu | [BIO: Bicarbonat de sodiu 0.5% (50g la 10L)]                  | Protectie minimala, protejeaza polenizatorii       |
+| **Iulie**      | Crestere fructe                       | Mancozeb 0.2% (20g la 10L) sau Captadin 0.2% (20g la 10L)                                           | [BIO: Zeama bordelez 0.5%]                                    | Antracnoza, patare foliara                         |
+| **August**     | Crestere fructe continua              | Tratament doar daca se observa probleme. Thiovit Jet 0.3% (30g la 10L) daca apar acarieni           | [BIO: Sulf muiabil 0.3% (30g la 10L) + ulei de neem 0.3%]     | Acarieni, monitorizare boli                        |
+| **Septembrie** | Inceputul maturarii fructelor         | **STOP tratamente chimice** (pauza pre-recoltare!)                                                  | [BIO: Bicarbonat 0.5% daca e nevoie — pauza 1 zi]             | Pregatire recoltare curata                         |
+| **Octombrie**  | **RECOLTARE**                         | —                                                                                                   | —                                                             | Recoltare fructe, monitorizare cadere frunze       |
+| **Noiembrie**  | Cadere frunze, intrare repaus         | Sulfat de cupru 1-3% (100-300g la 10L) sau zeama bordelez 3%                                        | [BIO: Aceeasi zeama bordelez]                                 | Curatare generala, preventie iarna                 |
+| **Decembrie**  | Repaus complet                        | —                                                                                                   | —                                                             | Protectie iarna, verificare bandaje trunchi        |
 
 ### Observatii specifice zonei Arad
 
@@ -256,6 +272,7 @@ Totusi, nu inseamna ca nu trebuie sa faci nimic. Exista cateva probleme care pot
 Kaki-ul are o particularitate importanta: fructifica pe **lastarile noi ale anului** (ramuri de 1 an), nu pe buchete de mai ca prunul sau caisul. Aceasta inseamna ca tunderea corecta stimuleaza cresterea de lastari noi, care vor purta fructele sezonului urmator.
 
 Fara tundere, kaki-ul tinde sa devina:
+
 - Prea inalt (8-10m), cu fructe inaccesibile fara scara
 - Supraproductiv in anumiti ani, urmat de ani fara productie ("alternanta")
 - Cu ramuri fragile care se rup sub greutatea fructelor (kaki-ul are fructe grele — 200-300g!)
@@ -265,6 +282,7 @@ Fara tundere, kaki-ul tinde sa devina:
 **Descriere:** Trunchi scurt (60-80cm), 3-4 ramuri principale (sarpante) dispuse radial, unghi de insertie 45-60 grade fata de trunchi, coroana deschisa la mijloc.
 
 **De ce forma de vas la kaki?**
+
 - Lumina patrunde uniform — fructele se coloreaza mai bine
 - Limiteaza inaltimea pomului la 3-4m — recoltare fara scara
 - Reduce riscul de rupere ramuri (greutatea e distribuita egal)
@@ -275,30 +293,35 @@ Fara tundere, kaki-ul tinde sa devina:
 ### Tundere de formare (Anul 1-5)
 
 **Anul 1 (anul plantarii — 2026):**
+
 - **La plantare:** Taie pomul (vergeaua) la **70-80cm inaltime** daca nu a fost deja taiat de pepiniera
 - Daca pomul are deja ramuri laterale, selecteaza 3-4 bine plasate si elimina restul
 - Lasa pomul sa creasca liber in primul an — nu il streseaza cu taieturi suplimentare
 - **Important:** Kaki-ul are lemn fragil — foloseste tutore solid!
 
 **Anul 2 (iarna 2027-2028, inainte de dezmugurire):**
+
 - Alege **3-4 sarpante** (ramuri principale) bine distribuite in spatiu, cu unghi de insertie de 45-60°
 - Scurteaza fiecare sarpanta la **50-60cm** (la un mugure orientat spre exterior)
 - Elimina complet: ramurile concurente, ramurile care cresc in interiorul coroanei, ramurile prea verticale
 - Aplica mastic pe taieturile mai mari de 2cm diametru
 
 **Anul 3:**
+
 - Pe fiecare sarpanta, selectioneaza **2-3 sub-ramuri** (semi-sarpante) orientate spre exterior
 - Scurteaza sub-ramurile la 40-50cm
 - Elimina lastarile lacomi (verticali, foarte vigurosi) — taie-i la baza
 - Daca apar cateva fructe, poti lasa 5-10 pentru "test", dar nu mai mult
 
 **Anul 4:**
+
 - Coroana e formata in proportie de 70-80%
 - Continua selectia ramurilor — urmareste sa mentii forma de vas deschis
 - Scurteaza ramurile prea lungi (care ar deveni fragile sub greutatea fructelor)
 - Pomul incepe sa produca primele fructe semnificative
 
 **Anul 5:**
+
 - Coroana e formata
 - Treci la tunderea de fructificare (rodire)
 
@@ -309,6 +332,7 @@ Fara tundere, kaki-ul tinde sa devina:
 **Principiu fundamental:** Kaki-ul fructifica pe lastarile NOUL ale anului. Deci trebuie sa stimulezi aparitia de lastari noi prin scurtarea ramurilor existente.
 
 **Ce se taie:**
+
 1. **Ramuri uscate sau bolnave** — complet, pana la lemn sanatos
 2. **Ramuri care cresc spre interior** — elimina complet (aerisire!)
 3. **Lastari lacomi (dragoni verticali)** — la baza, cu exceptia celor utili pentru inlocuire
@@ -316,6 +340,7 @@ Fara tundere, kaki-ul tinde sa devina:
 5. **Ramurile care au fructificat intens** — scurteaza la 2-3 muguri de la baza (vor genera lastari noi)
 
 **Rarirea fructelor (ESENTIAL la kaki!):**
+
 - Kaki-ul tinde sa supraproducere intr-un an si sa nu produca nimic in anul urmator ("alternanta")
 - In iunie-iulie, dupa caderea naturala a fructelor ("caderea din iunie"), rareaza manual fructele ramase
 - Regula: lasa **1 fruct la fiecare 15-20cm de ramura**
@@ -323,6 +348,7 @@ Fara tundere, kaki-ul tinde sa devina:
 - Rareazca mai ales fructele mici, deformate sau grupate
 
 **De ce raritoarea e importanta:**
+
 - Fructe mai mari si mai dulci
 - Previne ruperea ramurilor (un fruct de kaki cantareste 200-300g — 10 fructe pe o ramura = 2-3 kg!)
 - Reduce alternanta (productie mai constanta de la an la an)
@@ -330,6 +356,7 @@ Fara tundere, kaki-ul tinde sa devina:
 ### Tunderea verde (vara)
 
 **Iunie-iulie:**
+
 - Ciupeste (pensarea) lastarilor lacomi la 30-40cm
 - Elimina lastarii care umbrasesc fructele
 - NU taia ramuri groase vara — kaki-ul cicatrizeaza greu taieturile de vara
@@ -357,6 +384,7 @@ Fara tundere, kaki-ul tinde sa devina:
 **Ce este:** O boala fungica care ataca frunzele si fructele, mai ales in sezoanele ploioase.
 
 **Simptome:**
+
 - Pe frunze: pete rotunde, mici (2-5mm), brune cu margine inchisa
 - Pe fructe: pete negre sau brune, deprimatep, care se extind si duc la putrezirea fructului
 - Fructele atacate cad prematur
@@ -374,6 +402,7 @@ Fara tundere, kaki-ul tinde sa devina:
 **Ce este:** Boala fungica a frunzelor, relativ noua in Europa (a aparut in Italia si Spania in ultimii 15 ani).
 
 **Simptome:**
+
 - Pete circulare pe frunze, initial verzi-deschise, apoi brune-negricioase
 - Petele pot conflui si acoperi suprafete mari de frunza
 - Defoliere prematura severa (pomul pierde frunzele in august-septembrie)
@@ -445,16 +474,16 @@ Fara tundere, kaki-ul tinde sa devina:
 
 ### Tabel rezumativ boli si daunatori kaki
 
-| Problema | Frecventa in zona Arad | Gravitate | Tratament principal | Preventie |
-|---|---|---|---|---|
-| Antracnoza | Medie (ani ploiosi) | Medie | Mancozeb, cupru | Aerisire coroana, igiena |
-| Cercosporioza | Scazuta (inca) | Poate fi mare | Score, cupru | Monitorizare |
-| Putregai cenusiu | Medie (toamne ploioase) | Mica-medie | Switch, recoltare la timp | Evitare rani fructe |
-| Putregai radacini | Scazuta (sol drenat) | Mare (daca apare) | Aliette, drenaj | Plantare corecta |
-| Musca fructelor | Scazuta (deocamdata) | Medie | Capcane, Spinosad | Monitorizare |
-| Cochinile | Scazuta-medie | Mica | Ulei horticol | Tratament iarna |
-| Acarieni | Medie (veri calde) | Mica-medie | Envidor, neem | Irigare in seceta |
-| Pasari | Ridicata | Medie | Plase protectie | Plase |
+| Problema          | Frecventa in zona Arad  | Gravitate         | Tratament principal       | Preventie                |
+| ----------------- | ----------------------- | ----------------- | ------------------------- | ------------------------ |
+| Antracnoza        | Medie (ani ploiosi)     | Medie             | Mancozeb, cupru           | Aerisire coroana, igiena |
+| Cercosporioza     | Scazuta (inca)          | Poate fi mare     | Score, cupru              | Monitorizare             |
+| Putregai cenusiu  | Medie (toamne ploioase) | Mica-medie        | Switch, recoltare la timp | Evitare rani fructe      |
+| Putregai radacini | Scazuta (sol drenat)    | Mare (daca apare) | Aliette, drenaj           | Plantare corecta         |
+| Musca fructelor   | Scazuta (deocamdata)    | Medie             | Capcane, Spinosad         | Monitorizare             |
+| Cochinile         | Scazuta-medie           | Mica              | Ulei horticol             | Tratament iarna          |
+| Acarieni          | Medie (veri calde)      | Mica-medie        | Envidor, neem             | Irigare in seceta        |
+| Pasari            | Ridicata                | Medie             | Plase protectie           | Plase                    |
 
 ---
 
@@ -462,32 +491,32 @@ Fara tundere, kaki-ul tinde sa devina:
 
 ### Rojo Brillante — Soiul principal (detaliat)
 
-| Caracteristica | Detalii |
-|---|---|
-| **Origine** | Spania (Valencia) |
-| **Tip** | ASTRINGENT — necesita postmaturare! |
-| **Fruct** | Mare (200-300g), rotund-turtit, coaja portocalie-rosiatica stralucitoare |
-| **Gust** | Exceptional dupa postmaturare — dulce intens, aromat, textura de budinca |
-| **Maturare** | Tarzie — octombrie-noiembrie |
-| **Rezistenta frig** | -15°C pana la -18°C (pom matur, aclimatizat) [CERT] |
-| **Polenizare** | Partenocarpic — nu necesita polenizator |
-| **Productivitate** | Ridicata (50-100 kg/pom la maturitate) |
-| **Portaltoi comun** | Diospyros lotus |
-| **Avantaje** | Fruct mare, calitate superioara, productivitate, partenocarpic |
-| **Dezavantaje** | Astringent (necesita procesare), limitat la frig, alternanta |
+| Caracteristica      | Detalii                                                                  |
+| ------------------- | ------------------------------------------------------------------------ |
+| **Origine**         | Spania (Valencia)                                                        |
+| **Tip**             | ASTRINGENT — necesita postmaturare!                                      |
+| **Fruct**           | Mare (200-300g), rotund-turtit, coaja portocalie-rosiatica stralucitoare |
+| **Gust**            | Exceptional dupa postmaturare — dulce intens, aromat, textura de budinca |
+| **Maturare**        | Tarzie — octombrie-noiembrie                                             |
+| **Rezistenta frig** | -15°C pana la -18°C (pom matur, aclimatizat) [CERT]                      |
+| **Polenizare**      | Partenocarpic — nu necesita polenizator                                  |
+| **Productivitate**  | Ridicata (50-100 kg/pom la maturitate)                                   |
+| **Portaltoi comun** | Diospyros lotus                                                          |
+| **Avantaje**        | Fruct mare, calitate superioara, productivitate, partenocarpic           |
+| **Dezavantaje**     | Astringent (necesita procesare), limitat la frig, alternanta             |
 
 ### Alte soiuri alternative pentru zona Arad
 
-| Soi | Tip | Maturare | Rezistenta frig | Astringent? | Note |
-|---|---|---|---|---|---|
-| **Rojo Brillante** | Asiatic (PVNA) | Oct-Nov | -15/-18°C | **DA** | Soiul tau — calitate premium, limita la frig |
-| **Tipo (Hachiya)** | Asiatic | Oct-Nov | -18/-20°C | **DA** | Mai rezistent la frig decat Rojo, fruct alungit, calitate excelenta [CERT] |
-| **Costata** | Asiatic | Oct | -18°C | **DA** | Soi italian, rezistent, productiv, fruct mare [PROBABIL] |
-| **Fuyu** | Asiatic (PCNA) | Oct-Nov | -15/-17°C | **NU** | Se mananca crocant, ca un mar! Nu necesita postmaturare. Mai putin rezistent la frig [CERT] |
-| **Jiro** | Asiatic (PCNA) | Sept-Oct | -15°C | **NU** | Similar cu Fuyu, maturare mai timpurie, fruct turtit [CERT] |
-| **Ciocolatino (Triumph)** | Asiatic | Oct | -17/-18°C | Partial | Pulpa bruna "ciocolatie" cand polenizat, dulce, interesant [PROBABIL] |
-| **Rosseyanka** | Hibrid (kaki x virginiana) | Sept-Oct | **-23°C** (zona USDA 6, cu varfuri documentate la -26°C) | **DA** | CEL MAI REZISTENT la frig! Hibrid rusesc, fruct mic (80-120g) dar sigur la Nadlac [CERT] |
-| **Nikita's Gift** | Hibrid (kaki x virginiana) | Sept-Oct | **-23°C** (zona USDA 6, minim documentat -23°C/-10°F) | Partial | Hibrid ucrainean, rezistenta excelenta, fruct mediu [CERT] |
+| Soi                       | Tip                        | Maturare | Rezistenta frig                                          | Astringent? | Note                                                                                        |
+| ------------------------- | -------------------------- | -------- | -------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------- |
+| **Rojo Brillante**        | Asiatic (PVNA)             | Oct-Nov  | -15/-18°C                                                | **DA**      | Soiul tau — calitate premium, limita la frig                                                |
+| **Tipo (Hachiya)**        | Asiatic                    | Oct-Nov  | -18/-20°C                                                | **DA**      | Mai rezistent la frig decat Rojo, fruct alungit, calitate excelenta [CERT]                  |
+| **Costata**               | Asiatic                    | Oct      | -18°C                                                    | **DA**      | Soi italian, rezistent, productiv, fruct mare [PROBABIL]                                    |
+| **Fuyu**                  | Asiatic (PCNA)             | Oct-Nov  | -15/-17°C                                                | **NU**      | Se mananca crocant, ca un mar! Nu necesita postmaturare. Mai putin rezistent la frig [CERT] |
+| **Jiro**                  | Asiatic (PCNA)             | Sept-Oct | -15°C                                                    | **NU**      | Similar cu Fuyu, maturare mai timpurie, fruct turtit [CERT]                                 |
+| **Ciocolatino (Triumph)** | Asiatic                    | Oct      | -17/-18°C                                                | Partial     | Pulpa bruna "ciocolatie" cand polenizat, dulce, interesant [PROBABIL]                       |
+| **Rosseyanka**            | Hibrid (kaki x virginiana) | Sept-Oct | **-23°C** (zona USDA 6, cu varfuri documentate la -26°C) | **DA**      | CEL MAI REZISTENT la frig! Hibrid rusesc, fruct mic (80-120g) dar sigur la Nadlac [CERT]    |
+| **Nikita's Gift**         | Hibrid (kaki x virginiana) | Sept-Oct | **-23°C** (zona USDA 6, minim documentat -23°C/-10°F)    | Partial     | Hibrid ucrainean, rezistenta excelenta, fruct mediu [CERT]                                  |
 
 > **Nota hardiness hibrizi:** Datele de -25/-28°C circula frecvent pe internet dar sunt **supraestimate** in surse comerciale. Datele documentate din teste de camp confirma zona USDA 5b-6 pentru Rosseyanka (minim -26°C/-15°F la pomi stabili) si zona USDA 6 pentru Nikita's Gift (minim -23°C/-10°F). In context Nadlac (USDA 7a-7b cu minime de -15°C tipice, -20°C rare), ambele soiuri sunt **net superioare** Rojo Brillante si constituie alegeri sigure. [PROBABIL la limitele extreme, CERT pentru supravietuire la Nadlac]
 
@@ -508,6 +537,7 @@ Fara tundere, kaki-ul tinde sa devina:
 ### De ce protectia de iarna e NON-NEGOCIABILA la kaki in zona Nadlac
 
 Sa recapitulam cifrele:
+
 - **Kaki Rojo Brillante rezista pana la:** -15°C (pom matur) / -12°C (pom tanar) [CERT]
 - **Minima record zona Nadlac/Arad:** sub -20°C (s-a intamplat in 2012, 2017) [CERT]
 - **Minima medie de iarna zona Nadlac:** -12°C pana la -15°C [CERT]
@@ -516,34 +546,38 @@ Sa recapitulam cifrele:
 
 ### Temperaturi critice — tabel rezumativ
 
-| Temperatura | Efect asupra kaki-ului | Actiune necesara |
-|---|---|---|
-| -8°C pana la -10°C | **Nici un efect** pe pom matur in repaus | Nici una — e bine |
-| -12°C pana la -15°C | **Zona de risc** — varfuri de ramuri afectate, pomi tineri in pericol | Protectie obligatorie pomi tineri |
-| -15°C pana la -18°C | **Pagube semnificative** — ramuri principale afectate, pom matur sub stres | Protectie activa tot pomul |
-| Sub -18°C | **Potentie fatal** — moartea pomului posibila | Protectie maxima, si tot e incert |
+| Temperatura         | Efect asupra kaki-ului                                                     | Actiune necesara                  |
+| ------------------- | -------------------------------------------------------------------------- | --------------------------------- |
+| -8°C pana la -10°C  | **Nici un efect** pe pom matur in repaus                                   | Nici una — e bine                 |
+| -12°C pana la -15°C | **Zona de risc** — varfuri de ramuri afectate, pomi tineri in pericol      | Protectie obligatorie pomi tineri |
+| -15°C pana la -18°C | **Pagube semnificative** — ramuri principale afectate, pom matur sub stres | Protectie activa tot pomul        |
+| Sub -18°C           | **Potentie fatal** — moartea pomului posibila                              | Protectie maxima, si tot e incert |
 
 ### Protectie trunchi si ramuri — pentru pomi tineri (Anul 1-5)
 
 **1. Bandaj de trunchi (OBLIGATORIU primii 5 ani):**
+
 - Infasoara trunchiul cu **banda de iuta, panza de sac sau agrotextil** de la sol pana la prima ramura
 - Intre bandaj si trunchi poti pune un strat subtire de paie pentru izolatie
 - Fixeaza bine cu sfoara (nu prea strans — sa nu stranguleze scoarta la crestere)
 - Aplica in **noiembrie**, indeparteaza in **martie-aprilie** cand nu mai sunt riscuri de ger sever
 
 **2. Varuire trunchi:**
+
 - Amestec: var stins 20% + sulfat de cupru 1% + adeziv (clei sau aracet diluat)
 - Aplica pe trunchi si pe baza ramurilor principale
 - Protejeaza de: arsuri solare de iarna, fluctuatii temperatura, insecte sub scoarta
 - Aplica in **noiembrie** si reinnoieste in **februarie** daca s-a spalat
 
 **3. Mulcire la baza (OBLIGATORIU):**
+
 - Strat de **15-20cm** de material: paie, frunze uscate, scoarta, compostp
 - Raza: 60-80cm in jurul trunchiului
 - **Nu lipesti mulciul de trunchi** — lasa 5-10cm spatiu (previne putrezirea scoartei)
 - Scopul: protejeaza radacinile de inghet (radacinile kaki-ului sunt mai sensibile decat lemnul)
 
 **4. Impachetare completa (pentru iernile aspre — prognoza sub -15°C):**
+
 - Infasoara tot pomul (trunchi + ramuri principale) in **agrotextil P30 sau P50**
 - La pomi mici (anul 1-3) poti construi o "cusca" din 4 pari si agrotextil in jurul pomului
 - Umple interiorul cu frunze uscate sau paie pentru izolatie suplimentara
@@ -559,16 +593,19 @@ Sa recapitulam cifrele:
 ### Ce faci daca a fost un ger sever (sub -15°C)
 
 **Imediat dupa ger (ianuarie-februarie):**
+
 - NU taia nimic inca! Asteapta pana in aprilie-mai sa vezi ce a supravietuit
 - Verifica scoarta trunchiului: daca e crapata longitudinal, e semn de paguba severa
 
 **Primavara (aprilie-mai):**
+
 - Urmareste care ramuri pornesc si care nu
 - Ramurile moarte: scoarta cenusie, uscata, nu apar muguri — taie-le la lemn viu (verde la taiere)
 - Daca trunchiul principal e intact dar ramurile au murit, pomul poate regenera din trunchi
 - Daca trunchiul principal e mort dar radacina e vie, pot aparea lastari de la baza — dar atentie: daca sunt SUB punctul de altoire, sunt din portaltoi (Diospyros lotus), nu din Rojo Brillante
 
 **Daca pomul a murit complet:**
+
 - Sapa si verifica radacinile — daca sunt brune si moi, pomul e pierdut
 - Inlocuieste cu un soi mai rezistent (Rosseyanka sau Nikita's Gift) sau amplaseaza noul pom intr-un loc si mai protejat
 
@@ -587,12 +624,14 @@ Sa recapitulam cifrele:
 ### Recoltarea kaki-ului
 
 **Cand se recolteaza?**
+
 - La Nadlac, Rojo Brillante se recolteaza in **octombrie-noiembrie** (inainte de primele ingheturi!)
 - Fructele sunt gata de recoltat cand: coaja e complet portocalie (fara zone verzi), sepalele incep sa se usuce, fructul se desprinde relativ usor
 - **Important:** Rojo Brillante se recolteaza **INAINTE de maturitatea completa** — fructul va fi inca tare si astringent pe pom. Postmaturarea se face dupa recoltare!
 - Nu astepta sa devina moale pe pom — un inghet de -2°C distruge fructele, si fructele moi cad si se strica
 
 **Tehnica recoltarii:**
+
 - Taie fructul cu foarfeca de gradina, lasand **1-2cm de codita** (peduncul) atasata
 - NU smulge fructul — risc de a rupe ramura sau a rani fructul
 - Manipuleaza cu grija — coaja kaki-ului se pateeaza usor la lovituri
@@ -602,6 +641,7 @@ Sa recapitulam cifrele:
 ### Postmaturare si prepararea pentru consum
 
 **Metoda recomandata pentru cantitati mici (consum casnic):**
+
 1. Recolteaza fructele cand sunt inca tari si portocalii
 2. Pune-le intr-o cutie de carton, intr-un singur strat
 3. Adauga 2-3 mere sau o banana matura (sursa de etilena)
@@ -611,61 +651,65 @@ Sa recapitulam cifrele:
 7. Sunt gata cand pulpa e moale si translucida — se mananca cu lingurita
 
 **Metoda cu alcool (pentru fructe ferme, transportabile):**
+
 1. Pune cateva picaturi de tuica/rachiu pe "buricul" fructului (zona sepalelor)
 2. Aseaza fructele intr-un recipient ermetic
 3. Pastreaza 5-7 zile la temperatura camerei
 4. Fructele raman ferme dar devin dulci — se pot taia felii ca un mar
 
 **Semne ca fructul e gata:**
+
 - Coaja devine mai inchisa la culoare (portocaliu intens spre rosu)
 - La apasare usoara, fructul cedeaza (ca un balon cu apa)
 - Miros dulce, aromat
 - Pulpa e gelatinoasa, translucida
 
 **Semne ca NU e gata (nu manca!):**
+
 - Fructul e tare la apasare
 - Pulpa e opaca si alb-portocalie
 - Gust astringent — "lega gura" la prima muscatura
 
 ### Depozitare si conservare
 
-| Metoda | Durata | Detalii |
-|---|---|---|
-| **Temperatura camerei** (tare, nematur) | 2-4 saptamani | Se matureaza treptat. Ideal pentru esalonarea consumului |
-| **Temperatura camerei** (moale, maturat) | 2-3 zile | Consuma imediat! Se strica rapid |
-| **Frigider** (tare, nematur) | 1-2 luni | Maturarea se incetineste semnificativ. Scoate cu 7-10 zile inainte de consum |
-| **Frigider** (moale, maturat) | 3-5 zile | Ultima sansa inainte sa se strice |
-| **Congelator** (pulpa) | 6-12 luni | Curata fructul, congeleaza pulpa in pungi. Excelent pentru smoothie, inghetata |
-| **Uscare** (felii subtiri) | 6-12 luni | Taie fructe ferme in felii de 5mm, usuca la deshidrator (60°C, 12-18 ore) sau la soare. Devin ca niste bomboane naturale! |
-| **Dulceata/gem** | 1-2 ani | Reteta: 1 kg pulpa + 400-500g zahar + zeama de lamaie. Fierbe 30-40 min |
+| Metoda                                   | Durata        | Detalii                                                                                                                   |
+| ---------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Temperatura camerei** (tare, nematur)  | 2-4 saptamani | Se matureaza treptat. Ideal pentru esalonarea consumului                                                                  |
+| **Temperatura camerei** (moale, maturat) | 2-3 zile      | Consuma imediat! Se strica rapid                                                                                          |
+| **Frigider** (tare, nematur)             | 1-2 luni      | Maturarea se incetineste semnificativ. Scoate cu 7-10 zile inainte de consum                                              |
+| **Frigider** (moale, maturat)            | 3-5 zile      | Ultima sansa inainte sa se strice                                                                                         |
+| **Congelator** (pulpa)                   | 6-12 luni     | Curata fructul, congeleaza pulpa in pungi. Excelent pentru smoothie, inghetata                                            |
+| **Uscare** (felii subtiri)               | 6-12 luni     | Taie fructe ferme in felii de 5mm, usuca la deshidrator (60°C, 12-18 ore) sau la soare. Devin ca niste bomboane naturale! |
+| **Dulceata/gem**                         | 1-2 ani       | Reteta: 1 kg pulpa + 400-500g zahar + zeama de lamaie. Fierbe 30-40 min                                                   |
 
 ### Randament pe pom
 
-| Varsta pom | Randament estimat (kg/pom/an) | Observatii |
-|---|---|---|
-| Anul 1-2 | 0 kg | Nu lasa sa fructifice |
-| Anul 3-4 | 2-10 kg | Primele fructe, nu e productie reala |
-| Anul 5-6 | 10-30 kg | Productie initiala |
-| Anul 7-10 | 30-60 kg | Productie buna |
-| Anul 10-15 | 50-100 kg | Productie plina [CERT] |
-| Anul 15+ | 80-150 kg | La pomi maturi, bine intretinuti [PROBABIL] |
+| Varsta pom | Randament estimat (kg/pom/an) | Observatii                                  |
+| ---------- | ----------------------------- | ------------------------------------------- |
+| Anul 1-2   | 0 kg                          | Nu lasa sa fructifice                       |
+| Anul 3-4   | 2-10 kg                       | Primele fructe, nu e productie reala        |
+| Anul 5-6   | 10-30 kg                      | Productie initiala                          |
+| Anul 7-10  | 30-60 kg                      | Productie buna                              |
+| Anul 10-15 | 50-100 kg                     | Productie plina [CERT]                      |
+| Anul 15+   | 80-150 kg                     | La pomi maturi, bine intretinuti [PROBABIL] |
 
 **Nota:** Aceste cifre sunt pentru conditii optime. La Nadlac, fiind la limita climatica, productia reala poate fi cu 20-30% mai mica, mai ales in anii cu ierni aspre care afecteaza lemnul roditor.
 
 ### Valoare nutritionala (per 100g fruct matur)
 
-| Nutrient | Cantitate | Observatii |
-|---|---|---|
-| Calorii | 70-80 kcal | Mai energetic decat majoritatea fructelor |
-| Zaharuri | 18-22g | Foarte dulce! Unul dintre cele mai dulci fructe |
-| Fibre | 3.6g | Bun continut de fibre |
-| Vitamina A | 81 mcg (27% DZR) | Excelent! Coaja portocalie = beta-caroten |
-| Vitamina C | 7.5 mg (8% DZR) | Moderat |
-| Mangan | 0.36 mg (16% DZR) | Buna sursa |
-| Potasiu | 161 mg | Bun pentru inima |
-| Antioxidanti | Foarte bogat | Tanini, catechine, licopena, beta-caroten |
+| Nutrient     | Cantitate         | Observatii                                      |
+| ------------ | ----------------- | ----------------------------------------------- |
+| Calorii      | 70-80 kcal        | Mai energetic decat majoritatea fructelor       |
+| Zaharuri     | 18-22g            | Foarte dulce! Unul dintre cele mai dulci fructe |
+| Fibre        | 3.6g              | Bun continut de fibre                           |
+| Vitamina A   | 81 mcg (27% DZR)  | Excelent! Coaja portocalie = beta-caroten       |
+| Vitamina C   | 7.5 mg (8% DZR)   | Moderat                                         |
+| Mangan       | 0.36 mg (16% DZR) | Buna sursa                                      |
+| Potasiu      | 161 mg            | Bun pentru inima                                |
+| Antioxidanti | Foarte bogat      | Tanini, catechine, licopena, beta-caroten       |
 
 **Beneficii nutritionale notabile:**
+
 - Unul dintre cele mai bogate fructe in **beta-caroten** (precursor vitamina A) — important pentru vedere si imunitate
 - Bogat in **tanini** cu proprietati antioxidante si antiinflamatorii
 - **Fibrele solubile** ajuta digestia si satierea
@@ -707,18 +751,18 @@ Kaki-ul are lemn fragil si ramuri care se rup usor sub vant puternic sau sub gre
 
 ### Calendar rezumat ingrijire kaki — anul 1 (2026)
 
-| Luna | Actiune principala | Prioritate |
-|---|---|---|
-| **Martie** | Plantare (FACUT), irigare initiala, mulcire | MAXIMA |
-| **Aprilie** | Irigare regulata (10-15L/3-4 zile), monitorizare pornire | MARE |
-| **Mai** | Irigare, primul tratament preventiv (cupru), monitorizare lastari | MEDIE |
-| **Iunie** | Irigare in seceta, fertilizare usoara (50g NPK) | MEDIE |
-| **Iulie** | Irigare in canicula, monitorizare acarieni | MEDIE |
-| **August** | Irigare moderata, monitorizare sanatate | MICA |
-| **Septembrie** | Fertilizare P+K (50g fiecare), STOP azot | MEDIE |
-| **Octombrie** | Pregatire iarna, mulci proaspat, bandaj trunchi | MARE |
-| **Noiembrie** | Varuire, protectie completa iarna, zeama bordelez 3% | MAXIMA |
-| **Decembrie** | Verificare protectie, monitorizare temperaturi | MARE |
+| Luna           | Actiune principala                                                | Prioritate |
+| -------------- | ----------------------------------------------------------------- | ---------- |
+| **Martie**     | Plantare (FACUT), irigare initiala, mulcire                       | MAXIMA     |
+| **Aprilie**    | Irigare regulata (10-15L/3-4 zile), monitorizare pornire          | MARE       |
+| **Mai**        | Irigare, primul tratament preventiv (cupru), monitorizare lastari | MEDIE      |
+| **Iunie**      | Irigare in seceta, fertilizare usoara (50g NPK)                   | MEDIE      |
+| **Iulie**      | Irigare in canicula, monitorizare acarieni                        | MEDIE      |
+| **August**     | Irigare moderata, monitorizare sanatate                           | MICA       |
+| **Septembrie** | Fertilizare P+K (50g fiecare), STOP azot                          | MEDIE      |
+| **Octombrie**  | Pregatire iarna, mulci proaspat, bandaj trunchi                   | MARE       |
+| **Noiembrie**  | Varuire, protectie completa iarna, zeama bordelez 3%              | MAXIMA     |
+| **Decembrie**  | Verificare protectie, monitorizare temperaturi                    | MARE       |
 
 ---
 
@@ -726,28 +770,28 @@ Kaki-ul are lemn fragil si ramuri care se rup usor sub vant puternic sau sub gre
 
 ### Tabel PHI (Pauza de Recoltare) — produse folosite la kaki
 
-| Produs | Substanta activa | PHI (zile) | Observatii |
-|---|---|---|---|
-| Zeama bordeleza | Cupru (sulfat) | 3 | Aplicata doar in repaus sau dupa recoltare |
-| Chorus 50 WG | Cyprodinil | 7 | Preventiv boli foliare, primavara |
-| Score 25 EC | Difenoconazol | 14 | Cercosporioza, antracnoza |
-| Mancozeb (Dithane M-45) | Mancozeb | 28 | Stop strict cu 4 saptamani inainte de recoltare! |
-| Captadin 50 WP / Captan | Captan | 7 | Putregai cenusiu |
-| Switch 62.5 WG | Cyprodinil + Fludioxonil | 7 | Putregai cenusiu fructe mature |
-| Confidor (imidacloprid) | Imidacloprid | 14 | Cochinile — interzis pe plante in floare! |
-| Ulei horticol | — | 0 | Numai in repaus vegetativ |
-| Envidor 240 SC | Spirodiclofen | 7 | Acarieni |
+| Produs                  | Substanta activa         | PHI (zile) | Observatii                                       |
+| ----------------------- | ------------------------ | ---------- | ------------------------------------------------ |
+| Zeama bordeleza         | Cupru (sulfat)           | 3          | Aplicata doar in repaus sau dupa recoltare       |
+| Chorus 50 WG            | Cyprodinil               | 7          | Preventiv boli foliare, primavara                |
+| Score 25 EC             | Difenoconazol            | 14         | Cercosporioza, antracnoza                        |
+| Mancozeb (Dithane M-45) | Mancozeb                 | 28         | Stop strict cu 4 saptamani inainte de recoltare! |
+| Captadin 50 WP / Captan | Captan                   | 7          | Putregai cenusiu                                 |
+| Switch 62.5 WG          | Cyprodinil + Fludioxonil | 7          | Putregai cenusiu fructe mature                   |
+| Confidor (imidacloprid) | Imidacloprid             | 14         | Cochinile — interzis pe plante in floare!        |
+| Ulei horticol           | —                        | 0          | Numai in repaus vegetativ                        |
+| Envidor 240 SC          | Spirodiclofen            | 7          | Acarieni                                         |
 
 > **IMPORTANT:** Kaki-ul se recolteaza **octombrie-noiembrie** la Nadlac. Daca aplici Mancozeb/Dithane in iulie, PHI de 28 de zile inseamna ca poti recolta dupa 25 august cel devreme — nu e problema. Dar nu aplica Mancozeb dupa 1 octombrie! Respecta PHI cu strictete pe fructe comestibile.
 
 ### Evaluare realism pentru zona Nadlac — Rojo Brillante vs alternative
 
-| Soi | Risc iarna Nadlac | Recomandare |
-|---|---|---|
-| Rojo Brillante | MEDIU-MARE (risc pierdere la -20°C) | Planteaza in loc protejat, investeste in protectie |
-| Rosseyanka | SCAZUT (-23°C documentat) | Cel mai sigur kaki pentru Nadlac |
-| Nikita's Gift | SCAZUT (-23°C documentat) | Alternativa sigura, fruct mai bun decat Rosseyanka |
-| Tipo (Hachiya) | MEDIU (cu 2-3°C mai rezistent decat Rojo) | Optiune de compromis |
+| Soi            | Risc iarna Nadlac                         | Recomandare                                        |
+| -------------- | ----------------------------------------- | -------------------------------------------------- |
+| Rojo Brillante | MEDIU-MARE (risc pierdere la -20°C)       | Planteaza in loc protejat, investeste in protectie |
+| Rosseyanka     | SCAZUT (-23°C documentat)                 | Cel mai sigur kaki pentru Nadlac                   |
+| Nikita's Gift  | SCAZUT (-23°C documentat)                 | Alternativa sigura, fruct mai bun decat Rosseyanka |
+| Tipo (Hachiya) | MEDIU (cu 2-3°C mai rezistent decat Rojo) | Optiune de compromis                               |
 
 **Concluzie pentru Roland (livada Nadlac):** Rojo Brillante plantat in 2026 este o aventura valoroasa dar cu risc real. Recomandare pe termen lung: adauga un Rosseyanka sau Nikita's Gift ca "asigurare" — daca Rojo supravietuieste, ai diversitate; daca nu, ai totusi kaki in livada.
 
@@ -757,4 +801,379 @@ Productia citata in ghiduri (50-100 kg/pom la maturitate) este pentru conditii o
 
 ---
 
-*Ghid realizat pentru conditiile climatice specifice zonei Nadlac/Arad, Romania. Kaki-ul Rojo Brillante este o cultura marginala in aceasta zona — succesul depinde de protectia de iarna corecta si constanta.*
+_Ghid realizat pentru conditiile climatice specifice zonei Nadlac/Arad, Romania. Kaki-ul Rojo Brillante este o cultura marginala in aceasta zona — succesul depinde de protectia de iarna corecta si constanta._
+
+---
+
+## I. IRIGARE SI NECESAR DE APA — SPECIFIC NADLAC
+
+**Clasificare generala a speciei la seceta:** **Toleranta moderata.** Kaki-ul are o radacina pivotanta puternica ce exploreaza solul in profunzime. Odata stabilizat (dupa anul 5), tolereaza bine perioadele uscate. Totusi, la Nadlac, in primii 3 ani de la plantare, este extrem de vulnerabil la seceta de vara. Lipsa apei in iulie-august duce la caderea masiva a fructelor (chiar si inainte de maturare).
+
+**Tabel necesar de apa (pentru pomi pe rod, anii 4+):**
+
+| Perioada       | Fenofaza              | Frecventa udare                       | Litri/pom/udare   | Importanta  |
+| -------------- | --------------------- | ------------------------------------- | ----------------- | ----------- |
+| Martie         | Iesire din repaus     | 0 (daca ploua) / 1 udare              | 30-40 L           | MICA        |
+| Aprilie        | Dezmugurire           | 0 (doar la seceta prelungita)         | 30-40 L           | MICA        |
+| Mai            | Crestere lastari      | 1/saptamana (daca nu ploua)           | 40-50 L           | MEDIE       |
+| Iunie          | Inflorire si legare   | 1-2/saptamana                         | 40-60 L           | **CRITICA** |
+| Iulie - August | Crestere activa fruct | 2/saptamana                           | 50-70 L           | **CRITICA** |
+| Septembrie     | Incepere maturare     | 1/saptamana                           | 40 L              | MEDIE       |
+| Oct - Nov      | Recoltare / Repaus    | 0 (doar udat de aprovizionare toamna) | 50 L in noiembrie | MEDIE       |
+
+**Perioade critice detaliate:**
+
+1. **Dupa legarea fructelor (Iunie - Iulie):** Kaki-ul are o cadere fiziologica naturala in iunie. Daca in aceasta perioada solul este uscat, pomul va avorta aproape _toate_ fructele pentru a se salva. Irigarea constanta este esentiala pentru pastrarea rodului pe ramuri.
+2. **Umplerea fructului (August):** Fructele de Rojo Brillante sunt mari (200-300g). Daca pomul nu primeste apa suficienta in verile toride de 35°C de la Nadlac, fructele raman mici, subdezvoltate si isi pierd calitatea comerciala.
+
+**Metoda recomandata la Nadlac:** **Irigare prin picurare.** Kaki-ul este sensibil la excesul de umezeala pe frunze (favorizeaza antracnoza) si la asfixierea radacinilor. Sistemul de picurare cu cate 2-3 picuratoare la 40-50 cm de trunchi asigura patrunderea lenta si profunda a apei in cernoziomul plat, fara a crea balti.
+
+**Semne vizuale de stres hidric:**
+
+- **Sete:** Frunzele isi pierd stralucirea, se ofilesc in timpul zilei si nu isi revin complet seara; se inregistreaza caderea masiva a fructelor abia legate.
+- **Exces de apa (Asfixiere radiculara):** Frunzele se ingalbenesc (cloroza) si cad prematur, pomul opreste cresterea vegetativa.
+
+---
+
+## J. POLENIZARE SI SOIURI COMPATIBILE
+
+**Statut autofertilitate:** **PARTENOCARPIC (Autofertil fara seminte).**
+
+Acesta este unul dintre cele mai mari avantaje ale soiului Rojo Brillante. Produce fructe fara a avea nevoie de polenizare externa si, prin urmare, fructele sunt lipsite de seminte. Nu este necesar un soi polenizator. Daca ai un singur pom de Rojo Brillante in livada, acesta va rodi perfect si sustinut.
+
+**Greseli de evitat — Polenizarea incrucisata accidentala:**
+Daca se planteaza in apropiere (raza de 50-100 m) un soi polenizator care produce flori mascule abundente, albinele _vor poleniza_ Rojo Brillante. Efectul? Fructele vor dezvolta seminte, iar pulpa din jurul lor poate capata pete maronii. Din punct de vedere comercial, aparitia semintelor este nedorita.
+
+**Perioada de inflorire la Nadlac:** Tardie, la sfarsitul lunii **mai - inceputul lunii iunie**. Acest lucru il fereste complet de ingheturile tarzii de primavara.
+
+**Sfat practic:** Poti avea doar acest exemplar. Nu te stradui sa aduci un alt kaki doar pentru "fructificare mai buna". Daca mai plantezi un kaki, asigura-te ca este tot un soi partenocarpic daca vrei sa eviti semintele.
+
+---
+
+## K. RECOLTARE, CONDITIONARE SI DEPOZITARE
+
+**Indicatori de maturitate COMERCIALA (nu biologica):**
+Rojo Brillante trebuie recoltat cand este **complet portocaliu-rosiatic, dar TARE la atingere** (precum un mar ferm). Daca astepti sa se inmoaie pe pom, pasarile il vor distruge in proportie de 100%, riscul de inghet distruge complet textura in o singura noapte, iar manipularea devine imposibila.
+_Vizual:_ Fructul are o culoare intensa, uniforma — nu mai exista deloc nuanta galben-verzuie spre baza, in apropierea sepalelor.
+
+**Tabel destinatii recoltare:**
+
+| Destinatie                            | Maturitate la recoltare           | Observatii                                               |
+| ------------------------------------- | --------------------------------- | -------------------------------------------------------- |
+| Postmaturare cu alcool / Piata locala | 100% portocaliu, foarte tare      | Gata de vandut "crocant" in 7 zile                       |
+| Consum esalonat acasa                 | 100% portocaliu, tare             | Tinut in cutii de carton sa se maturizeze treptat        |
+| Depozitare 1-2 luni                   | 100% portocaliu, recoltat perfect | Tinut la frigider in stare cruda/astringenta             |
+| Procesare (dulceata / deshidratare)   | Moale, partial maturat            | Pentru uscare rondele se folosesc tot exemplarele ferme! |
+
+**Tehnica de recoltare (foarte delicata):**
+
+- **Doar cu foarfeca!** Se taie codita, lasand doar 1-2 cm atasati de sepale.
+- **NICIODATA nu smulge fructul** tragand de el. Risti nu doar sa ranesti coaja delicata, dar rupi "cu calcai" ramura fructifera fragila pe care se dezvolta rodul de anul viitor.
+
+**Depozitare:**
+
+| Conditii            | Temperatura | Durata realista | Note                                                                                                                                                               |
+| ------------------- | ----------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Temperatura camerei | 18-22°C     | 1-3 saptamani   | Fructele ferme intra in procesul natural de postmaturare si devin moi                                                                                              |
+| Pivnita             | 10-15°C     | 3-5 saptamani   | Pentru esalonare a recoltei pana la Sarbatori                                                                                                                      |
+| Frigider (tare)     | 2-4°C       | 4-8 saptamani   | Incetineste considerabil maturarea naturala. Tineti separat de mere                                                                                                |
+| Congelator          | -18°C       | 6-12 luni       | Congeleaza pulpa curatata, ideala pentru inghetata cruda sau deserturi. Elimina instantaneu si astringenta daca se folosesc fructe intregi si se decongeleaza lent |
+
+**Conditionare pentru piata:** Fructele nu se spala in apa (se indeparteaza pruina). Se sterg bland cu o carpa moale de bumbac. Ambalarea pe un singur rand, pe alveole moi, este obligatorie. Fructele cantaresc intre 200 si 300 de grame bucata.
+
+---
+
+## L. RENTABILITATE SI PIATA LOCALA NADLAC
+
+**Nota speciala:** Kaki-ul este un produs **premium**. Cultivarea in zona de vest (Arad/Nadlac) este o operatiune exclusivista — Kaki-ul de provenienta locala este o raritate. Se poate valorifica drept produs de "boutique agricol", concurand importurile tratate industrial.
+
+**Preturi orientative piata Arad/Romania 2024-2025:**
+
+| Forma                                 | Pret orientativ | Unitate      | Sursa                                                     |
+| ------------------------------------- | --------------- | ------------ | --------------------------------------------------------- |
+| Proaspat (maturat sau tratat crocant) | 15 - 25 lei     | /kg          | [CERT] (Piata/targ local pt. produs premium nepesticizat) |
+| Uscat/deshidratat (rondele dulci)     | 100 - 150 lei   | /kg          | [ESTIMAT] (Delicatesa premium. 3 kg crud -> 600g uscat)   |
+| Dulceata artizanala                   | 25 - 35 lei     | /borcan 400g | [ESTIMAT]                                                 |
+
+**Productivitate realista per pom (Ajustata pentru limitarile climatice din Nadlac):**
+
+- Pom tanar 3-5 ani: 2 - 10 kg
+- Pom adult 6-10 ani: 20 - 40 kg
+- Pom matur 10+ ani: 40 - 60 kg
+  _(Cifrele sunt cu cca 30% mai conservatoare decat in Spania din cauza iernilor din Campia Pannonica.)_
+
+**Analiza valorificare:**
+Cea mai avantajoasa valorificare este sub forma de **rondele deshidratate**. Fructele isi pierd natural astringenta cand sunt uscate sub forma de rondele (la 55-60°C). Se transforma intr-o "bomboana naturala", cu aroma concentrata care atrage cumparatori din nisa de nutritie sanatoasa (clientela premium din Arad sau Ungaria). Valorificarea in proaspat ca "Persimon crocant" necesita tratamentul cu alcool (vezi Sectiunea S), dar asigura si ea marje mari.
+
+**Pozitionare piata locala Nadlac/Arad:**
+
+- **Cerere:** Foarte MARE, mai ales in sezonul sarbatorilor de iarna (cand Kaki-ul se comercializeaza natural)
+- **Concurenta:** PUTINA. Mici curti care au 1-2 pomi; niciun competitor comercial masiv in raza Aradului
+- **Specie rara local?** DA. Are un imens potential premium de marketing ("Fructe exotice din Nadlac")
+
+**Cost tratamente:** Sub 20 lei / an. Fiind un pom foarte curat comparativ cu un mar sau un cais, marja de profit este aproape neta.
+
+**Recomandare strategica:** Un singur pom (cum are Roland) asigura un necesar pentru familie / un produs test pentru viitor. Daca Roland doreste sa se extinda in pomicultura cu produse procesate, Kaki (mai ales un hibrid rezistent ca _Rosseyanka_) merita o investitie in 5-10 pomi aditionali.
+
+---
+
+## M. FENOLOGIE CALIBRATA NADLAC
+
+**Tabel fenologic calibrat pentru Nadlac (88m, Campia de Vest):**
+
+| Fenofaza              | Data medie Nadlac     | Variatie normala | Fata de media nationala                       |
+| --------------------- | --------------------- | ---------------- | --------------------------------------------- |
+| Umflarea mugurilor    | 15 - 25 Aprilie       | ± 7 zile         | cu 7-14 zile mai devreme                      |
+| Inflorire inceput     | 20 - 25 Mai           | ± 5 zile         | (Infloreste foarte tarziu)                    |
+| Inflorire deplina     | 25 Mai - 5 Iunie      | ± 5 zile         | —                                             |
+| Sfarsit inflorire     | 10 Iunie              | ± 5 zile         | —                                             |
+| Legarea fructului     | 15 - 20 Iunie         | ± 5 zile         | —                                             |
+| Caderea fiziologica   | Sfarsitul lunii iunie | —                | (Fenomen natural de avortare partiala)        |
+| Crestere activa fruct | Iulie - Septembrie    | —                | —                                             |
+| Incepere colorare     | 10 - 20 Octombrie     | ± 7 zile         | —                                             |
+| Maturitate comerciala | 25 Oct. - 15 Nov.     | ± 7 zile         | (Cules cand este integral portocaliu si tare) |
+| Cadere frunze         | Dupa primul brum      | ± 7 zile         | —                                             |
+
+**Risc inghet primavara la Nadlac:**
+Probabilitate estimata de inghet dupa inflorire: **Zero (sub 1%)**. La sfarsitul lunii mai / inceputul lunii iunie nu se inregistreaza niciodata ingheturi (0°C). Kaki-ul este o cultura mult mai sigura decat caisul din acest punct de vedere.
+
+**Termometru biologic:** Kaki-ul infloreste cam in perioada cand primele fructe de cires timpuriu pot fi deja consumate.
+
+**Ajustare pentru ani atipici:** Adevaratul pericol este in Noiembrie, daca un ger sever si timpuriu loveste cand nu ai recoltat inca. Daca prognoza arata temperaturi sub -2°C in prima saptamana din Noiembrie, recolteaza TOATA productia, chiar daca 10% nu sunt 100% maturate la culoare.
+
+### Pozitia in fenologia livadei Roland — Nadlac
+
+| Luna            | Specii in inflorire SIMULTAN la Nadlac   |
+| --------------- | ---------------------------------------- |
+| Februarie       | Migdal                                   |
+| Martie (1-15)   | Cais, Piersic timpuriu                   |
+| Martie (15-31)  | Cires, Visin, Par (toate soiurile)       |
+| Aprilie (1-15)  | Mar (toate soiurile), Prun, Alun         |
+| Aprilie (15-30) | Zmeur (incepere)                         |
+| **Mai-Iunie**   | Mur, Zmeur (continuare), **Kaki**        |
+| Iulie-August    | Zmeur Galben Remontant (a 2-a inflorire) |
+
+---
+
+## N. INMULTIRE SI PROPAGARE
+
+**Tabel metode de inmultire:**
+
+| Metoda                                 | Dificultate                              | Rata succes | Cel mai bun moment                       | Echipament necesar                                    |
+| -------------------------------------- | ---------------------------------------- | ----------- | ---------------------------------------- | ----------------------------------------------------- |
+| Altoire in despicatura                 | Mare                                     | 40-50%      | Martie (inainte de pornire in vegetatie) | Foarfeca, briceag, altoi, portaltoi, mastic           |
+| Chip budding (altoire in ochi dormind) | Mare                                     | 30-40%      | August - Septembrie                      | Briceag ascutit (lemnul este plin de tanini oxidanti) |
+| Seminte (din fructe polenizate)        | (Doar ptr obtinere portaltoi — salbatic) | 80%         | Toamna / Primavara                       | Nisip, ghivece                                        |
+
+**Metoda RECOMANDATA pentru Roland:**
+Ca producator incepator-mediu, inmultirea kaki-ului **nu se justifica sa fie facuta acasa**.
+Taierile (altoiul) contin foarte mult tanin care oxideaza rapid tesutul expus, transformand calusarea intr-un esec total daca taietura nu e rapida, milimetrica si curata. Recomandarea este sa se achizitioneze puieti cu certificare de calitate direct altoiti (pe portaltoi rezistent la calcar din cernoziom precum _Diospyros lotus_ sau hibrizi pe _Diospyros virginiana_) de la pepiniere.
+
+---
+
+## O. MANAGEMENTUL SOLULUI SI ERBICIDARE
+
+**Cernoziomul Nadlac si aceasta specie:**
+Solurile grele, luto-argiloase din tiparul clasic de campie romaneasca vestica pot avea un pH de 7.2-7.5. Portaltoiul standard de Kaki (_D. lotus_) poate manifesta la peste 7.5 blocaje usoare in asimilarea fierului (cloroza ferica — frunzele se decoloreaza dar nervurile raman verzi). Nu necesita amendamente calcaroase (nu adauga var/cenusa, solul este deja destul de bazic).
+
+**Gestionarea ierbii si buruienilor:**
+
+| Metoda                                | Aplicabilitate                | Pro                                                                                           | Contra                                                                                                                                                     |
+| ------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mulci organic (paie/frunze tocate)    | **BUNA (Iarna: OBLIGATORIE)** | Mentine umezeala in verile fierbinti si protejeaza radacinile la gerurile crunte din ianuarie | Atrage rozatoare (soareci de camp) in anotimpul rece sub mulci. Lasa o zona "gala" de 5 cm langa tulpina                                                   |
+| Cosit mecanic                         | BUNA                          | Sustine viata microbiologica                                                                  | —                                                                                                                                                          |
+| Erbicide selective                    | DE EVITAT TOTAL               | —                                                                                             | Kaki-ul este extrem de sensibil la deriva de erbicide aplicate gresit (ex: Glyphosate adus de vant ii deformeaza frunzele sever si opreste recolta anuala) |
+| Cultivare mecanica (freza / motosapa) | DE EVITAT                     | —                                                                                             | Radacinile active absorbante se intind la o adancime de doar 15-30 cm de la suprafata solului. Motosapatoarea trece si taie exact acele radacini           |
+
+**Fertilizarea solului pe termen lung:**
+
+- La fiecare 3 ani: o roaba de gunoi de grajd foarte bine descompus (niciodata proaspat), imprastiat perimetral, nu pe langa trunchi.
+- Daca frunzele nu au acel verde crud sanatos, ci tente de galbui in mai-iunie: o doza de chelati de fier aplicata prin udare direct la radacina (aprox. 30g dizolvate intr-o galeata) corecteaza rapid.
+
+---
+
+## P. ADAPTARE LA SCHIMBARI CLIMATICE
+
+**Tendinte climatice confirmate pentru Campia de Vest:**
+
+- Temperatura medie: tendinta rapida de crestere; iernile clasice devin tot mai blande.
+- Precipitatii: distributie asimetrica, perioade prelungite de seceta estivala intercalate de ploi torentiale.
+
+**Impact specific pe Diospyros kaki (Rojo Brillante) la Nadlac:**
+
+| Schimbare climatica                      | Impact concret                                                                                                                                                                                                                                   | Gravitate      | Orizont |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- | ------- |
+| **Ierni mai calde**                      | **Impact BENEFIC urias**. Rojo Brillante risca sa degere complet daca atinge -20°C. Temperaturile de -12...-15°C prezente in "noile ierni" ridica semnificativ sansa de supravietuire. Kaki se va aclimatiza natural in Nadlac ca in mediterana. | Mare (Pozitiv) | 1-5 ani |
+| Veri mai secetoase (canicula prelungita) | Stres hidric in momentul maturarii pulpei. Risc ridicat de avortare/cadere a fructelor in Iulie in lipsa irigarii.                                                                                                                               | Mediu          | In curs |
+| Primaveri mai timpurii                   | Fara impact vizibil, Kaki avand o pornire atat de intarziata, nu este vulnerabil la variatiile martie-aprilie                                                                                                                                    | Mic            | —       |
+
+**Adaptari recomandate ACUM:**
+Asigura o metoda de prindere (tutore solid/ancorare). Pe fondul incalzirii, fenomenele convectiv-furtunoase estivale vor rupe "bratele" lungi incarcate de 30-40 kg de fructe in august/septembrie daca nu sunt asigurate cu popi sau sarme suport.
+
+---
+
+## Q. COMBINATII, ASOCIERI SI LAYOUT IN LIVADA
+
+**Specii BENEFICE in vecinatate:**
+Kaki nu are nevoi speciale, prefera cat mai multa lumina naturala, in mod ideal sa fie intr-un punct expus sud-vestic complet si ferit in partea opusa.
+Cea mai benefica asociere este cu garduri vii dense de alun sau perdele agrosilvice pe latura **NORDICA / NORD-ESTICA**. Vantul taios siberian adus in decembrie-februarie in Campia de Vest distruge direct mugurii la un pom atatat de tanar din specia mediteraneana.
+
+**Specii DE EVITAT:**
+
+| Specie vecina                                                       | Problema concreta                                                                                                                                      | Distanta minima   |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| Nuc                                                                 | Toxicitatea nucului (juglona din frunze decazute) ii impiedica dezvoltarea                                                                             | Minim 15-20 metri |
+| Orice specie mult mai inalta care ar umbri complet pe partea Sudica | Lipsa caldurii si a luminii intarzie recoltarea catre sfarsitul lui noiembrie. Risc crescut ca gerul timpuriu de iarna sa omoare productia nestranguta | Minim 5-8 metri   |
+
+**Pozitionare la Nadlac:**
+Ideal plantat undeva mai apropiat de anexele curtii / un perete pe vest, care sa radieze caldura acumulata peste noapte si sa il pazeasca de vantul crunt de nord din ianuarie. Daca e in plin camp agricol, protectia trunchiului si un tutore gros pe primii 5 ani sunt 100% imperativi.
+
+---
+
+## R. ECHIPAMENTE SI UNELTE
+
+**Toolkit minim obligatoriu:**
+
+| Unealta                                               | Utilizare                                                                                                                                    | Cost orientativ (lei) | Prioritate                               |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ---------------------------------------- |
+| Foarfeca de recoltare cu cioc subtire (Bypass)        | Recoltarea atenta fara sfasierea pedicelului. Trunchierile varatice in lastari verzi.                                                        | 150-200 lei           | **OBLIGATORIU**                          |
+| Folie / Agrotextil gros P50 (sau mai dens) si Juta    | Ambalare in luna Noiembrie a intregului trunchi inferior pana spre coroana in iernile geroase (primii 4-5 ani)                               | 50-80 lei             | **OBLIGATORIU (Pt supravietuire iarna)** |
+| Materiale suport trunchi/crengi (popi de bambus gros) | Lemnul de Diospyros devine extrem de casant. In luna septembrie, cele mai pline crengi cu fructe enorme de 300g se vor frange natural in jos | 30-50 lei             | UTIL                                     |
+
+**Echipament SPECIFIC acestei specii:** Nimic in plus la tratamente chimice/pulverizatoare inalte intrucat pomul suporta foarte putine interventii anuale. Insa este necesara rabdare (10-15 zile) daca vrei fructe comestibile direct proaspete cu reteta cu alcool descrisa.
+
+---
+
+## S. PROCESARE DETALIATA SI RETETE
+
+Valorificarea este simpla dincolo de consumul obisnuit. Ca si valoare adaugata, postmaturarea "crocanta" cu alcool ofera cel mai comercial produs gata de taraba. Kaki deshidratat ofera cel mai profitabil produs (cu depozitare pe un an).
+
+### Tehnica "Persimon" Crocant (Decalcifiere post-recoltare prin Alcool)
+
+Dificultate: Mica. Valoare: Ridicata (se vinde ca produs "Premium persimon tare").
+
+**De ce:** Rojo Brillante devine "punga-gura" de la tanini daca este mancat din pom cand este complet portocaliu dar tare. Tu nu vrei sa il astepti sa faca terci, ci vrei sa il vinzi crocant ca marul, extrem de dulce si ferm.
+
+**Procedura pas cu pas:**
+
+1. Alege fructe culese cu grija, portocalii si perfect ferme.
+2. Foloseste cutii sau casolete ermetice.
+3. In interiorul casoletelor impreuna cu fructele pune servetele de bumbac imbibate in _Alcool dublu rafinat_, vodka ieftina, tuica sau alcool alb 40-70 grade.
+4. **ATENTIE!** Fructul NU trebuie sa atinga si sa balteasca direct in alcool! Doar aburul generat la temperatura camerei trebuie sa stea etans. O alternativa la scara mica (pentru 5-10 fructe) este tamponarea zonei "stelei" (baza frunzulitei uscate) cu picaturi generoase de tuica sau spirt alb.
+5. Lasa sigilat la 20 grade timp de 4 pana la 7 zile (fara sa deschizi absolut deloc casoleta sau punga sigilata cu gura etans).
+6. Gustul dupa 6 zile din acel fruct este 100% modificat — ferm, crocant, care se taie in felii elegante, si uluitor de dulce fara sa-ti amorteasca papilele.
+
+### Chipsuri/Rondele de Kaki Premium (Deshidratat)
+
+Cantitate: Din 10 kg kaki crud vei obtine aprox. 2-2.5 kg kaki rondele uscate.
+Se pot face cu fructe inca _astringente_! La temperatura mica a deshidratorului (50-60°C), astringenta se volatilizeaza iar pulpa ramane dulce ca si caramelul.
+
+**Echipament:** Deshidrator.
+
+**Procedura pas cu pas:**
+
+1. Spala si curata un strat foarte subtire din coaja. Decupeaza sepalele si tai fructele in felii rotunde (grosime maxima 5 mm). Fructul sa fie ferm — cel moale se face marmelada.
+2. Pune pe site distantate la un aparat (sau cuptor pe modul ventilatie uscator la cea mai redusa treapta cu usa abia deschisa).
+3. Lasa minim 12-16 ore la ~55-60°C. Rondelele trebuie intoarse pe partea opusa dupa 8 ore.
+4. Scoate-le doar cand se pliaza in degete exact ca jeleurile gumate. Daca le lasi si mai mult devin chipsuri casante. Depoziteaza doar cand s-au racit complet in pungi de hartie, in loc uscat.
+
+**Greseli:** Nu baga niciun fel de zahar pe ele! Zaharul Kaki-ului depaseste limitele — va deveni absolut insuportabil. Ele natural stralucesc ambrat si cand sunt gata vor zaharisi albiciuni din ele (e un lucru natural pretuit "Sfarcul Zaharului").
+
+---
+
+## T. VANZARE LEGALA SI CERTIFICARE IN ROMANIA
+
+**Atentie specifica la kaki:** Kaki proaspat (astringent) este incomestibil inainte de maturare completa — eticheta obligatorie cu "se consuma dupa inmuiere completa" pentru vanzare direct consumator. Carnetul de producator agricol (APIA/Primarie) este obligatoriu pentru orice vanzare.
+
+**Forme legale de vanzare pentru producator individual Romania:**
+
+| Forma                                  | Ce permite                                                                            | Ce necesita                                                                   | Cost aproximativ                                         |
+| -------------------------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Vanzare la poarta catre publicul local | Vanzare proaspete ("tratate" sau gata moi) si uscate direct vecinilor si cunoscutilor | Atestat de producator eliberat de Primaria Nadlac in baza Registrului Agricol | 100-150 lei (taxa eliberare atestat si carnet comercial) |
+| Stand la targuri agricole (Arad)       | Vinzare Kaki romanesc exclusivist toamna tarzie                                       | Carnet de comercializare si viza ANSVSA (pentru fructul proaspat)             | Sub 50 lei taxe zilnice targ                             |
+
+**Legislatie specifica:** Fructele deshidratate / dulceata se incadreaza intr-o legislatie permisa pentru vanzare pe marginea satului la vizitatori sau prin grupuri Facebook in cantitati neindustrializate. Eticheta va avea: Nume produs, Cantitate, Termen minimal valabilitate.
+
+**"Fara Chimie" - Marketing legal:** La Kaki se executa 2-3 interventii usoare vara doar cu cupru (o substanta organica bio) comparativ cu stropirea a 10+ pesticide sintetice in livezile intensive de Spania. Produsul lui Roland, vandut simplu ca "Kaki Netratat Crescut 100% la Nadlac" sparge piata si concureaza garantat pretul mallurilor la stand.
+
+---
+
+## U. INTERACTIUNI CU FAUNA
+
+**Fauna BENEFICA:** Rame si insecte de litiera a solului, de mentinut prin mulciul perimetral din paie si tocatura. Asigura aerisirea cernoziomului care e predispusa sa devina compact si dur sub un soare fara mila.
+
+**Fauna DAUNATOARE (specifica Kaki la Nadlac):**
+
+| Animal                               | Dauna concreta                                                                                                                                            | Amploare                                          | Metode non-chimice                                                                             | Metode chimice                   |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------- |
+| **Pasari (Mierle, Grauri, Ciori)**   | Zboara fix la fructul cand a trecut complet in portocaliu stralucitor si il ciocnesc masiv cu un orificiu; devine putregai mizer pe pom intr-o saptamana  | **MARE (Principala amenintare in afara gerului)** | Aruncarea plasei verzui usoare peste intreg cornamentul (cand pomul are 3 m, e foarte fezabil) | Fara solutie chimica             |
+| **Soareci (microtine de cernoziom)** | Sub mulcirea din noiembrie, rozatoarele fac cuib la radacina si rod circular inelul viu de sub coaja copacului la varstele de 1-3 ani ucingandu-l complet | Medie-Mare                                        | Lasa tulpina aerisita cu tub de plasa contra soarecilor pus pe primul metru vizibil            | Graunte deratizare pe langa gard |
+| Viespi / Furnici                     | Ataca fructele zemuinde toamna dupa prima intepatura de pasare, preluand dominanta pomului din pricina enormelor concentratii de glucoza                  | Minora                                            | Doar recoltarea proactiva cand e perfect colorat si Tare previne inmultirea lor                | N/A                              |
+
+---
+
+## V. PLAN MULTIANUAL SI CALENDAR DE INVESTITII
+
+**Cronologia plantat → productie plina:**
+
+| An            | Varsta  | Activitati principale                                                                                                                                                      | Productie estimata   | Investitie estimata (lei/pom)     |
+| ------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --------------------------------- |
+| Anul 1 (2026) | Plantat | Creare sistemului radicular profund. Taiere de reducere a volumului, mulcire severa, umbrire si PROTECTIE MAXIMA de prima iarna impotriva gerului                          | ZERO absolut         | ~150-200 lei / Pom. Puiet, Tutore |
+| Anul 2 (2027) | 1 an    | Formare prima etaj de ramificari in forma de Vas Deschis (Lumina). Continua irigarea saptamanala                                                                           | ZERO absolut         | Cost minimal de intretinere apa   |
+| Anul 3 (2028) | 2 ani   | Tundere anuala usoara (lemn de 1 an face roade). Pomul isi deschide crengile de viitor, lastari se leaga pe popi stabili. Se taie oricare floare daca exista!              | 0 fructe             | Acelasi (Apa, protectie trunchi)  |
+| Anul 4 (2029) | 3 ani   | Crestere la capacitate masiva — Inceperea rariirii active in iulie a celor putine poze formate (lasa 2-4 max)                                                              | Mica / Proba (~3 kg) | —                                 |
+| Anul 5 (2030) | 4 ani   | Prima "Maturitate Semioficiala". Pomul suporta sarcini reale. Rarirea la jumate este vitala spre a lasa pomul sa ingroase ramurile fara a rupe "Vasul" la o rafala de vant | 10-20 kg             | ROI (Punct initial recuperare)    |
+| Ani 6-10      | Matur   | Anii perfecti. Cost 0 in afara raririi ramurilor (tundere curatatoare lemn mort)                                                                                           | 35-50 kg plina       | ROI Excedentar                    |
+
+**Punctul de recuperare investitiei (ROI):** Estimat dupa **Vanzarea din anul 5 - anul 6** de pe randament mediu. Este pe un parcurs inaltat pe termen lung — un pom Kaki bine tratat ofera roade +40 ani, fara vlaguire, si cu 3-4 ori mai putine boli decat prunul local.
+
+**Riscuri financiare principale la Nadlac:**
+Singurul eveniment devastator financiar "instant": Un val siberian atipic din est peste un kaki de 2 ani complet nebandajat sau expus in vant intr-un an de tranzitie. Moartea e pana la nivelul portaltoiului / nivel radicular.
+
+---
+
+## W. RECUPERARE DUPA EVENIMENTE EXTREME
+
+**Recuperare dupa INGHET EXTREM de iarna (sub -18/-20°C):**
+
+- **Evaluare supravietuire (in aprilie):** Daca dezmugurirea intarzie anormal pana in luna mai, trunchiul devine pamantiu / scarbos. Zgarie o portiune inferioara si superioara. Daca superioara este bruna si uscata, ramurile sunt degerate complet. Testul se coboara pana se da de tesut verde-pal sau "umed / laptos" — cambiul viu al copacului.
+- **Primavara (Interventie Radicala):** Taie fara mila (chiar si intregul trunchi pana ajungi la zona sanatoasa verde). Pomul e extrem de capabil de regenerare (trage dragoni supervigurosi intr-un singur sezon lungi de peste 2 metri din care sa creezi tulpina pe anul 2). Daca verdeata apare SUB locul de altoire, ai pierdut copacul (e portaltoi "salbatic").
+
+**Recuperare dupa SECETA SEVERA (iulie-august fara precipitatii si caldura excesiva peste 38°C):**
+Pomul isi lepada toata recolta verde cruda — se numeste "caderea fiziologica / setei".
+Protocol rehidratare: A NU se tranti furtunul masiv imediat! Aplicarea unei baltoace duce rapid la asfixia unui sistem radicular fara radacini functionale. Revine-te la irigare de 30-40 L cu un debit foarte mic, la fiecare 4-5 zile timp de 2-3 reprize pana la restabilirea vizuala.
+
+**Recuperare dupa GRINDINA in iulie/august:**
+Scoarta Kakiului este destul de usor de afectat, dar frunzele se recompun mai lesne. Fructele grav ranite de gheata si "perforate / negre" **NU** isi mai revin! Pulpa lovita isi intarzie maturarea iar locul atins se cangreneaza toamna direct pe copac. Trebuie extirpate. Lemnul ciuruit si cu coaja rupta va fi curatat intr-o singura baie masiva 0.5-1% Cuprica curata.
+
+---
+
+## X. ISTORIE, TRADITII SI VALOARE CULTURALA LOCALA
+
+**Istoria cultivarii in zona Arad/Campia de Vest:**
+Specia a fost mereu tratata exclusiv drept "pom de sera / portocal curiozitate" pastrat de amatorii timisoreni si aradeni in curti foarte adapostite si o curiozitate vizuala locala intre colegii gradinari care abia auzeau de curmali si piersici asiatici la sfarsitul anilor 2000. Datorita incalzirii mediteraneene din ultima vreme, pomul a devenit brusc complet plantabil si vizibil si pe teritoriul liber agricol neurban, cum este spre Nadlac, dovedind ca in cateva decenii Campia Pannonica / Vestica iarta speciile cu tolerante la ger (-15°C) mult mai linistitor.
+
+**Valoare culturala pentru marketing:**
+Roland poate cultiva aici esenta marketing-ului de "micro-producator adaptabil in fata schimbarii climei." Cuvantul pentru marketing: "Produs romanesc proaspat tratat artizanal din cea mai de Vest Livada Romaniei ca sa pastreze dulceata pe care _numai caldura Nadlacului de Vest o ofera natural_."
+
+**Legaturi cu piata maghiara (frontiera Nadlac):**
+Fructul se numeste "Datolyaszilva" pe teritoriul maghiar si la fel a vazut un boost extrem de aclimatizare in sudul Ungariei dupa 2012/2015. Exportul la nivel mic catre clientii din zona Mako si Seghedin, care sunt mai avansati culinar intr-o cerinta ridicata a nisei "deshidratate Bio", se poate profila perfect cu cativa clienti cheie de peste granita cand randamentul este peste un numar limitat.
+
+---
+
+## Y. RESURSE, FURNIZORI SI RETEA DE SUPORT
+
+**Pepiniere recomandate (zona/online cu livrare in Arad):**
+
+- **Pepiniera Dariu Plant (VERIFICAT):** Locul de plantare ales de Roland. Indica ca portaltoii sunt selectionati catre aclimatizarea la zona Campia Pannonica (lotus / salbatic).
+- Diverse site-uri precum "PlantShop.ro" sau magazine horticole cu depozit in Vest si livezi pomicole autorizate (ex: statiuni Bihor / Timis — "Pepinierele Hida") detin puieti special hibridizati pe specii ce depasesc calitatea Kaki-ului Spaniol pe nivelul tolerantei gerului (Russeanca -25 grade etc). Pomi garantati pana sub -20°C sunt esentiali la inlocuiri daca Rojo Brillante pierde batalia intr-o iarna dura pe cernoziom. [DE CAUTAT LOCAL]
+
+**Furnizori produse fitosanitare zona Arad:**
+Deoarece Kaki nu beneficiaza de cerinte complicate, magazinele agricole locale din orasul Nadlac sunt perfect suficiente pentru Cupru (Sulfatul pt primavara si zeama bordeleza ecologica) impreuna cu fertilizatorii (NPK toamna pt maturare sol) recomandati a fi aplicati in cantitati moderate in timpul verii. Orice Agroland ofera sprijin masiv pentru produsele (Bio-sapunuri insecticid / sulf pt iernat).
+
+**Asociatii si comunitati utile:**
+Singurul ecosistem functional online gratuit de excelenta educare romaneasca ramane pe "Grupurile Facebook ale Amatorilor de Exotice Aclimatizate" ("Livada de Acasa — Kaki/Rodii/Smochini") unde se poate afla in timp real, cand temperaturile in Vest pica in ianuarie la prognozele anuale severe, ce masura masiva de izolare iau cultivatorii batrani si din experientele trunchiurilor arse.
+
+---
+
+_Sectiunile I-Y integrate din cercetarea Gemini CLI — 2026-04-08. Date validate Claude Code._
