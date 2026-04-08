@@ -1072,6 +1072,71 @@ nu dupa. Zmeurul galben nevalorificat in 24h devine pierdere totala.
 
 ---
 
+## FAZA 3 — COMPLETARE GLOSAR POMICOL (termeni din sectiunile A-H)
+
+> **Scop:** Glosarul existent `Gemini_Glosar_Pomicol_Z.md` acopera termenii din sectiunile I-Y.
+> Sectiunile A-H (scrise de Claude Code) contin termeni tehnici suplimentari care nu sunt in glosar.
+> Aceasta faza extrage termenii lipsa si completeaza glosarul existent.
+
+### Instructiune
+
+1. **Citeste glosarul existent** `c:\Proiecte\Livada\content\Gemini_Research\Gemini_Glosar_Pomicol_Z.md`
+   Retine toti termenii deja definiti — NU ii duplica.
+
+2. **Citeste sectiunile A-H** din urmatoarele 20 fisiere (doar A-H, nu I-Y):
+   - `c:\Proiecte\Livada\content\Afin.md`
+   - `c:\Proiecte\Livada\content\Alun.md`
+   - `c:\Proiecte\Livada\content\Cais.md`
+   - `c:\Proiecte\Livada\content\Cires.md`
+   - `c:\Proiecte\Livada\content\Kaki.md`
+   - `c:\Proiecte\Livada\content\Mar_Florina.md`
+   - `c:\Proiecte\Livada\content\Mar_Golden_Spur.md`
+   - `c:\Proiecte\Livada\content\Migdal.md`
+   - `c:\Proiecte\Livada\content\Mur.md`
+   - `c:\Proiecte\Livada\content\Mur_Copac.md`
+   - `c:\Proiecte\Livada\content\Par_Clapp.md`
+   - `c:\Proiecte\Livada\content\Par_Hosui.md`
+   - `c:\Proiecte\Livada\content\Par_Napoca.md`
+   - `c:\Proiecte\Livada\content\Par_Williams.md`
+   - `c:\Proiecte\Livada\content\Piersic.md`
+   - `c:\Proiecte\Livada\content\Prun.md`
+   - `c:\Proiecte\Livada\content\Rodiu.md`
+   - `c:\Proiecte\Livada\content\Visin.md`
+   - `c:\Proiecte\Livada\content\Zmeur.md`
+   - `c:\Proiecte\Livada\content\Zmeur_Galben_Remontant.md`
+
+3. **Extrage termenii tehnici noi** din sectiunile A-H care NU sunt deja in glosar.
+   Categorii de cautat in mod special:
+   - **Produse fitosanitare** (fungicide, insecticide, acaricide): Merpan, Topsin, Karate Zeon, Score, Chorus, Captan, Dithane, Syllit, Calypso etc. — explica ce tip de produs e, ce combate, clasa toxicologitate
+   - **Boli specifice** aparute in A-H: monilioza, cilindrosporioza, basicarea frunzelor, rapan, rugina, focul bacterian, cancrul bacterial, Xanthomonas, Pseudomonas, Taphrina etc.
+   - **Daunatori specifici**: musca cireselor (Rhagoletis cerasi), paducheii (Aphis, Myzus), acarianul rosu (Panonychus), viermele merelor (Cydia pomonella), Drosophila suzukii etc.
+   - **Termeni de tundere** specifici: pincement, ciupire, lastar anticipat, ramura mixta, ramura de rod, pinten, smoc de rod, burjon, arcuire, spalier etc.
+   - **Termeni de fertilizare** folositi in A-H: doze NPK, amendamente, calcarare, sulfat de potasiu, superfosfat, uree, humat, biostimulatori etc.
+   - **Termeni locali / practici**: vermorel, atomizor, solutie de acoperire, produs de contact vs sistemic, pauza de securitate (PHI), limita maxima de reziduuri (LMR)
+
+4. **Adauga termenii noi in `Gemini_Glosar_Pomicol_Z.md`**:
+   - Pastreaza structura existenta si categoriile existente
+   - Adauga o sectiune noua: `## Termeni din Sectiunile A-H (tratamente, boli, daunatori)`
+   - Format per termen: `**Termen** — definitie clara in 1-3 randuri, limbaj simplu`
+   - Daca un termen apartine unei categorii deja existente in glosar, adauga-l acolo
+   - Marcheaza termenii nesiguri cu `[ESTIMAT]`
+
+5. **La finalul fisierului** adauga:
+   `> **Completat Faza 3:** [data] — X termeni noi adaugati din sectiunile A-H`
+
+---
+
+### Instructiune de executie Faza 3
+
+Trimite catre Gemini:
+```
+Please read the section "FAZA 3 — COMPLETARE GLOSAR POMICOL" from:
+c:\Proiecte\Livada\content\Gemini_Research\Cerinta_Gemini_Research.md
+and execute the task described there.
+```
+
+---
+
 ## NOTA PENTRU SPECII NOI
 
 Cand Roland adauga o specie noua:
