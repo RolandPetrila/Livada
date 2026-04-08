@@ -1537,6 +1537,20 @@
           padding: 8px 12px;
         }
       }
+      .glosar-term {
+        background: var(--bg-surface);
+        border-left: 3px solid var(--accent-dim);
+        padding: 10px 14px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        transition: border-color 0.2s;
+      }
+      .glosar-term:hover {
+        border-left-color: var(--accent);
+      }
+      .glosar-term.hidden {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -1726,6 +1740,10 @@
         </div>
         <div class="tab" data-tab="kaki">
           <span class="tab-icon">&#127818;</span>Kaki
+        </div>
+        <span class="tab-sep">&#128218;</span>
+        <div class="tab" data-tab="glosar-pomicol">
+          <span class="tab-icon">&#128214;</span>Glosar
         </div>
       </div>
     </nav>
@@ -26844,6 +26862,546 @@
         </div>
       </div>
       <!-- /zmeur-galben -->
+
+      <!-- ==================== TAB: GLOSAR POMICOL ==================== -->
+      <div class="tab-content" id="glosar-pomicol">
+
+        <!-- Header cu search -->
+        <div class="section">
+          <h2 class="section-title">&#128214; GLOSAR POMICOL &#8212; 114 Termeni Tehnici</h2>
+          <div class="section-body">
+            <p style="color:var(--text-dim);font-size:0.88rem;margin-bottom:12px;">
+              Dictionar de termeni tehnici din documentatia completa A-Y pentru cele 20 specii. Cauta orice termen, boala, produs sau tehnica.
+            </p>
+            <input type="text" id="glosarSearch" placeholder="Cauta termen (ex: monilioza, portaltoi, WP)..."
+              oninput="filterGlosar(this.value)"
+              style="width:100%;padding:10px 14px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);font-size:0.9rem;margin-bottom:16px;box-sizing:border-box;">
+            <div id="glosarCount" style="font-size:0.82rem;color:var(--text-dim);margin-bottom:12px;">114 termeni in 9 categorii</div>
+          </div>
+        </div>
+
+        <!-- Categorie 1: Fenologie si Biologie -->
+        <div class="section" data-glosar-cat="fenologie-biologie">
+          <h2 class="section-title">&#127777; Fenologie si Biologie</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="anteza" data-def="momentul exact din fenologie in care floarea pomului se d">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Anteza (Anthesis)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Momentul exact din fenologie in care floarea pomului se deschide complet si este gata sa fie polenizata de albine sau vant. La Cires, anteza la Nadlac are loc cam cu o saptamana mai devreme decat in restul tarii datorita climei foarte calde din Campia de Vest.</span>
+            </div>
+            <div class="glosar-term" data-term="buton floral" data-def="stadiul in care mugurele de rod s-a umflat suficient si">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Buton floral (Floral bud)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Stadiul in care mugurele de rod s-a umflat suficient si incep sa iasa usor la iveala petalele colorate inca nedeschise ale viitoarei flori. Primavara devreme, Roland se uita la pomii de Kaki Rojo Brillante pentru a numara butoanii florali, evaluand astfel potentialul noii recolte.</span>
+            </div>
+            <div class="glosar-term" data-term="dezmugurire" data-def="prima miscare de primavara cand mugurii dorminzi incep s">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Dezmugurire (Bud break)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Prima miscare de primavara cand mugurii dorminzi incep sa se desfaca, scotand la lumina un varf verde pal de frunzulite tinere sau petale stranse. La Nadlac, dezmugurirea la Migdal are loc uneori foarte devreme (martie), ceea ce il face vulnerabil daca se inregistreaza geruri tarzii in aprilie.</span>
+            </div>
+            <div class="glosar-term" data-term="dormanta" data-def="starea vegetativa de hibernare din perioada iernii cand p">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Dormanta (Dormancy)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Starea vegetativa de "hibernare" din perioada iernii, cand pomul nu mai are frunze, iar sevele sunt blocate pentru a asigura rezistenta maxima la temperaturi negative. Atata timp cat merii sunt inca in dormanta profunda in ianuarie, Roland profita de soare pentru a incepe taierile grele de regenerare fara sa ii streseze.</span>
+            </div>
+            <div class="glosar-term" data-term="fenofaza" data-def="un anumit stadiu in cresterea pomului observabil pe parcu">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Fenofaza (Phenological phase)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Un anumit stadiu in cresterea pomului, observabil pe parcursul unui an de zile (exemple clasice: caderea petalelor, marirea fructului pana la marimea unei alune). Roland isi noteaza in agenda datele de intrare in fiecare fenofaza a Kaki-ului pentru a intelege ritmul de crestere al acestei specii mai exotice la Nadlac.</span>
+            </div>
+            <div class="glosar-term" data-term="incubatie" data-def="perioada tacuta din momentul in care infectia cu patogen">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Incubatie (Incubation period)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Perioada tacuta din momentul in care infectia cu patogen ajunge pe pom si ziua in care apar primele pete maronii pe frunza bolnava si distrugerea devine vizibila. In timpul celor cinci zile de incubatie de dupa o aversa, Roland nu vede nicio boala pe caisi, dar stie sigur ca fara tratament patogenul macina interiorul tesuturilor.</span>
+            </div>
+            <div class="glosar-term" data-term="inflorire deplina" data-def="punctul cel mai inalt de deschidere florala dintr-un sezo">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Inflorire deplina (Full bloom)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Punctul cel mai inalt de deschidere florala dintr-un sezon, definit tehnic in momentul in care cel putin 80-90% din flori sunt deschise pentru polenizatori. In saptamana cu inflorire deplina in parcela de Ciresi, Roland evita sa faca vreun tratament fitosanitar de zi pentru a proteja stupii de albine veniti in cules.</span>
+            </div>
+            <div class="glosar-term" data-term="legarea rodului" data-def="transformarea cu succes a bazei unei flori polenizate in">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Legarea rodului (Fruit set)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Transformarea cu succes a bazei unei flori polenizate in fruct vizibil cu ochiul liber, demonstrand ca gerul sau ploaia nu au distrus polenizarea din acel an. Dupa doua saptamani de la scuturarea petalelor la migdal, Roland urmareste legarea rodului, numarand micile migdale verzi cat niste boabe de mazare.</span>
+            </div>
+            <div class="glosar-term" data-term="maturitate comerciala" data-def="stadiul in care fructul ajunge la marimea naturala si se">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Maturitate comerciala (Commercial maturity)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Stadiul in care fructul ajunge la marimea naturala si se culege, desi e putin mai tare; acest lucru ii permite sa reziste mai bine loviturilor la transport. Pentru vanzarea din piata a Parului Williams, Roland prefera sa culeaga la maturitatea comerciala, stivuindu-le atent in lazi cu saptamani inainte de inmuiere.</span>
+            </div>
+            <div class="glosar-term" data-term="maturitate de consum" data-def="acel punct scurt in timp in care fructul ajunge atat de m">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Maturitate de consum (Consumption maturity)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Acel punct scurt in timp in care fructul ajunge atat de moale, aromat si plin de zaharuri incat e perfect pentru a fi mancat exact asa cum l-ai smuls de pe craca. Roland consuma kaki-ul doar cand a ajuns la maturitatea de consum de un portocaliu puternic si cu o pulpa dulce ca gelatina, la cateva saptamani dupa culegere.</span>
+            </div>
+            <div class="glosar-term" data-term="mugur" data-def="o umflatura mica pe ramura pomului in faza de iarna din c">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Mugur (Bud)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O umflatura mica pe ramura pomului in faza de iarna din care se va dezvolta cand vine caldura ori un nou lastar de frunze (mugure vegetativ), ori o floare (mugure de rod). Taind ramurile in livada in ianuarie, Roland recunoaste usor mugurii de rod la par, mai dolofani si rotunzi comparativ cu cei ascutiti de frunza.</span>
+            </div>
+            <div class="glosar-term" data-term="parg veraison" data-def="fenofaza vizibila prin care verdele crud al intregului fr">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Parg (Veraison)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fenofaza vizibila prin care verdele crud al intregului fruct dispare lasand loc coloratiei caracteristice de maturitate finala aurie sau roscata. Intrarea in parg a merelor Florina este semnalul pentru Roland de a sista aplicarea fungicidelor grele, respectand strict timpul de pauza catre recoltare.</span>
+            </div>
+            <div class="glosar-term" data-term="spor spore" data-def="element de reproducere al ciupercilor fungi echivalentul s">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Spor (Spore)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Element de reproducere al ciupercilor (fungi); echivalentul semintei la plante. Sporii se raspandesc prin vant, apa sau insecte si germineaza in conditii de umiditate si temperatura favorabila, infectand planta. Roland aplica tratamente preventive cu cupru pentru a bloca germinarea sporilor de rapan adusi de vant la caisi.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categorie 2: Altoire si Inmultire -->
+        <div class="section" data-glosar-cat="altoire-inmultire">
+          <h2 class="section-title">&#9986;&#65039; Altoire si Inmultire</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="altoi scion" data-def="partea superioara a unui pom altoit care va forma coroana">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Altoi (Scion)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Partea superioara a unui pom altoit care va forma coroana si va dicta exact ce fel de fructe va produce acel pom. Cand Roland altoieste un par nou, ia o crenguta viguroasa de Par Williams (altoiul) pentru a o prinde pe un portaltoi rezistent.</span>
+            </div>
+            <div class="glosar-term" data-term="calusare callusing" data-def="procesul natural prin care tesuturile plantei se vindeca">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Calusare (Callusing)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Procesul natural prin care tesuturile plantei se vindeca dupa o taietura severa, formand o cicatrice de celule protectoare (calus) peste rana. La o luna dupa ce a facut o altoire in despicatura la un mar, Roland verifica daca zona taiata s-a calusat frumos.</span>
+            </div>
+            <div class="glosar-term" data-term="cambiu cambium" data-def="stratul umed foarte subtire si verde aflat fix sub scoarta">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Cambiu (Cambium)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Stratul umed, foarte subtire si verde aflat fix sub scoarta pomului, responsabil cu cresterea in grosime; este vital ca acesta sa se atinga la altoire. Cand altoieste un prun, Roland este extrem de atent sa suprapuna perfect cambiul portaltoiului cu cel al altoiului, altfel seva nu va circula.</span>
+            </div>
+            <div class="glosar-term" data-term="compatibilitate la altoire graft compatibility" data-def="capacitatea naturala a unui altoi de a creste sanatos si d">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Compatibilitate la altoire (Graft compatibility)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Capacitatea naturala a unui altoi de a creste sanatos si durabil impreuna cu portaltoiul pe care a fost legat, fara a fi respins de acesta peste cativa ani. Roland a citit ca Parul Hosui nu are compatibilitate buna cu gutuiul folosit ca radacina, asa ca il cauta intotdeauna altoit pe un franc de par salbatic.</span>
+            </div>
+            <div class="glosar-term" data-term="copulatie whip and tongue grafting" data-def="o metoda de altoire realizata primavara in care atat porta">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Copulatie (Whip and tongue grafting)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O metoda de altoire realizata primavara in care atat portaltoi si altoi au fix aceeasi grosime, fiind unite printr-o taietura oblica precisa. Pentru a inmulti Marul Florina in luna martie, Roland foloseste copulatia perfectionata, imbinand ferm doua crengute tinere inainte de plecarea sevei.</span>
+            </div>
+            <div class="glosar-term" data-term="despicatura cleft grafting" data-def="o tehnica robusta de altoire pe crengi groase in care tru">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Despicatura (Cleft grafting)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O tehnica robusta de altoire pe crengi groase in care trunchiul este taiat drept si despicat vertical, introducandu-se doua ramurele subtiri ascutite pe margini. Pentru a salva structura unui prun mai batran, Roland i-a taiat sarpanta principala la 1 metru si a altoit in despicatura un soi de prun mai productiv.</span>
+            </div>
+            <div class="glosar-term" data-term="franc seedling rootstock" data-def="un portaltoi ieftin obtinut dintr-o samanta de corcodus z">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Franc (Seedling rootstock)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Un portaltoi ieftin obtinut dintr-o samanta de corcodus/zarzar incoltita, capabil de radacini puternice care ancoreaza pomii mari, dar intra tarziu pe rod. Nucul vechi pe care l-a pastrat din livada batrana este crescut pe portaltoi franc, avand peste 8 metri inaltime.</span>
+            </div>
+            <div class="glosar-term" data-term="mastic de altoit grafting wax" data-def="o unsoare sau substanta pe baza de ceara cu care se izol">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Mastic de altoit (Grafting wax)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O unsoare sau substanta pe baza de ceara cu care se izoleaza perfect ranile deschise lasate dupa ce se reteaza crengi groase sau dupa imbinarea corecta a altoiului. De fiecare data cand scoate un pom din livada sau ii taie un brat gros de 5 cm, Roland acopera toate marginile taiate cu mastic.</span>
+            </div>
+            <div class="glosar-term" data-term="oculatie inmugurire budding" data-def="metoda cea mai raspandita si simpla in perioada verii de a">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Oculatie / Inmugurire (Budding)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Metoda cea mai raspandita si simpla in perioada verii de altoire, constand in plasarea unui singur mugur decupat in forma de scut sub un T facut in coaja altui pom. Ca sa isi mai faca doi piersici exact cu acelasi gust cu primul, Roland face la mijlocul lui august o oculatie aplicand mugurii luati dintr-o singura ramura de rod.</span>
+            </div>
+            <div class="glosar-term" data-term="portaltoi rootstock" data-def="jumatatea pomicola de jos cu sistem radicular dedicat in p">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Portaltoi (Rootstock)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Jumatatea pomicola de jos cu sistem radicular dedicat in pamant, care sustine fizic altoiul ce produce fructe. Dorind ca pomii sa ramana scurti de pana la doi metri, Roland verifica ca marul cumparat a fost crescut pe portaltoi slab viguros gen M9.</span>
+            </div>
+            <div class="glosar-term" data-term="pvp plant variety protection" data-def="protectia soiului vegetal brevetat interzice multiplicare">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">PVP (Plant Variety Protection)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Protectia soiului vegetal brevetat; interzice multiplicarea (prin altoire, butasi, seminte) fara autorizatia detinatorului dreptului. Soiurile marcate PVP nu pot fi inmultite si comercializate liber. Roland a verificat fisa soiului nou importat si l-a informat pe prietenul sau ca este exclusa legal taierea oricarui lemn de rod in scop de inmultire.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categorie 3: Tundere si Formare -->
+        <div class="section" data-glosar-cat="tundere-formare">
+          <h2 class="section-title">&#129754; Tundere si Formare</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="arcuire" data-def="tehnica de tundere si dresaj prin care ramurile de par sa">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Arcuire</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Tehnica de tundere si dresaj prin care ramurile de par sau mar sunt inclinate la 45-60 grade fata de verticala pentru a incetini cresterea si a stimula formarea mugurilor de rod.</span>
+            </div>
+            <div class="glosar-term" data-term="ciupire pincement pinching" data-def="operatiune de vara care consta in scurtarea varfurilor la">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Ciupire (Pincement / Pinching)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Operatiune de vara care consta in scurtarea varfurilor lastarilor verzi pentru a opri cresterea in lungime si a favoriza ramificarea sau transformarea mugurilor in muguri de rod. Roland recurge la ciupire frecvent la noile tufe de mur in vara ca sa inmulteasca lastarii scurti pe orizontala.</span>
+            </div>
+            <div class="glosar-term" data-term="coroana crown" data-def="totalitatea ramurilor si a frunzisului unui pom fructifer">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Coroana (Crown)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Totalitatea ramurilor si a frunzisului unui pom fructifer, partea aeriana superioara care da forma arhitecturala a pomului si poarta greutatea productiei. Roland a ales sa formeze o coroana de tip "vas" (deschisa in centru) pentru piersicii sai, permitand soarelui din Nadlac sa coaca perfect fiecare fruct.</span>
+            </div>
+            <div class="glosar-term" data-term="inelare girdling" data-def="o incizie sub forma unui inel realizata special pe coaja u">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Inelare (Girdling)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O incizie sub forma unui inel realizata special pe coaja unei sarpante, cu scopul de a bloca seva coboratoare a zaharurilor, pastrand-o in acea ramura ca sa ingroase rapid fructele. Fiind o manopera agresiva predispusa la accidente, Roland nu foloseste inelarea la prunii sai, pentru a nu incuraja scurgerile de rasina (gomoza).</span>
+            </div>
+            <div class="glosar-term" data-term="lacom water sprout sucker" data-def="o crestere vegetativa extrem de rapida o nuia perfect drea">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Lacom (Water sprout / Sucker)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O crestere vegetativa extrem de rapida, o nuia perfect dreapta fara ramificatii care pleaca in sus direct din ramuri sau trunchi, consumand energia in detrimentul fructelor. Prin luna iulie, Roland rupe la timp, inca verzi, toti lacomii crescuti vertical la baza caisilor.</span>
+            </div>
+            <div class="glosar-term" data-term="lastar shoot" data-def="o crenguta foarte proaspata verde ce rasare in anul curent">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Lastar (Shoot)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O crenguta foarte proaspata, verde, ce rasare in anul curent direct dintr-o tulpina mai groasa. Este inca nelemnoasa si in ea se dezvolta rapid primele frunze tinere. Primavara, Roland verifica fiecare lastar de la peri pentru a se asigura ca nu are oua ascunse de purici meliferi.</span>
+            </div>
+            <div class="glosar-term" data-term="pinten spur" data-def="ramura de rod foarte scurta 2-5 cm specifica parului si m">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Pinten (Spur)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Ramura de rod foarte scurta (2-5 cm), specifica parului si marului, care poarta butoni florali la varf si este productiva pe termen de cativa ani.</span>
+            </div>
+            <div class="glosar-term" data-term="ramura de rod fruiting branch" data-def="structura ramificata purtand abundent butoni florali forma">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Ramura de rod (Fruiting branch)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Structura ramificata purtand abundent butoni florali, formata pe portiunile mature ale coroanei. La par si mar, ramurile de rod se recunosc prin ingrosaturile (inelele) caracteristice si sunt tratate cu grija maxima la tundere.</span>
+            </div>
+            <div class="glosar-term" data-term="sarpanta scaffold branch" data-def="fiecare brat principal de baza care formeaza scheletul per">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Sarpanta (Scaffold branch)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fiecare brat principal de baza care formeaza scheletul permanent al pomului. Roland a format trei sarpante principale la caisii sai, orientate uniform pentru a sustine greutatea productiei si a rezista vanturilor din Campia de Vest.</span>
+            </div>
+            <div class="glosar-term" data-term="spalier" data-def="structura de sustinere formata din stalpi si sarme intinse">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Spalier</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Structura de sustinere formata din stalpi si sarme intinse, necesara pentru dirijarea si sustinerea speciilor care se culca la pamant (zmeur, mur) sau pentru forme intensive de mar/par.</span>
+            </div>
+            <div class="glosar-term" data-term="tundere de formare formative pruning" data-def="serie de taieri fundamentale efectuate puietilor tineri in">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Tundere de formare (Formative pruning)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Serie de taieri fundamentale efectuate puietilor tineri in primii lor cativa ani cu scopul unic de a le da viitoarea arhitectura corecta si puternica. Roland face mereu tunderea de formare severa a piersicilor in momentul post-plantarii, creandu-le o coroana solida deschisa in forma de vas.</span>
+            </div>
+            <div class="glosar-term" data-term="tundere de intretinere maintenance pruning" data-def="retusari obisnuite de iarna aplicate pomilor maturi pentru">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Tundere de intretinere (Maintenance pruning)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Retusari obisnuite de iarna aplicate pomilor maturi pentru aerisirea coroanei prea dese, incurajand accesul uniform al tratamentului cu atomizorul la rod nou in fiecare an. Roland tunde parul matur anual, indepartand crengutele vechi sterile ce umbreau inutil noii butoni.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categorie 4: Boli si Patogeni -->
+        <div class="section" data-glosar-cat="boli-patogeni">
+          <h2 class="section-title">&#129440; Boli si Patogeni</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="antracnoza elsinoe colletotrichum" data-def="boala fungica ce produce pete violacee si crapaturi pe lu">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Antracnoza (Elsinoe veneta / Colletotrichum)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Boala fungica ce produce pete violacee si crapaturi pe lujerii de zmeur si mur sau putrezirea fructelor de visin; slabeste planta si reduce productia.</span>
+            </div>
+            <div class="glosar-term" data-term="bacterie bacteria infectie" data-def="microorganism invizibil cu ochiul liber care intra prin ran">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Bacterie (Bacteria)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Microorganism invizibil cu ochiul liber care intra prin ranile sau florile pomului, provocand boli grave care nu se trateaza usor cu simple fungicide. Dupa o furtuna cu grindina in Campia de Vest, Roland stropeste merii rapid pentru a preveni o infectie bacteriana la nivelul ranilor de pe scoarta.</span>
+            </div>
+            <div class="glosar-term" data-term="basicarea frunzelor taphrina deformans piersic cais" data-def="boala specifica piersicului si caisului ce produce rasucir">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Basicarea frunzelor (Taphrina deformans)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Boala specifica piersicului si caisului ce produce rasucirea, ingrosarea si inrosirea frunzelor primavara devreme; netratata, duce la caderea frunzelor si epuizarea pomului.</span>
+            </div>
+            <div class="glosar-term" data-term="botrytis putregaiul cenusiu zmeur mur afin" data-def="ciuperca ce ataca fructele de zmeur mur si afin acoperind">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Botrytis (Putregaiul cenusiu)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Ciuperca ce ataca fructele de zmeur, mur si afin, acoperindu-le cu un mucegai pufos gri; se dezvolta exploziv in conditii de umiditate si caldura.</span>
+            </div>
+            <div class="glosar-term" data-term="cilindrosporioza blumeriella jaapii visin cires" data-def="cea mai periculoasa boala a visinului si ciresului produca">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Cilindrosporioza (Blumeriella jaapii)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Cea mai periculoasa boala a visinului si ciresului, producand mii de puncte rosii pe frunze care se ingalbenesc si cad prematur in iulie-august, lasand pomul "chel".</span>
+            </div>
+            <div class="glosar-term" data-term="didymella leptosphaeria coniothyrium zmeur mur" data-def="boala a zmeurului si murului ce produce pete mari brune vi">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Didymella (Leptosphaeria coniothyrium)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Boala a zmeurului si murului ce produce pete mari, brune-violacee la baza lujerilor, ducand la uscarea acestora in anul urmator.</span>
+            </div>
+            <div class="glosar-term" data-term="foc bacterian fire blight mar par" data-def="o bacterioza distructiva in principal la mar si par ramuri">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Foc bacterian (Fire blight)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O bacterioza distructiva in principal la mar si par; ramurile atacate se vestejesc subit, frunzele se innegresc dar nu cad, crengile parand parlite cu torta. La primele ploi calde din luna mai, Roland controleaza atent extremitatile Parului Napoca, deoarece focul bacterian ataca mai ales pe varfurile inca in crestere.</span>
+            </div>
+            <div class="glosar-term" data-term="fungi ciuperci patogene boli" data-def="organisme inferioare care reprezinta cauza a 80 din bolile">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Fungi (Ciuperci patogene)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Organisme inferioare care reprezinta cauza a 80% din bolile care ataca livada; se dezvolta fulminant in conditii de umezeala atmosferica inalta. Roland stie ca un vant constant si uscat in livada de la Nadlac este cel mai bun aliat al sau, pentru ca usuca roua rapid, ucigand sporii diferitilor fungi periculosi.</span>
+            </div>
+            <div class="glosar-term" data-term="mana downy mildew blight frunze ploaie" data-def="o boala fungica foarte rapida si daunatoare care arde efe">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Mana (Downy mildew / Blight)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O boala fungica foarte rapida si daunatoare care arde efectiv frunzele si tulpinile in veri foarte ploiase, in special cand umiditatea stagneaza intre randurile apropiate. Roland tunde la timp tufele de zmeur ca aerul campiei sa le circule si usuce permanent.</span>
+            </div>
+            <div class="glosar-term" data-term="monilioza brown rot samburoase cais prun" data-def="una dintre cele mai periculoase boli ale samburoaselor ca">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Monilioza (Brown rot)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Una dintre cele mai periculoase boli ale samburoaselor, care poate ataca dintr-o data in primavara uratind florile (monilioza lastarilor) si mai tarziu putrezeste si fructele. Roland face tratamentul alb obligatoriu de primavara la cais in faza de buton roz cu o formula bazata pe cupru.</span>
+            </div>
+            <div class="glosar-term" data-term="patogen pathogen virus bacterie spori" data-def="oricare din dusmanii de nivel microscopic fie ca e virus b">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Patogen (Pathogen)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Oricare din dusmanii de nivel microscopic, fie ca e virus, bacterie sau spori zburatori care vor imbolnavi intr-un fel sau altul structura vie a pomilor. Dupa adunarea frunzelor afectate de rapan, Roland le da foc pentru a anihila orice sursa de patogen pregatita sa il invadeze la anul.</span>
+            </div>
+            <div class="glosar-term" data-term="rapan venturia mar par pete negre" data-def="boala fungica majora la mar si par ce produce pete maslini">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Rapan (Venturia)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Boala fungica majora la mar si par ce produce pete maslinii/negre pe frunze si fructe, ducand la deformarea si craparea fructelor si caderea frunzelor.</span>
+            </div>
+            <div class="glosar-term" data-term="rugina tranzschelia phragmidium pustule frunze" data-def="boala ce produce pustule galbene portocalii sau brune pe f">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Rugina (Tranzschelia / Phragmidium)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Boala ce produce pustule galbene, portocalii sau brune pe frunze (adesea pe partea inferioara); reduce capacitatea de fotosinteza si duce la defoliere timpurie.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categorie 5: Daunatori -->
+        <div class="section" data-glosar-cat="daunatori">
+          <h2 class="section-title">&#128027; Daunatori</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="cydia pomonella viermele merelor pere" data-def="principalul daunator al merelor si perelor larva patrunde">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Cydia pomonella (Viermele merelor)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Principalul daunator al merelor si perelor; larva patrunde in fruct pana la samburi, facand fructul necomercial si predispus la cadere prematura.</span>
+            </div>
+            <div class="glosar-term" data-term="daunator pest insecta vierme afida rozator pasare" data-def="orice forma de viata insecta vierme afida rozator pasare c">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Daunator (Pest)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Orice forma de viata (insecta, vierme, afida, rozator, pasare) care ataca si distruge radacinile, tulpinile, frunzele sau fructele pomilor din livada. Viermele merelor este un daunator foarte agresiv la soiul Golden Spur, asa ca Roland foloseste capcane cu lipici pentru a-l depista si a aplica stropirea la timp.</span>
+            </div>
+            <div class="glosar-term" data-term="drosophila suzukii musculita aripi patate zmeur mur afin" data-def="daunator nou si extrem de periculos care ataca fructele de">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Drosophila suzukii (Musculita cu aripi patate)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Daunator nou si extrem de periculos care ataca fructele de padure (zmeur, mur, afin) chiar inainte de recoltare, depunand oua in fructele sanatoase.</span>
+            </div>
+            <div class="glosar-term" data-term="myzus persicae afida verde piersic paduche" data-def="paduche de plante foarte raspandit care suge seva din last">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Myzus persicae (Afida verde a piersicului)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Paduche de plante foarte raspandit care suge seva din lastarii tineri, producand rasucirea frunzelor si transmitand virusuri periculoase (ex. Sarka).</span>
+            </div>
+            <div class="glosar-term" data-term="nematod nematode viermisor parazit radacini" data-def="o specie de paraziti extrem de mici sub forma de viermiso">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Nematod (Nematode)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O specie de paraziti extrem de mici, sub forma de viermisori incolori ce salasluiesc in pamant si care intra in sistemul radicular fraged sufocandu-l incet. Cand pune un pom nou in loc, Roland are grija sa curete radacinile moarte vechi tocmai ca sa nu lase hrana pentru nematozi.</span>
+            </div>
+            <div class="glosar-term" data-term="psila parului cacopsylla pyri daunator" data-def="cel mai important daunator al parului suge seva fumagina">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Psila parului (Cacopsylla pyri)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Cel mai important daunator al parului; suge seva si secreta o substanta dulce (mana) pe care creste fumagina neagra; transmite fitoplasme grave.</span>
+            </div>
+            <div class="glosar-term" data-term="rhagoletis cerasi musca cireselor visin" data-def="daunator ce depune oua in fructele de cires si visin pe m">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Rhagoletis cerasi (Musca cireselor)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Daunator ce depune oua in fructele de cires si visin pe masura ce se parguiesc; larva (viermele alb) se hraneste cu pulpa fructului in jurul samburelui.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categorie 6: Produse Fitosanitare si Formulari -->
+        <div class="section" data-glosar-cat="produse-fitosanitare">
+          <h2 class="section-title">&#129514; Produse Fitosanitare si Formulari</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="a.i. active ingredient substanta activa pesticid" data-def="reprezinta substanta chimica dintr-un pesticid care omoara">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">a.i. (Active ingredient / Substanta activa)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Reprezinta substanta chimica dintr-un pesticid care omoara efectiv daunatorul sau boala, restul fiind apa sau solventi de amestec. Roland verifica pe eticheta fungicidului ca are o concentratie de 500 g/l de substanta activa cupru pentru tratamentele la prun.</span>
+            </div>
+            <div class="glosar-term" data-term="calypso 480 sc thiacloprid insecticid retras ue" data-def="insecticid sistemic pe baza de thiacloprid retras din utili">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Calypso 480 SC</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Insecticid sistemic pe baza de thiacloprid, eficient contra multor daunatori; <strong>ATENTIE:</strong> a fost retras din utilizare in Uniunea Europeana incepand cu 2020.</span>
+            </div>
+            <div class="glosar-term" data-term="captan captadin merpan fungicid contact rapan" data-def="fungicid de contact cu spectru larg foarte utilizat contra">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Captan (Captadin / Merpan)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fungicid de contact cu spectru larg, foarte utilizat contra rapanului, antracnozei si putregaiurilor; are o aderenta buna pe planta si este o componenta de baza in schemele de tratament.</span>
+            </div>
+            <div class="glosar-term" data-term="chorus 50 wg ciprodinil monilioza rapan primavara" data-def="fungicid sistemic pe baza de ciprodinil specializat in co">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Chorus 50 WG</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fungicid sistemic pe baza de ciprodinil, specializat in combaterea moniliozei si rapanului la temperaturi scazute (primavara devreme); actioneaza rapid si preventiv.</span>
+            </div>
+            <div class="glosar-term" data-term="coragen 20 sc insecticid selectiv lepidoptere albine" data-def="insecticid modern si selectiv contra lepidopterelor sigur p">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Coragen 20 SC</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Insecticid modern si selectiv contra lepidopterelor (viermele merelor/prunelor); actioneaza prin ingestie si contact, fiind sigur pentru albine si insectele benefice.</span>
+            </div>
+            <div class="glosar-term" data-term="dithane m45 mancozeb fungicid contact rapan rugina" data-def="fungicid de contact pe baza de mancozeb utilizat pe scara">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Dithane M45</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fungicid de contact pe baza de mancozeb, utilizat pe scara larga contra rapanului, ruginii si ciuruirii; actioneaza ca un scut protector la suprafata frunzei.</span>
+            </div>
+            <div class="glosar-term" data-term="ec emulsifiable concentrate concentrat emulsionabil formulare pesticid" data-def="tip de formulare a unui pesticid uleios care atunci cand e">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">EC (Emulsifiable Concentrate / Concentrat emulsionabil)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Tip de formulare a unui pesticid uleios care, atunci cand este turnat si agitat cu apa curata in pompa, se transforma intr-o emulsie laptoasa. Cand face ultimul tratament de iarna la caisi, Roland amesteca un fungicid EC pe baza de ulei, observand cum apa din stropitoare se coloreaza instantaneu in alb.</span>
+            </div>
+            <div class="glosar-term" data-term="erbicid herbicide buruieni plante nedorite" data-def="un compus chimic sintetic special formulat strict pentru ar">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Erbicid (Herbicide)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Un compus chimic sintetic special formulat strict pentru arderea buruienilor si a oricaror alte plante nedorite care sufoca tinerii pomi din plantatie. Ca principiu ecologic pentru un teren mic, Roland alege sa nu dea cu niciun erbicid pe intervalul perilor, preferand cositul mecanic al buruienilor de sub ei.</span>
+            </div>
+            <div class="glosar-term" data-term="folicur solo tebuconazol rugina fungicid sistemic" data-def="fungicid sistemic pe baza de tebuconazol utilizat pentru co">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Folicur Solo</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fungicid sistemic pe baza de tebuconazol, utilizat pentru combaterea ruginii si a altor boli fungice; are actiune preventiva, curativa si uneori eradicanta.</span>
+            </div>
+            <div class="glosar-term" data-term="fungicid fungicide preventiv curativ ciuperca mucegai" data-def="o substanta activa comercializata care fie impiedica insta">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Fungicid (Fungicide)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O substanta activa comercializata care fie impiedica instalarea fungilor (preventiva), fie tine sub control mucegaiurile si ciupercile care au infectat deja planta (curativa). Vazand doua mici pete de rapan pe prima frunza a Marului Golden, Roland baga de urgenta in atomizor un tratament cu fungicid sistemic de soc.</span>
+            </div>
+            <div class="glosar-term" data-term="insecticid insecticide larve insecte paduche" data-def="preparat toxic care ataca strict grupurile de insecte sau l">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Insecticid (Insecticide)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Preparat toxic care ataca strict grupurile de insecte sau larve parazite din livada, fie distrugandu-le aparatul digestiv fie cel nervos la simpla ingerare sau contact. Paduchele verde este periculos pe lastarii tineri de prun, asa ca Roland foloseste un insecticid eficient doar la primele semne de atac pe varfuri.</span>
+            </div>
+            <div class="glosar-term" data-term="karate zeon lambda-cihalotrin insecticid contact afide" data-def="insecticid de contact pe baza de lambda-cihalotrin cu acti">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Karate Zeon</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Insecticid de contact pe baza de lambda-cihalotrin, cu actiune rapida de "soc" contra afidelor, viermilor si gandacilor; tehnologia Zeon protejeaza substanta activa de razele UV.</span>
+            </div>
+            <div class="glosar-term" data-term="lmr limita maxima reziduuri pesticid fruct consum" data-def="cantitatea maxima de pesticid permisa legal sa ramana pe fr">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">LMR (Limita Maxima de Reziduuri)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Cantitatea maxima de pesticid permisa legal sa ramana pe fruct in momentul vanzarii/consumului; respectarea perioadei de pauza garanteaza incadrarea sub LMR.</span>
+            </div>
+            <div class="glosar-term" data-term="mospilan 20 sg sistemic afide psila par" data-def="insecticid sistemic modern ce patrunde in planta protejeaz">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Mospilan 20 SG</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Insecticid sistemic modern ce patrunde in planta si protejeaza si noile cresteri; este foarte eficient contra afidelor si psilei, fiind considerat relativ sigur pentru fauna utila.</span>
+            </div>
+            <div class="glosar-term" data-term="pauza de securitate phi pre-harvest interval tratament recoltare" data-def="numarul minim de zile ce trebuie sa treaca obligatoriu de l">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Pauza de securitate (PHI &#8212; Pre-harvest interval)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Numarul minim de zile ce trebuie sa treaca obligatoriu de la ultimul tratament pana la recoltare, pentru a asigura degradarea pesticidului si siguranta consumului.</span>
+            </div>
+            <div class="glosar-term" data-term="perioada de pauza phi interval recoltare siguranta" data-def="zilele clare precizate pe bidonul oricarui fungicid care tr">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Perioada de pauza (PHI - Pre-harvest interval)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Zilele clare precizate pe bidonul oricarui fungicid care trebuie lasate sa se epuizeze de la ultima data aplicata pana in momentul in care acel fruct poate fi consumat fara pericol. Avand de stopat puricii pe Parul Williams pe 1 august, Roland are grija ca insecticidul ales are doar 7 zile ca perioada de pauza.</span>
+            </div>
+            <div class="glosar-term" data-term="ppm parti per milion concentratie micronutrienti reziduuri" data-def="unitate de masura pentru concentratii foarte mici 1 ppm 1">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">PPM / ppm (Parti per milion)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Unitate de masura pentru concentratii foarte mici. 1 ppm = 1 mg/litru de solutie. Folosit la doze de micronutrienti si reziduuri de pesticide. Roland masoara cu pipeta concentratia de bor la radacini, obtinand la 10 litri de solutie aproximativ 100 ppm.</span>
+            </div>
+            <div class="glosar-term" data-term="produs de contact pesticid suprafata ploaie" data-def="pesticid care ramane doar la suprafata plantei si omoara d">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Produs de contact</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Pesticid care ramane doar la suprafata plantei si omoara daunatorul sau ciuperca doar prin atingere directa; este usor de spalat de ploaie.</span>
+            </div>
+            <div class="glosar-term" data-term="produs sistemic pesticid absorbit seva pom" data-def="pesticid care este absorbit in interiorul plantei si circu">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Produs sistemic</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Pesticid care este absorbit in interiorul plantei si circula odata cu seva, protejand intregul pom, inclusiv partile care nu au fost stropite direct sau noile cresteri.</span>
+            </div>
+            <div class="glosar-term" data-term="sc suspension concentrate suspensie concentrata formulare" data-def="formulare pesticid concentrat sub forma de suspensie lichio">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">SC (Suspension Concentrate / Suspensie concentrata)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Formulare pesticid: concentrat sub forma de suspensie lichida; se dilueaza in apa inainte de aplicare. Se agita inainte de folosire. Roland agita bine flaconul SC inainte de prepararea solutiei, obtinand un amestec uniform pentru pulverizat.</span>
+            </div>
+            <div class="glosar-term" data-term="score 250 ec difenoconazol rapan basicare fungicid" data-def="fungicid sistemic pe baza de difenoconazol extrem de efici">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Score 250 EC</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fungicid sistemic pe baza de difenoconazol, extrem de eficient contra rapanului si basicarii frunzelor; patrunde rapid in tesuturi si are actiune curativa.</span>
+            </div>
+            <div class="glosar-term" data-term="sl soluble liquid lichid solubil formulare pesticid" data-def="formulare pesticid lichid solubil in apa formeaza solutie">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">SL (Soluble Liquid / Lichid solubil)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Formulare pesticid: lichid solubil in apa; formeaza solutie clara la amestecare. Nu necesita agitare dupa amestecare si nu blocheaza duze. Roland prefera formularile SL pentru tratamentele de precizie, deoarece se amesteca complet fara reziduri.</span>
+            </div>
+            <div class="glosar-term" data-term="switch 62.5 wg botrytis monilioza recoltare" data-def="fungicid mixt contact sistemic utilizat contra putregaiul">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Switch 62.5 WG</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fungicid mixt (contact + sistemic) utilizat contra putregaiului cenusiu (Botrytis) si moniliozei; are un timp de pauza scurt, fiind ideal pentru aplicari aproape de recoltare.</span>
+            </div>
+            <div class="glosar-term" data-term="topsin m 70 wp tiofanat-metil monilioza fainare cilindrosporioza" data-def="fungicid sistemic pe baza de tiofanat-metil utilizat contra">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Topsin M 70 WP</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Fungicid sistemic pe baza de tiofanat-metil, utilizat contra moniliozei, fainarii si cilindrosporiozei; are un spectru larg si actiune de lunga durata.</span>
+            </div>
+            <div class="glosar-term" data-term="uree azot ingrasamant foliar caderea frunzelor toamna" data-def="ingrasamant cu azot foarte concentrat aplicat foliar toamna">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Uree</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Ingrasamant cu azot foarte concentrat; aplicat foliar toamna tarziu (in doze mari, 5%), grabeste caderea frunzelor si descompunerea lor, distrugand sursele de infectie pentru anul viitor.</span>
+            </div>
+            <div class="glosar-term" data-term="wg wdg water dispersible granule granule dispersabile" data-def="formulare pesticid granule solide care se disperseaza in ap">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">WG / WDG (Water Dispersible Granule)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Formulare pesticid: granule solide care se disperseaza in apa formand o suspensie. Avantaje: dozare precisa, fara praf, stocare usoara. Se agita solutia periodic la aplicare. Roland pre-amesteca pesticidele WG intr-un vas separat inainte de a le turna in pompa.</span>
+            </div>
+            <div class="glosar-term" data-term="wp wettable powder pulbere umectabila formulare pesticid" data-def="formulare pesticid pulbere care se umezeste si se disperse">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">WP (Wettable Powder / Pulbere umectabila)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Formulare pesticid: pulbere care se umezeste si se disperseaza in apa. Una din cele mai vechi formulari; se agita frecvent la aplicare deoarece se depune rapid. Roland poarta masca de praf cand prepara solutii WP, pentru a evita inhalarea pulberii toxice.</span>
+            </div>
+            <div class="glosar-term" data-term="zeama bordeleza sulfat cupru var fungicid bactericid ecologic" data-def="cel mai vechi si utilizat fungicid bactericid format din am">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Zeama bordeleza</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Cel mai vechi si utilizat fungicid/bactericid, format din amestecul de sulfat de cupru cu var stins; este de contact, foarte persistent si acceptat in agricultura ecologica.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categorie 7: Sol si Fertilizare -->
+        <div class="section" data-glosar-cat="sol-fertilizare">
+          <h2 class="section-title">&#127757; Sol si Fertilizare</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="amendament soil amendment aciditate textura" data-def="material adaugat in sol pentru a-i imbunatati proprietatil">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Amendament (Soil amendment)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Material adaugat in sol pentru a-i imbunatati proprietatile fizice sau chimice pe termen lung, cum ar fi corectarea aciditatii sau a texturii. Pentru afinii proaspat plantati, Roland adauga sulf in cernoziomul de la Nadlac pentru a scadea pH-ul solului, care natural este prea alcalin.</span>
+            </div>
+            <div class="glosar-term" data-term="capacitate de camp field capacity apa sol retentie" data-def="cantitatea optima de apa pe care o poate retine pamantul d">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Capacitate de camp (Field capacity)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Cantitatea optima de apa pe care o poate retine pamantul dupa ce excesul ploii s-a scurs natural prin gravitatie, fara sa ramana balti. Dupa o ploaie buna de primavara la Nadlac, cernoziomul atinge capacitatea de camp, fiind perfect reavan si pufos pentru radacinile afinilor.</span>
+            </div>
+            <div class="glosar-term" data-term="carenta deficiency nutrienti frunze galbene deformate" data-def="lipsa unuia sau a mai multor nutrienti esentiali in planta">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Carenta (Deficiency)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Lipsa unuia sau a mai multor nutrienti esentiali in planta, manifestata prin frunze ingalbenite, patate, deformate sau oprite din crestere. Roland observa frunze galbene cu nervuri verzi la piersici pe timpul verii, recunoscand imediat o carenta de fier indusa de cernoziomul calcaros.</span>
+            </div>
+            <div class="glosar-term" data-term="cec capacitatea de schimb cationic sol fertilizant" data-def="o masuratoare tehnica care arata capacitatea chimica a sol">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">CEC (Capacitatea de Schimb Cationic)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O masuratoare tehnica care arata capacitatea chimica a solului de a retine fertilizantul, in loc sa-l lase sa fie spalat in adancime de primele ploi. Cernoziomul din curtea lui Roland are un CEC mare, deci retine foarte bine atat apa irigata cat si ingrasamintele minerale aplicate radacinilor.</span>
+            </div>
+            <div class="glosar-term" data-term="cernoziom chernozem sol fertil negru materie organica" data-def="un sol de culoare foarte inchisa negru bogat in materie or">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Cernoziom (Chernozem)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Un sol de culoare foarte inchisa (negru), bogat in materie organica si cu un drenaj natural bun, considerat universal drept cel mai fertil tip de sol agricol. Toata livada lui Roland de la Nadlac este plantata pe cernoziom specific Campiei de Vest, asigurand pomilor o vigoare excelenta.</span>
+            </div>
+            <div class="glosar-term" data-term="chelat chelate fier ingrasamant absorbtie cloroza" data-def="o forma chimica fluida si protejata de ingrasamant care im">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Chelat (Chelate)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O forma chimica fluida si protejata de ingrasamant care impiedica substanta activa sa se blocheze in pamant, ramanand imediat disponibila radacinilor pomului. Pentru a corecta ingalbenirea frunzelor la Kaki (cloroza), Roland toarna la radacini un fier chelat, absorbit usor in ciuda pH-ului alcalin de la Nadlac.</span>
+            </div>
+            <div class="glosar-term" data-term="compost ingrasamant natural gratuit resturi vegetale" data-def="un ingrasamant complet natural si gratuit obtinut prin putr">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Compost</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Un ingrasamant complet natural si gratuit obtinut prin putrezirea dirijata a resturilor vegetale (iarba taiata, frunze, buruieni) intr-o lada speciala. Resturile rezultate de la cosirea ierbii intre randurile de ciresi sunt stranse de Roland in spatele livezii pentru a face compost hranitor pentru afini.</span>
+            </div>
+            <div class="glosar-term" data-term="drenaj drainage apa sol radacini baltire" data-def="proprietatea vitala a unui sol de a permite apei sa circu">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Drenaj (Drainage)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Proprietatea vitala a unui sol de a permite apei sa circule spre adancime dupa ploi torentiale, evitand sufocarea radacinilor cauzata de baltirea apei pe termen lung. Pentru ca terenul sau din Nadlac este complet plat, Roland si-a asigurat drenajul la afini ridicandu-i pe biloane (dealuri mici) din turba si rumegus.</span>
+            </div>
+            <div class="glosar-term" data-term="fertigare fertigation ingrasamant irigare picurare potasiu" data-def="distribuirea ingrasamintelor lichide concomitent cu apa obi">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Fertigare (Fertigation)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Distribuirea ingrasamintelor lichide concomitent cu apa obisnuita de udat, folosind acelasi tub si aceleasi duze picuratoare direct catre zona radiculara. Pe timp de vara, cand ploaia lipseste luni intregi, Roland baga direct ingrasamant bogat in potasiu pe instalatia de fertigare a randurilor de zmeur remontant.</span>
+            </div>
+            <div class="glosar-term" data-term="humus materie organica fertilitate sol veche" data-def="sectiunea din pamant cea mai bogata in materie organica ve">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Humus</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Sectiunea din pamant cea mai bogata in materie organica veche; rezulta dupa zeci sau sute de ani de macerare a resturilor de frunze, aducand fertilitate sporita. Bogatia humusului in cernoziomul din Nadlac il scuteste pe Roland de investitii masive in primii doi ani in gunoi de grajd dupa plantarea Murului Copac.</span>
+            </div>
+            <div class="glosar-term" data-term="ingrasamant foliar foliar fertilizer spray frunze pori" data-def="hranire suplimentara sub forma de spray cu solutie salina">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Ingrasamant foliar (Foliar fertilizer)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Hranire suplimentara sub forma de spray cu solutie salina (cu micro sau macroelemente), capabila sa patrunda si sa alimenteze pomul direct prin micii pori de pe suprafata frunzelor. In mijlocul secetei din august cand radacina e in mare stres, Roland aplica o stropire cu ingrasamant foliar de seara ca sa dea un reviriment vigorii Rodiului tanar.</span>
+            </div>
+            <div class="glosar-term" data-term="macronutrienti macronutrients azot fosfor potasiu cantitate" data-def="cele mai necesare substante chimice esentiale cerute de po">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Macronutrienti (Macronutrients)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Cele mai necesare substante chimice esentiale, cerute de pom in cantitati mari (kilograme per hectar) in fiecare an: Azot (N), Fosfor (P) si Potasiu (K). Roland stie ca pomii consuma macronutrienti enorm pentru startul de primavara, asa ca le pune compost maturat ca sursa solida de Azot natural.</span>
+            </div>
+            <div class="glosar-term" data-term="micronutrienti micronutrients bor magneziu zinc doze mici" data-def="minerale valoroase pentru metabolismul pomului de care are">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Micronutrienti (Micronutrients)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Minerale valoroase pentru metabolismul pomului, dar de care acesta are nevoie doar in doze infime, cum sunt borul, magneziul sau zincul. Ca tratament punctual de finete, Roland pulverizeaza cativa mililitri de micronutrienti pe baza de zinc la ciresi in preajma infloririi pentru a le intari florile.</span>
+            </div>
+            <div class="glosar-term" data-term="mulcire mulching paie rumegus scoarta buruieni umiditate" data-def="asezarea unui strat protector natural direct pe pamantul d">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Mulcire (Mulching)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Asezarea unui strat protector natural (paie uscate, scoarta de pin) direct pe pamantul de la baza pomului pentru a tine umiditatea in sol si a sugruma cresterea de buruieni. Dupa instalarea liniilor de picurare sub afini, Roland asigura mulcirea adaugand constant inca o mana de rumegus in fiecare primavara.</span>
+            </div>
+            <div class="glosar-term" data-term="npk azot fosfor potasiu ingrasamant procent" data-def="inscriptia standard pe sacul de ingrasamant cifrele indica">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">NPK (Azot, Fosfor, Potasiu)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Inscriptia standard pe sacul de ingrasamant; cifrele de dupa aceste initiale indica procentajul exact pentru fiecare din cele trei componente majore. Ca sa grabeasca cresterea murului copac, Roland varsa granule de ingrasamant etichetat 15-15-15 NPK in lunile in care pamantul s-a deszapezit prima oara.</span>
+            </div>
+            <div class="glosar-term" data-term="orizont de sol soil horizon straturi sapatura pamant" data-def="zonele dispuse in straturi succesive pe care le intalnesti">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Orizont de sol (Soil horizon)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Zonele dispuse in straturi succesive pe care le intalnesti atunci cand sapi o groapa adanca; pamantul negru la suprafata e un orizont, iar lutul galben de dedesubt este un alt orizont. Sapand gaurile mari de plantare pentru noii ciresi, Roland vede cum orizontul negru bogat tine pana la 60 cm inainte sa atinga argila sterpa.</span>
+            </div>
+            <div class="glosar-term" data-term="permeabilitate permeability apa ploaie sol adancime" data-def="viteza naturala fizica prin care apa de ploaie penetreaza">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Permeabilitate (Permeability)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Viteza naturala fizica prin care apa de ploaie penetreaza adancimea terenului. O permeabilitate excelenta impiedica baltirea care inabusa radacinile. Permeabilitatea cernoziomului lucrat il scapa pe Roland de formarea putregaiului de colet pe tulpina.</span>
+            </div>
+            <div class="glosar-term" data-term="ph potential hidrogen aciditate alcalin sol 6 7" data-def="indicator numeric al aciditatii sau al gradului alcalin al">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">pH (Potentialul de hidrogen)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Indicator numeric al aciditatii sau al gradului alcalin al solului masurat intre 0 si 14, optimul de crestere pentru pomii fructiferi fiind intre 6 si 7. Roland este constient ca valoarea de ~7,5 pH din Nadlac impune limitari de asimilare a fierului la zmeur si ciresi expusi clorozei.</span>
+            </div>
+            <div class="glosar-term" data-term="stres hidric water stress apa radacini seceta frunze" data-def="starea unui pom cauzata de lipsa sau excesul de apa in sol">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Stres hidric (Water stress)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Starea unui pom cauzata de lipsa sau excesul de apa in sol. Simptome: frunze pliabile (sete) sau frunze galbene cazatoare (exces). Reduce productia si slabeste rezistenta la boli. Roland a instalat un sistem automat de picuratoare pentru a preveni stresul hidric la zmeur in verile secetoase din Campia de Vest.</span>
+            </div>
+            <div class="glosar-term" data-term="textura solului soil texture nisip praf argila" data-def="proportia de nisip praf si argila dintr-un sol determina d">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Textura solului (Soil texture)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Proportia de nisip, praf si argila dintr-un sol. Determina drenajul, aeratia si capacitatea de retentie a apei. La Nadlac: cernoziom cu textura luto-argiloasa, bun pentru majoritatea speciilor pomicole.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categorie 8: Comercial si Legal -->
+        <div class="section" data-glosar-cat="comercial-legal">
+          <h2 class="section-title">&#128203; Comercial si Legal</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="ansvsa siguranta alimentelor veterinar inregistrare" data-def="institutia de stat care verifica siguranta alimentelor si d">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">ANSVSA (Autoritatea Nationala Sanitara Veterinara si pentru Siguranta Alimentelor)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Institutia de stat care verifica siguranta alimentelor si de unde producatorii mici iau fisa de inregistrare pentru a vinde legal. Inainte sa vanda primele borcane de dulceata de zmeura in piata din Arad, Roland obtine un document de inregistrare de la biroul ANSVSA.</span>
+            </div>
+            <div class="glosar-term" data-term="apia agentia plati interventie agricultura subventii hectar" data-def="institutia guvernamentala prin care fermierii romani pot ob">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">APIA (Agentia de Plati si Interventie pentru Agricultura)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Institutia guvernamentala prin care fermierii romani pot obtine subventii (plati directe) pe hectarul de suprafata agricola cultivata. Daca extinde livada la o suprafata comerciala mai mare, Roland poate depune dosar la APIA Arad pentru o subventie anuala.</span>
+            </div>
+            <div class="glosar-term" data-term="atestat de producator document legal primarie vanzare" data-def="document legal eliberat de primaria locala care dovedeste c">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Atestat de producator</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Document legal eliberat de primaria locala care dovedeste ca o persoana cultiva terenul si obtine produse agricole proprii in gospodarie. Roland isi foloseste atestatul vizat de primaria Nadlac pentru a inchiria legal o taraba in piata agroalimentara unde isi vinde caisele.</span>
+            </div>
+            <div class="glosar-term" data-term="carnet de comercializare producer certificate vanzare piata" data-def="un carnet in format tipizat necesar vanzarii produselor agr">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Carnet de comercializare (Producer certificate)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Un carnet in format tipizat necesar vanzarii produselor agricole de catre producatorii particulari, tinand evidenta fiecarei cantitati vandute in piata. Cand vinde cate 10 kg de Par Williams unui client fidel din Arad, Roland completeaza o fila din carnetul de comercializare ca dovada legala a vanzarii.</span>
+            </div>
+            <div class="glosar-term" data-term="certificare bio organic certification ecologic pesticide" data-def="o atestare formala din partea unui organism independent car">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Certificare BIO (Organic certification)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O atestare formala din partea unui organism independent care confirma ca fructele sunt obtinute fara pesticide sau ingrasaminte de sinteza chimica. Pentru livada sa de 100 de pomi, Roland a calculat ca certificarea BIO costa prea mult anual, preferand sa vanda productia ca produs "natural".</span>
+            </div>
+            <div class="glosar-term" data-term="lot lot batch productie procesare serie" data-def="o cantitate definita de produse prelucrate in aceeasi zi s">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Lot (Lot / Batch)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">O cantitate definita de produse prelucrate in aceeasi zi si primind un numar de serie pentru urmarire. Roland isi stampileaza gemul cu lotul "Lot 15-Aug" pentru a putea depista exact in ce zi s-au preparat murele daca cineva intampina o problema calitativa.</span>
+            </div>
+            <div class="glosar-term" data-term="roi return on investment recuperarea investitiei ani" data-def="calculul anilor necesari pana cand veniturile din vanzarea">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">ROI (Return on Investment - Recuperarea investitiei)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Calculul anilor necesari pana cand veniturile din vanzarea recoltei acopera cheltuiala initiala (sistem de irigare, material dendrologic, tratamente). Roland estimeaza un ROI de 3 ani pentru extinderea pe mur si zmeur, care aduc venituri incepand din primul an.</span>
+            </div>
+            <div class="glosar-term" data-term="trasabilitate traceability origine produs alimentar documente" data-def="capacitatea de a urmari originea traseul si procesarea unu">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Trasabilitate (Traceability)</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Capacitatea de a urmari originea, traseul si procesarea unui produs alimentar de la producator la consumator. Obligatorie pentru comercializare la piete organizate; implica pastrarea documentelor de productie si vanzare. Roland tine evidenta loturilor si datelor de tratament tocmai pentru a putea demonstra trasabilitatea produselor sale.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categorie 9: Echipamente si Tehnici Practice -->
+        <div class="section" data-glosar-cat="echipamente-tehnici">
+          <h2 class="section-title">&#128295; Echipamente si Tehnici Practice</h2>
+          <div class="section-body">
+            <div class="glosar-term" data-term="atomizor pulverizator motor termic tratamente" data-def="utilaj portabil cu motor termic ce creeaza un curent puter">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Atomizor</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Utilaj portabil cu motor termic ce creeaza un curent puternic de aer pentru a pulveriza solutiile de tratament sub forma de ceata fina, asigurand acoperirea perfecta a coroanei.</span>
+            </div>
+            <div class="glosar-term" data-term="vermorel pompa manuala electrica spate tratamente gradina" data-def="pompa manuala sau electrica de spate folosita pentru aplic">
+              <strong style="color:var(--accent-glow);font-size:0.95rem;">Vermorel</strong>
+              <span style="display:block;color:var(--text);font-size:0.85rem;margin-top:4px;line-height:1.5;">Pompa manuala sau electrica de spate folosita pentru aplicarea tratamentelor fitosanitare in gradini mici sau pentru interventii punctuale.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /glosar-pomicol -->
+
     </main>
 
     <!-- ====== BOTTOM BAR ====== -->

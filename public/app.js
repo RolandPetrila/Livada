@@ -6547,3 +6547,23 @@ function exportCostsCSV() {
 }
 
 // ====== END II1: COST TRACKER ======
+
+// ====== GLOSAR POMICOL: FILTRARE ======
+function filterGlosar(q){
+  q=q.toLowerCase().trim();
+  var terms=document.querySelectorAll('.glosar-term');
+  var cats=document.querySelectorAll('[data-glosar-cat]');
+  var visible=0;
+  terms.forEach(function(t){
+    var match=!q||t.dataset.term.includes(q)||t.dataset.def.includes(q)||(t.textContent.toLowerCase().includes(q));
+    t.classList.toggle('hidden',!match);
+    if(match)visible++;
+  });
+  cats.forEach(function(c){
+    var hasVisible=c.querySelectorAll('.glosar-term:not(.hidden)').length>0;
+    c.style.display=hasVisible?'':'none';
+  });
+  var el=document.getElementById('glosarCount');
+  if(el)el.textContent=q?(visible+' rezultate pentru "'+q+'"'):'114 termeni in 9 categorii';
+}
+// ====== END GLOSAR POMICOL ======
