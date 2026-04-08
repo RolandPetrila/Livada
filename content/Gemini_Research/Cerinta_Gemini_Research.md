@@ -22,6 +22,16 @@ NU modifica, NU sterge, NU atinge fisierele din `c:\Proiecte\Livada\content\` (c
 > - **Depth over speed:** it is better to deliver one complete, accurate species file than five shallow ones.
 > - If you cannot find reliable data for a subsection, write: **[DATE INSUFICIENTE — recomandat cercetare suplimentara]** and move on.
 
+> **Format output obligatoriu — NU include urmatoarele (se aplica la TOATE fisierele livrate):**
+>
+> - NU adauga header cu titlul speciei, zona, data generarii, status DRAFT sau fisier sursa la inceputul fisierului
+> - NU adauga linii de tip `_DRAFT generat de Gemini CLI_`, `_Nu integra direct_` sau orice avertisment de validare
+> - NU adauga linii de tip `> **Revizuit Faza X:**` sau orice meta-informatie despre executie
+> - NU adauga intro generic ("Cireșul este o specie importantă...") inainte de prima sectiune — incepe direct cu `## I.`
+> - NU duplica informatii deja prezente in sectiunile A-H ale fisierului sursa
+> - Fisierul livrat trebuie sa inceapa direct cu prima sectiune: `## I. IRIGARE SI NECESAR DE APA — SPECIFIC NADLAC`
+> - Fisierul livrat trebuie sa se termine cu ultima sectiune `## Y.` fara footer, fara semnatura, fara nota finala
+
 ---
 
 ## CONTEXT PROIECT
@@ -917,6 +927,7 @@ Continut:
 **Fisier de modificat:** `Gemini_Afin_IZ.md` — Sectiunea I
 
 **Problema:** Documentul recomanda acidularea apei de irigatii pentru afin (necesar la pH>7.0-7.5) dar NU specifica:
+
 - Costul real al acidularii pentru 5-10 pomi pe perioada iulie-august (acid citric, acid sulfuric diluat)
 - Daca aceasta practica este viabila economic pentru o ferma mica la Nadlac
 
@@ -947,16 +958,16 @@ Marcheaza costurile ca [ESTIMAT 2025].
 
 **Ce trebuie adaugat** — la FIECARE specie, un tabel suplimentar cu note specifice speciei:
 
-| Specie | Note specifice obligatorii in Sectiunea T |
-|--------|------------------------------------------|
-| **Migdal** | Migdalul amar (Prunus dulcis var. amara) contine amigdalina — interzis la vanzare ca aliment fara procesare. Specifica daca soiurile recomandate sunt migdal dulce. Certificare fitosanitara pentru transport fructe cu coaja. |
-| **Rodiu** | Sucul de rodiu este considerat produs procesat (nu fruct proaspat) din punct de vedere fiscal in Romania — mentionata in sectiunea procesare. |
-| **Zmeur / Mur** | Fructe de padure au circuit scurtat (max 2 zile dupa recoltare) — implica vanzare directa sau congelare imediata pentru conformitate DSVSA. |
-| **Kaki** | Kaki proaspat (astringent) este incomestibil inainte de maturare completa — eticheta obligatorie cu "se consuma dupa inmuiere completa" pentru vanzare direct consumator. |
-| **Afin** | Afinele proaspete necesita ambalare conform Reg. EU 543/2011 daca sunt comercializate in piete organizate (calibru, uniformitate). |
-| **Alun** | Alunele in coaja sunt clasificate ca oleaginoase — au reglementari diferite de export fata de fructe. |
-| **Prun (tuica)** | Distilarea necesita autorizatie ANAF si declaratie de productie. Cotele de alcool fara accize sunt 50L/an/gospodarie pentru uz propriu. |
-| **Toate speciile** | Carnet producator agricol (APIA/Primarie) este obligatoriu pentru vanzare. Emis gratuit. Certificat fitosanitar = optional pentru piata locala, obligatoriu pentru piete organizate si export. |
+| Specie             | Note specifice obligatorii in Sectiunea T                                                                                                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Migdal**         | Migdalul amar (Prunus dulcis var. amara) contine amigdalina — interzis la vanzare ca aliment fara procesare. Specifica daca soiurile recomandate sunt migdal dulce. Certificare fitosanitara pentru transport fructe cu coaja. |
+| **Rodiu**          | Sucul de rodiu este considerat produs procesat (nu fruct proaspat) din punct de vedere fiscal in Romania — mentionata in sectiunea procesare.                                                                                  |
+| **Zmeur / Mur**    | Fructe de padure au circuit scurtat (max 2 zile dupa recoltare) — implica vanzare directa sau congelare imediata pentru conformitate DSVSA.                                                                                    |
+| **Kaki**           | Kaki proaspat (astringent) este incomestibil inainte de maturare completa — eticheta obligatorie cu "se consuma dupa inmuiere completa" pentru vanzare direct consumator.                                                      |
+| **Afin**           | Afinele proaspete necesita ambalare conform Reg. EU 543/2011 daca sunt comercializate in piete organizate (calibru, uniformitate).                                                                                             |
+| **Alun**           | Alunele in coaja sunt clasificate ca oleaginoase — au reglementari diferite de export fata de fructe.                                                                                                                          |
+| **Prun (tuica)**   | Distilarea necesita autorizatie ANAF si declaratie de productie. Cotele de alcool fara accize sunt 50L/an/gospodarie pentru uz propriu.                                                                                        |
+| **Toate speciile** | Carnet producator agricol (APIA/Primarie) este obligatoriu pentru vanzare. Emis gratuit. Certificat fitosanitar = optional pentru piata locala, obligatoriu pentru piete organizate si export.                                 |
 
 ---
 
@@ -977,13 +988,15 @@ MITURI vs REALITATE:
 ✅ REALITATE: Clapp si Williams SE POLENIZEAZA EXCELENT (aceeasi perioada inflorire, Grupa II)
 
 Incompatibilitatea reala este la ALTOIRE:
-- Cand ambele soiuri sunt altoite pe GUTUI (portaltoi nanizant), 
+
+- Cand ambele soiuri sunt altoite pe GUTUI (portaltoi nanizant),
   Williams altoita pe gutui produce adesea uniuni slabe sau incompatibilitate
   cu anumite clone de gutui (gutui C, gutui BA29).
 - Aceasta NU are niciun efect asupra polenizarii!
 
 CONCLUZIE PRACTICA pentru Roland:
-- Daca ai Par Clapp si Par Williams plantati separat (altoiti pe par franc sau 
+
+- Daca ai Par Clapp si Par Williams plantati separat (altoiti pe par franc sau
   pe portaltoi compatibil) → se polenizeaza perfect
 - Planteaza-i la max 30m distanta pentru polenizare optima
 ```
@@ -999,15 +1012,15 @@ CONCLUZIE PRACTICA pentru Roland:
 ```markdown
 ### Pozitia in fenologia livadei Roland — Nadlac
 
-| Luna | Specii in inflorire SIMULTAN la Nadlac |
-|------|----------------------------------------|
-| Februarie | Migdal |
-| Martie (1-15) | Cais, Piersic timpuriu |
-| Martie (15-31) | Cires, Visin, Par (toate soiurile) |
-| Aprilie (1-15) | Mar (toate soiurile), Prun, Alun (catini) |
-| Aprilie (15-30) | Zmeur (incepere) |
-| Mai-Iunie | Mur, Zmeur (continuare), Kaki |
-| Iulie-August | Zmeur Galben Remontant (a 2-a inflorire) |
+| Luna            | Specii in inflorire SIMULTAN la Nadlac    |
+| --------------- | ----------------------------------------- |
+| Februarie       | Migdal                                    |
+| Martie (1-15)   | Cais, Piersic timpuriu                    |
+| Martie (15-31)  | Cires, Visin, Par (toate soiurile)        |
+| Aprilie (1-15)  | Mar (toate soiurile), Prun, Alun (catini) |
+| Aprilie (15-30) | Zmeur (incepere)                          |
+| Mai-Iunie       | Mur, Zmeur (continuare), Kaki             |
+| Iulie-August    | Zmeur Galben Remontant (a 2-a inflorire)  |
 ```
 
 **Marcheaza** cu `← ACEASTA SPECIE` randul corespunzator speciei din fisierul respectiv.
@@ -1028,11 +1041,13 @@ Zmeurul galben remontant are durata de viata comerciala de 4-8 ore la temperatur
 si maxim 2 zile la frigider. Aceasta face:
 
 **VIABIL:**
+
 - Vanzare directa din livada / la poarta (culegere dimineata, vanzare pana la pranz)
 - Congelare imediata dupa culegere (durata 12 luni, valoare pastrata ~80%)
 - Dulceata sau sirop (procesare in aceeasi zi)
 
 **NEVIABIL fara logistica dedicata:**
+
 - Vanzare la piata (necesita cutii cu gel de racire, transport sub 4°C)
 - Comercializare in magazine (necesita lant de frig continuu)
 - Livrare la distante >50km
@@ -1048,12 +1063,14 @@ nu dupa. Zmeurul galben nevalorificat in 24h devine pierdere totala.
 **Fisiere de modificat:** `Gemini_Migdal_IZ.md` si `Gemini_Rodiu_IZ.md` — Sectiunea L
 
 **Migdal:** Adauga preturi orientative:
+
 - Migdal in coaja: 25-40 lei/kg [ESTIMAT piata Arad 2024-2025]
 - Migdal decojit: 60-100 lei/kg [ESTIMAT]
 - Migdal prajit ambalat: 120-180 lei/kg [ESTIMAT premium]
 - Clarifica: la 3-5 kg/pom productie maxima si 50 pomi → 150-250 kg migdal in coaja/an
 
 **Rodiu:** Adauga preturi orientative:
+
 - Rodiu proaspat (intreg): 15-30 lei/kg [ESTIMAT - produs de nisa, variabilitate mare]
 - Suc de rodiu presat la rece (500ml): 25-40 lei [ESTIMAT piata specialty]
 - Seminte uscate (arils): 80-120 lei/kg [ESTIMAT piata nisa]
@@ -1121,14 +1138,19 @@ nu dupa. Zmeurul galben nevalorificat in 24h devine pierdere totala.
    - Daca un termen apartine unei categorii deja existente in glosar, adauga-l acolo
    - Marcheaza termenii nesiguri cu `[ESTIMAT]`
 
-5. **La finalul fisierului** adauga:
-   `> **Completat Faza 3:** [data] — X termeni noi adaugati din sectiunile A-H`
+5. **Format output obligatoriu pentru glosar — NU include:**
+   - NU adauga titlu nou, header, zona, data sau status la inceputul fisierului
+   - NU sterge sau reformata sectiunile deja existente in glosar
+   - NU adauga nota finala de tip `_DRAFT_`, avertisment de validare sau semnatura
+   - NU adauga `> **Completat Faza 3:**` sau orice alta linie meta
+   - Fisierul livrat = glosarul existent + sectiunile noi adaugate la final, nimic altceva
 
 ---
 
 ### Instructiune de executie Faza 3
 
 Trimite catre Gemini:
+
 ```
 Please read the section "FAZA 3 — COMPLETARE GLOSAR POMICOL" from:
 c:\Proiecte\Livada\content\Gemini_Research\Cerinta_Gemini_Research.md
