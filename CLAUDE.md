@@ -123,9 +123,10 @@ X. Istorie, Traditii si Valoare Culturala Locala — soiuri patrimoniu, marketin
 Y. Resurse, Furnizori si Retea de Suport — pepiniere Arad, furnizori, asociatii, subventii APIA
 Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier comun, nu per specie)
 
-**Surse cercetare:** Sectiunile A-H scrise direct in Claude Code | I-Z generate Gemini_Research/ (DRAFT, validate de Claude Code)
+**Surse cercetare:** Sectiunile A-H scrise direct in Claude Code | I-Z generate de Gemini CLI (DRAFT, validate de Claude Code)
 **Workflow specie noua:** vezi memory/reference_gemini_workflow.md
-**Cerinta Gemini:** `content/Gemini_Research/Cerinta_Gemini_Research.md` (versiunea 2.0 — unificat I-Z, surse reale)
+**Cerinta Gemini:** `Gemini_Documentatie/Gemini_Research/Cerinta_Gemini_Research.md` (versiunea 2.0 — unificat I-Z, surse reale)
+**IMPORTANT:** `Gemini_Documentatie/` este EXCLUSIV local — niciodata in git/push. Consultat doar la cerere explicita Roland.
 
 ## Imbunatatiri pendinte
 
