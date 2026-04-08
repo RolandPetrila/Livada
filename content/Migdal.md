@@ -20,20 +20,21 @@ Migdalul este originar din **Asia Centrala** (Iranul actual, Afganistan, Turkmen
 
 **Factori care fac migdalul problematic la Nadlac:**
 
-| Factor | Situatia la Nadlac | Impact |
-|---|---|---|
-| Inflorire devreme | Migdalul infloreste la sfarsit de februarie — inceput de martie | **CRITIC** — inghet aproape garantat in unii ani |
-| Temperatura critica flori | Florile mor la -2°C | O singura noapte rece = recolta zero |
-| Rezistenta lemnului la ger | -20 pana la -22°C (soi dependent) | **MARGINAL** — iernile severe din Arad pot atinge -22°C |
-| Ore de frig necesare (chill hours) | 300-600 ore sub 7°C | Usor de atins — DAR asta inseamna ca pomul iese devreme din repaus! |
-| Precipitatii | Nadlac ~558mm/an | OK — migdalul este rezistent la seceta |
-| Umiditate | Nadlac — umiditate moderata | OK — migdalul prefera aer uscat |
+| Factor                             | Situatia la Nadlac                                              | Impact                                                              |
+| ---------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Inflorire devreme                  | Migdalul infloreste la sfarsit de februarie — inceput de martie | **CRITIC** — inghet aproape garantat in unii ani                    |
+| Temperatura critica flori          | Florile mor la -2°C                                             | O singura noapte rece = recolta zero                                |
+| Rezistenta lemnului la ger         | -20 pana la -22°C (soi dependent)                               | **MARGINAL** — iernile severe din Arad pot atinge -22°C             |
+| Ore de frig necesare (chill hours) | 300-600 ore sub 7°C                                             | Usor de atins — DAR asta inseamna ca pomul iese devreme din repaus! |
+| Precipitatii                       | Nadlac ~558mm/an                                                | OK — migdalul este rezistent la seceta                              |
+| Umiditate                          | Nadlac — umiditate moderata                                     | OK — migdalul prefera aer uscat                                     |
 
 **Concluzie realista:** Zona Nadlac este **la limita inferioara de viabilitate** pentru migdal. Cu soiuri cu inflorire tarzie, pozitie protejata si masuri anti-inghet, poti obtine recolta in **6-7 ani din 10**. In restul de 3-4 ani, inghetul tarziu va distruge total sau partial recolta. Aceasta este realitatea pe care trebuie sa o accepti inainte de a planta migdali.
 
 ### Nadlac/Arad — argumente pro si contra
 
 **Argumente pro:**
+
 - Temperatura medie anuala 10.9°C — suficienta pentru migdal (necesita min 9-10°C)
 - Veri calde si uscate — excelente pentru maturarea si uscarea migdalelor
 - Soluri cernoziomice cu pH neutru-usor alcalin — migdalul prefera sol alcalin (pH 7.0-8.5)
@@ -41,6 +42,7 @@ Migdalul este originar din **Asia Centrala** (Iranul actual, Afganistan, Turkmen
 - Expunere sudica disponibila — efect de microclimat favorabil
 
 **Argumente contra:**
+
 - Inflorirea in februarie-martie — expunere totala la ingheturi tarzii
 - Iernile pot atinge -22°C — la limita rezistentei lemnului
 - Vantul de est in iarna deshidrateaza ramurile
@@ -50,6 +52,7 @@ Migdalul este originar din **Asia Centrala** (Iranul actual, Afganistan, Turkmen
 ### Migdal dulce vs. migdal amar — ATENTIE!
 
 Exista doua tipuri de migdali:
+
 - **Migdal dulce (Prunus dulcis var. dulcis):** samburi comestibili, fara amigdalina — ACESTA il cultivam
 - **Migdal amar (Prunus dulcis var. amara):** contine **amigdalina**, o substanta care se transforma in organism in acid cianhidric (otrava!) — NU se consuma crud, NU se planteaza in livada familiala
 
@@ -70,33 +73,37 @@ Migdalul are cerinte specifice de sol care il diferentiaza de majoritatea celorl
 
 Alegerea portaltoiului este critica pentru supravietuirea migdalului in clima continentala:
 
-| Portaltoi | Caracteristici | Potrivit Nadlac? |
-|---|---|---|
-| **Zarzar (Prunus cerasifera)** | Rezistent la ger, tolereaza sol greu, compatibilitate buna | **DA — RECOMANDAT** pentru zona Arad |
-| **Franc de migdal (Prunus dulcis seedling)** | Vigoros, rezistent la seceta, prefera sol usor, sensibil la ger | PARTIAL — doar pe sol bine drenat |
-| **GF 677 (hibrid piersic x migdal)** | Vigoros, tolereaza calcar, rezistent la seceta | DA — buna optiune pentru sol alcalin |
-| **Franc de piersic** | Vigoros, prefera sol acid, sensibil la cloroze | NU RECOMANDAT — sol prea alcalin la Nadlac |
+| Portaltoi                                    | Caracteristici                                                  | Potrivit Nadlac?                           |
+| -------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------ |
+| **Zarzar (Prunus cerasifera)**               | Rezistent la ger, tolereaza sol greu, compatibilitate buna      | **DA — RECOMANDAT** pentru zona Arad       |
+| **Franc de migdal (Prunus dulcis seedling)** | Vigoros, rezistent la seceta, prefera sol usor, sensibil la ger | PARTIAL — doar pe sol bine drenat          |
+| **GF 677 (hibrid piersic x migdal)**         | Vigoros, tolereaza calcar, rezistent la seceta                  | DA — buna optiune pentru sol alcalin       |
+| **Franc de piersic**                         | Vigoros, prefera sol acid, sensibil la cloroze                  | NU RECOMANDAT — sol prea alcalin la Nadlac |
 
 **Recomandarea pentru Nadlac:** Portaltoi **zarzar** (Prunus cerasifera) — cel mai rezistent la ger, cel mai tolerant la variatiile de sol din zona. Alternativa: GF 677 pentru sol calcaros.
 
 ### Plantarea migdalului
 
 **Cand se planteaza?**
+
 - **Primavara (martie-aprilie):** IDEAL pentru Nadlac — permite aclimatizare inainte de prima iarna
 - **Toamna (noiembrie):** Posibil dar riscant — pomul tanar este vulnerabil la gerul din primul iarna
 
 **Distante de plantare:**
+
 - Pe rand: **5-6 metri**
 - Intre randuri: **6-7 metri**
 - Migdalul necesita spatiu generos pentru aerisire si expunere la soare
 
 **Locul de plantare — CRITIC:**
+
 - Expunere **sud sau sud-vest** — obligatorie
 - Protejat de vant, ideal langa un perete sau gard orientat sud
 - Pe teren usor inclinat (NICIODATA in zona joasa unde se acumuleaza aerul rece!)
 - Cat mai departe de zonele umede sau cu apa stagnanta
 
 **Tehnica plantarii:**
+
 1. Sapa groapa **60cm x 60cm x 70cm** (adanca!) cu 2-3 saptamani inainte
 2. Amestec la fund: pamant excavat + 30% compost matur + 200g superfosfat + 100g sulfat de potasiu + 200g calcar dolomitic (daca pH-ul solului este sub 7.0)
 3. Fara azot in groapa de plantare!
@@ -112,10 +119,12 @@ Alegerea portaltoiului este critica pentru supravietuirea migdalului in clima co
 **Majoritatea soiurilor de migdal sunt AUTO-STERILE** — nu pot produce fructe cu propriul polen. Aceasta inseamna ca trebuie sa plantezi minim **2 soiuri diferite** care infloresc in aceeasi perioada.
 
 **Exceptii (partial autofertile):**
+
 - 'Tuono' — produce partial singur, dar mult mai bine cu polenizator
 - 'Lauranne' — autofertil, dar rar in Romania
 
 **Reguli de polenizare:**
+
 - Distanta maxima intre soiuri: 25-30m (albinele fac restul)
 - Inflorirea trebuie sa se suprapuna minim 5-7 zile
 - In martie, activitatea albinelor este redusa (temperaturi scazute) — un motiv in plus pentru pierderi de recolta
@@ -123,6 +132,7 @@ Alegerea portaltoiului este critica pentru supravietuirea migdalului in clima co
 ### Fructul — de la pom la consum
 
 Ce vedem pe pom:
+
 1. **Drupa** — fructul complet, care arata ca o piersica verde, mica si tare
 2. **Hull (invelisul)** — partea exterioara, verde-cenusie, pieloasa, necomestibila — se usuca si se despica la maturitate
 3. **Coaja (endocarpul)** — samburoele pietros, dur (la unele soiuri moale — "migdal cu coaja moale")
@@ -139,21 +149,21 @@ Ce vedem pe pom:
 
 ### Tabel calendar tratamente migdal
 
-| Luna | Faza vegetativa | Tratament chimic (doza la 10L) | Alternativa BIO | Scopul |
-|---|---|---|---|---|
-| **Ianuarie** | Repaus complet | — | — | Verificare protectie iarna, inspectie rozatoare |
-| **Februarie** | Sfarsit repaus, muguri se umfla, POSIBIL INFLORIRE DEVREME! | Zeama bordelez 3% (300g piatra vanata + 300g var la 10L) + Ulei horticol 1% (100ml/10L) — DOAR inainte de deschiderea florilor | [BIO: Aceeasi zeama bordelez + ulei horticol BIO certificat] | Dezinfectie generala, eliminare oua daunatori iernatici |
-| **1-15 Martie** | Inflorire (la soiuri timpurii) sau buton floral (la soiuri tarzii) | **Score 25 EC — 0.02% (2ml/10L) — DOAR pe buton, NU pe floare deschisa!** | [BIO: Zeama bordelez 0.5% (50g/10L) — doar pe buton] | **Preventie monilioza florilor — CRITICA!** |
-| **15-31 Martie** | Inflorire principala (soiuri tarzii) — NU SE STROPESTE IN INFLORIRE | **INTERZIS in inflorire!** Exceptie extrema: Score 0.02% seara tarziu daca monilioza e vizibila | — | Protejezi polenizatorii! |
-| **Aprilie** | Cadere petale, legare fructe, crestere frunze | Chorus 50 WG — 0.03% (3g/10L) + Mospilan 20 SG — 0.03% (3g/10L) | [BIO: Bicarbonat de sodiu 0.5% (50g/10L) + sapun potasic 0.3% (30g/10L)] | Monilioza post-inflorire, afide, ciuruirea frunzelor |
-| **Mai** | Crestere vegetativa activa, fructe tinere | Topsin 70 WP — 0.07% (7g/10L) + Calypso 480 SC — 0.02% (2ml/10L) | [BIO: Sulf muiabil 0.3% (30g/10L) + ulei de neem 0.5% (50ml/10L)] | Ciuruire, rugina, viespea migdalului (Eurytoma) |
-| **Iunie** | Crestere fructe, intarire sambure | Merpan 50 WP — 0.15% (15g/10L) + Coragen 20 SC — 0.0175% (1.75ml/10L) | [BIO: Bacillus thuringiensis 1g/10L + ulei de neem 0.3%] | Monilioza fructe, molia orientala, viermele fructelor |
-| **Iulie** | Maturare fructe (soiuri timpurii) | Captan 0.15% (15g/10L) — respecta pauza pre-recoltare 14 zile | [BIO: Bicarbonat sodiu 0.5% — pauza 1 zi] | Putregai fructe pre-recoltare |
-| **August** | **RECOLTARE soiuri timpurii-mijlocii** | Fara tratamente in perioada recoltarii | — | Recoltare si uscare migdale |
-| **Septembrie** | Recoltare soiuri tarzii, post-recoltare | Zeama bordelez 1% (100g/10L) post-recoltare | [BIO: Aceeasi zeama bordelez] | Curatare fungala post-recoltare |
-| **Octombrie** | Cadere frunze, pregatire iarna | Fertilizare foliara K+P: monofosfat de potasiu 0.5% (50g/10L) | [BIO: Extract alge marine 0.3% (30ml/10L)] | Intarire lemn si muguri pentru iarna |
-| **Noiembrie** | Intrare in repaus | Zeama bordelez 3% (300g/10L) — OBLIGATORIU inainte de protectia de iarna | [BIO: Aceeasi zeama bordelez] | Dezinfectie completa pre-iarna — CRITIC! |
-| **Decembrie** | Repaus complet | — | — | Verificare protectie iarna |
+| Luna             | Faza vegetativa                                                     | Tratament chimic (doza la 10L)                                                                                                 | Alternativa BIO                                                          | Scopul                                                  |
+| ---------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------- |
+| **Ianuarie**     | Repaus complet                                                      | —                                                                                                                              | —                                                                        | Verificare protectie iarna, inspectie rozatoare         |
+| **Februarie**    | Sfarsit repaus, muguri se umfla, POSIBIL INFLORIRE DEVREME!         | Zeama bordelez 3% (300g piatra vanata + 300g var la 10L) + Ulei horticol 1% (100ml/10L) — DOAR inainte de deschiderea florilor | [BIO: Aceeasi zeama bordelez + ulei horticol BIO certificat]             | Dezinfectie generala, eliminare oua daunatori iernatici |
+| **1-15 Martie**  | Inflorire (la soiuri timpurii) sau buton floral (la soiuri tarzii)  | **Score 25 EC — 0.02% (2ml/10L) — DOAR pe buton, NU pe floare deschisa!**                                                      | [BIO: Zeama bordelez 0.5% (50g/10L) — doar pe buton]                     | **Preventie monilioza florilor — CRITICA!**             |
+| **15-31 Martie** | Inflorire principala (soiuri tarzii) — NU SE STROPESTE IN INFLORIRE | **INTERZIS in inflorire!** Exceptie extrema: Score 0.02% seara tarziu daca monilioza e vizibila                                | —                                                                        | Protejezi polenizatorii!                                |
+| **Aprilie**      | Cadere petale, legare fructe, crestere frunze                       | Chorus 50 WG — 0.03% (3g/10L) + Mospilan 20 SG — 0.03% (3g/10L)                                                                | [BIO: Bicarbonat de sodiu 0.5% (50g/10L) + sapun potasic 0.3% (30g/10L)] | Monilioza post-inflorire, afide, ciuruirea frunzelor    |
+| **Mai**          | Crestere vegetativa activa, fructe tinere                           | Topsin 70 WP — 0.07% (7g/10L) + Calypso 480 SC — 0.02% (2ml/10L)                                                               | [BIO: Sulf muiabil 0.3% (30g/10L) + ulei de neem 0.5% (50ml/10L)]        | Ciuruire, rugina, viespea migdalului (Eurytoma)         |
+| **Iunie**        | Crestere fructe, intarire sambure                                   | Merpan 50 WP — 0.15% (15g/10L) + Coragen 20 SC — 0.0175% (1.75ml/10L)                                                          | [BIO: Bacillus thuringiensis 1g/10L + ulei de neem 0.3%]                 | Monilioza fructe, molia orientala, viermele fructelor   |
+| **Iulie**        | Maturare fructe (soiuri timpurii)                                   | Captan 0.15% (15g/10L) — respecta pauza pre-recoltare 14 zile                                                                  | [BIO: Bicarbonat sodiu 0.5% — pauza 1 zi]                                | Putregai fructe pre-recoltare                           |
+| **August**       | **RECOLTARE soiuri timpurii-mijlocii**                              | Fara tratamente in perioada recoltarii                                                                                         | —                                                                        | Recoltare si uscare migdale                             |
+| **Septembrie**   | Recoltare soiuri tarzii, post-recoltare                             | Zeama bordelez 1% (100g/10L) post-recoltare                                                                                    | [BIO: Aceeasi zeama bordelez]                                            | Curatare fungala post-recoltare                         |
+| **Octombrie**    | Cadere frunze, pregatire iarna                                      | Fertilizare foliara K+P: monofosfat de potasiu 0.5% (50g/10L)                                                                  | [BIO: Extract alge marine 0.3% (30ml/10L)]                               | Intarire lemn si muguri pentru iarna                    |
+| **Noiembrie**    | Intrare in repaus                                                   | Zeama bordelez 3% (300g/10L) — OBLIGATORIU inainte de protectia de iarna                                                       | [BIO: Aceeasi zeama bordelez]                                            | Dezinfectie completa pre-iarna — CRITIC!                |
+| **Decembrie**    | Repaus complet                                                      | —                                                                                                                              | —                                                                        | Verificare protectie iarna                              |
 
 ### Reguli importante tratamente migdal
 
@@ -170,6 +180,7 @@ Ce vedem pe pom:
 ### Forma recomandata: vas/cupa (open center)
 
 Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la piersic. Aceasta forma permite:
+
 - Patrunderea maxima a luminii in interiorul coroanei
 - Aerisire excelenta (reduce bolile fungice)
 - Acces usor pentru tratamente si recoltare
@@ -180,6 +191,7 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 ### Anul 1 — Tunderea de formare initiala
 
 **La plantare (primavara):**
+
 1. Taie trunchiul la **70-80cm** inaltime de la sol
 2. Alege **3-4 ramuri laterale** bine pozitionate (distribuite uniform in jurul trunchiului, la unghiuri de 45-60 grade)
 3. Scurteaza ramurile laterale selectate la **25-30cm** (de la baza lor)
@@ -189,6 +201,7 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 ### Anul 2 — Continuarea formarii
 
 **Primavara (inainte de dezmugurire):**
+
 1. Pe fiecare ramura principala, selecteaza **2 sub-ramuri** viguroase
 2. Scurteaza sub-ramurile la **30-40cm**
 3. Elimina ramurile care cresc spre interior sau care se incruciseaza
@@ -213,6 +226,7 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 **Cand:** Sfarsitul iernii (februarie), inainte de dezmugurire, pe vreme uscata si fara ger.
 
 **Ce tai:**
+
 - Ramuri care au fructificat intens anul trecut (epuizate)
 - Ramuri uscate, bolnave sau deteriorate de ger
 - Ramuri care cresc spre interior
@@ -221,6 +235,7 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 - Dragoni de la baza trunchiului
 
 **Ce pastrezi:**
+
 - Ramuri de 1 an, moderate ca vigoare (20-40cm), cu muguri de rod (rotunzi) — ACESTEA produc fructe
 - Ramuri bine luminate si aerisite
 - Structura echilibrata a coroanei
@@ -229,6 +244,7 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 
 **Cand:** Iunie-iulie, dupa legarea fructelor.
 **Ce faci:**
+
 - Ciupesti (rupi cu mana) varfurile lacoamelor verticale — le opresti din crestere
 - Elimini dragonii care au aparut la baza
 - Elimini ramuri evidente bolnave sau uscate (nu astepta pana iarna)
@@ -237,13 +253,13 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 
 ### TOP 5 greseli de tundere la migdal
 
-| Nr. | Greseala | Consecinta | Corect |
-|---|---|---|---|
-| 1 | Tundere prea severa | Pomul slabeste, scade rezistenta la ger | Tai max 25-30% din coroana anual |
-| 2 | Nu tai deloc | Coroana se indeseaza, boli, fructe mici | Tundere anuala obligatorie |
-| 3 | Tundere pe ger (sub -5°C) | Lemnul se fisureaza, rani greu vindecabile | Taie DOAR la temperaturi pozitive |
-| 4 | Ignori lemnul bolnav | Infectia se extinde in tot pomul | Taie imediat, 15-20cm in lemn sanatos |
-| 5 | Lasi cioturi | Ciotul se usuca si devine poarta de infectie | Taietura la inel, la baza ramurii |
+| Nr. | Greseala                  | Consecinta                                   | Corect                                |
+| --- | ------------------------- | -------------------------------------------- | ------------------------------------- |
+| 1   | Tundere prea severa       | Pomul slabeste, scade rezistenta la ger      | Tai max 25-30% din coroana anual      |
+| 2   | Nu tai deloc              | Coroana se indeseaza, boli, fructe mici      | Tundere anuala obligatorie            |
+| 3   | Tundere pe ger (sub -5°C) | Lemnul se fisureaza, rani greu vindecabile   | Taie DOAR la temperaturi pozitive     |
+| 4   | Ignori lemnul bolnav      | Infectia se extinde in tot pomul             | Taie imediat, 15-20cm in lemn sanatos |
+| 5   | Lasi cioturi              | Ciotul se usuca si devine poarta de infectie | Taietura la inel, la baza ramurii     |
 
 ---
 
@@ -256,6 +272,7 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 > **ALERTA CRITICA:** Monilioza este cea mai grava boala a migdalului in climatele umede. Poate distruge complet florile SI fructele.
 
 **Simptome:**
+
 - **Pe flori:** florile se brunifica brusc, se usuca dar raman pe ramura ("arsura florala")
 - **Pe ramuri:** ramurile tinere se usuca de la varf — aspect de "ars de foc"
 - **Pe fructe:** fructe brunificate, acoperite cu paduchi cenusii (sporulare) — se mumifica pe pom
@@ -263,11 +280,13 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 **Conditii favorizante:** umiditate ridicata (ploaie, roua, ceata) in timpul infloririi — exact ce se intampla frecvent la Nadlac in martie.
 
 **Combatere chimica (doze la 10L):**
+
 - Preventiv pe buton floral: Score 25 EC — 2ml/10L
 - Post-inflorire: Chorus 50 WG — 3g/10L sau Switch 62.5 WG — 10g/10L
 - Pe fructe: Topsin 70 WP — 7g/10L
 
 **Combatere BIO:**
+
 - Zeama bordelez 0.5-1% pe buton (50-100g/10L)
 - Bicarbonat de sodiu 0.5% (50g/10L) — supresie partiala
 - Trichoderma harzianum — preventiv foliar (conform instructiuni producator)
@@ -277,15 +296,18 @@ Migdalul se conduce in forma de **vas (cupa deschisa)** — aceeasi forma ca la 
 #### 2. Ciuruirea frunzelor / Clasterosporioza (Stigmina carpophila)
 
 **Simptome:**
+
 - Pete mici, rotunde, brunii pe frunze — centrul se usuca si cade, lasand gauri rotunde ("ciuruire")
 - Frunzele arata ca si cum au fost ciuruite cu alice
 - Ataca si fructele (pete brunii deprimare) si ramurile (cancere mici)
 
 **Combatere chimica (10L):**
+
 - Captan 0.15% (15g/10L) sau Merpan 50 WP 0.15% (15g/10L)
 - Preventiv: cupru (zeama bordelez 1%) in toamna si primavara devreme
 
 **Combatere BIO:**
+
 - Zeama bordelez 0.5-1% (preventiv)
 - Sulf muiabil 0.3% (30g/10L) — eficacitate moderata
 
@@ -321,10 +343,12 @@ Da, migdalul este sensibil la basicare, exact ca piersicul!
 **Simptome:** Fructe care nu se dezvolta normal, raman mici, pieloase. La deschidere, samburele este gol sau contine o larva alba.
 
 **Combatere chimica (10L):**
+
 - Calypso 480 SC — 2ml/10L sau Coragen 20 SC — 1.75ml/10L
 - Aplicare: la caderea petalelor si 14 zile mai tarziu (2 tratamente)
 
 **Combatere BIO:**
+
 - Capcane galbene lipicioase (reduc populatia adultilor)
 - Colectarea si distrugerea TUTUROR fructelor afectate (le arzi, nu le lasi pe sol!)
 - Ulei de neem 0.5% (50ml/10L) — efect descurajant partial
@@ -363,30 +387,33 @@ Da, migdalul este sensibil la basicare, exact ca piersicul!
 
 ### Tabel comparativ soiuri pentru zona Nadlac
 
-| Soi | Origine | Inflorire | Rezistenta ger (lemn) | Autofertilitate | Coaja | Observatii |
-|---|---|---|---|---|---|---|
-| **'Texas' (Mission)** | SUA | **Tarzie** | -20°C | Auto-sterila | Dura | Cel mai raspandit in Romania, inflorire tarzie — **RECOMANDAT** |
-| **'Ferragnes'** | Franta | **Foarte tarzie** | -18 la -20°C | Auto-sterila (polenizator: 'Ferraduel') | Semi-moale | Cel mai tarziu la inflorit — **CEL MAI POTRIVIT** pentru zone reci |
-| **'Ferraduel'** | Franta | **Foarte tarzie** | -18 la -20°C | Auto-sterila (polenizator: 'Ferragnes') | Semi-moale | Pereche obligatorie cu 'Ferragnes' |
-| **'Tuono'** | Italia | **Tarzie** | -18°C | **Partial autofertila** | Dura | Avantaj: poate produce partial singur — **RECOMANDAT** |
-| **'Primorskij'** | Rusia | Tarzie | **-25 la -27°C** | Auto-sterila | Dura | Cel mai rezistent la ger — ideal pentru Arad |
-| **'Nikitskij 62'** | Ucraina (Crimea) | Tarzie | **-25°C** | Auto-sterila | Semi-moale | Adaptat clima continentala, dificil de gasit |
-| **'Lauranne'** | Franta | Tarzie | -18°C | **Autofertila** | Semi-moale | Ideal daca plantezi un singur pom, dar rar in Romania |
-| **'Marinada'** | Spania | Tarzie | -16°C | Partial autofertila | Moale | Productiva dar rezistenta la ger mai slaba |
-| **'Lovrin 18'** | Romania | Tarzie | -20 la -22°C | Auto-sterila | Semi-moale | Soi romanesc traditional, adaptat Banat-Arad, mai usor de gasit in pepinierele locale |
-| **'Supernova'** | Romania | Tarzie | -20°C | Auto-sterila | Semi-moale | Soi nou romanesc, disponibil la Pepiniera Dumbrava; bun randament |
+| Soi                   | Origine          | Inflorire         | Rezistenta ger (lemn) | Autofertilitate                         | Coaja      | Observatii                                                                            |
+| --------------------- | ---------------- | ----------------- | --------------------- | --------------------------------------- | ---------- | ------------------------------------------------------------------------------------- |
+| **'Texas' (Mission)** | SUA              | **Tarzie**        | -20°C                 | Auto-sterila                            | Dura       | Cel mai raspandit in Romania, inflorire tarzie — **RECOMANDAT**                       |
+| **'Ferragnes'**       | Franta           | **Foarte tarzie** | -18 la -20°C          | Auto-sterila (polenizator: 'Ferraduel') | Semi-moale | Cel mai tarziu la inflorit — **CEL MAI POTRIVIT** pentru zone reci                    |
+| **'Ferraduel'**       | Franta           | **Foarte tarzie** | -18 la -20°C          | Auto-sterila (polenizator: 'Ferragnes') | Semi-moale | Pereche obligatorie cu 'Ferragnes'                                                    |
+| **'Tuono'**           | Italia           | **Tarzie**        | -18°C                 | **Partial autofertila**                 | Dura       | Avantaj: poate produce partial singur — **RECOMANDAT**                                |
+| **'Primorskij'**      | Rusia            | Tarzie            | **-25 la -27°C**      | Auto-sterila                            | Dura       | Cel mai rezistent la ger — ideal pentru Arad                                          |
+| **'Nikitskij 62'**    | Ucraina (Crimea) | Tarzie            | **-25°C**             | Auto-sterila                            | Semi-moale | Adaptat clima continentala, dificil de gasit                                          |
+| **'Lauranne'**        | Franta           | Tarzie            | -18°C                 | **Autofertila**                         | Semi-moale | Ideal daca plantezi un singur pom, dar rar in Romania                                 |
+| **'Marinada'**        | Spania           | Tarzie            | -16°C                 | Partial autofertila                     | Moale      | Productiva dar rezistenta la ger mai slaba                                            |
+| **'Lovrin 18'**       | Romania          | Tarzie            | -20 la -22°C          | Auto-sterila                            | Semi-moale | Soi romanesc traditional, adaptat Banat-Arad, mai usor de gasit in pepinierele locale |
+| **'Supernova'**       | Romania          | Tarzie            | -20°C                 | Auto-sterila                            | Semi-moale | Soi nou romanesc, disponibil la Pepiniera Dumbrava; bun randament                     |
 
 ### Recomandari concrete pentru Nadlac
 
 **Daca plantezi 2 pomi (minim recomandat):**
+
 - Combinatie ideala: **'Ferragnes' + 'Ferraduel'** — inflorire foarte tarzie, se polenizeaza reciproc
 - Alternativa: **'Texas' + 'Tuono'** — usor de gasit, Tuono produce partial si singur
 
 **Daca plantezi 1 singur pom:**
+
 - **'Tuono'** — partial autofertil, sanse rezonabile de productie
 - **'Lauranne'** — autofertil, dar greu de gasit in Romania
 
 **Daca prioritizezi rezistenta la ger:**
+
 - **'Primorskij'** + **'Nikitskij 62'** — selectii rusesti/ucrainene, extrem de rezistente, dar necesita cautare la pepiniere specializate din Europa de Est
 
 ### Unde gasesti migdali in Romania
@@ -413,12 +440,14 @@ Migdalul are **doua vulnerabilitati critice** in clima continentala:
 ### Protectia pomilor tineri (anul 1-5) — OBLIGATORIE
 
 **Trunchiul si baza:**
+
 - Inveleste trunchiul cu **banda de iuta sau panza de sac** de la sol pana la prima ramificatie
 - Peste iuta, adauga un strat de **paie sau frunze uscate** fixate cu sfoara
 - La baza trunchiului: **movila de pamant de 30-40cm** inaltime (se face toamna, se indeparteaza primavara)
 - **Mulci gros 20-25cm** in cerc de 1.5m diametru cu paie, frunze sau scoarta
 
 **Coroana (pomii mici):**
+
 - Acopera cu **agrotextil (vlies) de 30-50g/mp** in noptile cu ger sub -15°C
 - Fixeaza bine agrotextilul sa nu zboare de vant
 - Scoate-l in zilele insorite (pomul are nevoie de lumina si aer)
@@ -428,6 +457,7 @@ Migdalul are **doua vulnerabilitati critice** in clima continentala:
 Aceasta este cea mai dificila parte a cultivarii migdalului. Optiuni disponibile:
 
 #### Metoda 1: Fumul (afumare) — cea mai accesibila
+
 - Pregateste **gramezi de material umed** (paie umede, crengi verzi, frunze umede) la 5-10m de pomi
 - Cand prognoza anunta inghet nocturn sub -1°C si pomul e in floare, aprinde gramezile
 - Fumul creeaza un strat de "patura" care retine caldura radiatiei solului
@@ -435,6 +465,7 @@ Aceasta este cea mai dificila parte a cultivarii migdalului. Optiuni disponibile
 - **Dezavantaj:** trebuie sa fii treaz toata noaptea si sa mentii fumul
 
 #### Metoda 2: Aspersiunea cu apa (overhead sprinklers)
+
 - Instalezi aspersoare deasupra coroanei
 - La risc de inghet, pornesti aspersoarele — apa care ingheta pe flori ELIBEREAZA CALDURA (caldura latenta de fuziune) si mentine florile la 0°C
 - **Eficacitate:** excelenta, protejaza pana la -5/-6°C
@@ -442,12 +473,14 @@ Aceasta este cea mai dificila parte a cultivarii migdalului. Optiuni disponibile
 - **Verdict:** metoda profesionala, greu de implementat in livada mica
 
 #### Metoda 3: Acoperire cu agrotextil (vlies)
+
 - Acopera coroanele cu agrotextil gros (50g/mp) in perioadele critice
 - **Eficacitate:** protejaza 2-3°C — util pentru inghete usoare
 - **Dezavantaj:** laborios la pomi mari, trebuie scos ziua pentru polenizare
 - **Verdict:** cea mai practica pentru 1-3 pomi in livada familiala
 
 #### Metoda 4: Perete termic / microclimat artificial
+
 - Planteaza migdalul langa un **perete orientat sud** (casa, gard masiv, zid)
 - Peretele absoarbe caldura ziua si o elibereaza noaptea
 - Efect: +2 pana la +4°C fata de campul deschis
@@ -456,6 +489,7 @@ Aceasta este cea mai dificila parte a cultivarii migdalului. Optiuni disponibile
 ### Localizarea optima in livada — CRITICA
 
 **REGULI de aur pentru amplasarea migdalului:**
+
 1. **NICIODATA** in zona joasa a livadei — aerul rece se acumuleaza acolo ca apa intr-un bazin
 2. **INTOTDEAUNA** pe panta sau pe cel mai inalt punct disponibil
 3. **Expunere SUD obligatorie** — maxim de caldura si lumina
@@ -468,17 +502,20 @@ Aceasta este cea mai dificila parte a cultivarii migdalului. Optiuni disponibile
 Daca iarna a fost devastatoare si migdalul a suferit daune vizibile:
 
 **Martie-Aprilie (evaluare):**
+
 1. Asteapta pana tarziu in aprilie inainte de a lua decizii — migdalul poate parea mort dar sa reinvie din lemn viu
 2. Verifica vitalitatea: zgarie usor scoarta cu unghia — verde = viu, brun = mort
 3. Verifica de jos in sus: de la baza trunchiului spre varfuri
 
 **Daca sunt ramuri moarte:**
+
 1. Taie tot lemnul mort pana la lemn verde viu
 2. Aplica mastic de altoire pe toate taieturile
 3. Trateaza cu zeama bordelez 1%
 4. Reduce asteptarile: anul acela nu va produce fructe
 
 **Daca trunchiul e mort dar radacina vie:**
+
 1. Pomul poate regenera lastari de la baza — DAR atentie: daca lastiarii vin de SUB punctul de altoire, sunt din portaltoi (zarzar), nu migdal!
 2. Daca lastarii vin de DEASUPRA altoirii — selecteaza 1-2 vigurosi si reformeaza pomul
 3. Daca lastarii vin DOAR de sub altoire — pomul de migdal este pierdut; portaltoiul a supravietuit dar nu mai produce migdale
@@ -493,14 +530,15 @@ Migdalul este un **consumator moderat** — nu necesita fertilizare intensa ca p
 
 **Program anual de fertilizare:**
 
-| Perioada | Ce aplici | Cantitate per pom | Observatii |
-|---|---|---|---|
-| Martie (la trezire) | Compost matur | 15-20 kg | Incorporeaza usor in sol la 10-15cm adancime |
-| Aprilie | NPK 10-10-10 sau 7-14-21 | 200-300g | Imprastie in proiectia coroanei, incorporeaza |
-| Mai-Iunie | Fertilizare foliara cu microelemente (Zn, B, Mn) | Conform etichetei | Important: borul ajuta la legarea fructelor |
-| Septembrie | Superfosfat + sulfat de potasiu | 150g + 100g | Intarire lemn pentru iarna — NU da azot toamna! |
+| Perioada            | Ce aplici                                        | Cantitate per pom | Observatii                                      |
+| ------------------- | ------------------------------------------------ | ----------------- | ----------------------------------------------- |
+| Martie (la trezire) | Compost matur                                    | 15-20 kg          | Incorporeaza usor in sol la 10-15cm adancime    |
+| Aprilie             | NPK 10-10-10 sau 7-14-21                         | 200-300g          | Imprastie in proiectia coroanei, incorporeaza   |
+| Mai-Iunie           | Fertilizare foliara cu microelemente (Zn, B, Mn) | Conform etichetei | Important: borul ajuta la legarea fructelor     |
+| Septembrie          | Superfosfat + sulfat de potasiu                  | 150g + 100g       | Intarire lemn pentru iarna — NU da azot toamna! |
 
 **Reguli de fertilizare:**
+
 - **Azot moderat:** exces de azot = crestere vegetativa excesiva = lemn imatur = sensibilitate la ger. Mai bine mai putin azot decat prea mult!
 - **Potasiu important:** K ajuta la maturarea lemnului si rezistenta la ger
 - **Calciu:** migdalul consuma mult calciu — adauga calcar dolomitic 200-300g/pom/an daca solul este sub pH 7
@@ -512,30 +550,33 @@ Migdalul este **rezistent la seceta** odata stabilit (dupa anul 3-4) — origini
 
 **Cand si cat:**
 
-| Perioada | Necesar | Cantitate | Observatii |
-|---|---|---|---|
-| Aprilie-Mai (inflorire, legare) | Moderat | 30-40L/pom/saptamana | Important pentru legarea fructelor |
-| Iunie-Iulie (crestere sambure, umplere miez) | **CRITIC** | 50-60L/pom/saptamana | Fara apa acum = migdale goale sau mici! |
-| August (maturare) | Redus | 20-30L/pom/saptamana | Reduce irigarea — stimuleaza maturarea |
-| Septembrie (recoltare) | Stop | 0 | Opreste irigarea cu 2-3 saptamani inainte de recoltare |
-| Octombrie-Noiembrie | O udare finala | 50-80L/pom (o singura data) | "Udarea de iarna" — ajuta radacinile sa reziste la ger |
+| Perioada                                     | Necesar        | Cantitate                   | Observatii                                             |
+| -------------------------------------------- | -------------- | --------------------------- | ------------------------------------------------------ |
+| Aprilie-Mai (inflorire, legare)              | Moderat        | 30-40L/pom/saptamana        | Important pentru legarea fructelor                     |
+| Iunie-Iulie (crestere sambure, umplere miez) | **CRITIC**     | 50-60L/pom/saptamana        | Fara apa acum = migdale goale sau mici!                |
+| August (maturare)                            | Redus          | 20-30L/pom/saptamana        | Reduce irigarea — stimuleaza maturarea                 |
+| Septembrie (recoltare)                       | Stop           | 0                           | Opreste irigarea cu 2-3 saptamani inainte de recoltare |
+| Octombrie-Noiembrie                          | O udare finala | 50-80L/pom (o singura data) | "Udarea de iarna" — ajuta radacinile sa reziste la ger |
 
 **IMPORTANT:** NICIODATA nu lasa apa sa stagneze la baza pomului. Irigare prin picurare este ideala. Aspersia pe frunze favorizeaza boli fungice.
 
 ### Recoltarea migdalelor
 
 **Cand se recolteaza?**
+
 - Hull-ul (invelisul exterior) se usuca, se despica si se deschide, expunand samburele — aceasta este semnalul de maturitate
 - La Nadlac: de obicei **sfarsit august — septembrie**
 - Hull-ul trebuie sa fie despicat pe minim 75% din suprafata fructelor de pe pom
 
 **Cum se recolteaza:**
+
 1. Intinde o prelata sau plasa sub pom
 2. Scutura ramurile cu un bat lung sau scuturator mecanic
 3. Colecteaza fructele cazute
 4. Alternativ: culege manual fructele la care hull-ul s-a despicat complet
 
 **Procesare post-recoltare:**
+
 1. **Indepartarea hull-ului:** Scoate invelisul exterior (manual sau prin frecare). Lucreaza cu manusi — hull-ul pateaza mainile!
 2. **Spalare:** Spala samburoii cu apa curata
 3. **Uscare — CRITICA:** Intinde samburoii intr-un singur strat la soare sau intr-un uscator la 35-40°C, 3-5 zile. Umiditatea trebuie sa scada sub 8%
@@ -546,59 +587,60 @@ Migdalul este **rezistent la seceta** odata stabilit (dupa anul 3-4) — origini
 
 **Fii onest cu tine insuti:**
 
-| Indicator | Asteptare realista |
-|---|---|
-| Prima recolta semnificativa | Anul 4-5 de la plantare |
-| Productie plina | Anul 7-8 |
-| Recolta anuala per pom (adult) | 5-15 kg migdale cu coaja (in anii buni) |
-| Ani cu recolta zero (din cauza inghetului) | 3-4 din 10 ani |
-| Ani cu recolta redusa (inghet partial) | 2-3 din 10 ani |
-| Ani cu recolta buna | 3-4 din 10 ani |
-| Durata de viata a pomului | 25-40 ani (pe portaltoi potrivit) |
+| Indicator                                  | Asteptare realista                      |
+| ------------------------------------------ | --------------------------------------- |
+| Prima recolta semnificativa                | Anul 4-5 de la plantare                 |
+| Productie plina                            | Anul 7-8                                |
+| Recolta anuala per pom (adult)             | 5-15 kg migdale cu coaja (in anii buni) |
+| Ani cu recolta zero (din cauza inghetului) | 3-4 din 10 ani                          |
+| Ani cu recolta redusa (inghet partial)     | 2-3 din 10 ani                          |
+| Ani cu recolta buna                        | 3-4 din 10 ani                          |
+| Durata de viata a pomului                  | 25-40 ani (pe portaltoi potrivit)       |
 
 **Concluzie:** Migdalul la Nadlac este un **pariu pe termen lung** — il plantezi stiind ca nu va produce in fiecare an, dar in anii buni, migdalele proaspete din propria livada sunt o experienta exceptionala. Daca nu poti accepta risc de 30-40% pierdere anuala, alege alta specie.
 
 ### TOP 5 greseli la cultivarea migdalului in Romania
 
-| Nr. | Greseala | De ce e gresit | Corect |
-|---|---|---|---|
-| 1 | **Soi gresit (inflorire timpurie)** | Infloreste in februarie, inghet garantat | Planteaza DOAR soiuri cu inflorire TARZIE: Ferragnes, Texas, Tuono |
-| 2 | **Plantat in zona joasa** | Aerul rece se acumuleaza, inghet mai frecvent si mai sever | Planteaza pe punct inalt, panta sudica, langa perete |
-| 3 | **Fara protectie anti-inghet** | O noapte de -2°C in inflorire = zero recolta | Pregateste metode de protectie INAINTE de nevoie |
-| 4 | **Sol greu, umed, acid** | Radacinile putrezesc, cloroza, pom slabit | Sol drenat, usor alcalin (pH 7-8), nisipos-lutos |
-| 5 | **Un singur pom plantat (soi auto-steril)** | Fara polenizare incrucisata = fara fructe | Planteaza min 2 soiuri sau alege 'Tuono' (partial autofertil) |
+| Nr. | Greseala                                    | De ce e gresit                                             | Corect                                                             |
+| --- | ------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------ |
+| 1   | **Soi gresit (inflorire timpurie)**         | Infloreste in februarie, inghet garantat                   | Planteaza DOAR soiuri cu inflorire TARZIE: Ferragnes, Texas, Tuono |
+| 2   | **Plantat in zona joasa**                   | Aerul rece se acumuleaza, inghet mai frecvent si mai sever | Planteaza pe punct inalt, panta sudica, langa perete               |
+| 3   | **Fara protectie anti-inghet**              | O noapte de -2°C in inflorire = zero recolta               | Pregateste metode de protectie INAINTE de nevoie                   |
+| 4   | **Sol greu, umed, acid**                    | Radacinile putrezesc, cloroza, pom slabit                  | Sol drenat, usor alcalin (pH 7-8), nisipos-lutos                   |
+| 5   | **Un singur pom plantat (soi auto-steril)** | Fara polenizare incrucisata = fara fructe                  | Planteaza min 2 soiuri sau alege 'Tuono' (partial autofertil)      |
 
 ### Calendar lunar simplificat
 
-| Luna | Activitate principala |
-|---|---|
-| Ianuarie | Verificare protectie iarna, comanda soiuri la pepiniere |
-| Februarie | Tundere (pe vreme blanda), tratament cu cupru + ulei horticol |
-| Martie | ALERTA INGHET — monitorizare noapte, protectie flori, primul tratament |
-| Aprilie | Tratamente post-inflorire, fertilizare, irigare incepe |
-| Mai | Tratamente daunatori (Eurytoma!), copilire dragoni, fertilizare foliara |
-| Iunie | Tundere de vara usoara, irigare critica, monitorizare boli |
-| Iulie | Irigare, monitorizare maturare, reducere irigare spre sfarsit |
-| August | RECOLTARE (sfarsit luna), procesare si uscare migdale |
-| Septembrie | Finalizare recoltare, tratament post-recoltare cu cupru |
-| Octombrie | Fertilizare K+P, udare de iarna, pregatire protectie |
-| Noiembrie | Tratament final cu zeama bordelez 3%, instalare protectie iarna |
-| Decembrie | Repaus — verificare protectie, inspectie vizuala |
+| Luna       | Activitate principala                                                   |
+| ---------- | ----------------------------------------------------------------------- |
+| Ianuarie   | Verificare protectie iarna, comanda soiuri la pepiniere                 |
+| Februarie  | Tundere (pe vreme blanda), tratament cu cupru + ulei horticol           |
+| Martie     | ALERTA INGHET — monitorizare noapte, protectie flori, primul tratament  |
+| Aprilie    | Tratamente post-inflorire, fertilizare, irigare incepe                  |
+| Mai        | Tratamente daunatori (Eurytoma!), copilire dragoni, fertilizare foliara |
+| Iunie      | Tundere de vara usoara, irigare critica, monitorizare boli              |
+| Iulie      | Irigare, monitorizare maturare, reducere irigare spre sfarsit           |
+| August     | RECOLTARE (sfarsit luna), procesare si uscare migdale                   |
+| Septembrie | Finalizare recoltare, tratament post-recoltare cu cupru                 |
+| Octombrie  | Fertilizare K+P, udare de iarna, pregatire protectie                    |
+| Noiembrie  | Tratament final cu zeama bordelez 3%, instalare protectie iarna         |
+| Decembrie  | Repaus — verificare protectie, inspectie vizuala                        |
 
 ### Semne de deficit nutritional
 
-| Simptom vizibil | Cauza probabila | Solutie |
-|---|---|---|
-| Frunze galbene uniform (cloroza generala) | Deficit fier (Fe) sau pH prea acid | Chelat de fier foliar 0.1% + corectie pH cu calcar |
-| Frunze galbene INTRE nervuri (nervuri raman verzi) | Deficit mangan (Mn) sau fier | Sulfat de mangan foliar 0.2% (20g/10L) |
-| Varfuri de frunze arse, margini brunificate | Deficit potasiu (K) | Sulfat de potasiu 200g/pom incorporat in sol |
-| Frunze mici, crestere slaba, colorare rosie | Deficit fosfor (P) | Superfosfat 200g/pom + acid humic foliar |
-| Fructe deformate, slaba legare | Deficit bor (B) | Borax foliar 0.1% (10g/10L) la inflorire |
-| Crestere excesiva, lemn moale, sensibilitate la ger | **Exces de azot (N)** | STOP fertilizare cu azot, aplica potasiu |
+| Simptom vizibil                                     | Cauza probabila                    | Solutie                                            |
+| --------------------------------------------------- | ---------------------------------- | -------------------------------------------------- |
+| Frunze galbene uniform (cloroza generala)           | Deficit fier (Fe) sau pH prea acid | Chelat de fier foliar 0.1% + corectie pH cu calcar |
+| Frunze galbene INTRE nervuri (nervuri raman verzi)  | Deficit mangan (Mn) sau fier       | Sulfat de mangan foliar 0.2% (20g/10L)             |
+| Varfuri de frunze arse, margini brunificate         | Deficit potasiu (K)                | Sulfat de potasiu 200g/pom incorporat in sol       |
+| Frunze mici, crestere slaba, colorare rosie         | Deficit fosfor (P)                 | Superfosfat 200g/pom + acid humic foliar           |
+| Fructe deformate, slaba legare                      | Deficit bor (B)                    | Borax foliar 0.1% (10g/10L) la inflorire           |
+| Crestere excesiva, lemn moale, sensibilitate la ger | **Exces de azot (N)**              | STOP fertilizare cu azot, aplica potasiu           |
 
 ### Compatibilitate cu alte specii din livada
 
 Migdalul se poate planta in vecinatatea:
+
 - **Piersic:** DA — se polenizeaza partial, aceleasi tratamente, aceeasi forma de tundere
 - **Cais:** DA — rude apropiate, atentie la monilioza comuna
 - **Prun:** DA — compatibili pe portaltoi zarzar
@@ -612,5 +654,55 @@ Migdalul se poate planta in vecinatatea:
 
 ---
 
-*Document generat pentru proiectul Livada Mea Dashboard — livada semi-comerciala Nadlac, jud. Arad.*
-*Structura: A-G conform standardului proiectului.*
+## H. SFATURI PRACTICE PENTRU INCEPATORI — MIGDAL LA NADLAC
+
+### Daca nu retii nimic altceva, retine astea
+
+1. **Planteaza EXCLUSIV soiuri cu inflorire tarzie.** Migdalul infloreste in februarie-martie — cel mai devreme din toti pomii. Un ger de -2°C in acea perioada = zero recolta. Soiurile recomandate pentru Nadlac: **Ferragnes** (inflorire medie-tarzie), **Texas** (rezistent la ger), **Tuono** (partial autofertil + inflorire tarzie). Evita soiurile fara specificatie de inflorire.
+
+2. **Amplaseaza migdalul in locul cel mai ferit de bruma.** Pe teren plat (ca la Nadlac), aerul rece se acumuleaza in punctele joase. Daca ai o diferenta de chiar si 30-50cm inaltime in livada, planta migdalul pe punctul mai inalt. Langa un perete sau gard orientat sud = bonus de 1-2 grade.
+
+3. **Asteptarile realiste sunt obligatorii: 3-4 ani din 10 fara recolta sunt normale.** Nu inseamna ca ai gresit — inseamna ca migdalul la latitudinea Nadlacului este un pariu cu clima. In anii buni (inflorire scapata de ger), recolta e exceptionala si rentabila. Daca nu poti accepta aceste riscuri, alege piersic sau cais.
+
+4. **Pregateste protectia anti-inghet INAINTE de inflorire.** Cand meteo anunta -2°C si migdalul e in inflorire, nu mai ai timp sa cauti solutii. Tine gata: agrotextil (voal alb), lumanari/lampi in livada, sau material pentru fumigare. Monitorizeza temperatura cu un termometru de gradina in fiecare noapte din februarie-martie.
+
+5. **Planteaza MINIM 2 soiuri (daca soiul ales nu e autofertil).** Tuono e partial autofertil — produce si singur, dar cu 30-40% mai mult in prezenta unui polenizator. Ferragnes si Texas sunt autosterile — fara al doilea soi, productia e nesemnificativa.
+
+6. **Usuca migdalele complet inainte de depozitare.** Test obligatoriu: sparge o migdala — miezul trebuie sa fie crocant si sa se rupa curat. Daca e flexibil sau cauciucat — mai asteapta 2-3 zile. Migdalele slab uscate mucegaiesc in depozit.
+
+---
+
+### Calendarul minimal al incepatorului
+
+| Luna                    | Ce nu poti rata                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------- |
+| **Ianuarie-Februarie**  | Tundere de intretinere + tratament cu ulei horticol + cupru (inainte de umflarea mugurilor)         |
+| **Februarie-Martie**    | ALERTA INGHET zilnica — migdalul poate inflori oricat de devreme; pregatit cu mijloace de protectie |
+| **Mai**                 | Tratament impotriva Eurytoma amygdali (viespea migdalului) — daca e prezenta in zona                |
+| **August-Septembrie**   | Recoltare cand hull-ul (invelisul exterior) se despica pe 75%+ din fructe; uscare imediata          |
+| **Octombrie-Noiembrie** | Tratament cu zeama bordelez 3% dupa caderea frunzelor + fertilizare K+P                             |
+
+---
+
+### Intrebari frecvente
+
+**"Migdalul meu a inflorit frumos dar nu a facut aproape nimic — de ce?"**
+Cauza 1 (90% din cazuri): inghet de primavara dupa inflorire — chiar si -1°C pe durata infloririi distruge florile.
+Cauza 2: soi autosteril fara polenizator.
+Cauza 3: lipsa albinelor in perioada infloririi (inflorire prea timpurie, inainte ca albinele sa fie active).
+
+**"Migdalele mele sunt goale sau au miezul mic — de ce?"**
+Cauza 1: Viespea migdalului (Eurytoma amygdali) — larva distruge samburele din interior.
+Cauza 2: polenizare insuficienta (miez partial format).
+Cauza 3: seceta in iunie-iulie (umplerea miezului e dependenta de apa).
+
+**"De cate ori pe an produc migdalii?"**
+O singura recolta pe an, in august-septembrie. Spre deosebire de zmeur sau afin, nu exista varietati remontante la migdal.
+
+**"Cum stiu daca migdalul e viu dupa un ger puternic?"**
+Zgarie usor coaja unui lastari subtire cu unghia. Daca sub coaja e verde = viu. Daca e brun-negru = ramura inghetata. Asteapta pana in mai sa tai ramurile moarte — uneori pomul se recupereaza din radacini sau din baza.
+
+---
+
+_Document generat pentru proiectul Livada Mea Dashboard — livada semi-comerciala Nadlac, jud. Arad._
+_Structura: A-H conform standardului proiectului._

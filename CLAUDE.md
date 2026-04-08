@@ -5,8 +5,8 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete + Runda 9+10 (N8-N17, II1/II2/II4, T9, S10) + Audit Securitate | **HTML:** ~32,287 linii | **API:** 13 routes
-**Ultima actualizare:** 2026-04-07
+**Status sesiuni:** S1-S17 complete + Runda 9+10 (N8-N17, II1/II2/II4, T9, S10) + Audit Securitate | **HTML:** ~32,287 linii | **API:** 12 routes + 3 utilitare
+**Ultima actualizare:** 2026-04-08
 
 ## Arhitectura
 
@@ -64,10 +64,12 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 | Route            | Runtime | Timeout | Serviciu extern                                                             |
 | ---------------- | ------- | ------- | --------------------------------------------------------------------------- |
+| ai-status.js     | Edge    | —       | Health check servicii AI (boolean, fara call extern)                        |
 | ask.js           | Edge    | 28s     | Groq                                                                        |
 | diagnose.js      | Edge    | 22s     | Gemini 2.5-flash (fallback: 2.5-flash-lite)                                 |
 | diagnose-test.js | Edge    | 12s     | Gemini                                                                      |
 | frost-alert.js   | Edge    | 5s      | Redis                                                                       |
+| identify.js      | Edge    | 20s     | Gemini (identificare specie din fotografie)                                 |
 | journal.js       | Edge    | 5s      | Redis                                                                       |
 | meteo-cron.js    | Edge    | 25s     | Open-Meteo + Redis                                                          |
 | meteo-history.js | Edge    | 5s      | Redis                                                                       |
@@ -75,6 +77,8 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | ping.js          | Edge    | —       | —                                                                           |
 | report.js        | Edge    | 25s     | Redis + Groq                                                                |
 | \_auth.js        | Utility | —       | —                                                                           |
+| \_ai.js          | Utility | —       | Wrapper comun Gemini + fallback modele                                      |
+| \_timeout.js     | Utility | —       | fetchWithTimeout helper                                                     |
 
 ## Variabile de mediu (Vercel Dashboard)
 
@@ -95,11 +99,33 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 - Vercel Blob (@vercel/blob 2.3.2) — stocare fotografii galerie
 - DOMPurify @3 (cdn.jsdelivr.net) — sanitizare HTML raspunsuri AI (_pin la @3.3.3 necesar_)
 
-## Continut per specie — Structura A-H
+## Continut per specie — Structura A-Z
 
 A. Cercetare completa | B. Calendar tratamente | C. Ghid tundere
 D. Boli si daunatori | E. Soiuri recomandate | F. Protectie iarna | G. Note practice
-H. Sfaturi Practice pentru Incepatori (adaugat S15)
+H. Sfaturi Practice pentru Incepatori
+I. Irigare si Necesar de Apa — specific Nadlac (seceta vara, necesar per specie, perioade critice)
+J. Polenizare si Soiuri Compatibile — grupe incompatibilitate, distante, polenizatori naturali zona
+K. Recoltare, Conditionare si Depozitare — maturitate comerciala, temperatura, durata conservare
+L. Rentabilitate si Piata Locala Nadlac — preturi orientative, ce se vinde, ce merita procesat
+M. Fenologie Calibrata Nadlac — date reale inflorire/recolta la 88m Campia de Vest
+N. Inmultire si Propagare — altoire, butasi, marcotaj, soiuri protejate
+O. Managementul Solului — cover crops, mulcire, cernoziom, erbicidare bio
+P. Adaptare la Schimbari Climatice — tendinte Campia de Vest, adaptari recomandate acum
+Q. Combinatii si Asocieri in Livada — alelopatie, layout optim, perdele vant, apicultura
+R. Echipamente si Unelte — toolkit minim, scalare 100+ pomi, inchiriere vs cumparare
+S. Procesare Detaliata si Retete — dulceata, tuica, uscare, congelare — cantitati reale
+T. Vanzare Legala si Certificare — carnet producator, etichetare, bio certificat Romania
+U. Interactiuni cu Fauna — pasari, albine, rozatoare, fauna de sol, polenizatori
+V. Plan Multianual si Calendar Investitii — ROI, cronologie plantat→productie plina, riscuri
+W. Recuperare dupa Evenimente Extreme — inghet, seceta, grindina, atac masiv boli
+X. Istorie, Traditii si Valoare Culturala Locala — soiuri patrimoniu, marketing autentic Nadlac
+Y. Resurse, Furnizori si Retea de Suport — pepiniere Arad, furnizori, asociatii, subventii APIA
+Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier comun, nu per specie)
+
+**Surse cercetare:** Sectiunile A-H scrise direct in Claude Code | I-Z generate Gemini_Research/ (DRAFT, validate de Claude Code)
+**Workflow specie noua:** vezi memory/reference_gemini_workflow.md
+**Cerinta Gemini:** `content/Gemini_Research/Cerinta_Gemini_Research.md` (versiunea 2.0 — unificat I-Z, surse reale)
 
 ## Imbunatatiri pendinte
 

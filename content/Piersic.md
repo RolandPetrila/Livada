@@ -13,6 +13,7 @@
 Piersicul (Prunus persica) este originar din China, de unde a ajuns in Europa prin Persia (de unde ii vine si numele — "persica"). Este cultivat in Romania de secole, zona Arad-Timis reprezentand una dintre cele mai importante zone de piersici din tara.
 
 Spre deosebire de mar, par sau prun — care pot fi "lasati cam in pace" si totusi produc ceva — piersicul este **exigent la toate capitolele:**
+
 - Necesita tratamente precise impotriva basicarii frunzelor (boala sa nr. 1)
 - Necesita tundere anuala intensa (fructifica EXCLUSIV pe lemn de 1 an)
 - Necesita rarirea fructelor obligatorie (altfel fructe mici si putrede)
@@ -24,18 +25,19 @@ Spre deosebire de mar, par sau prun — care pot fi "lasati cam in pace" si totu
 ### Adaptarea la clima Nadlac/Arad
 
 Zona Nadlac are conditii **in general favorabile** pentru piersic:
+
 - **Verile calde** (iulie-august >30°C) — ideale pentru coacerea fructelor, acumularea zahairului, colorarea
 - **Precipitatii moderate** (558mm) — suficiente cu completare prin irigare
 - **Soluri cernoziomice** — structura buna, fertilitate naturala ridicata
 
 **Riscuri climatice la Nadlac:**
 
-| Risc | Descriere | Perioada | Gravitate |
-|---|---|---|---|
-| Inghet tarziu de primavara | Florile se deschid in april si pot fi distruse de ger | Martie-Aprilie | MEDIE (mai mic risc decat la cais) |
-| Ierni cu ger extrem | Sub -22°C muguri florali pot fi afectati; sub -25°C lemn | Ianuarie-Februarie | MICA (rar la Nadlac) |
-| Basicarea frunzelor | Boala favorizata de vreme rece+ploioasa la dezmugurire | Martie-Aprilie | **CRITICA** |
-| Seceta de vara | Reduce drastic marimea fructelor | Iunie-August | MEDIE |
+| Risc                       | Descriere                                                | Perioada           | Gravitate                          |
+| -------------------------- | -------------------------------------------------------- | ------------------ | ---------------------------------- |
+| Inghet tarziu de primavara | Florile se deschid in april si pot fi distruse de ger    | Martie-Aprilie     | MEDIE (mai mic risc decat la cais) |
+| Ierni cu ger extrem        | Sub -22°C muguri florali pot fi afectati; sub -25°C lemn | Ianuarie-Februarie | MICA (rar la Nadlac)               |
+| Basicarea frunzelor        | Boala favorizata de vreme rece+ploioasa la dezmugurire   | Martie-Aprilie     | **CRITICA**                        |
+| Seceta de vara             | Reduce drastic marimea fructelor                         | Iunie-August       | MEDIE                              |
 
 ### Boala critica — Basicarea frunzelor (Taphrina deformans)
 
@@ -44,6 +46,7 @@ Aceasta este **BOALA NR. 1 A PIERSICULUI** si cel mai important lucru de stiut i
 **Ce este Taphrina deformans?** O ciuperca speciala care infecteaza frunzele INAINTE ca acestea sa se deschida complet — in stadiul in care frunza inca se dezvolta in mugure. Odata aparute simptomele, tratamentul nu mai are efect. **Singura protectie eficace este PREVENTIVA, aplicata OBLIGATORIU inainte de dezmugurire.**
 
 **Simptome vizibile:**
+
 - Frunzele tinere sunt crete, incretite, deformate (de unde si numele "basicare")
 - Culoarea frunzelor afectate: rosie-violeta sau verde-galbena, neuniforma
 - Suprafata frunzei pare "umflata" pe portiuni, cu aspect de basicuri
@@ -59,6 +62,7 @@ Aceasta este **BOALA NR. 1 A PIERSICULUI** si cel mai important lucru de stiut i
 ### Cerinte de sol
 
 Piersicul prefera:
+
 - **Sol profund:** cel putin 1m pana la roca sau apa freatica
 - **Bine drenat:** NU tolereaza stagnarea apei (radacinile putrezesc rapid)
 - **pH 6-7:** usor acid — mai exigent decat caisul
@@ -70,20 +74,24 @@ Piersicul prefera:
 ### Plantarea piersicului
 
 **Cand?**
+
 - **Toamna (octombrie-noiembrie):** Recomandat in zona Nadlac — timp pentru prinderea radacinilor
 - **Primavara (martie):** Alternativa acceptabila, dar pomul va suferi prima vara
 
 **Distante:**
+
 - Pe rand: **4-5 metri**
 - Intre randuri: **5-6 metri**
 - Recomandat 5x5m pentru accesul utilajelor si aerisire
 
 **Portaltoi recomandat:**
+
 - **Mirabolanul (Prunus cerasifera):** potrivit pentru soluri grele, rezistent la putregaiul coletului
 - **Franc de piersic** (seminte de piersic): vigoros, adaptat sol usor acid, dar mai sensibil la nematozi
 - **GF 677 (hibrida):** portaltoi modern, vigoros, bun pentru sol calcaros — recomandat pentru zona Arad
 
 **Tehnica plantarii:**
+
 1. Sapa groapa **60cm x 60cm x 60cm**
 2. Amestec: 2/3 pamant + 1/3 compost matur + 150g superfosfat + 100g sulfat de potasiu
 3. Fara azot in groapa de plantare!
@@ -100,23 +108,23 @@ Piersicul prefera:
 
 ### Tabel calendar tratamente piersic
 
-| Luna | Faza vegetativa | Tratament chimic (doza la 10L) | Alternativa BIO | Scopul |
-|---|---|---|---|---|
-| **Ianuarie** | Repaus complet | — | — | Verificare pomi, protectie rozatoare |
-| **Februarie** | Repaus, sfarsit iarna | Zeama bordelez 3% (300g piatra vanata + 300g var la 10L) + Ulei horticol 1% (100ml la 10L) | [BIO: Aceeasi zeama bordelez (BIO certificata) + ulei natural certificat BIO] | Eliminare ouate daunatori, dezinfectie generala |
-| **1-15 Martie** | **Muguri umflati, inainte de dezmugurire — TRATAMENT ANTI-BASICARE!** | **Score 25 EC — 0.02% (2ml la 10L) SAU Syllit 400 SC — 0.25% (25ml la 10L)** | **[BIO: Zeama bordelez 2% — 200g la 10L — mai putin eficace dar singura optiune BIO]** | **PREVENTIE BASICARE — OBLIGATORIU!** |
-| **15-31 Martie** | **Dezmugurire — al doilea tratament anti-basicare** | Score 0.02% (2ml la 10L) + Mospilan 20 SG — 0.03% (3g la 10L) | [BIO: Zeama bordelez 1% + sapun potasic 0.3%] | Basicare (al doilea tratament) + afide timpurii |
-| **1-15 Aprilie** | Buton floral | Chorus 50 WG — 0.03% (3g la 10L) + Mavrik 2F — 0.02% (2ml la 10L) | [BIO: Zeama bordelez 0.5% + pyrethrin natural 0.1%] | Monilioza flori, afide, thrips |
-| **15-25 Aprilie** | **INFLORIRE — NU SE STROPESTE!** | INTERZIS! Exceptie urgenta: Score 0.02% seara tarziu | — | Protejezi albinele polenizatoare |
-| **25 Apr-10 Mai** | Cadere petale, legare fructe | Switch 62.5 WG — 0.1% (10g la 10L) + Calypso 480 SC — 0.02% (2ml la 10L) | [BIO: Bicarbonat sodiu 0.5% (50g/10L) + pyrethrin 0.1%] | Monilioza post-inflorire + molia piersicului |
-| **Mai** | **Crestere fructe — RARIRE OBLIGATORIE!** | Merpan 50 WP — 0.15% (15g la 10L) + Thiovit Jet — 0.5% (50g la 10L) | [BIO: Sulf muiabil 0.3% + sapun potasic 0.2%] | Ciuruire, antracnoza, acarieni |
-| **Iunie** | Crestere accelerata fructe | Luna Experience 0.05% (5ml la 10L) sau Topsin 70 WP — 0.07% (7g la 10L) + Coragen 20 SC — 0.0175% (1.75ml la 10L) | [BIO: Ulei de neem 0.5% + Bacillus thuringiensis 1g/10L] | Monilioza, viermele fructelor |
-| **Iulie** | **RECOLTARE TIMPURIE (soiuri timpurii)** | Captan 0.15% (15g/10L) cu min 14 zile inainte recoltare | [BIO: Bicarbonat 0.5% — pauza 1 zi] | Pre-recoltare monilioza |
-| **August** | **RECOLTARE PRINCIPALA (soiuri mijlocii-tardive)** | Switch 0.1% (10g/10L) cu min 7 zile inainte recoltare. Post-recoltare: Topsin 0.07% + Captadin 0.2% | [BIO: Zeama bordelez 0.5% post-recoltare] | Monilioza pre/post recoltare |
-| **Septembrie** | Post-recoltare, pregatire an viitor | Zeama bordelez 1% (100g/10L) | [BIO: Aceeasi zeama bordelez] | Boli foliare, intarire pom |
-| **Octombrie** | Intrare repaus | Fertilizare foliara K+P | [BIO: Extract alge 0.3%] | Intarire lemn pentru iarna |
-| **Noiembrie** | Repaus | Sulfat cupru 1-3% (100-300g/10L) sau zeama bordelez 3% | [BIO: Zeama bordelez 3%] | Dezinfectie pre-iarna |
-| **Decembrie** | Repaus complet | — | — | Verificare protectie |
+| Luna              | Faza vegetativa                                                       | Tratament chimic (doza la 10L)                                                                                    | Alternativa BIO                                                                        | Scopul                                          |
+| ----------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| **Ianuarie**      | Repaus complet                                                        | —                                                                                                                 | —                                                                                      | Verificare pomi, protectie rozatoare            |
+| **Februarie**     | Repaus, sfarsit iarna                                                 | Zeama bordelez 3% (300g piatra vanata + 300g var la 10L) + Ulei horticol 1% (100ml la 10L)                        | [BIO: Aceeasi zeama bordelez (BIO certificata) + ulei natural certificat BIO]          | Eliminare ouate daunatori, dezinfectie generala |
+| **1-15 Martie**   | **Muguri umflati, inainte de dezmugurire — TRATAMENT ANTI-BASICARE!** | **Score 25 EC — 0.02% (2ml la 10L) SAU Syllit 400 SC — 0.25% (25ml la 10L)**                                      | **[BIO: Zeama bordelez 2% — 200g la 10L — mai putin eficace dar singura optiune BIO]** | **PREVENTIE BASICARE — OBLIGATORIU!**           |
+| **15-31 Martie**  | **Dezmugurire — al doilea tratament anti-basicare**                   | Score 0.02% (2ml la 10L) + Mospilan 20 SG — 0.03% (3g la 10L)                                                     | [BIO: Zeama bordelez 1% + sapun potasic 0.3%]                                          | Basicare (al doilea tratament) + afide timpurii |
+| **1-15 Aprilie**  | Buton floral                                                          | Chorus 50 WG — 0.03% (3g la 10L) + Mavrik 2F — 0.02% (2ml la 10L)                                                 | [BIO: Zeama bordelez 0.5% + pyrethrin natural 0.1%]                                    | Monilioza flori, afide, thrips                  |
+| **15-25 Aprilie** | **INFLORIRE — NU SE STROPESTE!**                                      | INTERZIS! Exceptie urgenta: Score 0.02% seara tarziu                                                              | —                                                                                      | Protejezi albinele polenizatoare                |
+| **25 Apr-10 Mai** | Cadere petale, legare fructe                                          | Switch 62.5 WG — 0.1% (10g la 10L) + Calypso 480 SC — 0.02% (2ml la 10L)                                          | [BIO: Bicarbonat sodiu 0.5% (50g/10L) + pyrethrin 0.1%]                                | Monilioza post-inflorire + molia piersicului    |
+| **Mai**           | **Crestere fructe — RARIRE OBLIGATORIE!**                             | Merpan 50 WP — 0.15% (15g la 10L) + Thiovit Jet — 0.5% (50g la 10L)                                               | [BIO: Sulf muiabil 0.3% + sapun potasic 0.2%]                                          | Ciuruire, antracnoza, acarieni                  |
+| **Iunie**         | Crestere accelerata fructe                                            | Luna Experience 0.05% (5ml la 10L) sau Topsin 70 WP — 0.07% (7g la 10L) + Coragen 20 SC — 0.0175% (1.75ml la 10L) | [BIO: Ulei de neem 0.5% + Bacillus thuringiensis 1g/10L]                               | Monilioza, viermele fructelor                   |
+| **Iulie**         | **RECOLTARE TIMPURIE (soiuri timpurii)**                              | Captan 0.15% (15g/10L) cu min 14 zile inainte recoltare                                                           | [BIO: Bicarbonat 0.5% — pauza 1 zi]                                                    | Pre-recoltare monilioza                         |
+| **August**        | **RECOLTARE PRINCIPALA (soiuri mijlocii-tardive)**                    | Switch 0.1% (10g/10L) cu min 7 zile inainte recoltare. Post-recoltare: Topsin 0.07% + Captadin 0.2%               | [BIO: Zeama bordelez 0.5% post-recoltare]                                              | Monilioza pre/post recoltare                    |
+| **Septembrie**    | Post-recoltare, pregatire an viitor                                   | Zeama bordelez 1% (100g/10L)                                                                                      | [BIO: Aceeasi zeama bordelez]                                                          | Boli foliare, intarire pom                      |
+| **Octombrie**     | Intrare repaus                                                        | Fertilizare foliara K+P                                                                                           | [BIO: Extract alge 0.3%]                                                               | Intarire lemn pentru iarna                      |
+| **Noiembrie**     | Repaus                                                                | Sulfat cupru 1-3% (100-300g/10L) sau zeama bordelez 3%                                                            | [BIO: Zeama bordelez 3%]                                                               | Dezinfectie pre-iarna                           |
+| **Decembrie**     | Repaus complet                                                        | —                                                                                                                 | —                                                                                      | Verificare protectie                            |
 
 ### Explicatia detaliata a tratamentelor critice
 
@@ -125,6 +133,7 @@ Piersicul prefera:
 Basicarea frunzelor este atat de periculoasa incat o singura aplicatie nu este suficienta in anii cu primaveri ploioase si reci. Protocolul corect este:
 
 **Tratamentul 1 (1-15 Martie, muguri umflati dar inca inchisi):**
+
 - Cel mai important tratament al anului
 - Mugurii sunt inca inchisi — fungicidul acopera suprafata lor si blocheaza ciuperca de a infecta frunza in formare
 - Doza Score 25 EC: **2ml la 10L apa** (concentratie 0.02%)
@@ -132,11 +141,13 @@ Basicarea frunzelor este atat de periculoasa incat o singura aplicatie nu este s
 - BIO: Zeama bordelez 2% — mai putin eficace, dar singura optiune organica
 
 **Tratamentul 2 (15-31 Martie, la dezmugurire):**
+
 - Completare pentru mugurii care s-au deschis dupa primul tratament
 - Score 0.02% + adaugare insecticid (Mospilan) impotriva afidelor timpurii
 - BIO: Zeama bordelez 1% + sapun potasic
 
 **Ce se intampla daca ratezi ambele tratamente?**
+
 - Intr-un an cu primavara ploioasa: basicare severa, pierdere 60-100% din frunze, fructe putine si mici
 - Intr-un an cu primavara secetoasa si calda: basicare usoara sau absenta — dar nu poti sti dinainte!
 - Recomandare: **fa intotdeauna tratamentul**, indiferent de prognoza
@@ -144,6 +155,7 @@ Basicarea frunzelor este atat de periculoasa incat o singura aplicatie nu este s
 #### Rarirea fructelor — obligatorie, nu optionala
 
 In luna mai, dupa legarea fructelor, piersicul produce de obicei de 3-5 ori mai multe fructe decat poate coace bine. Daca nu raresti:
+
 - Fructele raman mici (sub 50mm diametru)
 - Putrezesc mai usor de monilioza
 - Pomul se epuizeaza si produce mai putin in anii urmatori
@@ -172,21 +184,25 @@ O ramura de piersic care a facut fructe intr-un an **NU mai face fructe pe aceea
 ### Tunderea de formare (Ani 1-4)
 
 **Anul 1:**
+
 - La plantare: taie pomul la **60-70cm** (formeaza trunchi scurt)
 - Lasa sa creasca toti lastarii pana la sfarsitul sezonului
 - Nu tunde deloc in primul an!
 
 **Anul 2 (iarna):**
+
 - Alege **3-4 lastari** (viitoare sarpante): cei mai vigurosi, unghiuri diferite, plasati la 50-60cm fata de sol
 - Taie sarpantele alese la **1/2-2/3 din lungime**, deasupra unui mugure lateral exterior
 - Elimina complet ceilalti lastari de la trunchi
 
 **Anul 3 (iarna):**
+
 - Alege pe fiecare sarpanta 2 sub-sarpante (ramuri secundare)
 - Taie sub-sarpantele la 1/2
 - Primele fructe incep sa apara — dar nu sunt reprezentative
 
 **Anul 4 (iarna):**
+
 - Coroana e formata
 - Incepe tunderea de rodire
 
@@ -197,20 +213,24 @@ O ramura de piersic care a facut fructe intr-un an **NU mai face fructe pe aceea
 **Principii fundamentale:**
 
 **1. Scurtarea ramurilor mixte de 1 an:**
+
 - Ramurile mixte sunt ramuri de crestere de 30-60cm cu muguri florali si vegetativi amestecati
 - Se taie la **6-8 muguri de la baza** (lasa suficient pentru fructe si crestere)
 - Taiatura: deasupra unui mugure orientat exterior
 
 **2. Cepi de inlocuire:**
+
 - La baza fiecarei ramuri mixte, lasa un **"cep de inlocuire"** — un lastar scurt taiat la 2-3 muguri
 - Cepa va produce lastari noi in sezonul urmator — acestia vor fi ramuri mixte pentru urmatorul ciclu
 - Fara cep de inlocuire → fructificatia se muta progresiv spre varfuri
 
 **3. Eliminarea ramurilor de 2+ ani:**
+
 - Ramurile care au fructificat deja si nu mai au lastari noi vigurosi → elimina complet
 - Inlocuieste cu lastari noi (cepi de inlocuire sau dragoni selectati)
 
 **4. Rarire generala:**
+
 - Coroana trebuie sa fie **luminoasa** — lumina directa pe fructe = marime si colorare bune
 - Elimina ramuri care se incruciaeaza sau cresc in interior
 - Distanta intre ramuri: cel putin 15-20cm
@@ -220,6 +240,7 @@ O ramura de piersic care a facut fructe intr-un an **NU mai face fructe pe aceea
 ### Tunderea verde (Vara)
 
 **Mai-Iulie:**
+
 - Elimina lacomii (lastari verticali vigurosi fara muguri florali) — la baza sau la 30-40cm
 - Ciupeste lastarii care umbresc fructele
 - Nu taia ramuri groase vara — risc de monilioza si scurgere clei
@@ -233,6 +254,7 @@ O ramura de piersic care a facut fructe intr-un an **NU mai face fructe pe aceea
 **Principiu:** 1 fruct la 15-20cm pe ramura.
 
 **Procedura:**
+
 1. Inspecteaza fiecare ramura
 2. Pe portiunile cu mai mult de 1 fruct la 15cm, elimina fructele in exces
 3. Pastreaza cel mai bine plasat fruct din grup (cel mai mare, fara defecte, cu expunere la soare)
@@ -240,6 +262,7 @@ O ramura de piersic care a facut fructe intr-un an **NU mai face fructe pe aceea
 5. Dupa rarire, distanta intre fructe pe ramura: 15-20cm
 
 **Exemple concrete:**
+
 - Ramura de 50cm cu 8 fructe → pastreaza 2-3 fructe
 - Ramura de 80cm cu 15 fructe → pastreaza 4-5 fructe
 
@@ -258,6 +281,7 @@ Am descris-o detaliat in Sectiunile A si B. Rezumat:
 **Simptome:** Frunze crete, deformate, colorate in rosu-violet sau galben-verde, care cad prematur.
 
 **Tratament preventiv (singurul eficace):**
+
 - Score 25 EC — 2ml la 10L apa (0.02%) — inainte de dezmugurire
 - Syllit 400 SC — 25ml la 10L (0.25%) — alternativa
 - BIO: Zeama bordelez 2% — 200g la 10L
@@ -362,17 +386,17 @@ Am descris-o detaliat in Sectiunile A si B. Rezumat:
 
 ### Tabel comparativ soiuri
 
-| Soi | Origine | Epoca coacere | Marime fruct | Calitate | Rezistenta basicare | Recomandat Nadlac |
-|---|---|---|---|---|---|---|
-| **Springcrest** | SUA | Timpuriu (iun) | Mediu | Buna | Medie | DA |
-| **Redhaven** | SUA | Timpuriu-mijlociu (iul) | Mare | Excelenta | Medie | **DA — Standard** |
-| **Cardinal** | SUA | Timpuriu (iun) | Mediu-mare | Premium | Medie | DA |
-| **Collins** | SUA | Timpuriu (iun-iul) | Mare | Buna | Buna | **DA — Recomandat** |
-| **Southhaven** | SUA | Mijlociu (iul) | Foarte mare | Excelenta | Medie | DA |
-| **Victoria** | Romania | Mijlociu (iul) | Mare | Buna | Medie | DA |
-| **Triumf** | Romania | Mijlociu-tardiv (aug) | Mare | Buna | Medie | DA |
-| **Amalia** | Romania | Tardiv (aug-sept) | Mare | Excelenta | Medie | DA |
-| **J.H. Hale** | SUA | Mijlociu (iul) | Foarte mare | Premium | Slaba | DA (cu tratamente) |
+| Soi             | Origine | Epoca coacere           | Marime fruct | Calitate  | Rezistenta basicare | Recomandat Nadlac   |
+| --------------- | ------- | ----------------------- | ------------ | --------- | ------------------- | ------------------- |
+| **Springcrest** | SUA     | Timpuriu (iun)          | Mediu        | Buna      | Medie               | DA                  |
+| **Redhaven**    | SUA     | Timpuriu-mijlociu (iul) | Mare         | Excelenta | Medie               | **DA — Standard**   |
+| **Cardinal**    | SUA     | Timpuriu (iun)          | Mediu-mare   | Premium   | Medie               | DA                  |
+| **Collins**     | SUA     | Timpuriu (iun-iul)      | Mare         | Buna      | Buna                | **DA — Recomandat** |
+| **Southhaven**  | SUA     | Mijlociu (iul)          | Foarte mare  | Excelenta | Medie               | DA                  |
+| **Victoria**    | Romania | Mijlociu (iul)          | Mare         | Buna      | Medie               | DA                  |
+| **Triumf**      | Romania | Mijlociu-tardiv (aug)   | Mare         | Buna      | Medie               | DA                  |
+| **Amalia**      | Romania | Tardiv (aug-sept)       | Mare         | Excelenta | Medie               | DA                  |
+| **J.H. Hale**   | SUA     | Mijlociu (iul)          | Foarte mare  | Premium   | Slaba               | DA (cu tratamente)  |
 
 ### Profiluri detaliate soiuri recomandate
 
@@ -385,12 +409,14 @@ Am descris-o detaliat in Sectiunile A si B. Rezumat:
 **Fruct:** Mare (150-200g), rotund, galben cu rosu pe 50-70% din suprafata, foarte atractiv. Pulpa galbena, suculenta, dulce-acrisoara, se desprinde usor de sambure (freestone).
 
 **Avantaje:**
+
 - Productiv (25-40 kg/pom adult)
 - Adaptat la diverse conditii de sol si climat
 - Standard de comparatie — toate soiurile noi sunt comparate cu Redhaven
 - Disponibil in toate pepinierele din Romania
 
 **Dezavantaje:**
+
 - Rezistenta medie la basicare — tratamentele preventive sunt obligatorii
 - Fructele se coc neuniform pe pom — necesita 2-3 recoltari
 
@@ -409,12 +435,14 @@ Am descris-o detaliat in Sectiunile A si B. Rezumat:
 #### Victoria si Triumf — Soiuri romanesti clasice
 
 **Victoria:**
+
 - Coacere: mijlociu (iulie)
 - Fruct: mare, atractiv, galben cu rosu
 - Adaptat conditiilor locale — selectat pentru Romania
 - Productiv, rezistent decent la conditiile din Arad
 
 **Triumf:**
+
 - Coacere: mijlociu-tardiv (august)
 - Fruct: mare, calitate buna
 - Soi traditional din pomicultura romaneasca
@@ -431,6 +459,7 @@ Am descris-o detaliat in Sectiunile A si B. Rezumat:
 ### Combinatia recomandata pentru Nadlac
 
 Pentru o livada productiva cu recoltare esalonata pe toata vara:
+
 - **Iunie:** Collins (sau Springcrest)
 - **Iulie:** Redhaven (obligatoriu)
 - **Iulie-August:** Victoria sau Southhaven
@@ -451,47 +480,51 @@ Piersicul este **autofertil** — o singura varietate poate produce fructe fara 
 
 Piersicul este mai sensibil la ger decat prunul sau marul, dar mai rezistent decat caisul in ceea ce priveste efectul gelului asupra lemnului:
 
-| Situatie | Temperatura critica |
-|---|---|
-| Muguri florali in repaus (ian-mart) | -18 la -20°C (dependet de soi) |
-| Muguri florali la umflare | -5 la -6°C |
-| Buton roz | -3°C |
-| Floare deschisa | -2°C |
-| Fruct legat | -1.5°C |
-| Lemn (ramuri, trunchi) | -22 la -25°C (soiuri rezistente) |
+| Situatie                            | Temperatura critica              |
+| ----------------------------------- | -------------------------------- |
+| Muguri florali in repaus (ian-mart) | -18 la -20°C (dependet de soi)   |
+| Muguri florali la umflare           | -5 la -6°C                       |
+| Buton roz                           | -3°C                             |
+| Floare deschisa                     | -2°C                             |
+| Fruct legat                         | -1.5°C                           |
+| Lemn (ramuri, trunchi)              | -22 la -25°C (soiuri rezistente) |
 
 **La Nadlac**, temperaturile extreme de iarna sunt rar sub -20°C — piersicul rezista in general. Riscul mai mare este la mugurii florali care incep sa se umfle devreme in februaire-martie si pot fi prinsi de ger.
 
 ### Masuri de protectie iarna
 
 **Varuirea trunchiului — obligatorie:**
+
 - Amestec: 2-3 kg var stins + 100g sulfat de cupru + 50g clei arboricol (coada de vita) la 10L apa
 - Aplica in noiembrie, pe trunchi si pe sarpantele principale pana la 1m inaltime
 - Protejeaza de arsuri solare de iarna (amplitudinile mari de temperatura ziua/noaptea crack scoarta) si de insecte care ierneaza sub scoarta
 
 **Mulcire la baza:**
+
 - 10-15cm paie sau scoarta la baza trunchiului, raza 50-60cm
 - Protejeaza radacinile de ingheturile severe
 
 **Pomi tineri (1-3 ani) — protectie suplimentara:**
+
 - Infasoare trunchiul si baza ramurilor cu agrotextil P30 sau P50
 - La prognoza sub -18°C, acoperiti cu agrotextil P50 intreaga planta
 - Indepartati dupa trecerea gerului extrem
 
 **Protectia florilor de inghetul tardiv de primavara:**
+
 - Identica cu metodele descrise la Cais (fumigare, aspersie, agrotextil)
 - La piersic, inflorirea e ceva mai tarzie decat la cais (incepe la sfarsit de martie - inceputul lui aprilie), reducand usor riscul
 
 ### Tabel protectie pe luni
 
-| Luna | Actiune | Urgenta |
-|---|---|---|
-| **Octombrie** | Fertilizare K+P, oprire irigare | IMPORTANT |
-| **Noiembrie** | Varuire trunchi, mulcire, sulfat cupru | IMPORTANT |
-| **Decembrie** | Verificare varuire, rozatoare | Moderat |
-| **Ianuarie-Februarei** | Urmarire temperaturi extreme | IMPORTANT |
-| **Mart** | Monitorizare inghet, tratament anti-basicare | **CRITIC** |
-| **Aprilie** | Protectie flori (daca e nevoie) | IMPORTANT |
+| Luna                   | Actiune                                      | Urgenta    |
+| ---------------------- | -------------------------------------------- | ---------- |
+| **Octombrie**          | Fertilizare K+P, oprire irigare              | IMPORTANT  |
+| **Noiembrie**          | Varuire trunchi, mulcire, sulfat cupru       | IMPORTANT  |
+| **Decembrie**          | Verificare varuire, rozatoare                | Moderat    |
+| **Ianuarie-Februarei** | Urmarire temperaturi extreme                 | IMPORTANT  |
+| **Mart**               | Monitorizare inghet, tratament anti-basicare | **CRITIC** |
+| **Aprilie**            | Protectie flori (daca e nevoie)              | IMPORTANT  |
 
 ---
 
@@ -503,16 +536,17 @@ Piersicul este mai sensibil la ger decat prunul sau marul, dar mai rezistent dec
 
 **Indicator de fertilizare adecvata:** Lastarii de 1 an trebuie sa aiba **30-60cm lungime** la sfarsitul sezonului. Daca sunt sub 20cm — prea putin azot sau problema radacinilor.
 
-| Perioada | Ingrasamant | Doza (per pom adult) | Observatii |
-|---|---|---|---|
-| **Mart (inainte dezmugurire)** | Azotat de amoniu (33-34% N) sau uree (46% N) | 300-500g | **Mai mult azot decat la cais sau mar!** |
-| **Martei-Aprilie** | NPK 20-10-10 sau similar cu N ridicat | 400-500g | Sustine cresterea vegetativa |
-| **Mai-Iunie** | Foliar micro-elemente (Zn, Fe, Mn, B) | Conform eticheta | Esential pe sol bazic |
-| **Iulie (dupa recoltare timpurie)** | NPK echilibrat 15-15-15 | 300g | Formeaza muguri pentru an urmator |
-| **Septembrie** | Superfosfat + sulfat de potasiu | 300-400g | Intarire lemn, rezistenta ger |
-| **Toamna** | Gunoi de grajd maturat sau compost | 15-25 kg/pom | Structura sol, humus |
+| Perioada                            | Ingrasamant                                  | Doza (per pom adult) | Observatii                               |
+| ----------------------------------- | -------------------------------------------- | -------------------- | ---------------------------------------- |
+| **Mart (inainte dezmugurire)**      | Azotat de amoniu (33-34% N) sau uree (46% N) | 300-500g             | **Mai mult azot decat la cais sau mar!** |
+| **Martei-Aprilie**                  | NPK 20-10-10 sau similar cu N ridicat        | 400-500g             | Sustine cresterea vegetativa             |
+| **Mai-Iunie**                       | Foliar micro-elemente (Zn, Fe, Mn, B)        | Conform eticheta     | Esential pe sol bazic                    |
+| **Iulie (dupa recoltare timpurie)** | NPK echilibrat 15-15-15                      | 300g                 | Formeaza muguri pentru an urmator        |
+| **Septembrie**                      | Superfosfat + sulfat de potasiu              | 300-400g             | Intarire lemn, rezistenta ger            |
+| **Toamna**                          | Gunoi de grajd maturat sau compost           | 15-25 kg/pom         | Structura sol, humus                     |
 
 **Semne de fertilizare corecta:**
+
 - Lastari de 30-60cm in sezon
 - Frunze verzi inchis, de marime normala
 - Fructe ajung la diametrul caracteristic soiului (>60mm)
@@ -523,15 +557,15 @@ Piersicul este mai sensibil la ger decat prunul sau marul, dar mai rezistent dec
 
 Piersicul este **sensibil la seceta** in perioada de formare si crestere a fructelor. Un pom bine irigat produce fructe cu 50-100% mai mari decat unul supus la seceta.
 
-| Perioada | Nevoia de apa | Cantitate/pom/saptamana | Observatii |
-|---|---|---|---|
-| **Inflorire (apr)** | Moderata | 15-20L | Seceta scade legarea |
-| **Legare fructe (apr-mai)** | Moderata | 20L | |
-| **Crestere initiala fruct (mai-iun)** | **Mare** | 25-30L | **Critica! Determina marimea finala** |
-| **Crestere rapida fruct (iul)** | **Foarte mare** | 30-40L | Piersicile cresc exploziv |
-| **Prematurare (2-3 saptamani inainte recoltare)** | **Redusa brusc** | 10-15L | Prea multa apa = fructe fade, posibil crapat |
-| **Post-recoltare** | Moderata | 20L | Ajuta formarea mugurilor |
-| **Toamna** | Redusa | 10-15L | |
+| Perioada                                          | Nevoia de apa    | Cantitate/pom/saptamana | Observatii                                   |
+| ------------------------------------------------- | ---------------- | ----------------------- | -------------------------------------------- |
+| **Inflorire (apr)**                               | Moderata         | 15-20L                  | Seceta scade legarea                         |
+| **Legare fructe (apr-mai)**                       | Moderata         | 20L                     |                                              |
+| **Crestere initiala fruct (mai-iun)**             | **Mare**         | 25-30L                  | **Critica! Determina marimea finala**        |
+| **Crestere rapida fruct (iul)**                   | **Foarte mare**  | 30-40L                  | Piersicile cresc exploziv                    |
+| **Prematurare (2-3 saptamani inainte recoltare)** | **Redusa brusc** | 10-15L                  | Prea multa apa = fructe fade, posibil crapat |
+| **Post-recoltare**                                | Moderata         | 20L                     | Ajuta formarea mugurilor                     |
+| **Toamna**                                        | Redusa           | 10-15L                  |                                              |
 
 **Semn de seceta la piersic:** Frunzele se rasucesc pe axa lor (ruland spre interior), luciu mat, fructe cu crestere stopata.
 
@@ -544,10 +578,12 @@ Sectiunea dedicata, deoarece este una din operatiunile cel mai frecvent omise de
 **Cand:** 3-4 saptamani dupa caderea petalelor, cand fructele au **2-3cm diametru** (cat o nuca mica sau o ciresica).
 
 **De ce este obligatorie:**
+
 - 1 fruct lasat singur la 15-20cm = fruct de 150-200g, frumos colorat, dulce
 - 5 fructe legate impreuna pe 15cm = 5 fructe de 30-40g fiecare, fade, putrede, necomercializabile
 
 **Tehnica practica:**
+
 1. Lucreaza sistematic, ramura cu ramura
 2. In grupuri de fructe (3-5 la un loc), pastreaza cel mai mare si mai bine plasat
 3. Rupti cu degetele celelalte — la aceasta dimensiune se rup usor, fara unelte
@@ -555,6 +591,7 @@ Sectiunea dedicata, deoarece este una din operatiunile cel mai frecvent omise de
 5. Norma orientativa: dupa rarire, 80-120 fructe per pom adult (nu mai mult)
 
 **Cand faci rarire tardiva (dupa 5-6 saptamani de la inflorire):**
+
 - Fructele sunt deja 5-6cm diametru — mai greu de rupt
 - Foloseste foarfeca mica
 - Eficienta scade: fructele ramase nu mai cresc la fel de mari ca la rarire timpurie
@@ -564,6 +601,7 @@ Sectiunea dedicata, deoarece este una din operatiunile cel mai frecvent omise de
 ### Recoltarea piersicilor
 
 **Cand sunt coapte?**
+
 - Coaja a dobandit culoarea tipica soiului (galben+rosu pentru majoritatea soiurilor)
 - Zona din jurul codistei s-a inmuiat usor (testa cu degetul mare)
 - Fructul se desprinde usor la o miscare rotativa blanda — nu necesita forta
@@ -571,12 +609,14 @@ Sectiunea dedicata, deoarece este una din operatiunile cel mai frecvent omise de
 - Culoarea pulpei langa sambure: galben-orange la soiurile galbene (nu verde!)
 
 **Tehnica recoltarii:**
+
 - Culege dimineata (temperatura scazuta, fructele mai ferme)
 - Miscare rotativa + usoara tragere — nu forta vertical
 - Asaza in ladite de maxim 3-4kg (nu gramezi mari — se bruzeaza si putrezesc rapid)
 - Nu stiva direct in soare dupa recoltare
 
 **Pastrarea:**
+
 - La temperatura camerei: **2-3 zile** (se inmoaie rapid dupa recoltare)
 - La frigider (0-2°C): **2-3 saptamani** (opreste maturarea)
 - Important: nu pune piersici reci la frigider direct — lasa-le 1 ora la temperatura camerei mai intai (evita "chilling injury" — albire pulpa)
@@ -586,16 +626,16 @@ Sectiunea dedicata, deoarece este una din operatiunile cel mai frecvent omise de
 
 ### Semne de carenta nutritiva la piersic
 
-| Carenta | Semne vizibile | Cauza frecventa la Nadlac | Remediere |
-|---|---|---|---|
-| **Azot (N)** | Frunze mici, galbene uniform de la frunzele vechi, lastari subtiri sub 20cm | Fertilizare insuficienta | Uree foliar 1% (100g/10L), azotat de amoniu la sol 200g/pom |
-| **Fier (Fe)** | Frunze galbene cu nervuri verzi (cloroza internerviara) — FRECVENTA pe sol bazic! | Sol calcaros pH > 7 | Chelatii de fier (Sequestrene Fe-EDDHA) foliar 2g/10L sau la sol |
-| **Potasiu (K)** | Margini frunze arse-brune, fructe de marime mica, slab colorate | Sol nisipos, precipitatii abundente | Sulfat de potasiu 200g/pom la sol, nitrat de potasiu foliar 0.5% |
-| **Zinc (Zn)** | Frunze mici, internoduri scurte, aspect de "rozeta" la varful lastarilor | Sol calcaros, pH > 7 | Sulfat de zinc 0.1% foliar la dezmugurire (10g/10L) |
-| **Magneziu (Mg)** | Ingalbenire internerviara pe frunzele VECHI (medii si basale) | Excesul de potasiu sau pH acid | Sulfat de magneziu 1% foliar (100g/10L) de 2-3 ori |
-| **Bor (B)** | Flori avorteaza, fructe deformate, lemn fragil | Seceta + sol acid | Borax 0.1% foliar (10g/10L) la umflarea mugurilor |
-| **Calciu (Ca)** | Fructe cu pete moi carunoase ("bitter pit"), crapatura varf fruct | Irigare neuniforma | Nitrat de calciu 0.3% foliar (30g/10L), irigare uniforma |
-| **Mangan (Mn)** | Similar Fe — cloroza internerviara dar pe frunzele tinere | Sol bazic | Sulfat de mangan 0.2% foliar (20g/10L) |
+| Carenta           | Semne vizibile                                                                    | Cauza frecventa la Nadlac           | Remediere                                                        |
+| ----------------- | --------------------------------------------------------------------------------- | ----------------------------------- | ---------------------------------------------------------------- |
+| **Azot (N)**      | Frunze mici, galbene uniform de la frunzele vechi, lastari subtiri sub 20cm       | Fertilizare insuficienta            | Uree foliar 1% (100g/10L), azotat de amoniu la sol 200g/pom      |
+| **Fier (Fe)**     | Frunze galbene cu nervuri verzi (cloroza internerviara) — FRECVENTA pe sol bazic! | Sol calcaros pH > 7                 | Chelatii de fier (Sequestrene Fe-EDDHA) foliar 2g/10L sau la sol |
+| **Potasiu (K)**   | Margini frunze arse-brune, fructe de marime mica, slab colorate                   | Sol nisipos, precipitatii abundente | Sulfat de potasiu 200g/pom la sol, nitrat de potasiu foliar 0.5% |
+| **Zinc (Zn)**     | Frunze mici, internoduri scurte, aspect de "rozeta" la varful lastarilor          | Sol calcaros, pH > 7                | Sulfat de zinc 0.1% foliar la dezmugurire (10g/10L)              |
+| **Magneziu (Mg)** | Ingalbenire internerviara pe frunzele VECHI (medii si basale)                     | Excesul de potasiu sau pH acid      | Sulfat de magneziu 1% foliar (100g/10L) de 2-3 ori               |
+| **Bor (B)**       | Flori avorteaza, fructe deformate, lemn fragil                                    | Seceta + sol acid                   | Borax 0.1% foliar (10g/10L) la umflarea mugurilor                |
+| **Calciu (Ca)**   | Fructe cu pete moi carunoase ("bitter pit"), crapatura varf fruct                 | Irigare neuniforma                  | Nitrat de calciu 0.3% foliar (30g/10L), irigare uniforma         |
+| **Mangan (Mn)**   | Similar Fe — cloroza internerviara dar pe frunzele tinere                         | Sol bazic                           | Sulfat de mangan 0.2% foliar (20g/10L)                           |
 
 ### TOP 5 Greseli la Piersic
 
@@ -625,6 +665,58 @@ Identica cu situatia de la cais. Albinele mor, polenizarea lipseste, fructe puti
 
 ---
 
-*Ghid realizat pentru conditiile climatice specifice zonei Nadlac/Arad, Romania.*
-*Piersicul este cea mai pretentioasa cultura din livada — dar si cea mai rasplatitoare cand e ingrijita corect.*
-*Dozele de pesticide sunt orientative — cititi intotdeauna eticheta produsului si respectati intervalele de siguranta inainte de recoltare.*
+## H. SFATURI PRACTICE PENTRU INCEPATORI — PIERSIC LA NADLAC
+
+### Daca nu retii nimic altceva, retine astea
+
+1. **Tratamentul anti-basicare in martie este OBLIGATORIU — indiferent de vreme.** Basicarea frunzelor (Taphrina deformans) odata aparuta nu se mai poate opri in sezonul respectiv. Rezultat: defoliere in mai-iunie, pom slabit, fructe putine, sezon ratat. Tratamentul cu Score 250 EC sau Syllit 400 SC se face in prima jumatate a lui martie, cand mugurii incep sa se umfle, pe vreme uscata. Nu astepta simptome.
+
+2. **Raritul fructelor este cel mai important lucru pe care il poti face pentru piersic.** La 3-4 saptamani dupa caderea petalelor, cand fructele au 2-3 cm, pastreaza un singur fruct la fiecare 15-20 cm pe ramura. Stiu ca pare cruzime — dar rezultatul sunt fructe de 150-200g vs. gramezi de fructe de 40g care putrezesc pe pom.
+
+3. **Tunde agresiv in fiecare an.** Piersicul produce EXCLUSIV pe lemnul de 1 an. Fara lastari noi, fara fructe. Regula de control: dupa tundere, coroana trebuie sa para "cam goala." Daca ti se pare ca ai taiat prea mult — ai taiat corect.
+
+4. **Iriga abundent in iulie-august — e critic la Nadlac.** Piersicile cresc exploziv in aceasta perioada. Seceta de vara la Nadlac (frecventa in iulie-august) reduce dimensiunea finala a fructelor cu 40-60%. 30-40 litri/pom de 2 ori pe saptamana in aceasta perioada.
+
+5. **Reduce irigarea cu 2-3 saptamani inainte de recoltare.** Apa abundenta in pre-coacere = fructe fade, fara zahar, care se strica rapid. Stii ca se apropie recoltarea cand aroma devine puternica si coaja capata culoarea definitiva.
+
+6. **Nu stropi in zilele cu flori deschise.** Piersicul este partial autofertil dar beneficiaza enorm de polenizarea de catre albine. Stropturile in inflorire reduc productia cu 30-50%.
+
+---
+
+### Calendarul minimal al incepatorului
+
+| Luna                        | Ce nu poti rata                                                                                           |
+| --------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Martie (prima jumatate)** | Tratament OBLIGATORIU anti-basicare (Score 250 EC 0.02% sau Syllit 400 SC 0.075%) — la umflarea mugurilor |
+| **Martie-Aprilie**          | Tundere de intretinere inainte de dezmugurire                                                             |
+| **Aprilie-Mai**             | Raritul fructelor la 2-3 cm diametru — 1 fruct la 15-20 cm                                                |
+| **Iulie-August**            | Irigare critica: 30-40L/pom de 2x/saptamana; tratamente fungicide anti-monilioza                          |
+| **August-Septembrie**       | Recoltare esalonata (soiuri timpurii in iulie, tardive in septembrie)                                     |
+| **Octombrie-Noiembrie**     | Tundere partiala daca n-ai facut-o, fertilizare K+P, protectie iarna                                      |
+
+---
+
+### Intrebari frecvente
+
+**"Frunzele piersicului meu sunt incruntate, deformate, rosiatice — ce e?"**
+Este basicarea frunzelor (Taphrina deformans). In sezonul curent nu mai poti face nimic — boala e deja instalata. Pom slabit, recolta redusa. Solutia pentru urmatorul an: tratament preventiv in martie, inainte de dezmugurire.
+
+**"Piersicile mele sunt mici si fade desi pomul e plin de fructe — de ce?"**
+Cauza 1: nu ai rarit fructele — prea multe pe ramura, isi impart resursele.
+Cauza 2: irigare insuficienta in iulie-august — dimensiunea e determinata de apa disponibila in aceasta perioada.
+Cauza 3: ai irigat prea mult inainte de recoltare — fructele s-au diluat.
+
+**"Cand se culeg piersicile la Nadlac?"**
+Soiuri timpurii: iulie.
+Soiuri semitimpurii: august.
+Soiuri tardive: septembrie.
+Indicator practic: miros aromat puternic + coaja cu culoarea finala + cedeaza usor la apasare langa codita.
+
+**"Piersicul meu are ramuri care se usuca desi restul e sanatos — ce e?"**
+Monilioza sau Cytospora (cancer bacterian). Taie ramura pana in lemn sanatos (fara zone brune in sectiune transversala). Dezinfecteaza cu sulfat de cupru 1%, aplica mastic pe rana. Daca mai mult de 30% din coroana e afectata — consulta un specialist.
+
+---
+
+_Ghid realizat pentru conditiile climatice specifice zonei Nadlac/Arad, Romania._
+_Piersicul este cea mai pretentioasa cultura din livada — dar si cea mai rasplatitoare cand e ingrijita corect._
+_Dozele de pesticide sunt orientative — cititi intotdeauna eticheta produsului si respectati intervalele de siguranta inainte de recoltare._

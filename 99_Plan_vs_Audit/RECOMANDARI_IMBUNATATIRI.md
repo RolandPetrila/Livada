@@ -2873,7 +2873,6 @@ function printSpeciesReport(speciesId) {
 
 8. **Ce NU se schimba:** Arhitectura Edge Runtime, stack Groq+Gemini, API routes existente, structura localStorage existenta (`livada-jurnal`, `livada-theme`, etc.), layout general HTML, single-file constraint.
 
-
 ---
 
 ---
@@ -2898,15 +2897,15 @@ function printSpeciesReport(speciesId) {
 
 ## STARE AI ACTUALA (verificata 2026-04-08)
 
-| Serviciu | Endpoint | Model | Status log | Observatie |
-|---------|---------|-------|-----------|-----------|
-| Groq primary | /api/ask, /api/report | llama-4-scout-17b-16e-instruct | OK | Confirmat in log |
-| Groq fallback 1 | /api/ask, /api/report | llama-3.3-70b-versatile | OK | Confirmat functional |
-| Cerebras fallback 2 | /api/ask, /api/report | llama-3.3-70b | OK | Nu a fost necesar recent |
-| Gemini 2.5-flash | /api/diagnose, /api/identify | gemini-2.5-flash | OK | Primary vision AI |
-| GPT-4.1 | /api/diagnose, /api/identify | gpt-4.1 | OK (fallback) | Parallel, fallback Gemini |
-| PlantNet | /api/identify | — | OK | 3 rezultate confirmate |
-| Plant.id | /api/diagnose | v3/identification | EROARE 4xx | Cheia setata dar API respinge |
+| Serviciu            | Endpoint                     | Model                          | Status log    | Observatie                    |
+| ------------------- | ---------------------------- | ------------------------------ | ------------- | ----------------------------- |
+| Groq primary        | /api/ask, /api/report        | llama-4-scout-17b-16e-instruct | OK            | Confirmat in log              |
+| Groq fallback 1     | /api/ask, /api/report        | llama-3.3-70b-versatile        | OK            | Confirmat functional          |
+| Cerebras fallback 2 | /api/ask, /api/report        | llama-3.3-70b                  | OK            | Nu a fost necesar recent      |
+| Gemini 2.5-flash    | /api/diagnose, /api/identify | gemini-2.5-flash               | OK            | Primary vision AI             |
+| GPT-4.1             | /api/diagnose, /api/identify | gpt-4.1                        | OK (fallback) | Parallel, fallback Gemini     |
+| PlantNet            | /api/identify                | —                              | OK            | 3 rezultate confirmate        |
+| Plant.id            | /api/diagnose                | v3/identification              | EROARE 4xx    | Cheia setata dar API respinge |
 
 ---
 
@@ -2942,15 +2941,19 @@ export default async function handler(req) {
     cerebras: !!process.env.CEREBRAS_API_KEY,
     plantnet: !!process.env.PLANTNET_API_KEY,
     plant_id: !!process.env.PLANT_ID_API_KEY,
-    redis: !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN),
+    redis: !!(
+      process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+    ),
     blob: !!process.env.BLOB_READ_WRITE_TOKEN,
   };
 
-  console.log(`[ai-status] checks: ${JSON.stringify(checks)} t+${Date.now()-t0}ms`);
+  console.log(
+    `[ai-status] checks: ${JSON.stringify(checks)} t+${Date.now() - t0}ms`,
+  );
 
   return Response.json(
     { status: checks, ts: Date.now() },
-    { headers: corsHeaders(req) }
+    { headers: corsHeaders(req) },
   );
 }
 ```
@@ -2986,7 +2989,8 @@ var AI_CONFIG = {
 };
 
 // Cache status 10 minute
-var _aiStatus = null, _aiStatusTs = 0;
+var _aiStatus = null,
+  _aiStatusTs = 0;
 
 async function loadAiStatus() {
   if (_aiStatus && Date.now() - _aiStatusTs < 600000) return _aiStatus;
@@ -2997,7 +3001,7 @@ async function loadAiStatus() {
       _aiStatus = data.status;
       _aiStatusTs = Date.now();
     }
-  } catch(e) {
+  } catch (e) {
     console.warn("[ai-status] fetch err:", e.message);
   }
   return _aiStatus || {};
@@ -3006,31 +3010,43 @@ async function loadAiStatus() {
 function renderAiStatusPanel(tabName, containerId) {
   var container = document.getElementById(containerId);
   if (!container) return;
-  loadAiStatus().then(function(status) {
+  loadAiStatus().then(function (status) {
     var config = AI_CONFIG[tabName] || [];
     if (!config.length) return;
 
-    var html = '<div id="ai-status-' + tabName + '" style="' +
-      'display:flex;flex-wrap:wrap;gap:5px;align-items:center;' +
-      'margin:8px 0 10px;padding:6px 10px;background:var(--bg-surface);' +
+    var html =
+      '<div id="ai-status-' +
+      tabName +
+      '" style="' +
+      "display:flex;flex-wrap:wrap;gap:5px;align-items:center;" +
+      "margin:8px 0 10px;padding:6px 10px;background:var(--bg-surface);" +
       'border-radius:8px;border:1px solid var(--border);font-size:0.72rem;">' +
       '<span style="color:var(--text-dim);font-weight:600;margin-right:2px;flex-shrink:0;">AI:</span>';
 
-    config.forEach(function(ai) {
+    config.forEach(function (ai) {
       var active = status[ai.key] !== false;
       var dotColor = active ? "#22c55e" : "#ef4444";
       var dotTitle = active ? "Activ" : "Inactiv - cheie lipsa";
       var opacity = active ? "1" : "0.5";
-      html += '<span style="display:flex;align-items:center;gap:3px;opacity:' + opacity + ';' +
+      html +=
+        '<span style="display:flex;align-items:center;gap:3px;opacity:' +
+        opacity +
+        ";" +
         'background:var(--bg);padding:2px 7px;border-radius:12px;border:1px solid var(--border);">' +
         '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;' +
-        'background:' + dotColor + ';flex-shrink:0;" title="' + dotTitle + '"></span>' +
+        "background:" +
+        dotColor +
+        ';flex-shrink:0;" title="' +
+        dotTitle +
+        '"></span>' +
         escapeHtml(ai.name) +
-        '<span style="color:var(--text-dim);margin-left:2px;">[' + ai.role + ']</span>' +
-        '</span>';
+        '<span style="color:var(--text-dim);margin-left:2px;">[' +
+        ai.role +
+        "]</span>" +
+        "</span>";
     });
 
-    html += '</div>';
+    html += "</div>";
     var existing = document.getElementById("ai-status-" + tabName);
     if (existing) existing.outerHTML = html;
     else container.insertAdjacentHTML("afterbegin", html);
@@ -3039,6 +3055,7 @@ function renderAiStatusPanel(tabName, containerId) {
 ```
 
 **Integrare in cele 4 taburi:**
+
 - Tab "Intreaba AI" → apeleaza `renderAiStatusPanel("ask", "askSection")` la deschidere
 - Tab "Diagnostic Foto" → `renderAiStatusPanel("diagnose", "diagnoseSection")`
 - Tab "Identificare" → `renderAiStatusPanel("identify", "identifySection")`
@@ -3048,6 +3065,7 @@ ID-urile `containerId` trebuie sa corespunda cu ID-urile div-urilor existente in
 si ajusteaza la implementare.
 
 **Test:**
+
 1. Deschide fiecare tab cu AI si verifica ca apare bannerul cu puncte verzi
 2. Simuleaza o cheie lipsa: seteaza o var de mediu falsa in Vercel Preview si verifica punct rosu
 3. Pe mobile (360px viewport): verifica ca badge-urile se wrap corect si nu sparg layout-ul
@@ -3061,12 +3079,12 @@ si ajusteaza la implementare.
 
 **Cauze posibile si solutii:**
 
-| Cod | Cauza | Fix |
-|-----|-------|-----|
-| 401 | Cheie invalida sau expirata | Regenereaza din https://web.plant.id/account/api/ si actualizeaza in Vercel |
-| 402 | Limita free tier depasita (100/luna) | Asteapta resetul lunar sau upgrade cont |
-| 400 | Format body incorect pentru API v3 | Verifica structura body: `images` trebuie sa fie array de strings base64 cu prefix data URI |
-| 403 | IP blocat sau cont suspendat | Contacteaza Plant.id support |
+| Cod | Cauza                                | Fix                                                                                         |
+| --- | ------------------------------------ | ------------------------------------------------------------------------------------------- |
+| 401 | Cheie invalida sau expirata          | Regenereaza din https://web.plant.id/account/api/ si actualizeaza in Vercel                 |
+| 402 | Limita free tier depasita (100/luna) | Asteapta resetul lunar sau upgrade cont                                                     |
+| 400 | Format body incorect pentru API v3   | Verifica structura body: `images` trebuie sa fie array de strings base64 cu prefix data URI |
+| 403 | IP blocat sau cont suspendat         | Contacteaza Plant.id support                                                                |
 
 **Pasul 1 — citeste body-ul exact al erorii** (adauga in diagnose.js):
 
@@ -3096,6 +3114,7 @@ plantIdKeyLen: PLANT_ID_KEY ? PLANT_ID_KEY.length : 0,
 ```
 
 **Dupa fix:** In log trebuie sa apara:
+
 - `[diagnose] plant.id ok — prefix: da` — cand detecteaza boli
 - `[diagnose] plant.id ok — prefix: nu` — cand planta e sanatoasa
 
@@ -3118,7 +3137,9 @@ Apoi inlocuieste `log(...)` cu `logD(...)` peste tot in fisier (log e deja defin
 mai tarziu — muta definitia inainte). La final, inaintea return-ului principal:
 
 ```javascript
-logD(`ok — gemini=${diagnosisText && !diagnosisMeta._fallback} gpt41=${!!diagnosisMeta._fallback} plantid=${!!plantIdPrefix}`);
+logD(
+  `ok — gemini=${diagnosisText && !diagnosisMeta._fallback} gpt41=${!!diagnosisMeta._fallback} plantid=${!!plantIdPrefix}`,
+);
 ```
 
 **Implementare identify.js** (adauga la inceputul handler-ului):
@@ -3129,11 +3150,13 @@ const log = (msg) => console.log(`[identify] ${msg} t+${Date.now() - t0}ms`);
 ```
 
 La final:
+
 ```javascript
 log(`ok — plantnet=${plantnetOk} gemini=${geminiOk} gpt41=${gpt41Ok}`);
 ```
 
 **Rezultat asteptat in Vercel Runtime Logs:**
+
 ```
 [diagnose] start — base64 45000chars, cais, t+0ms
 [diagnose] plant.id ok — prefix: da t+1100ms
@@ -3151,15 +3174,15 @@ log(`ok — plantnet=${plantnetOk} gemini=${geminiOk} gpt41=${gpt41Ok}`);
 
 **Modele confirmate disponibile (testate in productie 2026-04-08):**
 
-| Provider | Model | Free tier | Calitate | Viteza | Rol actual |
-|---------|-------|----------|---------|-------|-----------|
-| Groq | llama-4-scout-17b-16e-instruct | DA | Buna | Foarte rapid | primary ask+report |
-| Groq | llama-3.3-70b-versatile | DA | Foarte buna | Rapid | fallback 1 ask+report |
-| Cerebras | llama-3.3-70b | DA | Buna | Rapid | fallback 2 ask+report |
-| Google | gemini-2.5-flash | DA (1500/zi) | Excelenta | Medie | primary diagnose+identify |
-| GitHub Models | gpt-4.1 | DA (limitat) | Excelenta | Medie | parallel diagnose+identify |
-| PlantNet | gratuit | DA | Buna | Medie | primary identify |
-| Plant.id | v3 | 100/luna | Foarte buna | Medie | bonus diagnose (in reparatie) |
+| Provider      | Model                          | Free tier    | Calitate    | Viteza       | Rol actual                    |
+| ------------- | ------------------------------ | ------------ | ----------- | ------------ | ----------------------------- |
+| Groq          | llama-4-scout-17b-16e-instruct | DA           | Buna        | Foarte rapid | primary ask+report            |
+| Groq          | llama-3.3-70b-versatile        | DA           | Foarte buna | Rapid        | fallback 1 ask+report         |
+| Cerebras      | llama-3.3-70b                  | DA           | Buna        | Rapid        | fallback 2 ask+report         |
+| Google        | gemini-2.5-flash               | DA (1500/zi) | Excelenta   | Medie        | primary diagnose+identify     |
+| GitHub Models | gpt-4.1                        | DA (limitat) | Excelenta   | Medie        | parallel diagnose+identify    |
+| PlantNet      | gratuit                        | DA           | Buna        | Medie        | primary identify              |
+| Plant.id      | v3                             | 100/luna     | Foarte buna | Medie        | bonus diagnose (in reparatie) |
 
 **Sugestii upgrade modele (cu justificare):**
 
@@ -3182,22 +3205,23 @@ log(`ok — plantnet=${plantnetOk} gemini=${geminiOk} gpt41=${gpt41Ok}`);
 
 ## ITEMS RAMASE NEIMPLEMENTATE (inventar complet)
 
-| # | Item | Faza | Prioritate | Complexitate | Note |
-|---|------|------|-----------|-------------|------|
-| V3 | Doza Calculator post-diagnostic | 8 | P1 | Medie | UI dupa raspuns diagnose |
-| N1 | PHI Calculator pauza securitate | 8 | P1 | Mica | Tabel produs → zile pauza |
-| N2 | Spray Window 7 zile | 8 | P1 | Medie | Prognoza → zile optime |
-| N3 | Stoc Produse Fitosanitare | 8 | P3 | Medie | localStorage, alert expirat |
-| N4 | Cost per tratament + sumar | 8 | P2 | Mica | Camp optional in jurnal |
-| N5 | Timeline Specie integrata | 8 | P3 | Medie | foto+jurnal+diagnose corelate |
-| N7 | Push Notifications inghet | 8 | P4 | Mare | Necesita VAPID keys + API nou |
-| T1 | Offline Queue delete/edit | 7 | P3 | Mare | Background Sync API |
-| T2 | Rate limit Redis distribuit | 7 | P3 | Medie | Partial rezolvat |
-| T5 | Teste unitare vitest | 7 | P3 | Mare | Strategic viitor |
-| T10 | Spray score + UV Index | v8 | P3 | Mica | Date disponibile, neintegrate |
-| T11 | SW cache versioning automat | v8 | P4 | Mica | Nice-to-have |
+| #   | Item                            | Faza | Prioritate | Complexitate | Note                          |
+| --- | ------------------------------- | ---- | ---------- | ------------ | ----------------------------- |
+| V3  | Doza Calculator post-diagnostic | 8    | P1         | Medie        | UI dupa raspuns diagnose      |
+| N1  | PHI Calculator pauza securitate | 8    | P1         | Mica         | Tabel produs → zile pauza     |
+| N2  | Spray Window 7 zile             | 8    | P1         | Medie        | Prognoza → zile optime        |
+| N3  | Stoc Produse Fitosanitare       | 8    | P3         | Medie        | localStorage, alert expirat   |
+| N4  | Cost per tratament + sumar      | 8    | P2         | Mica         | Camp optional in jurnal       |
+| N5  | Timeline Specie integrata       | 8    | P3         | Medie        | foto+jurnal+diagnose corelate |
+| N7  | Push Notifications inghet       | 8    | P4         | Mare         | Necesita VAPID keys + API nou |
+| T1  | Offline Queue delete/edit       | 7    | P3         | Mare         | Background Sync API           |
+| T2  | Rate limit Redis distribuit     | 7    | P3         | Medie        | Partial rezolvat              |
+| T5  | Teste unitare vitest            | 7    | P3         | Mare         | Strategic viitor              |
+| T10 | Spray score + UV Index          | v8   | P3         | Mica         | Date disponibile, neintegrate |
+| T11 | SW cache versioning automat     | v8   | P4         | Mica         | Nice-to-have                  |
 
 **Ordine recomandata sesiuni urmatoare:**
+
 - **Sesiunea 19 (Faza 10):** AI3 + AI4 + AI2 + AI1 (2-3h total)
 - **Sesiunea 20:** N1 (PHI, 45min) + N4 (Cost, 30min) + V3 (Doza, 1h)
 - **Sesiunea 21:** N2 (Spray Window, 2h) + T10 (UV Index spray, 30min)
@@ -3230,5 +3254,5 @@ log(`ok — plantnet=${plantnetOk} gemini=${geminiOk} gpt41=${gpt41Ok}`);
 
 6. **[CONTEXT-AWARE] Rate limit per-device**: Actualul rate limit e per-IP. Pe Android cu date
    mobile, mai multi utilizatori pot aparea de pe acelasi IP (CGNAT). La scara actuala (uz personal
-   + familie), e irelevant. Daca aplicatia se extinde la vecini/comunitate, considera token
-   per-device in localStorage trimis in header custom.
+   - familie), e irelevant. Daca aplicatia se extinde la vecini/comunitate, considera token
+     per-device in localStorage trimis in header custom.

@@ -20,5 +20,18 @@ tools/html_output/
 .env*.local
 *.env
 CheckPoint/
+
+# Fisiere sensibile — API keys, backup-uri
+api/API_KEYS.md
+livada-backup-*.json
+
+# Claude Code outputs + Playwright MCP data
+.claude-outputs/
+.playwright-mcp/
+
+# Gemini Research — DRAFT files (nu sunt documentatie finala)
+content/Gemini_Research/
+
+# Exceptii — iconite PWA raman tracked
 !public/icon-192.png
 !public/icon-512.png

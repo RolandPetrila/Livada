@@ -12,6 +12,7 @@
 Alunul (Corylus avellana) este un arbust sau arbore mic (3-5 m inaltime) din familia Betulaceae (familia mesteacanului). Este una dintre cele mai vechi plante cultivate de om — dovezi arheologice arata ca alunele erau consumate acum 9000 de ani in Europa.
 
 **Ce face alunul UNIC in livada:**
+
 - **NU este polenizat de insecte, ci de VANT** — singura cultura din livada ta cu aceasta particularitate
 - **Infloreste iarna** (ianuarie-februarie) — catinii masculi elibereaza polenul in plina iarna
 - **Fructul este o nuca** — total diferit de fructele "carnoase" (cires, mar, zmeur)
@@ -19,6 +20,7 @@ Alunul (Corylus avellana) este un arbust sau arbore mic (3-5 m inaltime) din fam
 - **Necesita minim 2 soiuri** pentru polenizare incrucisata
 
 **De ce merita in livada din Nadlac:**
+
 - Productie valoroasa: 3-8 kg alune uscate/tufa la maturitate
 - Pret bun: 30-60 lei/kg alune decojite, 15-25 lei/kg in coaja
 - Cerere in crestere: alimentatie sanatoasa, industria dulciurilor
@@ -57,13 +59,13 @@ Alunul este **autoINcompatibil** — polenul unui soi NU poate fecunda florile f
 
 #### Tabel polenizare — compatibilitate soiuri
 
-| Soi | Perioada polenizare (catini) | Soiuri polenizatoare recomandate |
-|---|---|---|
-| Tonda Gentile | Mijloc (feb) | Cosford, Ennis, Romavel, Merveille de Bollwiller |
-| Cosford | Timpuriu-mijloc (ian-feb) | Tonda Gentile, Ennis, Romavel, Merveille de Bollwiller |
-| Ennis | Mijloc-tardiv (feb) | Cosford, Romavel, Merveille de Bollwiller |
-| Romavel | Timpuriu-mijloc (ian-feb) | Tonda Gentile, Cosford, Ennis, Merveille de Bollwiller |
-| **Merveille de Bollwiller** | Mijloc-tardiv (feb) | Cosford, Tonda Gentile, Romavel |
+| Soi                         | Perioada polenizare (catini) | Soiuri polenizatoare recomandate                       |
+| --------------------------- | ---------------------------- | ------------------------------------------------------ |
+| Tonda Gentile               | Mijloc (feb)                 | Cosford, Ennis, Romavel, Merveille de Bollwiller       |
+| Cosford                     | Timpuriu-mijloc (ian-feb)    | Tonda Gentile, Ennis, Romavel, Merveille de Bollwiller |
+| Ennis                       | Mijloc-tardiv (feb)          | Cosford, Romavel, Merveille de Bollwiller              |
+| Romavel                     | Timpuriu-mijloc (ian-feb)    | Tonda Gentile, Cosford, Ennis, Merveille de Bollwiller |
+| **Merveille de Bollwiller** | Mijloc-tardiv (feb)          | Cosford, Tonda Gentile, Romavel                        |
 
 > **Nota despre Merveille de Bollwiller:** Soi francez vechi, cu fructe MARI si gust excelent, polenizare mijlociu-tarzie. Adaptat climatelor nordice (include conditiile din Romania). Excelent polenizator reciproc cu Cosford si Tonda Gentile. Disponibil in unele pepiniere romanesti si prin comanda online din Franta/Germania. [RELEVANT ca alternativa la Ennis — fructe similare ca marime, rezistenta mai buna la bacterioza]
 
@@ -76,12 +78,14 @@ Alunul este **autoINcompatibil** — polenul unui soi NU poate fecunda florile f
 **Riscul principal:** Inghetul in timpul polenizarii. Daca in perioada cand catinii sunt deschisi si stigmatele sunt receptive (ianuarie-februarie) apare un episod de ger sever sub -10°C, polenul este distrus si florile feminine ingheata. Anul acela — zero alune.
 
 **Nadlac — avantaje:**
+
 - Iernile moderate reduc riscul de ger sever in perioada polenizarii
 - Temperaturi de 5-10°C frecvente in ianuarie-februarie — polenizare posibila
 - Solul fertil, cernoziom — excelent pentru alun
 - Vara calda — maturare completa a fructelor pana in septembrie
 
 **Nadlac — atentii:**
+
 - Seceta estivala poate afecta umplerea fructelor (alune mici, goale)
 - Vantul excesiv in perioada polenizarii poate dispersa polenul prea departe
 - Ingheturile de primavara (martie-aprilie) nu sunt un risc la alun — polenizarea e deja terminata!
@@ -95,12 +99,14 @@ Alunul este printre cele mai tolerante culturi fructifere la conditiile de sol.
 **Sol ideal:** Profund (50+ cm), bine drenat, lutos sau lutos-nisipos, pH 6.0-8.0, fertil.
 
 **Tolereaza:**
+
 - Soluri argiloase moderate
 - pH de la 6.0 la 8.0 (gama larga!) — perfect pentru Nadlac (pH 7-7.5)
 - Soluri calcaroase
 - Soluri de fertilitate medie
 
 **Ce nu tolereaza:**
+
 - Apa statatoare permanenta (dar suporta mai bine decat alte fructifere)
 - Sol extrem de nisipos, sarac — productie slaba
 - Salinitate ridicata
@@ -112,11 +118,13 @@ Alunul este printre cele mai tolerante culturi fructifere la conditiile de sol.
 **Cand:** Toamna (noiembrie) — PREFERAT. Alunul plantat toamna beneficiaza de umiditatea iernii si porneste puternic primavara. Alternativ: martie, devreme.
 
 **Distante de plantare:**
+
 - Intre plante pe rand: 3-4 m (forma tufa) sau 4-5 m (forma arbore mic)
 - Intre randuri: 4-5 m
 - Densitate: 500-800 tufe/ha (forma tufa)
 
 **Pasi plantare:**
+
 1. **Groapa:** 50x50x50 cm
 2. **Amestec de plantare:** Sol excavat + 5 kg compost + 100g superfosfat + 50g sulfat de potasiu
 3. **Plantare:** Adancimea la care a fost in pepiniera (linia vizibila pe trunchi). La butasi pe radacini proprii, poti planta 3-5 cm mai adanc pentru a stimula formarea tufei.
@@ -133,6 +141,7 @@ Alunul este printre cele mai tolerante culturi fructifere la conditiile de sol.
 De ce tufa si nu arbore? Tufa este forma naturala a alunului. Permite reinnoire continua: tai tulpinile batrane, lasi altele noi sa creasca. Un arbore batran e greu de reinnoit.
 
 **In primii 3 ani:**
+
 - **Anul 1:** Din butasul plantat, vor porni 3-5 lujeri de la baza. Lasa-i pe toti.
 - **Anul 2:** Vor aparea inca 3-5 lujeri noi. Pastreaza totalul la 6-8 tulpini, alege pe cele mai viguroase si bine pozitionate. Elimina pe cele subtiri, incrucisate, bolnave.
 - **Anul 3:** Tufa e formata. Ai 6-8 tulpini principale de varste diferite.
@@ -155,10 +164,10 @@ Alunul suporta mai bine seceta decat zmeurul sau afinul. Dar in perioadele de se
 
 **MARTIE (inainte de pornirea vegetatiei — dupa terminarea polenizarii)**
 
-| Tratament | Produs | Doza la 10L apa | Scop |
-|---|---|---|---|
+| Tratament  | Produs             | Doza la 10L apa           | Scop                          |
+| ---------- | ------------------ | ------------------------- | ----------------------------- |
 | Convential | Zeama bordeleza 1% | 100g sulfat Cu + 100g var | Bacterioza, preventiv general |
-| BIO | Zeama bordeleza 1% | 100g sulfat Cu + 100g var | Idem (acceptat BIO) |
+| BIO        | Zeama bordeleza 1% | 100g sulfat Cu + 100g var | Idem (acceptat BIO)           |
 
 > **Nota:** Aplica DUPA terminarea polenizarii! In perioada polenizarii (ianuarie-februarie) nu trata — polenul si stigmatele sunt sensibile.
 
@@ -166,10 +175,10 @@ Alunul suporta mai bine seceta decat zmeurul sau afinul. Dar in perioadele de se
 
 **MAI (dupa infrunzire, frunze tinere)**
 
-| Tratament | Produs | Doza la 10L apa | Scop | PHI |
-|---|---|---|---|---|
-| Convential | Mospilan 20 SG (acetamiprid) | 2.5g | Balosita alunului | 14 zile |
-| BIO | Piretrina naturala (ex: Pyrethrum FS) | 10ml | Balosita (alternativa BIO) | 1-3 zile |
+| Tratament  | Produs                                | Doza la 10L apa | Scop                       | PHI      |
+| ---------- | ------------------------------------- | --------------- | -------------------------- | -------- |
+| Convential | Mospilan 20 SG (acetamiprid)          | 2.5g            | Balosita alunului          | 14 zile  |
+| BIO        | Piretrina naturala (ex: Pyrethrum FS) | 10ml            | Balosita (alternativa BIO) | 1-3 zile |
 
 > **Nota:** Acest tratament de mai e necesar DOAR daca ai avut atac de balosita in anul anterior. Altfel, sari-l. Mospilan 20 SG (acetamiprid) este autorizat in UE — acetamiprida a primit aprobare de reinoire in 2021. PHI orientativ 14 zile (verifica eticheta produsului — poate varia pe culturi). Nu trata cand albinele sunt active.
 
@@ -177,11 +186,11 @@ Alunul suporta mai bine seceta decat zmeurul sau afinul. Dar in perioadele de se
 
 **IUNIE (fructe in crestere)**
 
-| Tratament | Produs | Doza la 10L apa | Scop | PHI |
-|---|---|---|---|---|
-| Convential | Decis Mega 50 EW (deltametrin) | 5ml | Gandacul alunelor (Curculio nucum) | 7 zile |
-| Convential alternativ | Karate Zeon 50 CS (lambda-cihalotrin) | 15ml | Gandacul alunelor | 7 zile |
-| BIO | Capcane cu feromoni + Spinosad (Laser 240 SC) 4ml | — / 4ml | Monitorizare + capturare gandaci | 7 zile Spinosad |
+| Tratament             | Produs                                            | Doza la 10L apa | Scop                               | PHI             |
+| --------------------- | ------------------------------------------------- | --------------- | ---------------------------------- | --------------- |
+| Convential            | Decis Mega 50 EW (deltametrin)                    | 5ml             | Gandacul alunelor (Curculio nucum) | 7 zile          |
+| Convential alternativ | Karate Zeon 50 CS (lambda-cihalotrin)             | 15ml            | Gandacul alunelor                  | 7 zile          |
+| BIO                   | Capcane cu feromoni + Spinosad (Laser 240 SC) 4ml | — / 4ml         | Monitorizare + capturare gandaci   | 7 zile Spinosad |
 
 > **ATENTIE — PRODUSE INTERZISE:** Actara 25 WG (thiamethoxam) este **INTERZIS in UE pentru uz in aer liber din aprilie 2018**. Calypso 480 SC (thiacloprid) a fost **retras din UE din aprilie 2020**. Nu le mai folosi si nu le cumpara! Sunt neonicotinoide interzise.
 >
@@ -193,10 +202,10 @@ Alunul suporta mai bine seceta decat zmeurul sau afinul. Dar in perioadele de se
 
 **OCTOMBRIE (dupa recoltare si caderea frunzelor)**
 
-| Tratament | Produs | Doza la 10L apa | Scop |
-|---|---|---|---|
+| Tratament  | Produs             | Doza la 10L apa           | Scop                             |
+| ---------- | ------------------ | ------------------------- | -------------------------------- |
 | Convential | Zeama bordeleza 1% | 100g sulfat Cu + 100g var | Dezinfectie generala, bacterioza |
-| BIO | Zeama bordeleza 1% | 100g sulfat Cu + 100g var | Idem |
+| BIO        | Zeama bordeleza 1% | 100g sulfat Cu + 100g var | Idem                             |
 
 ---
 
@@ -204,16 +213,16 @@ Alunul suporta mai bine seceta decat zmeurul sau afinul. Dar in perioadele de se
 
 ### Tabel PHI (Pauza de Recoltare) — produse folosite la alun
 
-| Produs | Substanta activa | PHI (zile) | Status UE 2025 | Note |
-|---|---|---|---|---|
-| Zeama bordeleza | Cupru (sulfat) | 0-3 | Autorizat BIO | Verifica eticheta |
-| Mospilan 20 SG | Acetamiprid | 14 | Autorizat | Aplicat doar la nevoie |
-| Decis Mega 50 EW | Deltametrin | 7 | Autorizat | Inlocuitor Actara la Curculio |
-| Karate Zeon 50 CS | Lambda-cihalotrin | 7 | Autorizat | Alternativa la Decis |
-| Captan 80 WDG | Captan | 7 | Autorizat | Doar la monilioza severa |
-| Folicur Solo | Tebuconazol | 21 | Autorizat | Doar la fainare severa |
-| ~~Actara 25 WG~~ | ~~Thiamethoxam~~ | — | **INTERZIS UE (2018)** | Nu cumpara, nu folosi! |
-| ~~Calypso 480 SC~~ | ~~Thiacloprid~~ | — | **RETRAS UE (2020)** | Nu cumpara, nu folosi! |
+| Produs             | Substanta activa  | PHI (zile) | Status UE 2025         | Note                          |
+| ------------------ | ----------------- | ---------- | ---------------------- | ----------------------------- |
+| Zeama bordeleza    | Cupru (sulfat)    | 0-3        | Autorizat BIO          | Verifica eticheta             |
+| Mospilan 20 SG     | Acetamiprid       | 14         | Autorizat              | Aplicat doar la nevoie        |
+| Decis Mega 50 EW   | Deltametrin       | 7          | Autorizat              | Inlocuitor Actara la Curculio |
+| Karate Zeon 50 CS  | Lambda-cihalotrin | 7          | Autorizat              | Alternativa la Decis          |
+| Captan 80 WDG      | Captan            | 7          | Autorizat              | Doar la monilioza severa      |
+| Folicur Solo       | Tebuconazol       | 21         | Autorizat              | Doar la fainare severa        |
+| ~~Actara 25 WG~~   | ~~Thiamethoxam~~  | —          | **INTERZIS UE (2018)** | Nu cumpara, nu folosi!        |
+| ~~Calypso 480 SC~~ | ~~Thiacloprid~~   | —          | **RETRAS UE (2020)**   | Nu cumpara, nu folosi!        |
 
 > **Regula esentiala:** Intotdeauna citeste eticheta produsului inainte de aplicare — PHI-ul poate diferi intre culturi si poate fi actualizat. Informatiile de mai sus sunt orientative si bazate pe etichetele curente (2025). La recoltare (august-septembrie), respecta PHI cu strictete.
 
@@ -224,6 +233,7 @@ Alunul suporta mai bine seceta decat zmeurul sau afinul. Dar in perioadele de se
 ### Principii de baza — forma TUFA
 
 Alunul se cultiva de obicei in forma de tufa cu 6-8 tulpini principale, pornite de la baza. Aceasta forma permite:
+
 - Reinnoire continua (tai tulpini batrane, lasi altele noi)
 - Acces usor la lumina in interiorul tufei
 - Productie constanta pe multi ani
@@ -232,16 +242,19 @@ Alunul se cultiva de obicei in forma de tufa cu 6-8 tulpini principale, pornite 
 ### Tunderea de formare (primii 3-4 ani)
 
 **Anul 1:**
+
 - Dupa plantare, taie butasul la 40-50 cm
 - Lasa toti lujerii care pornesc de la baza
 - Nu interveni pana toamna
 
 **Anul 2 (ianuarie-februarie):**
+
 - Alege 6-8 tulpini principale: cele mai viguroase, bine distribuite in spatiu (ca spitele unei roti)
 - Elimina la baza: tulpinile subtiri (sub 1 cm), cele prea apropiate, cele care cresc spre interior
 - Scurteaza tulpinile principale cu 1/3 — stimuleaza ramificarea laterala
 
 **Anul 3-4:**
+
 - Mentine 6-8 tulpini
 - Elimina drajonii (lujeri noi de la baza) in exces — pastreaza doar 1-2 pe an ca viitoare inlocuiri
 - Incepe eliminarea ramurilor care cresc spre interiorul tufei
@@ -263,6 +276,7 @@ Alunul se cultiva de obicei in forma de tufa cu 6-8 tulpini principale, pornite 
 Fiecare tulpina produce optim 8-10 ani. Dupa aceea, productia scade.
 
 **Ciclul de reinoire:**
+
 - An 1-8: tulpina e productiva
 - Anul 9-10: tai tulpina batrana la baza
 - In acelasi an sau anul anterior: un drajon ales e lasat sa creasca ca inlocuitor
@@ -289,6 +303,7 @@ Alunul produce drajoni abundent — este in natura lui sa formeze tufe dense. Fa
 **Conditii favorabile:** Primavara umeda si racoroasa, rani mecanice pe ramuri (taieturi, grindina).
 
 **Prevenire:**
+
 - Tundere cu unelte DEZINFECTATE (alcool 70% sau apa cu clor)
 - Evita taierea pe vreme umeda
 - Soiuri mai putin sensibile: Tonda Gentile, Cosford
@@ -332,11 +347,13 @@ Alunul produce drajoni abundent — este in natura lui sa formeze tufe dense. Fa
 **Ciclu:** Adultii apar in mai-iunie, perforeaza alunele tinere (inca verzi) si depun cate un ou in fiecare. Larva se dezvolta IN aluna, mancand miezul. Aluna cade prematur. Larva iese prin gaura rotunda din coaja si se ingroapa in sol, unde pupeste. Adulti noi apar anul urmator.
 
 **Cum recunosti atacul:**
+
 - Alune cazute prematur (august)
 - Gaura rotunda, perfecta (2 mm diametru) in coaja alunei
 - In interior: larva alba, grasa (sau aluna goala, miezul deja consumat)
 
 **Prevenire:**
+
 - Cultival superficial al solului sub tufa toamna (expune pupele la ger si predatori)
 - Colectarea si distrugerea alunelor cazute prematur (contin larve!)
 - Gaini sau pasari in livada — se hranesc cu larvele din sol
@@ -361,16 +378,16 @@ Alunul produce drajoni abundent — este in natura lui sa formeze tufe dense. Fa
 
 **Origine:** Italia (Piemonte). Soiul premium mondial, standard de calitate pentru industria dulciurilor (Ferrero il foloseste!).
 
-| Caracteristica | Detaliu |
-|---|---|
-| Tip | Tufa, vigoare medie |
-| Fruct | Mediu (2.5-3g), rotund, coaja subtire |
-| Miez | Alb, ferm, excelent aroma — considerat CEL MAI BUN gust |
-| Recoltare | Sfarsitul lui august — inceputul lui septembrie |
-| Productivitate | 3-5 kg alune uscate/tufa |
-| Rezistenta boli | Buna |
-| Rezistenta ger | Buna (-25°C) |
-| Polenizare | Cu Cosford, Ennis, Romavel |
+| Caracteristica  | Detaliu                                                 |
+| --------------- | ------------------------------------------------------- |
+| Tip             | Tufa, vigoare medie                                     |
+| Fruct           | Mediu (2.5-3g), rotund, coaja subtire                   |
+| Miez            | Alb, ferm, excelent aroma — considerat CEL MAI BUN gust |
+| Recoltare       | Sfarsitul lui august — inceputul lui septembrie         |
+| Productivitate  | 3-5 kg alune uscate/tufa                                |
+| Rezistenta boli | Buna                                                    |
+| Rezistenta ger  | Buna (-25°C)                                            |
+| Polenizare      | Cu Cosford, Ennis, Romavel                              |
 
 **De ce pentru Nadlac:** Calitate premium — daca vinzi alune, eticheta "Tonda Gentile" atrage cumparatori pretentiosi. Gustul e spectaculos. Se adapteaza bine in zona.
 
@@ -378,16 +395,16 @@ Alunul produce drajoni abundent — este in natura lui sa formeze tufe dense. Fa
 
 **Origine:** Anglia, soi vechi si dovedit.
 
-| Caracteristica | Detaliu |
-|---|---|
-| Tip | Tufa, vigoare buna |
-| Fruct | Mediu-mare (3-3.5g), alungit, coaja subtire |
-| Miez | Bun, gustos |
-| Recoltare | Sfarsitul lui august |
-| Productivitate | 4-6 kg alune uscate/tufa |
-| Rezistenta boli | Foarte buna (inclusiv la bacterioza) |
-| Rezistenta ger | Foarte buna (-28°C) |
-| Polenizare | Timpurie — excelent polenizator pentru Tonda Gentile si Ennis |
+| Caracteristica  | Detaliu                                                       |
+| --------------- | ------------------------------------------------------------- |
+| Tip             | Tufa, vigoare buna                                            |
+| Fruct           | Mediu-mare (3-3.5g), alungit, coaja subtire                   |
+| Miez            | Bun, gustos                                                   |
+| Recoltare       | Sfarsitul lui august                                          |
+| Productivitate  | 4-6 kg alune uscate/tufa                                      |
+| Rezistenta boli | Foarte buna (inclusiv la bacterioza)                          |
+| Rezistenta ger  | Foarte buna (-28°C)                                           |
+| Polenizare      | Timpurie — excelent polenizator pentru Tonda Gentile si Ennis |
 
 **De ce pentru Nadlac:** Robust, productiv, rezistent. Polenizare timpurie — ideal ca partener pentru celelalte soiuri. Disponibil usor in pepiniere romanesti.
 
@@ -395,16 +412,16 @@ Alunul produce drajoni abundent — este in natura lui sa formeze tufe dense. Fa
 
 **Origine:** SUA (Oregon), 1973.
 
-| Caracteristica | Detaliu |
-|---|---|
-| Tip | Tufa-arbore mic, vigoare puternica |
-| Fruct | MARE (4-5g!) — cel mai mare fruct din lista |
-| Miez | Bun, dar calitativ sub Tonda Gentile |
-| Recoltare | Septembrie |
-| Productivitate | 4-7 kg alune uscate/tufa |
-| Rezistenta boli | Medie (sensibil la bacterioza) |
-| Rezistenta ger | Buna (-25°C) |
-| Polenizare | Cu Cosford, Romavel |
+| Caracteristica  | Detaliu                                     |
+| --------------- | ------------------------------------------- |
+| Tip             | Tufa-arbore mic, vigoare puternica          |
+| Fruct           | MARE (4-5g!) — cel mai mare fruct din lista |
+| Miez            | Bun, dar calitativ sub Tonda Gentile        |
+| Recoltare       | Septembrie                                  |
+| Productivitate  | 4-7 kg alune uscate/tufa                    |
+| Rezistenta boli | Medie (sensibil la bacterioza)              |
+| Rezistenta ger  | Buna (-25°C)                                |
+| Polenizare      | Cu Cosford, Romavel                         |
 
 **De ce pentru Nadlac:** Fructe MARI — impresionante vizual, bune pentru vanzare in coaja. Productivitate ridicata. Dezavantaj: vigoare mare, necesita mai mult spatiu, sensibil la bacterioza.
 
@@ -412,16 +429,16 @@ Alunul produce drajoni abundent — este in natura lui sa formeze tufe dense. Fa
 
 **Origine:** Romania (ICDP Valcea). Soi autohton, selectionat pentru conditiile romanesti.
 
-| Caracteristica | Detaliu |
-|---|---|
-| Tip | Tufa, vigoare medie-buna |
-| Fruct | Mediu (2.5-3g), rotund |
-| Miez | Bun, continut ridicat de ulei |
-| Recoltare | Sfarsitul lui august |
-| Productivitate | 3-5 kg alune uscate/tufa |
-| Rezistenta boli | Foarte buna (selectat pt. conditii romanesti) |
-| Rezistenta ger | Excelenta (-30°C!) — cel mai rezistent din lista |
-| Polenizare | Timpurie — excelent polenizator |
+| Caracteristica  | Detaliu                                          |
+| --------------- | ------------------------------------------------ |
+| Tip             | Tufa, vigoare medie-buna                         |
+| Fruct           | Mediu (2.5-3g), rotund                           |
+| Miez            | Bun, continut ridicat de ulei                    |
+| Recoltare       | Sfarsitul lui august                             |
+| Productivitate  | 3-5 kg alune uscate/tufa                         |
+| Rezistenta boli | Foarte buna (selectat pt. conditii romanesti)    |
+| Rezistenta ger  | Excelenta (-30°C!) — cel mai rezistent din lista |
+| Polenizare      | Timpurie — excelent polenizator                  |
 
 **De ce pentru Nadlac:** Soi romanesc, perfect adaptat. Cel mai rezistent la ger. Disponibil in pepinierele romanesti. Excelent ca polenizator pentru celelalte soiuri.
 
@@ -449,6 +466,7 @@ Alunul este una dintre cele mai rezistente culturi fructifere la ger. Lemnul sup
 **Riscul:** Un episod de ger sever (-10°C si mai mult) in perioada cand catinii sunt deschisi si florile feminine sunt receptive distruge polenul si/sau florile. Anul acela nu ai alune.
 
 **Ce poti face:**
+
 - **Nimic, din pacate, la nivel practic.** Nu poti acoperi tufe de 3-5 m inaltime. Accepta ca in unii ani (estimat 1 din 5-7 ani) productia va fi zero sau foarte mica din cauza gerului in perioada polenizarii. Aceasta este natura culturii alunului.
 - **Diversifica soiurile:** Cu 3-4 soiuri cu perioade de polenizare diferite, creste sansa ca macar o parte din polenizare sa reuseasca.
 - **Locul de plantare:** Evita fundaturile de aer rece (zone joase, inconjurate de dealuri). Alege locuri usor inclinate sau deschise, unde aerul rece nu stagneaza.
@@ -458,6 +476,7 @@ Alunul este una dintre cele mai rezistente culturi fructifere la ger. Lemnul sup
 La alunii tineri (1-3 ani), iepurii si caprioarele pot roade scoarta tulpinilor tinere iarna.
 
 **Solutii:**
+
 - Tevi din plasa de protectie (tuburi de plasa) in jurul fiecarei tulpini tinere
 - Vopsea arboricola pe baza tulpinilor
 - Gard de protectie in jurul plantatiei (impotriva caprioarelelor si iepurilor)
@@ -488,6 +507,7 @@ La alunii tineri (1-3 ani), iepurii si caprioarele pot roade scoarta tulpinilor 
 **Ce se intampla:** Alunele cazute pe pamant si lasate dupa ploaie se mucegaiesc in cateva zile. Alunele recoltate si depozitate umede dezvolta mucegai (inclusiv aflatoxine — TOXICE!). Toata recolta — pierduta sau periculoasa.
 
 **Solutia:**
+
 - Recolteaza cand involucrul (capsula verde) se deschide si alunele incep sa cada natural (septembrie)
 - Recolteaza la fiecare 2-3 zile in perioada de cadere
 - Asaza alunele intr-un singur strat, la umbra, pe un gratar sau suprafata ventilata
@@ -500,6 +520,7 @@ La alunii tineri (1-3 ani), iepurii si caprioarele pot roade scoarta tulpinilor 
 **Ce se intampla:** Taieturile mari pe tulpini groase, facute pe vreme umeda sau ploioasa, sunt poarta de intrare pentru bacterioza (Xanthomonas). Bacteria patrunde prin rana si poate ucide tulpina sau chiar intreaga tufa.
 
 **Solutia:**
+
 - Tunde DOAR pe vreme uscata, cu previziuni de cel putin 2 zile fara ploaie
 - Dezinfecteaza uneltele intre tufe (alcool 70%)
 - Aplica pasta cicatrizanta (Lac Balsam sau similar) pe taieturile mai mari de 3 cm diametru
@@ -510,6 +531,7 @@ La alunii tineri (1-3 ani), iepurii si caprioarele pot roade scoarta tulpinilor 
 **Ce se intampla:** Gandacul balanin perforeaza alunele tinere in mai-iunie si depune cate un ou. Larva mananca miezul din interior. La recoltare, 30-50% din alune pot fi gauri, goale, cu urme de larve. Productia reala scade dramatic, chiar daca tufa pare incarcata cu fructe.
 
 **Solutia:**
+
 - Inspectia alunelor in iulie-august: deschide 10 alune la intamplare. Daca mai mult de 2 contin larve sau gauri, ai problema.
 - Anul urmator: trateaza cu insecticid autorizat in mai-iunie (Decis Mega 50 EW sau Karate Zeon) cand gandacii sunt activi — Actara 25 WG este INTERZIS in UE din 2018!
 - Colecteaza alunele cazute prematur (contin larve!) si distruge-le
@@ -527,3 +549,50 @@ La alunii tineri (1-3 ani), iepurii si caprioarele pot roade scoarta tulpinilor 
 - **Procesare simpla:** Alune crude (proaspete), prajite (10 min la 160°C — aroma se intensifica enorm), macinate (faina de alune pentru prajituri), unt de alune (blender puternic). Valoarea adaugata creste semnificativ.
 - **Alergii:** Alunele sunt unul dintre cei 14 alergeni alimentari principali. Daca vinzi, etichetarea este OBLIGATORIE. Informeaza cumparatorii.
 - **Depozitare pe termen lung:** Alunele intregi, in coaja, uscate corespunzator, se pastreaza 12-18 luni la temperatura camerei sau 24+ luni la frigider. Alunele decojite: 3-6 luni la temperatura camerei, 12 luni la frigider, 24 luni la congelator.
+
+---
+
+## H. SFATURI PRACTICE PENTRU INCEPATORI — ALUN LA NADLAC
+
+### Daca nu retii nimic altceva, retine astea
+
+1. **Planteaza MINIM 2 soiuri diferite.** Alunul este autoincompatibil — un singur soi produce aproape zero, indiferent cat de sanatos arata. Aceasta este greseala #1 si singura care poate face intreaga investitie inutila.
+
+2. **Controleaza drajonii in fiecare primavara.** Tufa are nevoie de 6-8 tulpini principale, nu 20-30. Drajonii in plus consuma resursele fara sa fructifice. 30 de minute de lucru primavara inseamna dublu de productie toamna.
+
+3. **Usuca alunele inainte de depozitare — fara exceptie.** Alunele umede dezvolta mucegai (inclusiv aflatoxine toxice) in 3-5 zile. Testul simplu: scutura o aluna — daca miezul "zangane" in coaja, e uscata. Daca suna infundat — mai asteapta.
+
+4. **Monitorizeaza gandacul balanin in iulie.** Sparge 10 alune la intamplare in luna iulie. Daca mai mult de 2 contin larve sau gauri — ai nevoie de tratament insecticid la inceputul lui mai in sezonul urmator. Daca nu verifici, poti pierde 30-50% din recolta fara sa sti cauza.
+
+5. **Tundeti iarna (ianuarie-februarie), pe vreme uscata, nu toamna.** Tunderea de toamna sau pe vreme umeda favorizeaza bacterioza. Dezinfecteaza foarfeca cu alcool intre tufe.
+
+6. **Rabdare — productia plina vine la 7-8 ani.** Primii 2-3 ani sunt de formare. Nu schimba strategia dupa primul an cu recolta slaba — e normal.
+
+---
+
+### Calendarul minimal al incepatorului
+
+| Luna                   | Ce nu poti rata                                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **Ianuarie-Februarie** | Tundere de formare/intretinere — elimina tulpini batrane (>8-10 ani), pastreaza 6-8 tulpini                    |
+| **Mai-Iunie**          | Elimina drajonii noi cat sunt inca tineri si verzi (se rup cu mana)                                            |
+| **Iulie**              | Verifica prezenta gandacului balanin: sparge 10 alune — daca > 2 au larve, noteaza pentru tratament mai viitor |
+| **Septembrie**         | Recolteaza la fiecare 2-3 zile cand incepe caderea naturala; usuca imediat in strat subtire la umbra, ventilat |
+
+---
+
+### Intrebari frecvente
+
+**"Am 3 tufe dar nicio aluna — de ce?"**
+Cel mai probabil toate 3 sunt din acelasi soi (cumparate din acelasi loc, la aceeasi data). Solutia: adauga un soi diferit langa ele.
+
+**"Cat dureaza pana produce?"**
+Primele alune apar la 2-3 ani de la plantare (putine). Productie semnificativa la 5-6 ani. Productie plina la 7-8 ani. Durata de viata: 40-60 ani.
+
+**"Pot manca alunele direct dupa recoltare?"**
+Da — alunele proaspete (nescate) au un gust diferit, mai laptos. Se consuma in prima saptamana. Daca vrei sa le pastrezi mai mult, usuca-le.
+
+**"Alunele mele sunt goale in interior — de ce?"**
+Cauza 1: polenizare slaba (soiuri incompatibile sau distanta prea mare intre soiuri).
+Cauza 2: gandacul balanin (larva mananca miezul — vei gasi gaura de intrare in coaja).
+Cauza 3: seceta in perioada formarii samburilor (mai-iulie).

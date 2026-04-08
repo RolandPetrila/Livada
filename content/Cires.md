@@ -11,16 +11,16 @@
 
 Ciresul (Prunus avium) si visinul (Prunus cerasus) sunt doua specii distincte, desi inrudite si adesea confundate de incepatori. Iata diferentele esentiale:
 
-| Caracteristica | Cires (Prunus avium) | Visin (Prunus cerasus) |
-|---|---|---|
-| Marime pom | Mare (8-12 m netunsus) | Mic-mediu (3-5 m) |
-| Gust fruct | Dulce, aromat | Acru, astringent |
-| Culoare fruct | Galben-rosu pana la negru | Rosu aprins |
-| Autofertilitate | NU (are nevoie de al 2-lea soi!) | DA (produce singur) |
-| Rezistenta ger | Medie (-20 la -25°C) | Foarte buna (-25 la -30°C) |
-| Cicatrizare taieturi | GREA (risc cancer bacterian) | Buna |
-| Sensibilitate la boli | Medie | Mai mare (mai ales cilindrosporioza) |
-| Utilizare | Consum proaspat, conserve | Dulceata, lichior, sucuri |
+| Caracteristica        | Cires (Prunus avium)             | Visin (Prunus cerasus)               |
+| --------------------- | -------------------------------- | ------------------------------------ |
+| Marime pom            | Mare (8-12 m netunsus)           | Mic-mediu (3-5 m)                    |
+| Gust fruct            | Dulce, aromat                    | Acru, astringent                     |
+| Culoare fruct         | Galben-rosu pana la negru        | Rosu aprins                          |
+| Autofertilitate       | NU (are nevoie de al 2-lea soi!) | DA (produce singur)                  |
+| Rezistenta ger        | Medie (-20 la -25°C)             | Foarte buna (-25 la -30°C)           |
+| Cicatrizare taieturi  | GREA (risc cancer bacterian)     | Buna                                 |
+| Sensibilitate la boli | Medie                            | Mai mare (mai ales cilindrosporioza) |
+| Utilizare             | Consum proaspat, conserve        | Dulceata, lichior, sucuri            |
 
 Ciresul dulce este originar din zona Marii Negre si Caucazului. A fost cultivat de romani si greci cu mii de ani in urma. Denumirea latina "avium" inseamna "al pasarilor" — nu intamplator, pasarile sunt mari iubitoare de cirese si cel mai mare daunator natural al recoltei.
 
@@ -33,11 +33,13 @@ Romania are o traditie indelungata in cultivarea ciresului. Judetul Arad, impreu
 **Temperatura:** Ciresul este moderat rezistent la ger. Rezista la -20 pana la -25°C in repaus vegetativ, dar mugurele de floare este sensibil la ingheturile de primavara. Un inghet de -2°C in inflorire poate distruge 80% din productie.
 
 **Nadlac — avantaje:**
+
 - Clima moderata, ierni fara ger extrem (rareori sub -15°C)
 - Primavara relativ lenta — ciresul infloriind devreme (sfarsitul lui martie - inceputul lui aprilie), riscul ingheturilor de primavara este moderat
 - Veri calde, favorabile coacerii si acumularii zaharul
 
 **Nadlac — atentii:**
+
 - Ploaia in perioada coacerii (mai-iunie) este problema numarul unu. Apa patrunsa prin coaja produce CRACAREA FRUCTELOR — pierdere uriasa de recolta. Soiurile rezistente la cracare sunt preferabile.
 - Umiditatea excesiva din primavara favorizeaza monilioza si cilindrosporioza.
 - Vanturile puternice din zona de campie pot favoriza difuzarea bolilor.
@@ -51,6 +53,7 @@ Ciresul este mai pretentios la sol decat prunul sau visinul.
 **Sol ideal:** Profund (80-100 cm), bine drenat (CRITIC!), texturat (lutos-nisipos sau lutos), pH 6.0-7.5, bogat in materie organica.
 
 **Ce nu tolereaza:**
+
 - Apa statatoare sau nivelul panzei freatice ridicat (sub 1.2 m) — radacinile putrezesc rapid
 - Sol argilos compact, cu drenaj slab — favorizand asfixierea radacinilor si putregazul de radacini (Armillaria, Phytophthora)
 - pH acid sub 5.5 sau alcalin peste 8.0
@@ -65,6 +68,7 @@ Ciresul este mai pretentios la sol decat prunul sau visinul.
 Acesta este cel mai frecvent gresit aspect la ciresul dulce. **Ciresul dulce NU este autofertil** (cu exceptia unor soiuri moderne precum Stella, Lapins, Sweetheart). Un pom singur produce putine sau deloc fructe.
 
 **Reguli de polenizare:**
+
 1. Planteaza minim 2 soiuri compatibile
 2. Distanta intre polenizator si soiul principal: maxim 30-40 m (albina zboara mai departe, dar la distante mari eficienta scade)
 3. Alege soiuri cu perioadele de inflorire SUPRAPUSE (acelasi grup fenologic sau grupuri adiacente)
@@ -78,18 +82,19 @@ Acesta este cel mai frecvent gresit aspect la ciresul dulce. **Ciresul dulce NU 
 - **Tardive (inflorit IV):** Hedelfinger, Kordia, Regina — se polenizeaza intre ele si cu grupa III
 
 **Combinatii recomandate pentru Arad:**
+
 - Burlat + Germersdorf (clasica, sigura)
 - Van + Stella (Stella e autofertila, polenizeaza si Van-ul)
 - Lapins + Sweetheart (ambele autofertile, siguranta maxima)
 
 ### Distante de plantare
 
-| Portaltoi | Pe rand | Intre randuri | Observatie |
-|---|---|---|---|
-| Franco (vigoare mare) | 6-7 m | 7-8 m | Livada extensiva traditionala |
-| Colt (semipitic) | 4-5 m | 5-6 m | Livada intensiva — RECOMANDAT |
-| Gisela 5 (pitic) | 3-4 m | 4-5 m | Livada superintensiva, necesita tutore permanent |
-| Gisela 6 (semipitic) | 4-5 m | 5-6 m | Bun compromis |
+| Portaltoi             | Pe rand | Intre randuri | Observatie                                       |
+| --------------------- | ------- | ------------- | ------------------------------------------------ |
+| Franco (vigoare mare) | 6-7 m   | 7-8 m         | Livada extensiva traditionala                    |
+| Colt (semipitic)      | 4-5 m   | 5-6 m         | Livada intensiva — RECOMANDAT                    |
+| Gisela 5 (pitic)      | 3-4 m   | 4-5 m         | Livada superintensiva, necesita tutore permanent |
+| Gisela 6 (semipitic)  | 4-5 m   | 5-6 m         | Bun compromis                                    |
 
 **Recomandare Nadlac:** Portaltoi Colt sau Gisela 6 pe soluri bune, bine drenate. Evita Franco pe soluri cu tendinta la exces de umiditate.
 
@@ -102,21 +107,24 @@ Acesta este cel mai frecvent gresit aspect la ciresul dulce. **Ciresul dulce NU 
 > **Pauze de securitate:** OBLIGATORIU respectate, mai ales la cirese (recoltare timpurie!)
 
 ### IANUARIE
+
 **Repaus vegetativ profund. Fara tratamente chimice.**
+
 - Indeparteaza fructele mumifiate ramase pe pom (sursa monilioza)
 - Curata crengi uscate, bolnave
 - Verifica ligaturile la pomi tineri (expansiunea trunchiului poate strangula)
 - [BIO] Ulei horticol 2% (200ml/10L) — aplica in zile cu temp. peste +5°C, fara vant puternic. Sufoca ouale de insecte iernatoare.
 
 ### FEBRUARIE
+
 **Tratament de iarna — prioritate maxima**
 
 Temperatura min. +5°C, fara ploaie 24-48 ore dupa aplicare.
 
-| Produs | Doza CONV | Doza BIO | Tinta |
-|---|---|---|---|
-| Zeama Bordelez 3% | 300g sulfat cupru + 300g var stins/10L | Identic (produse certificate bio) | Monilioza, cilindrosporioza, bacterioza |
-| Ulei horticol 1.5% | 150ml/10L | Ulei parafina/ulei neem 1.5% | Oua acarieni, paduchi testosi, afide |
+| Produs             | Doza CONV                              | Doza BIO                          | Tinta                                   |
+| ------------------ | -------------------------------------- | --------------------------------- | --------------------------------------- |
+| Zeama Bordelez 3%  | 300g sulfat cupru + 300g var stins/10L | Identic (produse certificate bio) | Monilioza, cilindrosporioza, bacterioza |
+| Ulei horticol 1.5% | 150ml/10L                              | Ulei parafina/ulei neem 1.5%      | Oua acarieni, paduchi testosi, afide    |
 
 **Sfat:** Amesteca uleiul si zeama bordelez intr-o singura stropire, economisind timp si manevre. Amesteca mai intai uleiul cu apa calduta, apoi adauga zeama bordelez preparata separat.
 
@@ -147,6 +155,7 @@ Temperatura min. +5°C, fara ploaie 24-48 ore dupa aplicare.
 
 **INFLORIRE COMPLETA — NU SE STROPESTE ABSOLUT NIMIC!**
 Orice produs chimic sau chiar bio aplicat in timp ce ciresul este in floare:
+
 - Ucide albinele polenizatoare direct
 - Reduce productia cu 40-80%
 - Poate compromite recolta intregului livad din zona (albinele poliniazatoare sunt comune!)
@@ -157,11 +166,11 @@ Orice produs chimic sau chiar bio aplicat in timp ce ciresul este in floare:
 
 Imediat dupa caderea petalelor (90% din flori au cazut), incepe imediat primul tratament! Este momentul cheie pentru protectia fructelor.
 
-| Produs | Doza CONV | Doza BIO | Tinta | Observatie |
-|---|---|---|---|---|
-| Switch 62.5 WG | 1g/10L | Trichoderma harzianum 0.2% | Monilioza fructelor | Foarte eficient post-inflorire |
-| Calypso 480 SC (thiacloprid) | 0.2ml/10L | Spinosad 0.05% (0.5ml/10L) | Musca cireselor (zbor I) | Montez capcane galbene adezive! |
-| Champion 50 WP | 2g/10L | 2g/10L (identic bio) | Bacterioza, cilindrosporioza | Cupru moderat dupa inflorire |
+| Produs                       | Doza CONV | Doza BIO                   | Tinta                        | Observatie                      |
+| ---------------------------- | --------- | -------------------------- | ---------------------------- | ------------------------------- |
+| Switch 62.5 WG               | 1g/10L    | Trichoderma harzianum 0.2% | Monilioza fructelor          | Foarte eficient post-inflorire  |
+| Calypso 480 SC (thiacloprid) | 0.2ml/10L | Spinosad 0.05% (0.5ml/10L) | Musca cireselor (zbor I)     | Montez capcane galbene adezive! |
+| Champion 50 WP               | 2g/10L    | 2g/10L (identic bio)       | Bacterioza, cilindrosporioza | Cupru moderat dupa inflorire    |
 
 **IMPORTANT - Musca cireselor (Rhagoletis cerasi):** Monteaza in mai capcane galbene cu adeziv (capcane specifice pentru musca cireselor) in coroana pomului — 1-2 capcane/pom. Monitorizarea este esentiala pentru a sti exact cand sa aplici insecticidul.
 
@@ -176,10 +185,10 @@ Al doilea tratament in mai (la 10-14 zile dupa primul):
 
 **ATENTIE MAXIMA LA PAUZELE DE SECURITATE!**
 
-| Produs | Doza CONV | Doza BIO | Tinta | Pauza securitate |
-|---|---|---|---|---|
-| Calypso 480 SC | 0.2ml/10L | Spinosad 0.05% | Musca cireselor (zbor II) | 7 zile |
-| Karate Zeon (lambda-cihalotrin) | 0.15ml/10L | Pyrethrin 0.5% | Musca cireselor, viermi | 14 zile |
+| Produs                          | Doza CONV  | Doza BIO       | Tinta                     | Pauza securitate |
+| ------------------------------- | ---------- | -------------- | ------------------------- | ---------------- |
+| Calypso 480 SC                  | 0.2ml/10L  | Spinosad 0.05% | Musca cireselor (zbor II) | 7 zile           |
+| Karate Zeon (lambda-cihalotrin) | 0.15ml/10L | Pyrethrin 0.5% | Musca cireselor, viermi   | 14 zile          |
 
 **La soiurile timpurii (Burlat, Van):** Ultimul tratament cu cel putin 7-14 zile inainte de recoltare. Dupa aceasta data, NU mai aplica nimic.
 
@@ -191,43 +200,48 @@ Al doilea tratament in mai (la 10-14 zile dupa primul):
 
 **Dupa recoltarea oricarui soi, aplica imediat tratamente post-recoltare!**
 
-| Produs | Doza CONV | Doza BIO | Tinta |
-|---|---|---|---|
-| Topsin M 70 WP | 7g/10L | Zeama bordelez 0.5% (50g/10L) | Monilioza pe frunze post-recoltare |
-| Captadin 50 WP (captan) | 1.5g/10L | Sulf micronizat 0.3% | Fainare, putrezire frunze |
+| Produs                  | Doza CONV | Doza BIO                      | Tinta                              |
+| ----------------------- | --------- | ----------------------------- | ---------------------------------- |
+| Topsin M 70 WP          | 7g/10L    | Zeama bordelez 0.5% (50g/10L) | Monilioza pe frunze post-recoltare |
+| Captadin 50 WP (captan) | 1.5g/10L  | Sulf micronizat 0.3%          | Fainare, putrezire frunze          |
 
 **Tunderea VERDE** se face acum! Iulie-august este momentul ideal pentru tunderea ciresului (vezi sectiunea C).
 
 ### AUGUST
-| Produs | Doza CONV | Doza BIO | Tinta |
-|---|---|---|---|
-| Dithane M45 | 2g/10L | Zeama bordelez 0.5% | Rugina frunzelor, mentinere frunzis |
-| Champion 50 WP | 2g/10L | 2g/10L | Bacterioza (prevenire infectii toamna) |
+
+| Produs         | Doza CONV | Doza BIO            | Tinta                                  |
+| -------------- | --------- | ------------------- | -------------------------------------- |
+| Dithane M45    | 2g/10L    | Zeama bordelez 0.5% | Rugina frunzelor, mentinere frunzis    |
+| Champion 50 WP | 2g/10L    | 2g/10L              | Bacterioza (prevenire infectii toamna) |
 
 **Scopul tratamentelor de august:** Mentine frunzisul sanatos pana la caderea naturala. Frunzele sanatoase = fotosinteza intensa = rezerve nutritive mari pentru iarna si boboci florali bine formati pentru anul urmator.
 
 ### SEPTEMBRIE
-| Produs | Doza CONV | Doza BIO | Tinta |
-|---|---|---|---|
-| Zeama bordelez 0.5% | 50g/10L | 50g/10L (identic) | Prevenire infectii toamna |
+
+| Produs              | Doza CONV | Doza BIO          | Tinta                     |
+| ------------------- | --------- | ----------------- | ------------------------- |
+| Zeama bordelez 0.5% | 50g/10L   | 50g/10L (identic) | Prevenire infectii toamna |
 
 Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza si monilioza.
 
 ### OCTOMBRIE
-| Produs | Doza CONV | Doza BIO | Tinta |
-|---|---|---|---|
-| Uree foliar 5% | 500g/10L | 500g uree organica/10L | Grabeste caderea frunzelor |
+
+| Produs         | Doza CONV | Doza BIO               | Tinta                      |
+| -------------- | --------- | ---------------------- | -------------------------- |
+| Uree foliar 5% | 500g/10L  | 500g uree organica/10L | Grabeste caderea frunzelor |
 
 **Uree aplicata inainte de caderea frunzelor** (cand 30-40% din frunze s-au ingalbenit) descompune mai rapid frunzele cazute, reducand sursa de infectie cu cilindrosporioza pentru anul urmator.
 
 ### NOIEMBRIE
-| Produs | Doza CONV | Doza BIO | Tinta |
-|---|---|---|---|
+
+| Produs               | Doza CONV    | Doza BIO               | Tinta                                   |
+| -------------------- | ------------ | ---------------------- | --------------------------------------- |
 | Sulfat de cupru 1-3% | 100-300g/10L | 100-300g/10L (identic) | Dezinfectie generala post-cadere frunze |
 
 **Varuire trunchi:** Obligatorie si mai importanta decat la prun — ciresul este mai susceptibil la cracarea scoartei de la variatii termice. Amestec: var stins 20% + sulfat de cupru 1-2% + adeziv. Acopera trunchiul si ramurile principale.
 
 ### DECEMBRIE
+
 - Fara tratamente.
 - Tundere de iarna (dar preferi tunderea de vara la cires — vezi sectiunea C).
 - Planificare: pregateste produsele pentru primavara.
@@ -248,6 +262,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 ### Cand se taie ciresul?
 
 **PREFERAT: Vara (iulie-august)** — imediat dupa recoltare. Motivele:
+
 - Temperatura ridicata favorizeaza cicatrizarea rapida
 - Ciupercile de lemn (Cytospora, Chondrostereum) sunt mai putin active vara
 - Cancerul bacterian se transmite mai greu prin raini calde
@@ -259,17 +274,20 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 ### Forme de coroana
 
 **Piramida cu ax central (etajata)** — cea mai potrivita pentru ciresul vigorof, mare:
+
 - Ax central puternic
 - 3-4 etaje de ramuri, fiecare etaj cu 3-4 ramuri principale
 - Etajele distantate la 70-80 cm
 - Potrivita pentru soiuri viguroase (Germersdorf, Hedelfinger)
 
 **Vasul ameliorat** — pentru soiuri mai compacte si livezi intensive:
+
 - 3-4 ramuri principale la 70-80 cm inaltime
 - Centrul deschis pentru lumina si ventilatie
 - Potrivita pe portaltoi semipitici (Gisela 5/6, Colt)
 
 **Fusul subtire (Slim Spindle)** — pentru livezi superintensive pe portaltoi pitici:
+
 - Ax central, ramuri laterale scurte
 - Plantare densa 3-4 m pe rand
 - Necesita tutore permanent
@@ -279,12 +297,14 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Principiu:** Formeaza scheletul cat mai repede, cu cat mai putine taieturi mari.
 
 **Anul 1:**
+
 - Taie axul la 80-100 cm (pentru piramida) sau 60-70 cm (pentru vas)
 - Alege 3-4 ramuri laterale la 50-80 cm de sol (scheletalele) — scurteaza la 25-30 cm
 - Elimina tot ce e sub 50 cm de sol
 - IMPORTANT: Aplica imediat mastic sau ceara pe orice taietura mai mare de 1.5 cm
 
 **Ani 2-4:**
+
 - Formeaza etajele (la piramida)
 - Scurteaza scheletalele cu maximum 1/4 din lungime anuala
 - Elimina ramuri concurente cu axul
@@ -295,12 +315,14 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 ### Tundere de productie (din anul 5-6)
 
 **Ce tai:**
+
 - Ramuri uscate, bolnave (OBLIGATORIU si IMEDIAT ce le observi)
 - Ramuri care se incruciseaza
 - Lacomi (ramuri verticale, lungi, fara ramuri de rod)
 - Ramuri batrane (5+ ani) care au inceput sa produca fructe mai mici
 
 **Ce NU tai:**
+
 - Buchetele de mai (ramuri scurte, cu muguri florali grupati) — sunt principala sursa de productie!
 - Ramuri cu vigoare normala, cu fructe bune
 
@@ -309,6 +331,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 ### Dezinfectarea uneltelor — obligatorie la cires
 
 **Produse:**
+
 - Alcool izopropilic 70% (cel mai simplu)
 - Hipoclorit de sodiu 5-10% (apa de Javel diluata)
 - Solutie de sulfat de cupru 1%
@@ -322,6 +345,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 ### Monilioza (Monilinia laxa) — boala numarul unu la flori
 
 **Simptome:**
+
 - Florile si frunzulitele tinere se brunifica brusc, ca si cum ar fi oparite cu apa fierbinte
 - Ramuri cu frunze moarte, brunificate, ramase atasate saptamani intregi
 - Fructe cu pete brun-cenusii, acoperite cu pernute gri-cenusii cu spori
@@ -330,6 +354,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Conditii favorabile:** Temperatura 15-25°C + umiditate ridicata + ploaie in inflorire = conditii optime pentru epidemie de monilioza.
 
 **Combatere:**
+
 - [CONV] Chorus 0.3g/10L — cel mai eficient la buton floral. Switch 1g/10L la caderea petalelor.
 - [BIO] Zeama bordelez 0.5% (50g/10L) aplicata la buton floral si caderea petalelor. Ulei neem 1% + bicarbonat de sodiu 0.3% — eficienta moderata.
 - Indeparteaza si arde TOATE ramurile cu "arsura" de monilioza — nu le lasa pe pom!
@@ -339,6 +364,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Cea mai frecventa boala a ciresului in Romania.**
 
 **Simptome:**
+
 - Pete mici (2-5 mm), circulare, brun-rosiatice pe fata superioara a frunzelor
 - In dreptul petelor, pe fata inferioara: pulbere roz-alba de spori
 - Frunzele puternic atacate ingalbenesc si cad PREMATUR (iulie-august!)
@@ -347,6 +373,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Consecinte ale neglijarii:** Un cires atacat sever de cilindrosporioza pierde frunzele in august in loc de octombrie. Aceasta scurteaza fotosinteza cu 2 luni si reduce cu 30-40% rezervele pentru iarna si bobocii florali pentru anul viitor.
 
 **Combatere:**
+
 - [CONV] Topsin M 7g/10L sau Score 2ml/10L — de la dezmugurire, continuat post-recoltare
 - [CONV] Dodifun SC (dodina 400g/l) 0.05% (5ml/10L) — fungicid specific pentru Blumeriella jaapii, actiune preventiva si curative. Alterneaza cu Score pentru prevenirea rezistentei.
 - [BIO] Zeama bordelez 0.5-1% — preventiv de 3-4 ori pe sezon; post-recoltare in special
@@ -357,6 +384,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Cea mai periculoasa boala bacteriana a ciresului.**
 
 **Simptome:**
+
 - Pe scoarta: zone decolorate, umede, din care curge o rasina galben-bruna (gomoza)
 - Zona atacata devine deprimata, cenusie, ca o rana
 - Pe ramuri tinere: pete negricioase, uleioase
@@ -366,6 +394,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Conditii favorabile:** Toamna si iarna — bacteria intra prin taieturi, rani de inghet, cicatrice foliate.
 
 **Nu exista tratament curativ!** Masuri:
+
 - [CONV] Preventiv: Champion 2g/10L sau Kocide la caderea frunzelor si inainte de iarna
 - [BIO] Zeama bordelez 1% — identic ca abordare
 - La infectie activa: taie ramurile bolnave 15-20 cm sub zona infectata + dezinfecteaza uneltele + protejeaza rana cu mastic cu cupru
@@ -382,6 +411,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Simptome:** Fructe cu mici adancituri, brunificate. In interior: larva alba (1 cm) si excremente. Fructele atacate sunt inutilizabile pentru consum direct. La atac puternic, 30-70% din recolta poate fi pierduta.
 
 **Zborul muscii:**
+
 - Incepe cand temperatura depaseste 18-20°C si se mentine (mai la soiurile timpurii)
 - Dureaza 4-6 saptamani
 - Depunerea oualor coincide cu inceputul colorarii fructelor
@@ -389,6 +419,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Monitorizare obligatorie:** Capcane galbene lipicioase (cu atractant alimentar sau feromonale). Monteaza din prima jumatate a lui mai (1-2 capcane/pom, in coroana). Trateaza la 5-7 exemplare capturate/saptamana.
 
 **Combatere:**
+
 - [CONV] Calypso 0.2ml/10L (thiacloprid) sau Karate Zeon 0.15ml/10L — 1-2 aplicari in mai-iunie, cu respectarea pauzei de securitate (7 respectiv 14 zile)!
 - [BIO] Spinosad 0.05% (0.5ml/10L) — eficient pe larve tinere; aplica dimineata; respecta pauza 7 zile. Pyrethrin natural 0.5% — eficienta buna dar scurta (3-5 zile), necesita reapliere.
 - Capcane cu hidrolizat de proteina + insecticid (Spinosad) — sistem "attract and kill" aprobat bio
@@ -402,6 +433,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Pierderi:** La soiuri sensibile, in ani ploiosi, 50-80% din recolta se poate pierde prin cracare.
 
 **Solutii:**
+
 1. **Soiuri rezistente la cracare:** Lapins, Sweetheart, Regina, Kordia — investitia cea mai eficienta
 2. **Recoltare preventiva:** La prognoze de ploaie in zilele recoltarii — culege cu 2-3 zile inainte de maturitate deplina
 3. **Folie anti-ploaie (tunel):** Solutie costisitoare dar eficienta 100% — rentabila la livezi comerciale
@@ -412,6 +444,7 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 **Simptome:** Colonii mari de afide negre pe lastarii tineri si fata inferioara a frunzelor. Frunzele se rasucesc, deformeaza. Mana dulce secretata favorizeaza fumagina (mucegai negru pe frunze).
 
 **Combatere:**
+
 - [CONV] Confidor 0.5ml/10L sau Mospilan 0.2g/10L — o singura aplicare eficienta (sistemic)
 - [BIO] Sapun de potasiu 1% (100g/10L) + ulei neem 2% — eficient daca aplicat direct pe colonii; repeta la 5-7 zile
 
@@ -421,45 +454,48 @@ Activitati: curatarea si arderea frunzelor cazute afectate de cilindrosporioza s
 
 ### Soiuri romanesti clasice
 
-| Soi | Coacere | Fruct | Rezistenta cracare | Rezistenta boli | Autofertil | Nota |
-|---|---|---|---|---|---|---|
-| **Boambe de Cotnari** | Timpuriu-mediu | Galben cu rosu, mare | Medie | Buna | Nu | Traditional romanesc, calitate excelenta |
-| **Germersdorf** | Mediu-tardiv | Rosu-visiniu, mare | Medie | Medie | Nu | Clasic, productiv, potrivit Arad |
-| **Daria** | Mediu | Rosie, mare | Buna | Buna | Nu | Soi romanesc nou, rezistent |
+| Soi                   | Coacere        | Fruct                | Rezistenta cracare | Rezistenta boli | Autofertil | Nota                                     |
+| --------------------- | -------------- | -------------------- | ------------------ | --------------- | ---------- | ---------------------------------------- |
+| **Boambe de Cotnari** | Timpuriu-mediu | Galben cu rosu, mare | Medie              | Buna            | Nu         | Traditional romanesc, calitate excelenta |
+| **Germersdorf**       | Mediu-tardiv   | Rosu-visiniu, mare   | Medie              | Medie           | Nu         | Clasic, productiv, potrivit Arad         |
+| **Daria**             | Mediu          | Rosie, mare          | Buna               | Buna            | Nu         | Soi romanesc nou, rezistent              |
 
 ### Soiuri straine bine adaptate in vestul Romaniei
 
-| Soi | Coacere | Fruct | Rezistenta cracare | Autofertil | Nota |
-|---|---|---|---|---|---|
-| **Burlat** | Timpuriu (mai-iun.) | Rosu inchis, mare | Slaba | Nu | Primul la coacere, comercial important |
-| **Van** | Mediu (iun.) | Rosu-visiniu, mare | Medie | Nu | Robust, productiv, foarte popular |
-| **Stella** | Mediu (iun.) | Visiniu inchis, mare | Medie | **DA!** | Autofertil! — ideal pentru livada mica |
-| **Lapins** | Tardiv (iun.-iul.) | Visiniu, mare | **Buna** | **DA!** | Autofertil + rezistent la cracare = IDEAL |
-| **Sweetheart** | Tardiv (iul.) | Rosie, mare | **Buna** | **DA!** | Cel mai tardiv, dulce, rezistent |
-| **Summit** | Mediu-tardiv | Rosie-visiniu, f. mare | Slaba | Nu | Fructe spectaculoase, sensibil la cracare |
-| **Kordia** | Tardiv | Visiniu inchis, mare | Buna | Nu | Calitate superioara, german |
-| **Regina** | Tardiv | Galben-rosu, mare | Excelenta | Nu | Cel mai rezistent la cracare |
+| Soi            | Coacere             | Fruct                  | Rezistenta cracare | Autofertil | Nota                                      |
+| -------------- | ------------------- | ---------------------- | ------------------ | ---------- | ----------------------------------------- |
+| **Burlat**     | Timpuriu (mai-iun.) | Rosu inchis, mare      | Slaba              | Nu         | Primul la coacere, comercial important    |
+| **Van**        | Mediu (iun.)        | Rosu-visiniu, mare     | Medie              | Nu         | Robust, productiv, foarte popular         |
+| **Stella**     | Mediu (iun.)        | Visiniu inchis, mare   | Medie              | **DA!**    | Autofertil! — ideal pentru livada mica    |
+| **Lapins**     | Tardiv (iun.-iul.)  | Visiniu, mare          | **Buna**           | **DA!**    | Autofertil + rezistent la cracare = IDEAL |
+| **Sweetheart** | Tardiv (iul.)       | Rosie, mare            | **Buna**           | **DA!**    | Cel mai tardiv, dulce, rezistent          |
+| **Summit**     | Mediu-tardiv        | Rosie-visiniu, f. mare | Slaba              | Nu         | Fructe spectaculoase, sensibil la cracare |
+| **Kordia**     | Tardiv              | Visiniu inchis, mare   | Buna               | Nu         | Calitate superioara, german               |
+| **Regina**     | Tardiv              | Galben-rosu, mare      | Excelenta          | Nu         | Cel mai rezistent la cracare              |
 
 ### Tabel compatibilitate polenizare (simplificat pentru zona Arad)
 
-| Soi principal | Bun polenizator | Nu se polenizeaza cu |
-|---|---|---|
-| Burlat | Van, Stella, Germersdorf | Boambe de Cotnari (grup diferit) |
-| Van | Burlat, Stella, Summit | — |
-| Germersdorf | Van, Lapins, Stella | Burlat (incompatibil partial) |
-| Lapins | Orice soi (autofertil) | — |
-| Stella | Orice soi (autofertil) | — |
-| Sweetheart | Orice soi (autofertil) | — |
+| Soi principal | Bun polenizator          | Nu se polenizeaza cu             |
+| ------------- | ------------------------ | -------------------------------- |
+| Burlat        | Van, Stella, Germersdorf | Boambe de Cotnari (grup diferit) |
+| Van           | Burlat, Stella, Summit   | —                                |
+| Germersdorf   | Van, Lapins, Stella      | Burlat (incompatibil partial)    |
+| Lapins        | Orice soi (autofertil)   | —                                |
+| Stella        | Orice soi (autofertil)   | —                                |
+| Sweetheart    | Orice soi (autofertil)   | —                                |
 
 ### Recomandare concreta pentru Nadlac/Arad (livada de familie)
 
 **Varianta 1 — Simpla si sigura:**
+
 - Lapins (autofertil, rezistent la cracare) + Stella (autofertil, productiv) = 2 pomi, productie garantata fara batai de cap cu polenizarea
 
 **Varianta 2 — Esalonata (coacere mai lunga):**
+
 - Burlat (timpuriu) + Van sau Germersdorf (mediu) + Lapins sau Sweetheart (tardiv) = 3 soiuri, cirese din mai pana in iulie
 
 **Varianta 3 — Comerciala:**
+
 - Van + Summit + Lapins + Kordia = mix de calitate cu recoltare esalonata
 
 ---
@@ -481,6 +517,7 @@ Ciresul adult rezista la -20 pana la -22°C in repaus vegetativ — mai putin de
 ### Masuri de protectie
 
 **Varuire trunchi (OBLIGATORIE si PRIORITARA la cires):**
+
 - Aplica in noiembrie sau la inceputul lui ianuarie
 - Amestec: var stins 2-3 kg + sulfat de cupru 100-150g + adeziv (lapte praf 100g sau clei de var) la 10 litri apa
 - Vopseste trunchiul de la sol pana la primele ramificatii principale (1-1.5m)
@@ -488,16 +525,19 @@ Ciresul adult rezista la -20 pana la -22°C in repaus vegetativ — mai putin de
 - Efectul: temperatura albedo — scoarta alba reflecta razele solare de ziua, reducand variatia termica (cracarea scoartei)
 
 **Mulcire la baza (pentru pomi tineri):**
+
 - 10-15 cm strat de compost, paie sau coaja de lemn
 - Raza 60-80 cm, fara contact cu trunchiul
 - Protejeaza radacinile tinere de inghet si reduce oscilatia temperaturii
 
 **Protectia trunchiului contra rozatoarelor:**
+
 - Iepurii si soarecii de camp rod scoarta ciresului iarna
 - Protejeaza cu tub de plastic, plasa de sarma sau spirale textile
 - Inlatura primavara (nu lasa permanent — creaza microclima umeda favorabila bolilor)
 
 **Nu este necesar:**
+
 - Acoperirea coroanei pomilor adulti
 - Incalzire artificiala in conditii normale de iarna Arad
 
@@ -510,12 +550,14 @@ Ciresul adult rezista la -20 pana la -22°C in repaus vegetativ — mai putin de
 **Ciresele NU se coc dupa recoltare!** Spre deosebire de mere, pere sau prune, ciresele recoltate necoapte raman necoapte. Recolta-le la maturitate deplina sau cu 1-2 zile inainte (pentru transport).
 
 **Semne de maturitate:**
+
 - Culoarea caracteristica soiului atinsa pe toata suprafata fructului
 - Fructul cedeaza usor la apasare usoara (nu prea tare — sezon cracare)
 - Gustul dulce, aromat (poti gusta!)
 - Coditele se desprind usor de ramura
 
 **Recoltare corecta:**
+
 - Recolta dimineata devreme sau seara (nu in arsiata pranzului — fructele calde se strica mai repede)
 - Tine codita atasata — ciresele fara codita se strica in 1-2 zile
 - Manevreaza cu grija — ciresele sunt sensibile la lovituri mecanice
@@ -533,6 +575,7 @@ Ciresul adult rezista la -20 pana la -22°C in repaus vegetativ — mai putin de
 Pasarile (sturzii, mierle, ciocuri de camp) pot distruge 30-80% din recolta de cirese in cateva zile.
 
 **Solutii eficiente:**
+
 1. **Plasa anti-pasari** — cea mai eficienta (99% protectie). Monteaza pe schela sau direct pe coroana inainte de colorarea fructelor. Demonteaza dupa recoltare.
 2. **Reflectoare** — folie argintie, CD-uri vechi, benzi lucioase — eficienta partiala, pasarile se obisnuiesc rapid
 3. **Sperietori** — eficienta temporara (1-2 saptamani)
@@ -542,26 +585,26 @@ Pasarile (sturzii, mierle, ciocuri de camp) pot distruge 30-80% din recolta de c
 
 ### Fertilizare
 
-| Moment | Produs | Cantitate/pom adult | Observatie |
-|---|---|---|---|
-| Octombrie-Noiembrie | Gunoi de grajd fermentat | 25-30 kg | La 3-4 ani interval |
-| Octombrie-Noiembrie | Superfosfat | 200-300g | Anual |
-| Octombrie-Noiembrie | Sulfat de potasiu | 150-200g | Anual |
-| Martie (buton floral) | Azotat de amoniu | 100-150g | Sau uree 80g |
-| Mai (crestere fructe) | Azotat de amoniu | 50-80g | Doza mai mica |
+| Moment                | Produs                   | Cantitate/pom adult | Observatie          |
+| --------------------- | ------------------------ | ------------------- | ------------------- |
+| Octombrie-Noiembrie   | Gunoi de grajd fermentat | 25-30 kg            | La 3-4 ani interval |
+| Octombrie-Noiembrie   | Superfosfat              | 200-300g            | Anual               |
+| Octombrie-Noiembrie   | Sulfat de potasiu        | 150-200g            | Anual               |
+| Martie (buton floral) | Azotat de amoniu         | 100-150g            | Sau uree 80g        |
+| Mai (crestere fructe) | Azotat de amoniu         | 50-80g              | Doza mai mica       |
 
 **NU da azot dupa 1 iulie!** La cires, azotul tarziu produce lastari care nu lignifica, sensibili la ger si cancer bacterian.
 
 ### Semne carenta la cires
 
-| Carenta | Simptome | Remediu rapid |
-|---|---|---|
-| **Azot (N)** | Frunze mici, galben-verzui; crestere slaba; fructe mici | Uree foliar 0.3% (30g/10L) |
-| **Calciu (Ca)** | Fructe cu pete brune (bitter pit); cracare frecventa | Clorura de calciu 0.4% foliar de 3-4x |
-| **Potasiu (K)** | Marginile frunzelor galbene-brunificate; fructe fara zahar | Sulfat de potasiu 200g/pom |
-| **Fier (Fe)** | Frunze tinere galbene, nervuri verzi (cloroza pe sol calcaros) | Chelafit de fier 0.05% foliar |
-| **Magneziu (Mg)** | Zone internerviare galbene la frunzele batrane | Sulfat de magneziu 200g/10L foliar |
-| **Bor (B)** | Fructe deformate, mici, cu pete; flori putine si slabe | Acid boric 0.15g/10L foliar |
+| Carenta           | Simptome                                                       | Remediu rapid                         |
+| ----------------- | -------------------------------------------------------------- | ------------------------------------- |
+| **Azot (N)**      | Frunze mici, galben-verzui; crestere slaba; fructe mici        | Uree foliar 0.3% (30g/10L)            |
+| **Calciu (Ca)**   | Fructe cu pete brune (bitter pit); cracare frecventa           | Clorura de calciu 0.4% foliar de 3-4x |
+| **Potasiu (K)**   | Marginile frunzelor galbene-brunificate; fructe fara zahar     | Sulfat de potasiu 200g/pom            |
+| **Fier (Fe)**     | Frunze tinere galbene, nervuri verzi (cloroza pe sol calcaros) | Chelafit de fier 0.05% foliar         |
+| **Magneziu (Mg)** | Zone internerviare galbene la frunzele batrane                 | Sulfat de magneziu 200g/10L foliar    |
+| **Bor (B)**       | Fructe deformate, mici, cu pete; flori putine si slabe         | Acid boric 0.15g/10L foliar           |
 
 ### TOP 5 GRESELI ale incepatorilor la cires
 
@@ -582,4 +625,53 @@ Identic ca la prun — distruge albinele, reduce productia cu 40-80%. Nu exista 
 
 ---
 
-*Ghid elaborat pentru conditiile climatice specifice zonei Nadlac-Arad, Romania. Doze orientative — citeste intotdeauna eticheta produsului. Respecta pauzele de securitate inainte de recoltare. La soiurile timpurii (Burlat), atentie maxima la pauzele de securitate — recoltarea incepe la 4-6 saptamani dupa tratamentele de la caderea petalelor.*
+## H. SFATURI PRACTICE PENTRU INCEPATORI — CIRES LA NADLAC
+
+### Daca nu retii nimic altceva, retine astea
+
+1. **Planteaza MINIM 2 soiuri compatibile.** Ciresul este autosteril — un singur pom produce 5-10% din potentialul sau. Fara al doilea soi la maxim 40m distanta, recolta este aproape zero. Verifica compatibilitatea soiurilor INAINTE de plantare (nu toate soiurile se polenizeaza reciproc).
+
+2. **Tunde ciresul NUMAI vara (iulie-august), niciodata iarna.** Rana deschisa de iarna la cires = cancer bacterian garantat. Ciresul cicatrizeaza extrem de greu comparativ cu prunul sau marul. Regula: taie imediat dupa recoltare, pe vreme uscata, cu sansa a 3-4 zile fara ploaie.
+
+3. **Monteaza plasa anti-pasari inainte sa se coloreze fructele.** Pasarile (sturzii, mierle) pot distruge 30-80% din recolta in 2-3 zile. Cand observi primele cirese care incep sa se coloreze — plasa e deja necesara. Daca astepti sa vezi paguba, e prea tarziu.
+
+4. **Pune capcane pentru musca cireselor de la 1 mai.** Capcanele galbene lipicioase (disponibile in magazinele agricole) indica cand sunt activi adultii. Daca prinzi mai mult de 5 muste/capcana/saptamana — e momentul tratamentului. Daca astepti sa vezi larve in fructe, sezonul e deja pierdut.
+
+5. **Nu stropi niciodata in inflorire.** Albinele polenizeaza ciresul — fara ele, recolta e zero. In zilele cu flori deschise: zero tratamente, fara exceptie.
+
+6. **Trateaza cilindrosporioza dupa recoltare — nu o ignora.** "Cateva pete pe frunze" in iulie devine defoliere completa in august. Un cires fara frunze in august nu face rezerve pentru iarna si produce cu 30-40% mai putin in urmatorul an.
+
+---
+
+### Calendarul minimal al incepatorului
+
+| Luna                           | Ce nu poti rata                                                                                       |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| **Februarie-Martie**           | Tratament cu zeama bordelez 1% inainte de dezmugurire (preventie cancer bacterian + cilindrosporioza) |
+| **Aprilie**                    | ZERO tratamente in zilele cu flori deschise; la caderea petalelor: primul tratament fungicid          |
+| **Mai**                        | Instaleaza capcane galbene anti-musca cirese; monitorizeaza saptamanal                                |
+| **Inainte de colorare fructe** | Monteaza plasa anti-pasari                                                                            |
+| **Iulie (dupa recoltare)**     | Tratament fungicid anti-cilindrosporioza — cel mai important tratament al anului!                     |
+| **Iulie-August**               | Tundere de intretinere (NUMAI in aceasta perioada, pe vreme uscata)                                   |
+
+---
+
+### Intrebari frecvente
+
+**"Ciresul meu are flori dar nu face fructe — de ce?"**
+Cauza 1 (cea mai frecventa): soi unic sau soiuri incompatibile. Verifica lista de compatibilitate pentru soiurile tale.
+Cauza 2: stropire in inflorire — albinele nu au polenizat.
+Cauza 3: inghet de primavara dupa inflorire (rar la Nadlac, dar posibil in ani atipici).
+
+**"Ciresele mele au viermi (larve mici albe) — ce fac?"**
+Este musca cireselor (Rhagoletis cerasi). Tratamentul se face PREVENTIV, inainte de depunerea oualor, nu dupa ce apar larvele. Anul viitor: capcane de la 1 mai, tratament cu Karate Zeon 0.015% la primul zbor masiv.
+
+**"Frunzele ciresului meu cad devreme (august-septembrie) — e normal?"**
+NU este normal — este cilindrosporioza avansata. Pomul va intra in iarna slabit. Trateaza imediat cu Topsin M 70 WP 0.1% sau Syllit 400 SC 0.075%. Anul viitor, incepe tratamentele preventive de la inflorire.
+
+**"Pot tunde ciresul in decembrie — e mai usor cand nu are frunze?"**
+NU. Iarna este cel mai prost moment pentru cirese. Asteapta pana in iulie-august, imediat dupa recoltare.
+
+---
+
+_Ghid elaborat pentru conditiile climatice specifice zonei Nadlac-Arad, Romania. Doze orientative — citeste intotdeauna eticheta produsului. Respecta pauzele de securitate inainte de recoltare. La soiurile timpurii (Burlat), atentie maxima la pauzele de securitate — recoltarea incepe la 4-6 saptamani dupa tratamentele de la caderea petalelor._
