@@ -42,28 +42,37 @@ $$(".tab[data-tab]").forEach(function (tab) {
   );
   tab.setAttribute("tabindex", tab.classList.contains("active") ? "0" : "-1");
   tab.addEventListener("click", function () {
-    $$(".tab").forEach(function (t) {
-      t.classList.remove("active");
-      t.setAttribute("aria-selected", "false");
-      t.setAttribute("tabindex", "-1");
-    });
-    $$(".tab-content").forEach(function (tc) {
-      tc.classList.remove("active");
-    });
-    tab.classList.add("active");
-    tab.setAttribute("aria-selected", "true");
-    tab.setAttribute("tabindex", "0");
-    var target = document.getElementById(tab.dataset.tab);
-    if (target) target.classList.add("active");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    tab.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
-    });
-    injectSpeciesTools(tab.dataset.tab);
-    if (searchInput.value.trim().length >= 2)
-      highlightInActiveTab(searchInput.value.trim());
+    try {
+      $$(".tab").forEach(function (t) {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+        t.setAttribute("tabindex", "-1");
+      });
+      $$(".tab-content").forEach(function (tc) {
+        tc.classList.remove("active");
+      });
+      tab.classList.add("active");
+      tab.setAttribute("aria-selected", "true");
+      tab.setAttribute("tabindex", "0");
+      var target = document.getElementById(tab.dataset.tab);
+      if (target) target.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      tab.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+      try {
+        injectSpeciesTools(tab.dataset.tab);
+      } catch (e) {
+        livadaLog("ERR", "injectSpeciesTools", "FAIL", e.message);
+      }
+      if (searchInput.value.trim().length >= 2)
+        highlightInActiveTab(searchInput.value.trim());
+      livadaLog("NAV", tab.dataset.tab, "OK");
+    } catch (e) {
+      livadaLog("ERR", "tab-switch", "FAIL", e.message);
+    }
   });
 });
 $$(".tab-content").forEach(function (tc) {
@@ -639,6 +648,119 @@ function getJurnalEntries() {
 function saveJurnalEntries(entries) {
   localStorage.setItem("livada-jurnal", JSON.stringify(entries));
 }
+
+// ====== F6.2: JURNAL OFFLINE IndexedDB ======
+var _idb = null;
+function openLivadaIDB() {
+  return new Promise(function (resolve, reject) {
+    if (_idb) return resolve(_idb);
+    if (!window.indexedDB) return reject(new Error("IndexedDB indisponibil"));
+    var req = indexedDB.open("livada-jurnal", 1);
+    req.onupgradeneeded = function (e) {
+      var db = e.target.result;
+      if (!db.objectStoreNames.contains("pending")) {
+        db.createObjectStore("pending", { keyPath: "id" });
+      }
+    };
+    req.onsuccess = function () {
+      _idb = req.result;
+      resolve(_idb);
+    };
+    req.onerror = function () {
+      reject(req.error);
+    };
+  });
+}
+
+function saveOfflineEntry(entry) {
+  return openLivadaIDB().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction("pending", "readwrite");
+      tx.objectStore("pending").put(entry);
+      tx.oncomplete = function () {
+        livadaLog("SYNC", "offline-save", "OK", "entry " + entry.id);
+        showToast("Salvat local \u2014 va fi sincronizat online");
+        resolve();
+      };
+      tx.onerror = function () {
+        reject(tx.error);
+      };
+    });
+  });
+}
+
+function getPendingOfflineEntries() {
+  return openLivadaIDB().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction("pending", "readonly");
+      var req = tx.objectStore("pending").getAll();
+      req.onsuccess = function () {
+        resolve(req.result || []);
+      };
+      req.onerror = function () {
+        reject(req.error);
+      };
+    });
+  });
+}
+
+function clearPendingOfflineEntries() {
+  return openLivadaIDB().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction("pending", "readwrite");
+      tx.objectStore("pending").clear();
+      tx.oncomplete = function () {
+        resolve();
+      };
+      tx.onerror = function () {
+        reject(tx.error);
+      };
+    });
+  });
+}
+
+// Sync offline entries la revenire online
+function syncOfflineJournal() {
+  if (!navigator.onLine) return Promise.resolve();
+  return getPendingOfflineEntries()
+    .then(function (pending) {
+      if (!pending.length) return;
+      // Merge pending into localStorage
+      var entries = getJurnalEntries();
+      var existingIds = {};
+      entries.forEach(function (e) {
+        existingIds[e.id] = true;
+      });
+      var added = 0;
+      pending.forEach(function (p) {
+        if (!existingIds[p.id]) {
+          entries.unshift(p);
+          added++;
+        }
+      });
+      if (added > 0) {
+        saveJurnalEntries(entries);
+        renderJurnal();
+      }
+      return clearPendingOfflineEntries().then(function () {
+        if (added > 0) {
+          livadaLog("SYNC", "offline-merge", "OK", added + " intrari");
+          showToast(
+            "\u2705 " + added + " interven\u021Bii sincronizate din offline",
+          );
+          return syncJournal().catch(function () {});
+        }
+      });
+    })
+    .catch(function (e) {
+      livadaLog("ERR", "syncOfflineJournal", "FAIL", e.message);
+    });
+}
+
+// Auto-sync la revenirea online
+window.addEventListener("online", function () {
+  syncOfflineJournal();
+});
 // Toggle recolta fields
 document.getElementById("jurnalType")?.addEventListener("change", function () {
   var rf = document.getElementById("recoltaFields");
@@ -777,11 +899,20 @@ function addJurnalEntry() {
     if (document.getElementById("jurnalKg"))
       document.getElementById("jurnalKg").value = "";
     renderJurnal();
-    syncJournal().catch(function (e) {
-      console.error("syncJournal:", e);
-    });
+    livadaLog("NAV", "add-jurnal", "OK", type);
+    if (navigator.onLine) {
+      syncJournal().catch(function (e) {
+        console.error("syncJournal:", e);
+      });
+    } else {
+      // F6.2 — Salvare offline in IndexedDB
+      saveOfflineEntry(entry).catch(function (e) {
+        console.error("saveOfflineEntry:", e);
+      });
+    }
   } catch (err) {
     showToast("Eroare la salvare: " + err.message);
+    livadaLog("ERR", "addJurnalEntry", "FAIL", err.message);
   }
 }
 function deleteJurnalEntry(id) {
@@ -1010,6 +1141,7 @@ function exportJurnalCSV() {
   a.download = "jurnal-livada-" + todayLocal() + ".csv";
   a.click();
   URL.revokeObjectURL(a.href);
+  livadaLog("NAV", "export-csv", "OK", entries.length + " intrari");
 }
 function copyJurnalClipboard() {
   var entries = getJurnalEntries();
@@ -1470,6 +1602,45 @@ async function fetchMeteoData(full) {
 
 function initMeteo() {
   fetchMeteo();
+  // F1.5 — Verifica ultima rulare cron meteo
+  checkCronMeteoStatus();
+}
+
+async function checkCronMeteoStatus() {
+  try {
+    var res = await fetch("/api/meteo-history?days=2");
+    if (!res.ok) return;
+    var data = await res.json();
+    var entries = Object.entries(data || {});
+    if (!entries.length) return;
+    var lastDate = entries
+      .sort(function (a, b) {
+        return a[0].localeCompare(b[0]);
+      })
+      .pop()[0];
+    var lastTs = new Date(lastDate + "T23:59:59").getTime();
+    var now = Date.now();
+    if (now - lastTs > 26 * 3600 * 1000) {
+      // Salvam timestamp pentru debug panel
+      localStorage.setItem("livada:cron:last-run-ts", String(lastTs));
+      var el = document.getElementById("meteoData");
+      if (el) {
+        var warn = document.createElement("div");
+        warn.className = "alert alert-warning";
+        warn.style.cssText = "font-size:0.8rem;margin-bottom:8px;";
+        warn.innerHTML =
+          "\u26A0 Date meteo posibil dep\u0103\u0219ite \u2014 ultima actualizare: " +
+          lastDate;
+        el.prepend(warn);
+      }
+      livadaLog("METEO", "cron-check", "STALE", lastDate);
+    } else {
+      localStorage.setItem("livada:cron:last-run-ts", String(lastTs));
+      livadaLog("METEO", "cron-check", "OK", lastDate);
+    }
+  } catch (e) {
+    livadaLog("ERR", "checkCronMeteoStatus", "FAIL", e.message);
+  }
 }
 
 async function fetchMeteo() {
@@ -1597,34 +1768,44 @@ $("#dismissBtn").addEventListener("click", () => {
 });
 
 // ====== VERSIUNE + SERVICE WORKER ======
-// DEPLOY_DATE: actualizat automat la fiecare push (data hardcodata = fiabila pe orice CDN)
-const DEPLOY_DATE = "2026-04-08";
-const DEPLOY_INFO = "Glosar 114 termeni + sectiuni I-Y 20 specii";
+// DEPLOY_DATE + DEPLOY_TIME: actualizat la fiecare push (hardcodat = fiabil pe orice CDN)
+const DEPLOY_DATE = "2026-04-09";
+const DEPLOY_TIME = "21:00";
+const DEPLOY_INFO =
+  "V2: logging engine, meteo apparent_temp, badge-uri AI, debug panel, CSV export, calendar predictiv";
 
 const APP_BUILD = DEPLOY_DATE;
 
 (function () {
   var el = document.getElementById("appVersionBadge");
   if (el) {
-    el.textContent = "actualizat " + DEPLOY_DATE;
-    el.title = "Ultima actualizare: " + DEPLOY_DATE + " — " + DEPLOY_INFO;
+    el.textContent = "actualizat " + DEPLOY_DATE + " " + DEPLOY_TIME;
+    el.title =
+      "Ultima actualizare: " +
+      DEPLOY_DATE +
+      " " +
+      DEPLOY_TIME +
+      " — " +
+      DEPLOY_INFO;
   }
 })();
 
 function showAppInfo() {
   alert(
-    "🌿 Livada Mea Dashboard\n" +
-      "━━━━━━━━━━━━━━━━━━━━━━\n" +
+    "\uD83C\uDF3F Livada Mea Dashboard\n" +
+      "\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n" +
       "Ultima actualizare: " +
       DEPLOY_DATE +
+      " " +
+      DEPLOY_TIME +
       "\n" +
       "Ce s-a adaugat: " +
       DEPLOY_INFO +
       "\n\n" +
       "Deploy: Vercel (livada-mea-psi.vercel.app)\n" +
-      "AI: Groq llama-4-maverick + Gemini 2.5-flash\n" +
-      "Meteo: Open-Meteo\n" +
-      "Documentatie: 20 specii × 25 sectiuni (A-Y)",
+      "AI: Groq llama-4-scout + Gemini 2.5-flash\n" +
+      "Meteo: Open-Meteo + Yr.no (comparare)\n" +
+      "Documentatie: 20 specii \xd7 25 sectiuni (A-Y)",
   );
 }
 
@@ -1638,9 +1819,10 @@ if ("serviceWorker" in navigator) {
     })
     .catch(function () {});
 
-  // Notificare versiune noua (trimisa de SW la activate)
+  // Notificare versiune noua (trimisa de SW la activate) — F5.2
   navigator.serviceWorker.addEventListener("message", function (event) {
     if (event.data && event.data.type === "SW_UPDATED") {
+      livadaLog("SW", "update", "AVAILABLE", event.data.version || "noua");
       var toastEl = document.createElement("div");
       toastEl.style.cssText =
         "position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 18px;border-radius:10px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.25);display:flex;align-items:center;gap:12px;max-width:340px;";
@@ -1652,6 +1834,90 @@ if ("serviceWorker" in navigator) {
       }, 12000);
     }
   });
+}
+
+// ====== F1.2 — DEBUG PANEL ======
+(function () {
+  var _badgeTaps = 0,
+    _badgeTapTimer;
+  var badge = document.getElementById("appVersionBadge");
+  if (badge) {
+    badge.addEventListener("click", function () {
+      _badgeTaps++;
+      clearTimeout(_badgeTapTimer);
+      _badgeTapTimer = setTimeout(function () {
+        _badgeTaps = 0;
+      }, 600);
+      if (_badgeTaps >= 3) {
+        _badgeTaps = 0;
+        openDebugPanel();
+      }
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey && e.shiftKey && e.key === "L") openDebugPanel();
+  });
+})();
+
+function openDebugPanel() {
+  var panel = document.getElementById("debugPanel");
+  if (!panel) return;
+  var log = getLivadaLog();
+  var last50 = log.slice(-50).reverse();
+
+  // Verifica ultima rulare cron
+  var cronWarn = "";
+  try {
+    var cronData = null;
+    fetch("/api/ping")
+      .then(function () {})
+      .catch(function () {});
+    var storedCron = localStorage.getItem("livada:cron:last-run-ts");
+    if (storedCron) {
+      var cronTs = parseInt(storedCron);
+      if (Date.now() - cronTs > 26 * 3600 * 1000) {
+        cronWarn =
+          '<div style="color:#f59e0b;margin-bottom:8px;">\u26A0 Date meteo posibil dep\u0103\u0219it\u0103 (ultima rulare cron > 26h)</div>';
+      }
+    }
+  } catch (e) {}
+
+  document.getElementById("debugLogContent").innerHTML =
+    cronWarn +
+    (last50.length
+      ? last50
+          .map(function (e) {
+            return (
+              '<div style="border-bottom:1px solid var(--border);padding:3px 0;font-size:0.72rem;word-break:break-all;">' +
+              escapeHtml(e) +
+              "</div>"
+            );
+          })
+          .join("")
+      : '<div style="color:var(--text-dim);text-align:center;">Log gol</div>');
+  panel.style.display = "flex";
+}
+
+function closeDebugPanel() {
+  var panel = document.getElementById("debugPanel");
+  if (panel) panel.style.display = "none";
+}
+
+function copyDebugLog() {
+  var log = getLivadaLog();
+  var text = log.join("\n");
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard
+      .writeText(text)
+      .then(function () {
+        showToast("\u2705 Log copiat!");
+      })
+      .catch(function () {
+        showToast("Eroare copiere log");
+      });
+  } else {
+    showToast("Clipboard indisponibil");
+  }
 }
 
 // Auto-refresh dashboard dupa revenire din background (I1)
@@ -1687,6 +1953,44 @@ document.addEventListener("visibilitychange", function () {
     }
   }
 })();
+
+// ====== F1.1 — LIVADA LOG ENGINE ======
+var LIVADA_LOG_KEY = "livada:log";
+var LIVADA_LOG_MAX = 100;
+
+function livadaLog(module, action, status, detail, ms) {
+  var ts = new Date().toISOString().replace("T", " ").substring(0, 19);
+  var entry =
+    "[" +
+    ts +
+    "] [" +
+    module +
+    "] " +
+    action +
+    (status ? " \u2192 " + status : "") +
+    (detail ? " \u2192 " + detail : "") +
+    (ms !== undefined ? " \u2192 " + ms + "ms" : "");
+  try {
+    var log = JSON.parse(localStorage.getItem(LIVADA_LOG_KEY) || "[]");
+    log.push(entry);
+    if (log.length > LIVADA_LOG_MAX) log = log.slice(-LIVADA_LOG_MAX);
+    localStorage.setItem(LIVADA_LOG_KEY, JSON.stringify(log));
+  } catch (e) {}
+}
+
+function getLivadaLog() {
+  try {
+    return JSON.parse(localStorage.getItem(LIVADA_LOG_KEY) || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+
+function clearLivadaLog() {
+  try {
+    localStorage.removeItem(LIVADA_LOG_KEY);
+  } catch (e) {}
+}
 
 // ====== FETCH WITH TIMEOUT ======
 async function fetchWithTimeout(url, opts, ms) {
@@ -1724,6 +2028,7 @@ function authHeaders(extra) {
   return h;
 }
 // ====== AI STATUS PANEL ======
+// F2.1 — AI_PANEL_CONFIG extins cu frost
 var AI_PANEL_CONFIG = {
   ask: [
     { name: "Groq llama-4-scout", key: "groq", role: "primar" },
@@ -1745,7 +2050,58 @@ var AI_PANEL_CONFIG = {
     { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
     { name: "Cerebras llama-3.3-70b", key: "cerebras", role: "rezerva" },
   ],
+  frost: [
+    { name: "Open-Meteo", key: "meteo", role: "sursa" },
+    { name: "Yr.no", key: "meteo", role: "comparare" },
+  ],
 };
+
+// F1.3 — Wrapper logging AI calls
+async function aiCallWithLog(label, fn) {
+  var t0 = Date.now();
+  try {
+    var result = await fn();
+    var ms = Date.now() - t0;
+    var model =
+      result && result._fallbackModel
+        ? result._fallbackModel
+        : result && result._model
+          ? result._model
+          : "primar";
+    var status = result && result._fallback ? "FALLBACK:" + model : "OK";
+    livadaLog("AI", label, status, model, ms);
+    return result;
+  } catch (e) {
+    livadaLog("AI", label, "ERR", e.message, Date.now() - t0);
+    throw e;
+  }
+}
+
+// F2.2 — Indicator model post-raspuns
+function renderModelIndicator(containerId, modelName, isFallback, ms) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  var old = el.querySelector(".model-indicator");
+  if (old) old.remove();
+  var icon = isFallback ? "\u21A9" : "\u2713";
+  var label = isFallback ? modelName + " [fallback]" : modelName;
+  var msStr = ms !== undefined ? " \u2022 " + (ms / 1000).toFixed(1) + "s" : "";
+  var div = document.createElement("div");
+  div.className = "model-indicator";
+  div.style.cssText =
+    "font-size:0.72rem;color:var(--text-dim);border-top:1px solid var(--border);" +
+    "margin-top:10px;padding-top:6px;display:flex;align-items:center;gap:4px;";
+  div.innerHTML =
+    '<span style="font-weight:600;color:' +
+    (isFallback ? "#f59e0b" : "#22c55e") +
+    ';">' +
+    icon +
+    "</span> " +
+    escapeHtml(label) +
+    msStr;
+  el.appendChild(div);
+}
+
 var _aiStatus = null,
   _aiStatusTs = 0;
 
@@ -2615,7 +2971,7 @@ function openDiagnoseModal() {
   document.getElementById("diagChatSection").style.display = "none";
   document.getElementById("diagChatMessages").innerHTML = "";
   _diagChatHistory["diag"] = [];
-  renderAiStatusPanel("diagnose", "diagLoading", "beforebegin");
+  renderAiStatusPanel("diagnose", "diagModalBody", "afterbegin");
   openModal("diagnose");
 }
 // Comprimare robusta pentru diagnoza — foloseste toDataURL (synchronous, functioneaza pe orice browser/telefon)
@@ -2675,6 +3031,7 @@ function compressDiagnoseImage(file) {
 async function runDiagnose(input, species, prefix) {
   var file = input.files[0];
   if (!file) return;
+  var _t0Diag = Date.now();
   var g = function (id) {
     return document.getElementById(id);
   };
@@ -2727,9 +3084,26 @@ async function runDiagnose(input, species, prefix) {
     if (data.error) {
       resultEl.textContent = "Eroare: " + data.error;
       showAiError(data.error);
+      livadaLog("AI", "diagnose", "ERR", data.error);
     } else {
       if (data._fallback) showAiFallback(data._fallbackModel || "gemini");
       resultEl.innerHTML = sizeInfo + sanitizeAI(data.diagnosis || "");
+      // F1.3+F2.2 — log + model indicator
+      var _diagModel =
+        data._model || (data._fallback ? "GPT-4.1" : "Gemini 2.5-flash");
+      livadaLog(
+        "AI",
+        "diagnose",
+        data._fallback ? "FALLBACK" : "OK",
+        _diagModel,
+        Date.now() - _t0Diag,
+      );
+      renderModelIndicator(
+        prefix + "Result",
+        _diagModel,
+        !!data._fallback,
+        Date.now() - _t0Diag,
+      );
     }
     resultEl.style.display = "block";
     g(prefix + "CopyRow").style.display = copyRowDisplay;
@@ -2808,7 +3182,7 @@ function openAskModal() {
   document.getElementById("askLoading").style.display = "none";
   document.getElementById("askCopyRow").style.display = "none";
   document.getElementById("askInput").value = "";
-  renderAiStatusPanel("ask", "askLoading", "beforebegin");
+  renderAiStatusPanel("ask", "askModalBody", "afterbegin");
   openModal("ask");
 }
 async function submitAsk() {
@@ -2824,6 +3198,7 @@ async function submitAsk() {
   document.getElementById("askResult").style.display = "none";
   var tc = document.getElementById(activeSpeciesId);
   var context = tc ? tc.textContent.substring(0, 3000) : "";
+  var _t0Ask = Date.now();
   try {
     var res = await authFetch(
       "/api/ask",
@@ -2846,13 +3221,44 @@ async function submitAsk() {
     if (data.error) {
       r.textContent = "Eroare: " + data.error;
       showAiError(data.error);
+      livadaLog("AI", "ask", "ERR", data.error);
     } else {
       if (data._fallback)
         showAiFallback(data._fallbackModel || "llama-3.3-70b-versatile");
       r.innerHTML = sanitizeAI(data.answer || "");
+      // F1.3+F2.2 — log + model indicator
+      var _askModel =
+        data._model ||
+        (data._fallback ? data._fallbackModel : "Groq llama-4-scout");
+      livadaLog(
+        "AI",
+        "ask",
+        data._fallback ? "FALLBACK" : "OK",
+        _askModel,
+        Date.now() - _t0Ask,
+      );
+      renderModelIndicator(
+        "askResult",
+        _askModel,
+        !!data._fallback,
+        Date.now() - _t0Ask,
+      );
     }
     r.style.display = "block";
     document.getElementById("askCopyRow").style.display = "block";
+    // F4.2 — Buton "Cere parerea Cerebras" (doar daca raspunsul e de la Groq)
+    if (!data._fallback || (data._model && !data._model.includes("cerebras"))) {
+      var altRow = document.getElementById("askAltRow");
+      if (!altRow) {
+        altRow = document.createElement("div");
+        altRow.id = "askAltRow";
+        altRow.style.cssText = "margin-top:8px;text-align:center;";
+        document.getElementById("askCopyRow").parentNode.appendChild(altRow);
+      }
+      altRow.innerHTML =
+        '<button class="btn btn-secondary" style="font-size:0.8rem;width:100%;" onclick="askAlternative()">' +
+        "\uD83D\uDD04 Cere p\u0103rerea Cerebras</button>";
+    }
   } catch (e) {
     document.getElementById("askLoading").style.display = "none";
     var r2 = document.getElementById("askResult");
@@ -2864,6 +3270,59 @@ async function submitAsk() {
     showAiError(askMsg);
     r2.style.display = "block";
     document.getElementById("askCopyRow").style.display = "block";
+    livadaLog("AI", "ask", "ERR", e.message, Date.now() - _t0Ask);
+  }
+}
+
+// F4.2 — Cere alternativa Cerebras
+async function askAlternative() {
+  var question = document.getElementById("askInput").value.trim();
+  if (!question) return;
+  var altRow = document.getElementById("askAltRow");
+  if (altRow)
+    altRow.innerHTML =
+      '<div class="ai-load" style="display:block;"><div class="ai-load-spinner"></div> Se \u00eentreab\u0103 Cerebras...</div>';
+  var tc = document.getElementById(activeSpeciesId);
+  var context = tc ? tc.textContent.substring(0, 3000) : "";
+  var _t0Alt = Date.now();
+  try {
+    var res = await authFetch(
+      "/api/ask",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: question,
+          species: SPECIES[activeSpeciesId] || activeSpeciesId,
+          context: context,
+          preferModel: "cerebras",
+        }),
+      },
+      65000,
+    );
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Eroare server");
+    if (altRow) {
+      altRow.innerHTML =
+        '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">' +
+        '<div style="font-size:0.78rem;color:var(--text-dim);font-weight:600;margin-bottom:6px;">Cerebras llama-3.3-70b:</div>' +
+        sanitizeAI(data.answer || "") +
+        "</div>";
+      renderModelIndicator(
+        "askAltRow",
+        data._model || "cerebras-llama-3.3-70b",
+        false,
+        Date.now() - _t0Alt,
+      );
+    }
+    livadaLog("AI", "ask-alt", "OK", "cerebras", Date.now() - _t0Alt);
+  } catch (e) {
+    if (altRow)
+      altRow.innerHTML =
+        '<div style="color:#ef4444;font-size:0.85rem;">Cerebras indisponibil: ' +
+        escapeHtml(e.message) +
+        "</div>";
+    livadaLog("AI", "ask-alt", "ERR", e.message, Date.now() - _t0Alt);
   }
 }
 
@@ -3888,10 +4347,12 @@ async function initDashboardAzi() {
   ]);
 
   // B. Alerte
+  var _frostDataForCalendar = null; // refolosit in F6.1
   if (alerteEl) {
     var html = "";
     if (alertRes.status === "fulfilled" && alertRes.value.ok) {
       var data = await alertRes.value.json();
+      _frostDataForCalendar = data;
       if (data.frost && data.frost.active) {
         html +=
           '<div class="alert alert-danger">\u2744\uFE0F ' +
@@ -4057,6 +4518,115 @@ async function initDashboardAzi() {
       riskHtml += "</div>";
       alerteEl.innerHTML += riskHtml;
     }
+  }
+
+  // F3.2 — Nopti consecutive cu frost — UI indicator
+  if (alertRes.status === "fulfilled" && alertRes.value) {
+    try {
+      // Re-read — alertRes.value a fost deja consumat prin .json(), dar datele sunt in 'data' de mai sus
+    } catch (e) {}
+  }
+
+  // F6.4 — Rezumat meteo saptamanal (date din meteo-history Redis)
+  renderWeeklySummary(aziContainer);
+
+  // F6.1 — Calendar tratamente predictiv (bazat pe GDD + meteo + jurnal)
+  if (aziContainer && aziContainer.parentElement) {
+    try {
+      var histForCal = await loadMeteoHistoryForWidgets();
+      renderPredictiveCalendar(
+        aziContainer.parentElement,
+        histForCal,
+        _frostDataForCalendar,
+      );
+    } catch (e) {
+      livadaLog("ERR", "predictiveCalendar", "FAIL", e.message);
+    }
+  }
+
+  // F6.5 — Notificare locala frost (daca alerta e activa + permisiune acordata)
+  if (alertRes.status === "fulfilled" && alertRes.value) {
+    try {
+      // Verificam din DOM — alerta a fost deja randata
+      var frostEl = document.querySelector(".alert-danger");
+      if (
+        frostEl &&
+        "Notification" in window &&
+        Notification.permission === "granted"
+      ) {
+        var frostMsg = frostEl.textContent || "Risc de inghet detectat";
+        new Notification("Alerta Livada \u2014 Inghet!", {
+          body: frostMsg.substring(0, 150),
+          icon: "/icon-192.png",
+        });
+        livadaLog("FROST", "push-notification", "SENT");
+      }
+    } catch (e) {
+      livadaLog("ERR", "frost-notification", "FAIL", e.message);
+    }
+  }
+}
+
+// F6.4 — Rezumat meteo saptamanal din history
+async function renderWeeklySummary(container) {
+  if (!container || !container.parentElement) return;
+  try {
+    var hist = await loadMeteoHistoryForWidgets();
+    if (!hist || typeof hist !== "object") return;
+    var dates = Object.keys(hist).sort().slice(-7);
+    if (dates.length < 3) return; // prea putine date
+
+    var totalRain = 0,
+      totalGdd = 0,
+      frostDays = 0,
+      hotDays = 0,
+      sumHum = 0;
+    dates.forEach(function (d) {
+      var h = hist[d];
+      totalRain += h.rain || 0;
+      var tMin = h.temp_min ?? h.temp;
+      var tMax = h.temp_max ?? h.temp;
+      var tAvg = (tMin + tMax) / 2;
+      totalGdd += Math.max(0, tAvg - 10);
+      if (tMin < 0) frostDays++;
+      if (tMax > 25) hotDays++;
+      sumHum += h.humidity || 60;
+    });
+    var avgHum = Math.round(sumHum / dates.length);
+
+    var el = document.getElementById("weeklySummaryWidget");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "weeklySummaryWidget";
+      el.style.cssText =
+        "background:var(--bg-surface);border-radius:12px;padding:14px;margin-top:16px;border:1px solid var(--border);";
+      container.parentElement.appendChild(el);
+    }
+    el.innerHTML =
+      '<h4 style="margin:0 0 8px;font-size:0.92rem;color:var(--accent);">\uD83D\uDCC5 S\u0103pt\u0103m\u00E2na \u00EEn rezumat (' +
+      dates[0] +
+      " \u2014 " +
+      dates[dates.length - 1] +
+      ")</h4>" +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;font-size:0.82rem;">' +
+      "<div>GDD acumulat: <strong>+" +
+      Math.round(totalGdd) +
+      "</strong></div>" +
+      "<div>Ploaie total\u0103: <strong>" +
+      Math.round(totalRain * 10) / 10 +
+      "mm</strong></div>" +
+      "<div>Zile \u00EEnghe\u021B: <strong>" +
+      frostDays +
+      "</strong></div>" +
+      "<div>Zile >25\u00B0C: <strong>" +
+      hotDays +
+      "</strong></div>" +
+      "<div>Umiditate medie: <strong>" +
+      avgHum +
+      "%</strong></div>" +
+      "</div>";
+  } catch (e) {
+    livadaLog("ERR", "renderWeeklySummary", "FAIL", e.message);
   }
 }
 
@@ -5253,6 +5823,224 @@ function assessDiseaseRisks(dailyData) {
       timing: r.timing,
     };
   });
+}
+
+// ====== F6.1: CALENDAR TRATAMENTE PREDICTIV ======
+// Fenofaze per specie (GDD thresholds orientative zona Nadlac, Campia de Vest)
+var PHENOPHASE_DATA = {
+  cires: [
+    { gdd: 50, phase: "Boboc inchis", action: "Tratament cupru preventiv" },
+    {
+      gdd: 85,
+      phase: "Boboc alb",
+      action: "Protectie anti-inghet daca T < 0\u00B0C",
+    },
+    {
+      gdd: 120,
+      phase: "Inflorire plina",
+      action: "NU aplica insecticide! Protejeaza albinele",
+    },
+    {
+      gdd: 200,
+      phase: "Cadere petale",
+      action: "Tratament anti-monilia (Signum/Switch)",
+    },
+    { gdd: 400, phase: "Fructe 1cm", action: "Tratament anti-musca ciresului" },
+  ],
+  cais: [
+    { gdd: 30, phase: "Boboc roz", action: "Tratament cupru (Bordolez 1%)" },
+    {
+      gdd: 60,
+      phase: "Inflorire",
+      action: "NU trata! Protectie anti-inghet la T < -1\u00B0C",
+    },
+    {
+      gdd: 150,
+      phase: "Cadere petale",
+      action: "Tratament anti-monilia + anti-afide",
+    },
+    {
+      gdd: 350,
+      phase: "Fructe verzi",
+      action: "Tratament contra viermilor (Coragen)",
+    },
+  ],
+  piersic: [
+    {
+      gdd: 40,
+      phase: "Boboc roz",
+      action: "Tratament anti-clasterosporiu (cupru)",
+    },
+    {
+      gdd: 70,
+      phase: "Inflorire",
+      action: "NU trata! Protectie inghet la T < -1\u00B0C",
+    },
+    {
+      gdd: 160,
+      phase: "Cadere petale",
+      action: "Tratament anti-monilia + anti-afide verzi",
+    },
+    {
+      gdd: 300,
+      phase: "Fructe 2cm",
+      action: "Tratament Topsin/Score anti-putregai",
+    },
+  ],
+  prun: [
+    { gdd: 60, phase: "Boboc alb", action: "Tratament cupru preventiv" },
+    {
+      gdd: 100,
+      phase: "Inflorire",
+      action: "NU trata! Protejeaza polenizatorii",
+    },
+    {
+      gdd: 200,
+      phase: "Cadere petale",
+      action: "Tratament anti-sfarma (viermele prunului)",
+    },
+    {
+      gdd: 500,
+      phase: "Fructe virate",
+      action: "Ultimul tratament inainte de PHI",
+    },
+  ],
+  "mar-florina": [
+    {
+      gdd: 70,
+      phase: "Boboc roz",
+      action: "Tratament anti-rapan (Delan/Captan)",
+    },
+    { gdd: 120, phase: "Inflorire", action: "NU aplica insecticide!" },
+    { gdd: 200, phase: "Cadere petale", action: "Anti-rapan + anti-paduchi" },
+    {
+      gdd: 400,
+      phase: "Fructe aluna",
+      action: "Tratament anti-viermele merelor (Coragen)",
+    },
+  ],
+  "mar-golden": [
+    {
+      gdd: 70,
+      phase: "Boboc roz",
+      action: "Tratament anti-rapan (Delan/Captan)",
+    },
+    { gdd: 120, phase: "Inflorire", action: "NU aplica insecticide!" },
+    { gdd: 200, phase: "Cadere petale", action: "Anti-rapan + anti-paduchi" },
+    {
+      gdd: 400,
+      phase: "Fructe aluna",
+      action: "Tratament anti-viermele merelor (Coragen)",
+    },
+  ],
+};
+
+// Render calendar predictiv in tab Azi
+function renderPredictiveCalendar(containerEl, meteoHistory, frostData) {
+  if (!containerEl || !meteoHistory) return;
+  var speciesId = activeSpeciesId;
+  var phases = PHENOPHASE_DATA[speciesId];
+  if (!phases) return; // doar pentru specii cu date fenofaze
+
+  var gdd = calculateGDD(meteoHistory);
+  var currentPhase = null,
+    nextPhase = null;
+  for (var i = 0; i < phases.length; i++) {
+    if (gdd >= phases[i].gdd) currentPhase = phases[i];
+    else {
+      nextPhase = phases[i];
+      break;
+    }
+  }
+  if (!currentPhase && !nextPhase) return;
+
+  // Verifica jurnal — ultima interventie
+  var jurnalEntries = getJurnalEntries();
+  var lastAction = null;
+  for (var j = jurnalEntries.length - 1; j >= 0; j--) {
+    if (
+      jurnalEntries[j].type === "tratament" ||
+      jurnalEntries[j].type === "stropire"
+    ) {
+      lastAction = jurnalEntries[j];
+      break;
+    }
+  }
+  var daysSinceLast = lastAction
+    ? Math.floor((Date.now() - new Date(lastAction.date).getTime()) / 86400000)
+    : null;
+
+  // Frost risk din prognoza
+  var frostRisk = frostData && frostData.frost && frostData.frost.active;
+
+  var el = document.getElementById("predictive-calendar");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "predictive-calendar";
+    el.style.cssText =
+      "background:var(--bg-surface);border-radius:12px;padding:14px;margin-top:16px;border:1px solid var(--accent);";
+    containerEl.appendChild(el);
+  }
+
+  var speciesName = SPECIES[speciesId] || speciesId;
+  var html =
+    '<h4 style="margin:0 0 8px;font-size:0.92rem;color:var(--accent);">\uD83D\uDCC6 Calendar Predictiv \u2014 ' +
+    escapeHtml(speciesName) +
+    "</h4>";
+
+  if (currentPhase) {
+    html +=
+      '<div style="padding:8px;background:var(--bg);border-radius:8px;margin-bottom:8px;">' +
+      '<div style="font-weight:600;font-size:0.85rem;">\uD83C\uDF3F Fenofaz\u0103 curent\u0103: ' +
+      escapeHtml(currentPhase.phase) +
+      " (" +
+      Math.round(gdd) +
+      " GDD)</div>" +
+      '<div style="font-size:0.82rem;margin-top:4px;color:var(--text);">\u27A1 ' +
+      escapeHtml(currentPhase.action) +
+      "</div></div>";
+  }
+
+  if (nextPhase) {
+    var gddRemaining = nextPhase.gdd - Math.round(gdd);
+    html +=
+      '<div style="font-size:0.82rem;color:var(--text-dim);margin-bottom:6px;">' +
+      "Urm\u0103toare: " +
+      escapeHtml(nextPhase.phase) +
+      " (peste ~" +
+      gddRemaining +
+      " GDD)" +
+      "</div>";
+  }
+
+  // Avertizari contextuale
+  if (
+    frostRisk &&
+    currentPhase &&
+    (currentPhase.phase.includes("Boboc") ||
+      currentPhase.phase.includes("Inflorire"))
+  ) {
+    html +=
+      '<div class="alert alert-danger" style="margin-top:8px;font-size:0.82rem;">' +
+      "\u26A0 <strong>URGENT:</strong> " +
+      escapeHtml(speciesName) +
+      " \u00EEn faza " +
+      escapeHtml(currentPhase.phase) +
+      " + \u00EEnghe\u021B prognozat! Aplic\u0103 protec\u021Bie anti-\u00EEnghe\u021B (aspersie/agrotextil) p\u00E2n\u0103 disear\u0103!</div>";
+  }
+
+  if (daysSinceLast !== null && daysSinceLast > 14) {
+    html +=
+      '<div class="alert alert-warning" style="margin-top:8px;font-size:0.82rem;">' +
+      "\u26A0 Ultima interven\u021Bie: acum " +
+      daysSinceLast +
+      " zile. Verific\u0103 dac\u0103 e momentul unui tratament.</div>";
+  } else if (daysSinceLast === null) {
+    html +=
+      '<div style="font-size:0.78rem;color:var(--text-dim);margin-top:4px;">Nicio interven\u021Bie \u00EEn jurnal. Adaug\u0103 tratamentele pentru recomand\u0103ri mai bune.</div>';
+  }
+
+  el.innerHTML = html;
 }
 
 // ====== N12: JURNAL VOCAL (Web Speech API) ======
@@ -6680,27 +7468,32 @@ function exportCostsCSV() {
 
 // ====== GLOSAR POMICOL: FILTRARE ======
 function filterGlosar(q) {
-  q = q.toLowerCase().trim();
-  var terms = document.querySelectorAll(".glosar-term");
-  var cats = document.querySelectorAll("[data-glosar-cat]");
-  var visible = 0;
-  terms.forEach(function (t) {
-    var match =
-      !q ||
-      t.dataset.term.includes(q) ||
-      t.dataset.def.includes(q) ||
-      t.textContent.toLowerCase().includes(q);
-    t.classList.toggle("hidden", !match);
-    if (match) visible++;
-  });
-  cats.forEach(function (c) {
-    var hasVisible = c.querySelectorAll(".glosar-term:not(.hidden)").length > 0;
-    c.style.display = hasVisible ? "" : "none";
-  });
-  var el = document.getElementById("glosarCount");
-  if (el)
-    el.textContent = q
-      ? visible + ' rezultate pentru "' + q + '"'
-      : "114 termeni in 9 categorii";
+  try {
+    q = q.toLowerCase().trim();
+    var terms = document.querySelectorAll(".glosar-term");
+    var cats = document.querySelectorAll("[data-glosar-cat]");
+    var visible = 0;
+    terms.forEach(function (t) {
+      var match =
+        !q ||
+        (t.dataset.term || "").includes(q) ||
+        (t.dataset.def || "").includes(q) ||
+        t.textContent.toLowerCase().includes(q);
+      t.classList.toggle("hidden", !match);
+      if (match) visible++;
+    });
+    cats.forEach(function (c) {
+      var hasVisible =
+        c.querySelectorAll(".glosar-term:not(.hidden)").length > 0;
+      c.style.display = hasVisible ? "" : "none";
+    });
+    var el = document.getElementById("glosarCount");
+    if (el)
+      el.textContent = q
+        ? visible + ' rezultate pentru "' + q + '"'
+        : "114 termeni in 9 categorii";
+  } catch (e) {
+    livadaLog("ERR", "filterGlosar", "FAIL", e.message);
+  }
 }
 // ====== END GLOSAR POMICOL ======

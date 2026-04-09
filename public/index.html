@@ -30253,7 +30253,7 @@
             &#10005;
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="diagModalBody">
           <p
             style="
               font-size: 0.85rem;
@@ -30460,7 +30460,7 @@
             &#10005;
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="askModalBody">
           <label for="askInput"
             >Pune o &#238;ntrebare despre aceast&#259; specie</label
           >
@@ -31277,5 +31277,137 @@
       defer
       src="https://va.vercel-scripts.com/v1/speed-insights/script.js"
     ></script>
+
+    <!-- F1.2 — Debug Panel (ascuns, activat prin triplu-tap pe badge sau Ctrl+Shift+L) -->
+    <div
+      id="debugPanel"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 19999;
+        background: rgba(0, 0, 0, 0.7);
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        style="
+          background: var(--bg);
+          border-radius: 12px;
+          width: min(96vw, 640px);
+          max-height: 80vh;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+          overflow: hidden;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+          "
+        >
+          <span
+            style="font-weight: 700; font-size: 0.95rem; color: var(--accent)"
+            >&#128295; Debug Panel — Livada Mea</span
+          >
+          <span
+            style="
+              margin-left: auto;
+              font-size: 0.75rem;
+              color: var(--text-dim);
+            "
+            >Ctrl+Shift+L sau triplu-tap badge</span
+          >
+          <button
+            onclick="closeDebugPanel()"
+            style="
+              background: none;
+              border: none;
+              font-size: 1.2rem;
+              cursor: pointer;
+              color: var(--text-dim);
+              margin-left: 12px;
+            "
+            aria-label="Inchide"
+          >
+            &#10005;
+          </button>
+        </div>
+        <div
+          id="debugLogContent"
+          style="
+            overflow-y: auto;
+            flex: 1;
+            padding: 10px 14px;
+            font-family: monospace;
+            font-size: 0.73rem;
+            line-height: 1.5;
+          "
+        ></div>
+        <div
+          style="
+            display: flex;
+            gap: 8px;
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-surface);
+          "
+        >
+          <button
+            onclick="copyDebugLog()"
+            style="
+              flex: 1;
+              padding: 7px;
+              border: 1px solid var(--border);
+              border-radius: 7px;
+              background: var(--bg);
+              cursor: pointer;
+              font-size: 0.8rem;
+            "
+          >
+            &#128203; Copiaz&#259; log
+          </button>
+          <button
+            onclick="
+              clearLivadaLog();
+              openDebugPanel();
+            "
+            style="
+              flex: 1;
+              padding: 7px;
+              border: 1px solid var(--border);
+              border-radius: 7px;
+              background: var(--bg);
+              cursor: pointer;
+              font-size: 0.8rem;
+              color: #ef4444;
+            "
+          >
+            &#128465; Sterge log
+          </button>
+          <button
+            onclick="closeDebugPanel()"
+            style="
+              flex: 1;
+              padding: 7px;
+              border: 1px solid var(--accent);
+              border-radius: 7px;
+              background: var(--accent);
+              color: #fff;
+              cursor: pointer;
+              font-size: 0.8rem;
+            "
+          >
+            &#10003; &Icirc;nchide
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

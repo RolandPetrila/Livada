@@ -46,7 +46,7 @@ export default async function handler(req) {
     );
   }
 
-  const { question, species, context } = body;
+  const { question, species, context, preferModel } = body;
 
   if (!question || !question.trim()) {
     return Response.json(
@@ -107,6 +107,31 @@ Specia curenta: ${species || "general (toate speciile)"}`;
   const log = (msg) => console.log(`[ask] ${msg} t+${Date.now() - t0}ms`);
 
   try {
+    // F4.1 — Daca preferModel === "cerebras" → sari direct la Cerebras
+    if (preferModel === "cerebras") {
+      log("start → cerebras (preferModel)");
+      try {
+        const cerebrasRes = await callCerebras(cerebrasMessages, 20000);
+        if (cerebrasRes.ok) {
+          const result = await cerebrasRes.json();
+          const answer =
+            result.choices?.[0]?.message?.content ||
+            "Nu am putut genera un raspuns.";
+          log("cerebras ok (preferModel)");
+          return Response.json(
+            { answer, _model: "cerebras-llama-3.3-70b" },
+            { headers: corsHeaders(req) },
+          );
+        }
+      } catch (e) {
+        log(`cerebras preferModel err: ${e.message}`);
+      }
+      return Response.json(
+        { error: "Cerebras indisponibil momentan." },
+        { status: 503, headers: corsHeaders(req) },
+      );
+    }
+
     // Primary: llama-4-scout (Llama 4, disponibil free tier Groq)
     log("start → llama-4-scout");
     let groqRes = await callGroq(
@@ -149,6 +174,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
                 answer,
                 _fallback: true,
                 _fallbackModel: "cerebras-llama-3.3-70b",
+                _model: "cerebras-llama-3.3-70b",
               },
               { headers: corsHeaders(req) },
             );
@@ -184,6 +210,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
     return Response.json(
       {
         answer,
+        _model: activeModel,
         ...(usedFallback
           ? { _fallback: true, _fallbackModel: activeModel }
           : {}),

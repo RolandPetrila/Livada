@@ -6,7 +6,7 @@
 // Offline: HTML servit din cache dupa ultima vizita reusita
 
 // T11: BUILD_DATE actualizat la fiecare deploy — forteaza refresh cache dupa update
-const BUILD_DATE = "20260408";
+const BUILD_DATE = "20260409";
 const STATIC_CACHE = "livada-static-" + BUILD_DATE;
 const FONT_CACHE = "livada-fonts-v1";
 

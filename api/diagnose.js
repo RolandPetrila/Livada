@@ -291,6 +291,9 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
       ? plantIdPrefix + diagnosisText
       : diagnosisText;
     if (plantIdPrefix) diagnosisMeta._plantid = true;
+    diagnosisMeta._model = diagnosisMeta._fallback
+      ? "GPT-4.1"
+      : "Gemini 2.5-flash";
     log(
       `ok — gemini=${!diagnosisMeta._fallback} gpt41=${!!diagnosisMeta._fallback} plantid=${!!plantIdPrefix}`,
     );
@@ -310,6 +313,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
           "\n_Analiza AI detaliata indisponibila momentan. Plant.id a detectat bolile de mai sus._",
         _fallback: true,
         _plantid: true,
+        _model: "Plant.id",
       },
       { headers: corsHeaders(req) },
     );
@@ -333,7 +337,11 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         const text = geminiText(await res.json());
         if (text)
           return Response.json(
-            { diagnosis: text, _fallback: true },
+            {
+              diagnosis: text,
+              _fallback: true,
+              _model: "Gemini 2.5-flash (key2)",
+            },
             { headers: corsHeaders(req) },
           );
       }
@@ -361,7 +369,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         const text = openaiText(await res.json());
         if (text)
           return Response.json(
-            { diagnosis: text, _fallback: true },
+            { diagnosis: text, _fallback: true, _model: "Pixtral-12B" },
             { headers: corsHeaders(req) },
           );
       }
@@ -389,7 +397,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         const text = openaiText(await res.json());
         if (text)
           return Response.json(
-            { diagnosis: text, _fallback: true },
+            { diagnosis: text, _fallback: true, _model: "Grok-2-vision" },
             { headers: corsHeaders(req) },
           );
       }

@@ -29,6 +29,9 @@ livada-backup-*.json
 .claude-outputs/
 .playwright-mcp/
 
+# Gemini Documentatie — folder local exclusiv, NICIODATA in git
+Gemini_Documentatie/
+
 # Gemini Research — DRAFT files (nu sunt documentatie finala, fisiere mari)
 content/Gemini_Research/Gemini_*_IZ.md
 content/Gemini_Research/Gemini_*_IM.md

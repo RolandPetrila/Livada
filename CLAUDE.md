@@ -5,8 +5,8 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete + Runda 9+10 (N8-N17, II1/II2/II4, T9, S10) + Audit Securitate | **HTML:** ~32,287 linii | **API:** 12 routes + 3 utilitare
-**Ultima actualizare:** 2026-04-08
+**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6: logging, meteo apparent_temp, debug panel, AI instrumentare, calendar predictiv, offline jurnal, CSV export) | **HTML:** ~32,500 linii | **API:** 12 routes + 3 utilitare
+**Ultima actualizare:** 2026-04-09
 
 ## Arhitectura
 
@@ -92,9 +92,11 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 ## Dependente externe
 
-- Groq API (llama-3.3-70b-versatile) — raspunsuri AI intrebari + rapoarte
-- Google Gemini (gemini-2.5-flash, fallback gemini-2.5-flash-lite) — diagnostic foto AI
-- Open-Meteo (gratuit, fara API key) — date meteo curente + prognoza 5 zile
+- Groq API (llama-4-scout primary, llama-3.3-70b-versatile fallback) — raspunsuri AI intrebari + rapoarte
+- Cerebras (llama-3.3-70b, gratuit) — alternativa AI la cerere (F4.2)
+- Google Gemini (gemini-2.5-pro → flash fallback) — diagnostic foto AI
+- Open-Meteo (gratuit, fara API key) — date meteo curente + prognoza 5 zile (apparent_temp, cloud_cover, dew_point)
+- Yr.no / met.no (gratuit, fara API key) — sursa meteo secundara pentru comparare (F3.3)
 - Upstash Redis (@upstash/redis 1.37.0) — persistenta jurnal + meteo history cache
 - Vercel Blob (@vercel/blob 2.3.2) — stocare fotografii galerie
 - DOMPurify @3 (cdn.jsdelivr.net) — sanitizare HTML raspunsuri AI (_pin la @3.3.3 necesar_)
@@ -130,5 +132,7 @@ Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier com
 
 ## Imbunatatiri pendinte
 
-Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI.md` — checklist complet pe faze.
-**Faze 1-6 + Runda 9+10 implementate (140+ items total).** Ramase: Faza 7 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere).
+Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V2.md` — plan complet V2.
+**Faze 1-6 + Runda 9+10 + V2 (F0-F6) implementate (170+ items total).**
+V2 implementat: F0.1-F0.2 (header+badges), F1.1-F1.5 (logging+debug+error handling+cron monitor), F2.1-F2.2 (AI badges+model indicator), F3.1-F3.3 (apparent_temp+multi-noapte+Yr.no), F4.1-F4.2 (preferModel+Cerebras alternativa), F5.2 (SW log), F6.1-F6.5 (calendar predictiv+offline journal+CSV+rezumat saptamanal+push frost).
+**Ramase:** F4.3 (comparator full, SCAZUTA), F5.1 (auth bypass — necesita LIVADA_API_TOKEN setat), F7.1-F7.3 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere), F3.4 CRON_SECRET (actiune manuala Roland).

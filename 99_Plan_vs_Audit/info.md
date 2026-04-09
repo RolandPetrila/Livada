@@ -1,48 +1,23 @@
-# VIZIUNEA PROIECTULUI — Livada Mea Dashboard
+Prognoza actualizată pentru Nădlac, județul Arad, confirmă o perioadă de nopți deosebit de reci, cu un risc iminent de îngheț în următoarele 48 de ore.
+## Nopți cu risc de îngheț
+Datele actualizate de la mai multe surse indică următoarele intervale critice:
 
-## CE CONSTRUIM
-Un dashboard PWA (Progressive Web App) care centralizeaza TOATA documentatia si uneltele practice pentru o livada semi-comerciala din Nadlac, judetul Arad.
+* Noaptea de Joi spre Vineri (9 - 10 aprilie): Temperaturile vor scădea până la pragul de îngheț. [AccuWeather](https://www.accuweather.com/ro/ro/nadlac/276010/daily-weather-forecast/276010) prognozează o minimă de 0°C (32°F), în timp ce [Yr.no](https://www.yr.no/en/forecast/daily-table/2-672546/Romania/Arad%20County/Ora%C5%9F%20N%C3%A3dlac/N%C4%83dlac) estimează chiar 0°C sau ușor peste. Este foarte probabil să se formeze brumă.
+* Noaptea de Vineri spre Sâmbătă (10 - 11 aprilie): Aceasta rămâne o noapte critică, cu minime prognozate între 0°C și 1°C. Yr.no indică o minimă de 1°C, ceea ce la nivelul solului poate însemna îngheț.
+* Noaptea de Sâmbătă spre Duminică (11 - 12 aprilie): Riscul scade ușor, dar temperaturile rămân scăzute, în jurul a 1°C - 3°C, menținând pericolul pentru plantele foarte sensibile.
 
-## PENTRU CINE
-Roland Petrila — profesor de matematica, livada cu 100+ pomi, 17 specii/soiuri, 4-7 ani.
-Nivel pomicultura: intermediar. Nivel tech: avansat (Claude MAX, Vercel, GitHub).
-Dashboard-ul trebuie sa fie inteles si de un INCEPATOR ABSOLUT in pomicultura.
+## Evoluția temperaturilor pe surse (9 - 15 aprilie)
 
-## CERINTE CHEIE
-- **Android-first**: Prioritate maxima pentru utilizare pe telefon Android
-- **Offline-first**: Documentatia functioneaza 100% fara internet
-- **Limba 100% romana**: Tot UI-ul, mesajele, alertele
-- **Zero costuri**: Toate serviciile pe plan gratuit
-- **PWA instalabil**: Se instaleaza ca aplicatie pe Android din browser
+| Sursa | Joi (09.04) | Vineri (10.04) | Sâmbătă (11.04) | Duminică (12.04) | Luni (13.04) |
+|---|---|---|---|---|---|
+| AccuWeather | 11°C / 0°C | 12°C / 0°C | 15°C / 4°C | 16°C / 4°C | 18°C / 6°C |
+| Yr.no | 11°C / 2°C | 10°C / 0°C | 12°C / 0°C | 14°C / 1°C | 14°C / 3°C |
+| Weather.com | 12°C / 3°C | 11°C / 2°C | 14°C / 4°C | 16°C / 5°C | 21°C / 7°C |
 
-## ARHITECTURA
-- **Frontend**: Single HTML file cu tot inline (CSS, JS, date) — functioneaza offline
-- **Backend**: Vercel API routes (Edge Runtime) — doar pentru features avansate (AI, sync, push)
-- **Hosting**: Vercel (cont existent, CLI instalat)
-- **Repo**: GitHub — https://github.com/RolandPetrila/Livada.git
+## Detalii importante
 
-## SPECII (17 + 1 tab general)
-Cires, Visin, Cais, Piersic, Prun, Migdal, Par Clapp, Par Williams, Par Hosui, Par Napoca,
-Mar Florina (spalier+vas), Mar Golden Spur, Alun tufa, Zmeur, Mur, Afin, Rodiu.
-+ Tab Plan Livada (general, transversal)
+* Vântul: În noaptea de joi, vântul va sufla din sector nordic, accentuând senzația de frig (RealFeel® de aproximativ -1°C conform AccuWeather).
+* Precipitații: Sunt prognozate șanse de ploaie (aprox. 60%) în cursul zilei de joi, 9 aprilie, ceea ce ar putea crește umiditatea și favoriza depunerea brumei odată cu limpezirea cerului în timpul nopții.
+* Încălzire: Începând de luni, 13 aprilie, temperaturile nocturne vor crește constant peste 5°C, eliminând riscul de îngheț pentru restul săptămânii viitoare.
 
-## FEATURES (3 niveluri)
-**Nivel 1 (static)**: PWA, calendar alerte, calculator doze, cautare, jurnal local, meteo, dark/light, export PDF
-**Nivel 2 (Vercel API)**: Sync dispozitive, push notifications, galerie foto, istoric meteo, alerta ingheturi
-**Nivel 3 (AI)**: Identificare boli din poza (Claude Vision/Gemini Vision), calendar inteligent, raport anual
 
-## CONTINUT DISPONIBIL
-- Rodiu: cercetare EN (de tradus) + ghid RO
-- Plan Livada: complet RO (calendar tratamente + tundere + plan anual)
-- Cais: doua cercetari (Claude Code + Claude.ai) — de combinat
-- Prototip HTML: 7 taburi, design verde-livada, PWA basic
-
-## DECIZIE CERCETARE
-Claude Code face TOATA cercetarea pentru cele 16 specii ramase, imbogatita cu:
-limbaj accesibil, soiuri locale, TOP greseli, calendar lunar, semne carenta.
-
-## DEPLOY
-Auto: commit + push + vercel --prod dupa fiecare sprint finalizat.
-
-## PLAN DETALIAT
-Vezi: PLAN_v3.md (adaptat din planul aprobat jazzy-twirling-sky.md)
