@@ -1770,9 +1770,9 @@ $("#dismissBtn").addEventListener("click", () => {
 // ====== VERSIUNE + SERVICE WORKER ======
 // DEPLOY_DATE + DEPLOY_TIME: actualizat la fiecare push (hardcodat = fiabil pe orice CDN)
 const DEPLOY_DATE = "2026-04-11";
-const DEPLOY_TIME = "02:05";
+const DEPLOY_TIME = "02:17";
 const DEPLOY_INFO =
-  "Audit 2026-04-11: scor 57→80, 38 teste vitest, README modernizat, F5.1/H1 decizii inchise";
+  "chore: bump deploy date to 2026-04-11 + sw cache invalidation";
 
 const APP_BUILD = DEPLOY_DATE;
 

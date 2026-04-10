@@ -8,7 +8,8 @@
     "dev": "vercel dev",
     "deploy": "vercel --prod",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build": "node scripts/update-deploy-date.js"
   },
   "dependencies": {
     "@upstash/redis": "^1.37.0",

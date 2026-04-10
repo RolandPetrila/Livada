@@ -52,6 +52,10 @@ Roland.md        — Cerinte originale Roland (C1-C5, toate implementate)
 git add [fisiere] && git commit -m "feat: ..." && git push origin main && vercel --prod
 ```
 
+**Automatizari build (ruleaza automat pe Vercel la fiecare deploy):**
+
+- `scripts/update-deploy-date.js` — actualizeaza automat `DEPLOY_DATE`, `DEPLOY_TIME`, `DEPLOY_INFO` in `public/app.js` si `BUILD_DATE` in `public/sw.js`. Foloseste timestamp Europe/Bucharest + `VERCEL_GIT_COMMIT_MESSAGE` ca DEPLOY_INFO. **Zero interventie manuala — NU mai edita manual aceste constante.** Trigger via `vercel.json` → `"buildCommand": "npm run build"`.
+
 ## Autorizari durabile (override comportamente default Claude Code)
 
 **PRE-AUTORIZAT fara confirmare suplimentara (scope: doar acest proiect):**
