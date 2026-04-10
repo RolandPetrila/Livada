@@ -1769,10 +1769,10 @@ $("#dismissBtn").addEventListener("click", () => {
 
 // ====== VERSIUNE + SERVICE WORKER ======
 // DEPLOY_DATE + DEPLOY_TIME: actualizat la fiecare push (hardcodat = fiabil pe orice CDN)
-const DEPLOY_DATE = "2026-04-09";
-const DEPLOY_TIME = "21:00";
+const DEPLOY_DATE = "2026-04-11";
+const DEPLOY_TIME = "02:05";
 const DEPLOY_INFO =
-  "V2: logging engine, meteo apparent_temp, badge-uri AI, debug panel, CSV export, calendar predictiv";
+  "Audit 2026-04-11: scor 57→80, 38 teste vitest, README modernizat, F5.1/H1 decizii inchise";
 
 const APP_BUILD = DEPLOY_DATE;
 
