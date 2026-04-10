@@ -1,15 +1,20 @@
 {
   "name": "livada-mea-dashboard",
   "version": "2.0.0",
-  "description": "Dashboard PWA pentru livada semi-comerciala — 17 specii, zona Nadlac/Arad",
+  "description": "Dashboard PWA pentru livada semi-comerciala — 20 specii, zona Nadlac/Arad",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@upstash/redis": "^1.37.0",
     "@vercel/blob": "^2.3.2"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.4"
   }
 }
