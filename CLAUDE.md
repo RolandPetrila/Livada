@@ -133,31 +133,36 @@ Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier com
 ## Performance Baseline (2026-04-10)
 
 **Optimizations Applied:**
+
 - Redis write batching (journal.js, meteo-cron.js) — API I/O −50–70%
 - Gemini pro timeout reduction (diagnose.js: 10s → 5s) — fallback −25%
 - HTML minification (CSS/JS inline) — 1.2MB → 761KB (−36%), gzip 217KB
 
-| Metric | Before | After | Target |
-|--------|--------|-------|--------|
-| **HTML Size** | 1.2 MB | 761 KB | < 500 KB |
-| **Gzipped** | ~300 KB | 217 KB | < 200 KB |
-| **FCP (5G mobile)** | 3–4s | 2–2.5s | < 2s |
-| **API journal POST** | 200–550ms | 100–300ms | < 300ms |
-| **API meteo-cron** | 300–700ms | 100–300ms | < 300ms |
-| **Diagnose fallback** | 20s max | 15s max | < 15s |
+| Metric                | Before    | After     | Target   |
+| --------------------- | --------- | --------- | -------- |
+| **HTML Size**         | 1.2 MB    | 761 KB    | < 500 KB |
+| **Gzipped**           | ~300 KB   | 217 KB    | < 200 KB |
+| **FCP (5G mobile)**   | 3–4s      | 2–2.5s    | < 2s     |
+| **API journal POST**  | 200–550ms | 100–300ms | < 300ms  |
+| **API meteo-cron**    | 300–700ms | 100–300ms | < 300ms  |
+| **Diagnose fallback** | 20s max   | 15s max   | < 15s    |
 
 **Tools:**
+
 - `scripts/minify-html.js` — Minify inline CSS/JS in production (Node.js ESM)
 
 **Commits:**
+
 - `751b7c2` — perf: minify inline CSS/JS (1.2MB → 761KB)
 - `df9c5ed` — perf: batch Redis writes + reduce Gemini timeout
 
 **Reports:**
+
 - `.claude-outputs/PERF_REPORT_20260410.md` — Full analysis
 - `.claude-outputs/PERF_IMPLEMENTATION_20260410.md` — Implementation details
 
 **Next Phase:**
+
 - [ ] Lazy load species sections (−1–2s FCP additional)
 - [ ] Setup Lighthouse CI + Sentry RUM
 - [ ] HTTP/2 Server Push for critical CSS
