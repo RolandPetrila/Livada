@@ -172,4 +172,13 @@ Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier com
 Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V2.md` — plan complet V2.
 **Faze 1-6 + Runda 9+10 + V2 (F0-F6) implementate (170+ items total).**
 V2 implementat: F0.1-F0.2 (header+badges), F1.1-F1.5 (logging+debug+error handling+cron monitor), F2.1-F2.2 (AI badges+model indicator), F3.1-F3.3 (apparent_temp+multi-noapte+Yr.no), F4.1-F4.2 (preferModel+Cerebras alternativa), F5.2 (SW log), F6.1-F6.5 (calendar predictiv+offline journal+CSV+rezumat saptamanal+push frost).
-**Ramase:** F4.3 (comparator full, SCAZUTA), F5.1 (auth bypass — necesita LIVADA_API_TOKEN setat), F7.1-F7.3 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere), F3.4 CRON_SECRET (actiune manuala Roland).
+**Ramase:** F4.3 (comparator full, SCAZUTA), F7.1-F7.3 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere).
+
+**Decizii inchise (2026-04-11):**
+
+- **F5.1 (LIVADA_API_TOKEN) — NU se implementeaza.** Decizie Roland: dashboard-ul e pentru uz personal + parinti pe telefon, prioritate UX simpla fara parole. Origin check + rate limit (30 req/min) + DOMPurify sunt suficiente pentru threat model-ul real (site obscur, fara trafic public). Codul in `_auth.js:59-67` gestioneaza corect cazul "token nesetat" (skip complet, backward compat).
+- **F3.4 CRON_SECRET — DEJA enforced** in `meteo-cron.js:72-78` (intoarce 500 daca lipseste env var). Bifat ca rezolvat in audit 2026-04-11.
+
+## Audit findings — actiuni amanate
+
+- **H1 CSP `unsafe-inline`** (audit 2026-04-11, severitate HIGH teoretica) — migrare amanata dupa stabilizare V2. Plan detaliat salvat in `.claude-outputs/CSP_MIGRATION_PLAN.md` (Optiunea B — hash-based CSP, 6–8h implementare). Justificare: DOMPurify e deja strat de protectie activ, risc real mic pentru un site obscur, nu merita introdusa complexitate build pipeline in plin V2 development. A se relua dupa F7 decis.
