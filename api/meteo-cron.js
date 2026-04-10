@@ -117,7 +117,15 @@ export default async function handler(req) {
     const data = await meteoRes.json();
 
     // Salveaza in Redis — format identic
-    const today = new Date().toISOString().split("T")[0];
+    // Fix: foloseste Europe/Bucharest pentru "today" (nu UTC) — previne
+    // bug-uri subtile daca cronul ruleaza intre 22:00-24:00 UTC cand data
+    // locala e deja ziua urmatoare fata de UTC.
+    const today = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Bucharest",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date()); // format: "2026-04-11"
     const history = (await kv.get("livada:meteo:history")) || {};
 
     const h24 = Math.min(24, (data.hourly?.uv_index || []).length);

@@ -3830,8 +3830,17 @@ async function syncDeleteJournal(id) {
 // ====== FROST & DISEASE ALERTS ======
 var ALERTS_CACHE_KEY = "livada-alerts-cache";
 
+// Fix alerte stale: verifica daca data frost alert e trecuta (vs. ziua locala Romania).
+// Alerte pentru zilele trecute nu mai sunt relevante — cronul ruleaza 1x/zi si Redis
+// poate contine prognoza de noaptea precedenta cand user-ul deschide app dimineata.
+function isFrostAlertStale(frost) {
+  if (!frost || !frost.active) return true;
+  if (!frost.date) return false; // fara data → tratam ca relevant (backward compat)
+  return frost.date < todayLocal();
+}
+
 function applyAlerts(data) {
-  if (data.frost && data.frost.active) {
+  if (data.frost && data.frost.active && !isFrostAlertStale(data.frost)) {
     var ft = document.getElementById("frostText");
     var fb = document.getElementById("frostBanner");
     if (ft) ft.textContent = data.frost.message;
@@ -3842,6 +3851,10 @@ function applyAlerts(data) {
       data.frost.message || "Risc de inghet in zona Nadlac!",
       "frost",
     );
+  } else {
+    // Ascunde banner-ul daca alerta e stale sau inactiva
+    var fbHide = document.getElementById("frostBanner");
+    if (fbHide) fbHide.classList.remove("active");
   }
   if (data.disease && data.disease.active) {
     var dt = document.getElementById("diseaseText");
@@ -4353,7 +4366,9 @@ async function initDashboardAzi() {
     if (alertRes.status === "fulfilled" && alertRes.value.ok) {
       var data = await alertRes.value.json();
       _frostDataForCalendar = data;
-      if (data.frost && data.frost.active) {
+      var frostRelevant =
+        data.frost && data.frost.active && !isFrostAlertStale(data.frost);
+      if (frostRelevant) {
         html +=
           '<div class="alert alert-danger">\u2744\uFE0F ' +
           escapeHtml(data.frost.message) +
@@ -4376,7 +4391,7 @@ async function initDashboardAzi() {
           '<div class="alert alert-warning" style="margin-top:8px;">\u26A0\uFE0F ' +
           escapeHtml(data.disease.message) +
           "</div>";
-      if (!data.frost?.active && !data.disease?.active)
+      if (!frostRelevant && !data.disease?.active)
         html =
           '<p style="color:var(--accent);">\u2705 Nicio alert\u0103. Totul e \u00EEn regul\u0103!</p>';
     } else {
