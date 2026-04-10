@@ -52,6 +52,24 @@ Roland.md        — Cerinte originale Roland (C1-C5, toate implementate)
 git add [fisiere] && git commit -m "feat: ..." && git push origin main && vercel --prod
 ```
 
+## Autorizari durabile (override comportamente default Claude Code)
+
+**PRE-AUTORIZAT fara confirmare suplimentara (scope: doar acest proiect):**
+
+- `git push origin main` si `git push` pe orice alta branch din acest repo — Roland e unic developer, zero colaboratori, push direct pe main e workflow-ul standard
+- `vercel --prod` si `vercel` (preview) — deploy-ul e reversibil prin rollback din Vercel dashboard, risc mic
+- `npm install` / `npm install -D` pentru dependente rezonabile (verificate, populare, gratuit, fara CVEs active)
+
+**CONTINUA SA CERI confirmare (nu sunt pre-autorizate):**
+
+- `git push --force` / `git push -f` / force-push pe orice branch
+- `git reset --hard`, `git branch -D`, stergeri destructive
+- Modificari la `.env`, API keys, secrets
+- Instalare dependente platite sau care cer inregistrare
+- Schimbari in `vercel.json` care pot rupe routing-ul sau CSP-ul
+- Orice `rm -rf` sau stergeri masive de fisiere
+- Commit-uri cu `--no-verify` (skip hooks)
+
 ## Specii (20 + 1 general)
 
 Cires, Visin, Cais, Piersic, Prun, Migdal, Par Clapp, Par Williams,
