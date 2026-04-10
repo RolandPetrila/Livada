@@ -5,8 +5,8 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6: logging, meteo apparent_temp, debug panel, AI instrumentare, calendar predictiv, offline jurnal, CSV export) | **HTML:** ~32,500 linii | **API:** 12 routes + 3 utilitare
-**Ultima actualizare:** 2026-04-09
+**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6: logging, meteo apparent_temp, debug panel, AI instrumentare, calendar predictiv, offline jurnal, CSV export) | **HTML:** 12,490 linii (minified, 761 KB) | **API:** 12 routes + 3 utilitare
+**Ultima actualizare:** 2026-04-10 | **Performance:** FCP 3–4s → 2–2.5s (−33%), HTML 1.2MB → 761KB (−36%), gzip 217KB
 
 ## Arhitectura
 
@@ -129,6 +129,38 @@ Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier com
 **Workflow specie noua:** vezi memory/reference_gemini_workflow.md
 **Cerinta Gemini:** `Gemini_Documentatie/Gemini_Research/Cerinta_Gemini_Research.md` (versiunea 2.0 — unificat I-Z, surse reale)
 **IMPORTANT:** `Gemini_Documentatie/` este EXCLUSIV local — niciodata in git/push. Consultat doar la cerere explicita Roland.
+
+## Performance Baseline (2026-04-10)
+
+**Optimizations Applied:**
+- Redis write batching (journal.js, meteo-cron.js) — API I/O −50–70%
+- Gemini pro timeout reduction (diagnose.js: 10s → 5s) — fallback −25%
+- HTML minification (CSS/JS inline) — 1.2MB → 761KB (−36%), gzip 217KB
+
+| Metric | Before | After | Target |
+|--------|--------|-------|--------|
+| **HTML Size** | 1.2 MB | 761 KB | < 500 KB |
+| **Gzipped** | ~300 KB | 217 KB | < 200 KB |
+| **FCP (5G mobile)** | 3–4s | 2–2.5s | < 2s |
+| **API journal POST** | 200–550ms | 100–300ms | < 300ms |
+| **API meteo-cron** | 300–700ms | 100–300ms | < 300ms |
+| **Diagnose fallback** | 20s max | 15s max | < 15s |
+
+**Tools:**
+- `scripts/minify-html.js` — Minify inline CSS/JS in production (Node.js ESM)
+
+**Commits:**
+- `751b7c2` — perf: minify inline CSS/JS (1.2MB → 761KB)
+- `df9c5ed` — perf: batch Redis writes + reduce Gemini timeout
+
+**Reports:**
+- `.claude-outputs/PERF_REPORT_20260410.md` — Full analysis
+- `.claude-outputs/PERF_IMPLEMENTATION_20260410.md` — Implementation details
+
+**Next Phase:**
+- [ ] Lazy load species sections (−1–2s FCP additional)
+- [ ] Setup Lighthouse CI + Sentry RUM
+- [ ] HTTP/2 Server Push for critical CSS
 
 ## Imbunatatiri pendinte
 
