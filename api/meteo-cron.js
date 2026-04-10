@@ -257,7 +257,11 @@ export default async function handler(req) {
       }
     }
 
-    await kv.set("livada:frost-alert", frostAlert);
+    // Prepare all Redis writes for batching
+    const redisWrites = [
+      kv.set("livada:meteo:history", history),
+      kv.set("livada:frost-alert", frostAlert),
+    ];
 
     // Disease risk (next 48h): rain + warm + humid + probability > 50%
     let diseaseRisk = { active: false, updatedAt: new Date().toISOString() };
@@ -283,7 +287,7 @@ export default async function handler(req) {
         };
       }
     }
-    await kv.set("livada:disease-risk", diseaseRisk);
+    redisWrites.push(kv.set("livada:disease-risk", diseaseRisk));
 
     // F3.3 — Yr.no: compara cu Open-Meteo, salveaza avertizare divergenta
     const yrnoMin = await fetchYrnoMin();
@@ -294,21 +298,28 @@ export default async function handler(req) {
         Math.min(...openMeteoApparent.slice(0, 24));
       const diffTemp = Math.abs(openMeteoMin - yrnoMin);
       if (diffTemp > 2) {
-        await kv.set(
-          "livada:meteo:divergenta",
-          `Prognoze divergente: Open-Meteo ${openMeteoMin}°C vs Yr.no ${yrnoMin}°C — verifica manual!`,
+        redisWrites.push(
+          kv.set(
+            "livada:meteo:divergenta",
+            `Prognoze divergente: Open-Meteo ${openMeteoMin}°C vs Yr.no ${yrnoMin}°C — verifica manual!`,
+          ),
         );
       } else {
-        await kv.del("livada:meteo:divergenta");
+        redisWrites.push(kv.del("livada:meteo:divergenta"));
       }
     }
 
-    await kv.set("livada:cron:last-run", {
-      date: today,
-      success: true,
-      temp: data.current.temperature_2m,
-      timestamp: Date.now(),
-    });
+    redisWrites.push(
+      kv.set("livada:cron:last-run", {
+        date: today,
+        success: true,
+        temp: data.current.temperature_2m,
+        timestamp: Date.now(),
+      }),
+    );
+
+    // Batch all Redis operations: 1 RTT instead of 5–7
+    await Promise.all(redisWrites);
 
     return Response.json({
       success: true,

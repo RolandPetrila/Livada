@@ -69,9 +69,11 @@ export default async function handler(req) {
       }
       const merged = [...map.values()].sort((a, b) => b.id - a.id);
 
-      await withTimeout(kv.set(KEY, merged), 5000);
-      // Invalideaza cache raport la orice adaugare in jurnal
-      kv.set("livada:journal:last-update", Date.now()).catch(() => {});
+      // Batch Redis writes: 1 RTT instead of 2
+      await Promise.all([
+        withTimeout(kv.set(KEY, merged), 5000),
+        withTimeout(kv.set("livada:journal:last-update", Date.now()), 5000),
+      ]);
       return Response.json(
         { ok: true, count: merged.length },
         { headers: hdrs },
