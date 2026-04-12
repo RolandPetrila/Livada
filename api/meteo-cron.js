@@ -456,6 +456,86 @@ export default async function handler(req) {
       }
     }
 
+    // Jurnal alerte — acumuleaza intrari cand o alerta devine activa
+    // Deduplicare pe type+date (o singura intrare per tip per zi)
+    const journal = (await kv.get("livada:alert-journal")) || [];
+    const nowIso = new Date().toISOString();
+    const alertsToLog = [
+      frostAlert.active && {
+        type: "frost",
+        label: "Inghet",
+        icon: "\u2744\uFE0F",
+        date: frostAlert.date,
+        hour: frostAlert.frostHour || null,
+        message: frostAlert.message,
+      },
+      diseaseRisk.active && {
+        type: "disease",
+        label: "Boli fungice",
+        icon: "\u26A0\uFE0F",
+        date: diseaseRisk.date,
+        hour: null,
+        message: diseaseRisk.message,
+      },
+      hailAlert.active && {
+        type: "hail",
+        label: "Grindina",
+        icon: "\uD83C\uDF2A",
+        date: hailAlert.date,
+        hour: hailAlert.alertHour || null,
+        message: hailAlert.message,
+      },
+      windAlert.active && {
+        type: "wind",
+        label: "Vant",
+        icon: "\uD83D\uDCA8",
+        date: windAlert.date,
+        hour: windAlert.alertHour || null,
+        message: windAlert.message,
+      },
+      heatAlert.active && {
+        type: "heat",
+        label: "Canicula",
+        icon: "\uD83C\uDF21\uFE0F",
+        date: heatAlert.date,
+        hour: null,
+        message: heatAlert.message,
+      },
+      rainAlert.active && {
+        type: "rain",
+        label: "Ploaie",
+        icon: "\uD83C\uDF27\uFE0F",
+        date: rainAlert.date,
+        hour: null,
+        message: rainAlert.message,
+      },
+      droughtAlert.active && {
+        type: "drought",
+        label: "Seceta",
+        icon: "\u2600\uFE0F",
+        date: droughtAlert.date,
+        hour: null,
+        message: droughtAlert.message,
+      },
+    ].filter(Boolean);
+    for (const entry of alertsToLog) {
+      const dedupKey = entry.type + ":" + entry.date;
+      if (!journal.some((j) => j.key === dedupKey)) {
+        journal.push({
+          key: dedupKey,
+          type: entry.type,
+          label: entry.label,
+          icon: entry.icon,
+          date: entry.date,
+          hour: entry.hour,
+          message: entry.message,
+          loggedAt: nowIso,
+        });
+      }
+    }
+    // Pastreaza ultimele 50 intrari (rolling window ~2 luni)
+    if (journal.length > 50) journal.splice(0, journal.length - 50);
+
     // Prepare all Redis writes for batching
     const redisWrites = [
       kv.set("livada:meteo:history", history),
@@ -466,6 +546,7 @@ export default async function handler(req) {
       kv.set("livada:alert-heat", heatAlert),
       kv.set("livada:alert-rain", rainAlert),
       kv.set("livada:alert-drought", droughtAlert),
+      kv.set("livada:alert-journal", journal),
     ];
 
     // F3.3 — Yr.no: compara cu Open-Meteo, salveaza avertizare divergenta

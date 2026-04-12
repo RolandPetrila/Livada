@@ -3889,11 +3889,32 @@ function isAlertStale(alert) {
 }
 var isFrostAlertStale = isAlertStale; // backward compat
 
+function formatAlertTime(isoStr) {
+  if (!isoStr) return "";
+  try {
+    var d = new Date(isoStr);
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleTimeString("ro-RO", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Bucharest",
+    });
+  } catch (e) {
+    return "";
+  }
+}
+
 function applyAlertBanner(alertData, textId, bannerId, title, key) {
+  var timeId = key + "Time";
   if (alertData && alertData.active && !isAlertStale(alertData)) {
     var t = document.getElementById(textId);
     var b = document.getElementById(bannerId);
+    var tm = document.getElementById(timeId);
     if (t) t.textContent = alertData.message;
+    if (tm) {
+      var timeStr = formatAlertTime(alertData.updatedAt);
+      tm.textContent = timeStr ? "\u23F0 " + timeStr : "";
+    }
     if (b) b.classList.add("active");
     sendLivadaNotification(title, alertData.message || title, key);
   } else {
@@ -3946,6 +3967,48 @@ function applyAlerts(data) {
     "Alerta seceta",
     "drought",
   );
+}
+
+function renderAlertJournal(journal) {
+  var el = document.getElementById("alertJournal");
+  if (!el) return;
+  if (!journal || !journal.length) {
+    el.innerHTML =
+      '<p class="aj-empty">Nicio alerta inregistrata inca. Jurnalul se populeaza automat.</p>';
+    return;
+  }
+  // Sorteaza descrescator dupa loggedAt (cele mai recente primele)
+  var sorted = journal.slice().sort(function (a, b) {
+    return (b.loggedAt || "").localeCompare(a.loggedAt || "");
+  });
+  var html = '<ul class="alert-journal-list">';
+  for (var i = 0; i < sorted.length; i++) {
+    var j = sorted[i];
+    var dateStr = j.date || "";
+    var hourStr = "";
+    if (j.hour) {
+      var hParts = j.hour.split("T");
+      hourStr = hParts[1] ? hParts[1].slice(0, 5) : "";
+    }
+    var logTime = formatAlertTime(j.loggedAt);
+    html +=
+      "<li>" +
+      '<span class="aj-icon">' +
+      (j.icon || "\u26A0\uFE0F") +
+      "</span>" +
+      '<span class="aj-meta">' +
+      escapeHtml(dateStr) +
+      (hourStr ? " " + hourStr : "") +
+      "</span>" +
+      '<span class="aj-msg">' +
+      escapeHtml(j.message || j.label || j.type) +
+      '<br><span style="font-size:0.7rem;color:var(--text-dim);">Inregistrat: ' +
+      escapeHtml(logTime) +
+      "</span></span>" +
+      "</li>";
+  }
+  html += "</ul>";
+  el.innerHTML = html;
 }
 
 // II2: Notification API helper
@@ -4034,7 +4097,10 @@ async function checkAlerts() {
   // Afiseaza cache-ul existent imediat (vizibil chiar offline)
   try {
     var cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || "null");
-    if (cached) applyAlerts(cached);
+    if (cached) {
+      applyAlerts(cached);
+      if (cached.journal) renderAlertJournal(cached.journal);
+    }
   } catch (e) {}
 
   if (!navigator.onLine) return;
@@ -4044,6 +4110,7 @@ async function checkAlerts() {
     var data = await res.json();
     localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify(data));
     applyAlerts(data);
+    if (data.journal) renderAlertJournal(data.journal);
   } catch (e) {}
 }
 
@@ -4464,10 +4531,15 @@ async function initDashboardAzi() {
             affected.join(", ") +
             "</div>";
       }
-      if (data.disease && data.disease.active)
+      if (data.disease && data.disease.active && !isAlertStale(data.disease))
         html +=
           '<div class="alert alert-warning" style="margin-top:8px;">\u26A0\uFE0F ' +
           escapeHtml(data.disease.message) +
+          "</div>";
+      if (data.hail && data.hail.active && !isAlertStale(data.hail))
+        html +=
+          '<div class="alert alert-danger" style="margin-top:8px;">\uD83C\uDF2A GRINDINA: ' +
+          escapeHtml(data.hail.message) +
           "</div>";
       if (data.wind && data.wind.active && !isAlertStale(data.wind))
         html +=
@@ -4491,7 +4563,8 @@ async function initDashboardAzi() {
           "</div>";
       var anyActive =
         frostRelevant ||
-        data.disease?.active ||
+        (data.disease?.active && !isAlertStale(data.disease)) ||
+        (data.hail?.active && !isAlertStale(data.hail)) ||
         (data.wind?.active && !isAlertStale(data.wind)) ||
         (data.heat?.active && !isAlertStale(data.heat)) ||
         (data.rain?.active && !isAlertStale(data.rain)) ||
@@ -4499,6 +4572,8 @@ async function initDashboardAzi() {
       if (!anyActive)
         html =
           '<p style="color:var(--accent);">\u2705 Nicio alert\u0103. Totul e \u00EEn regul\u0103!</p>';
+      // Rendereaza jurnalul alertelor in sectiunea dedicata
+      if (data.journal) renderAlertJournal(data.journal);
     } else {
       html =
         '<p style="color:var(--text-dim);">Alertele necesit\u0103 conexiune.</p>';

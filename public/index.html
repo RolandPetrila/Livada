@@ -993,6 +993,51 @@
       .alert-banner .ab-text {
         flex: 1;
       }
+      .alert-banner .ab-time {
+        font-size: 0.68rem;
+        opacity: 0.75;
+        white-space: nowrap;
+        letter-spacing: 0.3px;
+      }
+      .alert-journal-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .alert-journal-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.82rem;
+      }
+      .alert-journal-list li:last-child {
+        border-bottom: none;
+      }
+      .aj-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+        width: 24px;
+        text-align: center;
+      }
+      .aj-meta {
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        white-space: nowrap;
+        flex-shrink: 0;
+        min-width: 75px;
+      }
+      .aj-msg {
+        flex: 1;
+        line-height: 1.35;
+      }
+      .aj-empty {
+        text-align: center;
+        color: var(--text-dim);
+        padding: 16px 0;
+        font-size: 0.85rem;
+      }
       .sp-tools {
         display: flex;
         gap: 8px;
@@ -1550,6 +1595,7 @@
     <!-- ====== ALERT BANNERS ====== -->
     <div class="alert-banner frost" id="frostBanner">
       <span>&#10052;&#65039;</span><span class="ab-text" id="frostText"></span
+      ><span class="ab-time" id="frostTime"></span
       ><button
         class="ab-close"
         onclick="
@@ -1561,6 +1607,7 @@
     </div>
     <div class="alert-banner disease" id="diseaseBanner">
       <span>&#9888;&#65039;</span><span class="ab-text" id="diseaseText"></span
+      ><span class="ab-time" id="diseaseTime"></span
       ><button
         class="ab-close"
         onclick="
@@ -1572,6 +1619,7 @@
     </div>
     <div class="alert-banner hail" id="hailBanner">
       <span>&#127786;</span><span class="ab-text" id="hailText"></span
+      ><span class="ab-time" id="hailTime"></span
       ><button
         class="ab-close"
         onclick="
@@ -1583,6 +1631,7 @@
     </div>
     <div class="alert-banner wind" id="windBanner">
       <span>&#128168;</span><span class="ab-text" id="windText"></span
+      ><span class="ab-time" id="windTime"></span
       ><button
         class="ab-close"
         onclick="
@@ -1594,6 +1643,7 @@
     </div>
     <div class="alert-banner heat" id="heatBanner">
       <span>&#127777;&#65039;</span><span class="ab-text" id="heatText"></span
+      ><span class="ab-time" id="heatTime"></span
       ><button
         class="ab-close"
         onclick="
@@ -1605,6 +1655,7 @@
     </div>
     <div class="alert-banner rain" id="rainBanner">
       <span>&#127783;&#65039;</span><span class="ab-text" id="rainText"></span
+      ><span class="ab-time" id="rainTime"></span
       ><button
         class="ab-close"
         onclick="
@@ -1616,6 +1667,7 @@
     </div>
     <div class="alert-banner drought" id="droughtBanner">
       <span>&#9728;&#65039;</span><span class="ab-text" id="droughtText"></span
+      ><span class="ab-time" id="droughtTime"></span
       ><button
         class="ab-close"
         onclick="
@@ -2178,6 +2230,30 @@
               </button>
             </div>
             <p style="color: var(--text-dim)">Se verific&#259;...</p>
+          </div>
+        </div>
+        <div class="section">
+          <h2
+            class="section-title"
+            onclick="
+              var b = this.nextElementSibling;
+              b.style.display = b.style.display === 'none' ? '' : 'none';
+              this.querySelector('.sj-arrow').textContent =
+                b.style.display === 'none' ? '\u25B6' : '\u25BC';
+            "
+            style="cursor: pointer"
+          >
+            &#128203; Istoricul alertelor
+            <span
+              class="sj-arrow"
+              style="font-size: 0.7rem; margin-left: 6px; opacity: 0.6"
+              >&#9654;</span
+            >
+          </h2>
+          <div class="section-body" id="alertJournal" style="display: none">
+            <p style="color: var(--text-dim); font-size: 0.82rem">
+              Jurnalul se populeaz&#259; automat la fiecare actualizare meteo.
+            </p>
           </div>
         </div>
         <div class="section">

@@ -23,8 +23,8 @@ export default async function handler(req) {
 
   try {
     const kv = Redis.fromEnv();
-    const [frost, disease, hail, wind, heat, rain, drought] = await Promise.all(
-      [
+    const [frost, disease, hail, wind, heat, rain, drought, journal] =
+      await Promise.all([
         withTimeout(kv.get("livada:frost-alert"), 5000).catch(() => null),
         withTimeout(kv.get("livada:disease-risk"), 5000).catch(() => null),
         withTimeout(kv.get("livada:alert-hail"), 5000).catch(() => null),
@@ -32,8 +32,8 @@ export default async function handler(req) {
         withTimeout(kv.get("livada:alert-heat"), 5000).catch(() => null),
         withTimeout(kv.get("livada:alert-rain"), 5000).catch(() => null),
         withTimeout(kv.get("livada:alert-drought"), 5000).catch(() => null),
-      ],
-    );
+        withTimeout(kv.get("livada:alert-journal"), 5000).catch(() => null),
+      ]);
 
     return Response.json(
       {
@@ -44,6 +44,7 @@ export default async function handler(req) {
         heat: heat || { active: false },
         rain: rain || { active: false },
         drought: drought || { active: false },
+        journal: journal || [],
       },
       {
         headers: {
@@ -63,6 +64,7 @@ export default async function handler(req) {
         heat: { active: false },
         rain: { active: false },
         drought: { active: false },
+        journal: [],
       },
       { headers: corsHeaders(req) },
     );
