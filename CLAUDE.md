@@ -95,6 +95,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | journal.js       | Edge    | 5s      | Redis                                                                       |
 | meteo-cron.js    | Edge    | 25s     | Open-Meteo + Redis                                                          |
 | meteo-history.js | Edge    | 5s      | Redis                                                                       |
+| meteo-refresh.js | Edge    | 25s     | Proxy catre meteo-cron (origin+rate limit, fara CRON_SECRET in frontend)    |
 | photos.js        | Node.js | 10s     | Vercel Blob (ATENTIE: @vercel/blob incompatibil cu Edge — foloseste undici) |
 | ping.js          | Edge    | —       | —                                                                           |
 | report.js        | Edge    | 25s     | Redis + Groq                                                                |

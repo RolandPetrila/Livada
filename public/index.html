@@ -2212,7 +2212,30 @@
             &#9888;&#65039; Alerte active
           </h2>
           <div class="section-body" id="alerteAzi">
-            <div style="text-align: right; margin-bottom: 8px">
+            <div
+              style="
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+                margin-bottom: 8px;
+              "
+            >
+              <button
+                id="meteoRefreshBtn"
+                onclick="triggerMeteoRefresh()"
+                style="
+                  background: none;
+                  border: 1px solid var(--border);
+                  border-radius: 8px;
+                  padding: 4px 10px;
+                  font-size: 0.75rem;
+                  cursor: pointer;
+                  color: var(--text-dim);
+                  min-height: 32px;
+                "
+              >
+                &#128260; Actualizeaza acum
+              </button>
               <button
                 id="notifToggleBtn"
                 onclick="requestLivadaNotifPermission()"

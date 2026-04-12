@@ -4093,6 +4093,28 @@ function updateNotifBtn() {
   }
 }
 
+async function triggerMeteoRefresh() {
+  var btn = document.getElementById("meteoRefreshBtn");
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = "\u23F3 Se actualizeaza...";
+  try {
+    var res = await fetchWithTimeout("/api/meteo-refresh", {}, 25000);
+    var body = await res.json();
+    if (res.ok && body.success) {
+      showToast("Alerte actualizate! Temp: " + (body.temp || "?") + "\u00B0C");
+      // Refresh alertele + jurnalul din Redis (datele proaspete)
+      await checkAlerts();
+    } else {
+      showToast("Eroare: " + (body.error || "necunoscuta"));
+    }
+  } catch (e) {
+    showToast("Actualizare esuata: " + (e.message || "eroare retea"));
+  }
+  btn.disabled = false;
+  btn.textContent = "\uD83D\uDD04 Actualizeaza acum";
+}
+
 async function checkAlerts() {
   // Afiseaza cache-ul existent imediat (vizibil chiar offline)
   try {
