@@ -1809,6 +1809,48 @@ function showAppInfo() {
   );
 }
 
+// Buton update fortat — goleste cache SW + localStorage + reload
+function forceAppUpdate() {
+  var btn = document.getElementById("btnUpdate");
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = "\u231B";
+  }
+  var tasks = [];
+  if ("caches" in window) {
+    tasks.push(
+      caches.keys().then(function (names) {
+        return Promise.all(
+          names.map(function (n) {
+            return caches.delete(n);
+          }),
+        );
+      }),
+    );
+  }
+  if ("serviceWorker" in navigator) {
+    tasks.push(
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        return Promise.all(
+          regs.map(function (r) {
+            return r.unregister();
+          }),
+        );
+      }),
+    );
+  }
+  try {
+    localStorage.removeItem("livada-alerts-cache");
+  } catch (e) {}
+  Promise.all(tasks)
+    .then(function () {
+      window.location.reload();
+    })
+    .catch(function () {
+      window.location.reload();
+    });
+}
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/sw.js", {
