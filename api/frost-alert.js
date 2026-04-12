@@ -23,15 +23,23 @@ export default async function handler(req) {
 
   try {
     const kv = Redis.fromEnv();
-    const [frost, disease] = await Promise.all([
+    const [frost, disease, wind, heat, rain, drought] = await Promise.all([
       withTimeout(kv.get("livada:frost-alert"), 5000).catch(() => null),
       withTimeout(kv.get("livada:disease-risk"), 5000).catch(() => null),
+      withTimeout(kv.get("livada:alert-wind"), 5000).catch(() => null),
+      withTimeout(kv.get("livada:alert-heat"), 5000).catch(() => null),
+      withTimeout(kv.get("livada:alert-rain"), 5000).catch(() => null),
+      withTimeout(kv.get("livada:alert-drought"), 5000).catch(() => null),
     ]);
 
     return Response.json(
       {
         frost: frost || { active: false },
         disease: disease || { active: false },
+        wind: wind || { active: false },
+        heat: heat || { active: false },
+        rain: rain || { active: false },
+        drought: drought || { active: false },
       },
       {
         headers: {
@@ -43,7 +51,14 @@ export default async function handler(req) {
   } catch (err) {
     // Graceful fallback when KV not provisioned or unavailable
     return Response.json(
-      { frost: { active: false }, disease: { active: false } },
+      {
+        frost: { active: false },
+        disease: { active: false },
+        wind: { active: false },
+        heat: { active: false },
+        rain: { active: false },
+        drought: { active: false },
+      },
       { headers: corsHeaders(req) },
     );
   }

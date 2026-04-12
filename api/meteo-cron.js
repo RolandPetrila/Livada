@@ -2,8 +2,12 @@ import { Redis } from "@upstash/redis";
 
 export const config = { runtime: "edge" };
 
-const LAT = 46.17;
-const LON = 20.75;
+// F8.3: Coordonate GPS exacte livada (confirmate Roland 2026-04-12)
+const LAT = 46.164779;
+const LON = 20.716786;
+
+// F8.2: Prag frost ajustat +1.5°C pt microclimat Mures (livada la ~270m de rau)
+const FROST_THRESHOLD = 3.5;
 
 const WMO_CODES = {
   0: "Cer senin",
@@ -94,7 +98,7 @@ export default async function handler(req) {
 
   try {
     // F3.1 — URL extins cu apparent_temperature, cloud_cover, dew_point_2m, precipitation_probability
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&hourly=temperature_2m,apparent_temperature,precipitation,precipitation_probability,relative_humidity_2m,weather_code,uv_index,soil_moisture_0_to_1cm,cloud_cover,dew_point_2m&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_min,precipitation_sum,weather_code,uv_index_max,et0_fao_evapotranspiration&timezone=Europe/Bucharest&forecast_days=5`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&hourly=temperature_2m,apparent_temperature,precipitation,precipitation_probability,relative_humidity_2m,weather_code,uv_index,soil_moisture_0_to_1cm,cloud_cover,dew_point_2m,wind_gusts_10m&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_min,precipitation_sum,weather_code,uv_index_max,et0_fao_evapotranspiration,wind_gusts_10m_max&timezone=Europe/Bucharest&forecast_days=5`;
 
     let meteoRes, lastMeteoError;
     for (let attempt = 0; attempt < 2; attempt++) {
@@ -171,14 +175,15 @@ export default async function handler(req) {
     }
     await kv.set("livada:meteo:history", history);
 
-    // F3.1 — Frost alert (March–May): foloseste apparent_temperature + cloud_cover + dew_point
+    // F8.2: Frost alert (March–May): apparent_temperature + cloud_cover + dew_point
+    // Varianta A: skip ore trecute, salveaza frostHour, prag FROST_THRESHOLD (microclimat Mures)
     const month = new Date().getMonth() + 1;
+    const nowMs = Date.now();
     let frostAlert = { active: false, updatedAt: new Date().toISOString() };
 
     if (month >= 3 && month <= 5 && data.hourly?.temperature_2m) {
       const apparentTemps =
         data.hourly.apparent_temperature || data.hourly.temperature_2m;
-      const temps = data.hourly.temperature_2m;
       const cloudCovers = data.hourly.cloud_cover || [];
       const dewPoints = data.hourly.dew_point_2m || [];
       const times = data.hourly.time;
@@ -188,11 +193,13 @@ export default async function handler(req) {
         frostCloudless = false,
         frostDewPoint = null;
       for (let i = 0; i < apparentTemps.length; i++) {
+        // Varianta A: skip ore deja trecute — nu crea alerte pt frost din trecut
+        if (new Date(times[i]).getTime() < nowMs) continue;
         const apparentTemp = apparentTemps[i];
         const dewPoint = dewPoints[i] ?? null;
         const cloudCover = cloudCovers[i] ?? 100;
         const frostRisk =
-          apparentTemp < 2 || (dewPoint !== null && dewPoint < 0);
+          apparentTemp < FROST_THRESHOLD || (dewPoint !== null && dewPoint < 0);
         if (frostRisk && apparentTemp < worstApparent) {
           worstApparent = apparentTemp;
           frostTime = times[i];
@@ -203,6 +210,7 @@ export default async function handler(req) {
 
       if (worstApparent < Infinity) {
         const frostDate = frostTime.split("T")[0];
+        const frostHourStr = frostTime.split("T")[1]?.slice(0, 5) || "";
         const cerinaSen = frostCloudless ? " — cer senin, risc de bruma!" : "";
         const dewMsg =
           frostDewPoint !== null && frostDewPoint < 0
@@ -212,7 +220,8 @@ export default async function handler(req) {
           active: true,
           minTemp: Math.round(worstApparent * 10) / 10,
           date: frostDate,
-          message: `Inghet prognozat: ${Math.round(worstApparent)}°C (perceput) pe ${frostDate}${cerinaSen}${dewMsg} Protejeaza pomii sensibili (piersic, cais, migdal, rodiu)!`,
+          frostHour: frostTime,
+          message: `Inghet prognozat: ${Math.round(worstApparent)}°C (perceput) pe ${frostDate} la ~${frostHourStr}${cerinaSen}${dewMsg} Protejeaza pomii sensibili (piersic, cais, migdal, rodiu)!`,
           updatedAt: new Date().toISOString(),
         };
       }
@@ -225,7 +234,8 @@ export default async function handler(req) {
       const dailyDates = data.daily.time || [];
       const dailyApparent = data.daily.apparent_temperature_min;
       dailyDates.forEach(function (date, i) {
-        if ((dailyApparent[i] ?? 99) < 2) frostNights.push(date);
+        if (date < today) return; // skip zile trecute
+        if ((dailyApparent[i] ?? 99) < FROST_THRESHOLD) frostNights.push(date);
       });
       if (frostNights.length >= 2) {
         consecutiveFrostMsg =
@@ -265,11 +275,44 @@ export default async function handler(req) {
       }
     }
 
-    // Prepare all Redis writes for batching
-    const redisWrites = [
-      kv.set("livada:meteo:history", history),
-      kv.set("livada:frost-alert", frostAlert),
-    ];
+    // F8.3: Multi-model frost consensus (ICON-EU, ECMWF, GFS)
+    if (month >= 3 && month <= 5 && frostAlert.active) {
+      try {
+        const mmUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=apparent_temperature&forecast_days=2&timezone=Europe/Bucharest&models=icon_seamless,ecmwf_ifs025,gfs_seamless`;
+        const mmCtrl = new AbortController();
+        const mmTimer = setTimeout(() => mmCtrl.abort(), 5000);
+        const mmRes = await fetch(mmUrl, { signal: mmCtrl.signal });
+        clearTimeout(mmTimer);
+        if (mmRes.ok) {
+          const mmData = await mmRes.json();
+          const models = ["icon_seamless", "ecmwf_ifs025", "gfs_seamless"];
+          let modelsFrost = 0;
+          const mmTimes = mmData.hourly?.time || [];
+          for (const model of models) {
+            const key = `apparent_temperature_${model}`;
+            const temps = mmData.hourly?.[key] || [];
+            for (let i = 0; i < temps.length; i++) {
+              if (new Date(mmTimes[i]).getTime() < nowMs) continue;
+              if (temps[i] < FROST_THRESHOLD) {
+                modelsFrost++;
+                break;
+              }
+            }
+          }
+          const confidence =
+            modelsFrost >= 3
+              ? "cert"
+              : modelsFrost >= 2
+                ? "probabil"
+                : "posibil";
+          frostAlert.confidence = confidence;
+          frostAlert.modelsAgree = modelsFrost;
+          frostAlert.message += ` [${confidence.toUpperCase()} — ${modelsFrost}/3 modele]`;
+        }
+      } catch {
+        // Multi-model e optional — daca esueaza, alerta ramane fara confidence
+      }
+    }
 
     // Disease risk (next 48h): rain + warm + humid + probability > 50%
     let diseaseRisk = { active: false, updatedAt: new Date().toISOString() };
@@ -295,7 +338,109 @@ export default async function handler(req) {
         };
       }
     }
-    redisWrites.push(kv.set("livada:disease-risk", diseaseRisk));
+
+    // F8.2: Wind alert — rafale >= 50 km/h
+    let windAlert = { active: false, updatedAt: new Date().toISOString() };
+    if (data.hourly?.wind_gusts_10m) {
+      const gusts = data.hourly.wind_gusts_10m;
+      const hTimes = data.hourly.time;
+      let maxGust = 0,
+        gustTime = "";
+      for (let i = 0; i < gusts.length; i++) {
+        if (new Date(hTimes[i]).getTime() < nowMs) continue;
+        if ((gusts[i] ?? 0) > maxGust) {
+          maxGust = gusts[i];
+          gustTime = hTimes[i];
+        }
+      }
+      if (maxGust >= 50) {
+        const gustDate = gustTime.split("T")[0];
+        const gustHourStr = gustTime.split("T")[1]?.slice(0, 5) || "";
+        windAlert = {
+          active: true,
+          maxGust: Math.round(maxGust),
+          date: gustDate,
+          alertHour: gustTime,
+          message: `Rafale puternice: ${Math.round(maxGust)} km/h pe ${gustDate} la ~${gustHourStr}. Verifica pomii tineri si spalierele!`,
+          updatedAt: new Date().toISOString(),
+        };
+      }
+    }
+
+    // F8.2: Heat alert — maxima zilnica >= 35°C
+    let heatAlert = { active: false, updatedAt: new Date().toISOString() };
+    if (data.daily?.temperature_2m_max) {
+      for (let i = 0; i < data.daily.temperature_2m_max.length; i++) {
+        const hDate = data.daily.time[i];
+        if (hDate < today) continue;
+        if (data.daily.temperature_2m_max[i] >= 35) {
+          heatAlert = {
+            active: true,
+            maxTemp: Math.round(data.daily.temperature_2m_max[i] * 10) / 10,
+            date: hDate,
+            message: `Canicula: ${Math.round(data.daily.temperature_2m_max[i])}°C maxima pe ${hDate}. Iriga pomii dimineata devreme sau seara!`,
+            updatedAt: new Date().toISOString(),
+          };
+          break;
+        }
+      }
+    }
+
+    // F8.2: Rain alert — precipitatii >= 20mm/zi
+    let rainAlert = { active: false, updatedAt: new Date().toISOString() };
+    if (data.daily?.precipitation_sum) {
+      for (let i = 0; i < data.daily.precipitation_sum.length; i++) {
+        const rDate = data.daily.time[i];
+        if (rDate < today) continue;
+        if (data.daily.precipitation_sum[i] >= 20) {
+          rainAlert = {
+            active: true,
+            amount: Math.round(data.daily.precipitation_sum[i] * 10) / 10,
+            date: rDate,
+            message: `Ploaie abundenta: ${Math.round(data.daily.precipitation_sum[i])} mm pe ${rDate}. Risc eroziune si inec radacini!`,
+            updatedAt: new Date().toISOString(),
+          };
+          break;
+        }
+      }
+    }
+
+    // F8.2: Drought alert — ET0 ridicat + lipsa ploaie + sol uscat
+    let droughtAlert = {
+      active: false,
+      updatedAt: new Date().toISOString(),
+    };
+    if (
+      data.daily?.et0_fao_evapotranspiration &&
+      data.daily?.precipitation_sum
+    ) {
+      const totalRain5d = data.daily.precipitation_sum.reduce(
+        (s, v) => s + (v || 0),
+        0,
+      );
+      const maxEt0 = Math.max(...data.daily.et0_fao_evapotranspiration);
+      if (maxEt0 > 5 && totalRain5d < 5 && smAvg !== null && smAvg < 0.15) {
+        droughtAlert = {
+          active: true,
+          et0: Math.round(maxEt0 * 10) / 10,
+          soilMoisture: smAvg,
+          totalRain: Math.round(totalRain5d * 10) / 10,
+          message: `Stres hidric posibil! ET0 ${Math.round(maxEt0 * 10) / 10} mm/zi, ploaie doar ${Math.round(totalRain5d)} mm in 5 zile. Iriga pomii tineri si fructiferi!`,
+          updatedAt: new Date().toISOString(),
+        };
+      }
+    }
+
+    // Prepare all Redis writes for batching
+    const redisWrites = [
+      kv.set("livada:meteo:history", history),
+      kv.set("livada:frost-alert", frostAlert),
+      kv.set("livada:disease-risk", diseaseRisk),
+      kv.set("livada:alert-wind", windAlert),
+      kv.set("livada:alert-heat", heatAlert),
+      kv.set("livada:alert-rain", rainAlert),
+      kv.set("livada:alert-drought", droughtAlert),
+    ];
 
     // F3.3 — Yr.no: compara cu Open-Meteo, salveaza avertizare divergenta
     const yrnoMin = await fetchYrnoMin();
@@ -326,7 +471,7 @@ export default async function handler(req) {
       }),
     );
 
-    // Batch all Redis operations: 1 RTT instead of 5–7
+    // Batch all Redis operations
     await Promise.all(redisWrites);
 
     return Response.json({
@@ -334,8 +479,13 @@ export default async function handler(req) {
       date: today,
       temp: data.current.temperature_2m,
       frostAlert: frostAlert.active,
+      frostConfidence: frostAlert.confidence || null,
       frostConsecutive: !!consecutiveFrostMsg,
       diseaseRisk: diseaseRisk.active,
+      windAlert: windAlert.active,
+      heatAlert: heatAlert.active,
+      rainAlert: rainAlert.active,
+      droughtAlert: droughtAlert.active,
       yrnoMin,
     });
   } catch (err) {

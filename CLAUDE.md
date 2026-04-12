@@ -194,7 +194,7 @@ Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier com
 Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V2.md` — plan complet V2.
 **Faze 1-6 + Runda 9+10 + V2 (F0-F6) implementate (170+ items total).**
 V2 implementat: F0.1-F0.2 (header+badges), F1.1-F1.5 (logging+debug+error handling+cron monitor), F2.1-F2.2 (AI badges+model indicator), F3.1-F3.3 (apparent_temp+multi-noapte+Yr.no), F4.1-F4.2 (preferModel+Cerebras alternativa), F5.2 (SW log), F6.1-F6.5 (calendar predictiv+offline journal+CSV+rezumat saptamanal+push frost).
-**Ramase:** F4.3 (comparator full, SCAZUTA), F7.1-F7.3 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere).
+**Ramase:** F4.3 (comparator full, SCAZUTA), F7.1-F7.3 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere), F8.1-F8.3 (sistem alerte v2, coordonate exacte, IoT senzor pending).
 
 **Decizii inchise (2026-04-11):**
 
@@ -204,3 +204,15 @@ V2 implementat: F0.1-F0.2 (header+badges), F1.1-F1.5 (logging+debug+error handli
 ## Audit findings — actiuni amanate
 
 - **H1 CSP `unsafe-inline`** (audit 2026-04-11, severitate HIGH teoretica) — migrare amanata dupa stabilizare V2. Plan detaliat salvat in `.claude-outputs/CSP_MIGRATION_PLAN.md` (Optiunea B — hash-based CSP, 6–8h implementare). Justificare: DOMPurify e deja strat de protectie activ, risc real mic pentru un site obscur, nu merita introdusa complexitate build pipeline in plin V2 development. A se relua dupa F7 decis.
+
+## Localizare Livada (confirmat 2026-04-12)
+
+| Locatie                    | Latitudine | Longitudine | Elevatie |
+| -------------------------- | ---------- | ----------- | -------- |
+| **Livada**                 | 46.164779  | 20.716786   | 89m      |
+| **Mures (punct apropiat)** | 46.162820  | 20.714802   | 88m      |
+
+- **Distanta livada→Mures:** ~270m (GPS calculat)
+- **Elevatie relativa:** livada usor mai sus (+3-5m estimat) — teren de lunca, nu depresiune
+- **Microclimat:** umiditate ridicata, risc frost majorat cu -1.5°C fata de prognoza generica
+- **Coordonate vechi (centrul Nadlac):** 46.17, 20.75 — diferenta ~2.6 km fata de locatia reala

@@ -3830,44 +3830,73 @@ async function syncDeleteJournal(id) {
 // ====== FROST & DISEASE ALERTS ======
 var ALERTS_CACHE_KEY = "livada-alerts-cache";
 
-// Fix alerte stale: verifica daca data frost alert e trecuta (vs. ziua locala Romania).
-// Alerte pentru zilele trecute nu mai sunt relevante — cronul ruleaza 1x/zi si Redis
-// poate contine prognoza de noaptea precedenta cand user-ul deschide app dimineata.
-function isFrostAlertStale(frost) {
-  if (!frost || !frost.active) return true;
-  if (!frost.date) return false; // fara data → tratam ca relevant (backward compat)
-  return frost.date < todayLocal();
+// F8.2: Verifica daca o alerta e stale (trecuta).
+// Varianta A: daca are frostHour/alertHour, compara cu ora curenta + 2h buffer.
+// Fallback: comparatie la nivel de zi (backward compat).
+function isAlertStale(alert) {
+  if (!alert || !alert.active) return true;
+  if (!alert.date) return false; // fara data → tratam ca relevant (backward compat)
+  var alertTime = alert.frostHour || alert.alertHour;
+  if (alertTime) {
+    var alertMs = new Date(alertTime).getTime();
+    if (!isNaN(alertMs)) {
+      return Date.now() > alertMs + 2 * 60 * 60 * 1000; // 2h buffer
+    }
+  }
+  return alert.date < todayLocal();
+}
+var isFrostAlertStale = isAlertStale; // backward compat
+
+function applyAlertBanner(alertData, textId, bannerId, title, key) {
+  if (alertData && alertData.active && !isAlertStale(alertData)) {
+    var t = document.getElementById(textId);
+    var b = document.getElementById(bannerId);
+    if (t) t.textContent = alertData.message;
+    if (b) b.classList.add("active");
+    sendLivadaNotification(title, alertData.message || title, key);
+  } else {
+    var bh = document.getElementById(bannerId);
+    if (bh) bh.classList.remove("active");
+  }
 }
 
 function applyAlerts(data) {
-  if (data.frost && data.frost.active && !isFrostAlertStale(data.frost)) {
-    var ft = document.getElementById("frostText");
-    var fb = document.getElementById("frostBanner");
-    if (ft) ft.textContent = data.frost.message;
-    if (fb) fb.classList.add("active");
-    // II2: Push notification inghet
-    sendLivadaNotification(
-      "Alerta inghet",
-      data.frost.message || "Risc de inghet in zona Nadlac!",
-      "frost",
-    );
-  } else {
-    // Ascunde banner-ul daca alerta e stale sau inactiva
-    var fbHide = document.getElementById("frostBanner");
-    if (fbHide) fbHide.classList.remove("active");
-  }
-  if (data.disease && data.disease.active) {
-    var dt = document.getElementById("diseaseText");
-    var db = document.getElementById("diseaseBanner");
-    if (dt) dt.textContent = data.disease.message;
-    if (db) db.classList.add("active");
-    // II2: Push notification boala
-    sendLivadaNotification(
-      "Alerta boala",
-      data.disease.message || "Conditii favorabile pentru boli fungice!",
-      "disease",
-    );
-  }
+  applyAlertBanner(
+    data.frost,
+    "frostText",
+    "frostBanner",
+    "Alerta inghet",
+    "frost",
+  );
+  applyAlertBanner(
+    data.disease,
+    "diseaseText",
+    "diseaseBanner",
+    "Alerta boala",
+    "disease",
+  );
+  applyAlertBanner(data.wind, "windText", "windBanner", "Alerta vant", "wind");
+  applyAlertBanner(
+    data.heat,
+    "heatText",
+    "heatBanner",
+    "Alerta canicula",
+    "heat",
+  );
+  applyAlertBanner(
+    data.rain,
+    "rainText",
+    "rainBanner",
+    "Alerta ploaie",
+    "rain",
+  );
+  applyAlertBanner(
+    data.drought,
+    "droughtText",
+    "droughtBanner",
+    "Alerta seceta",
+    "drought",
+  );
 }
 
 // II2: Notification API helper
@@ -4367,7 +4396,7 @@ async function initDashboardAzi() {
       var data = await alertRes.value.json();
       _frostDataForCalendar = data;
       var frostRelevant =
-        data.frost && data.frost.active && !isFrostAlertStale(data.frost);
+        data.frost && data.frost.active && !isAlertStale(data.frost);
       if (frostRelevant) {
         html +=
           '<div class="alert alert-danger">\u2744\uFE0F ' +
@@ -4391,7 +4420,34 @@ async function initDashboardAzi() {
           '<div class="alert alert-warning" style="margin-top:8px;">\u26A0\uFE0F ' +
           escapeHtml(data.disease.message) +
           "</div>";
-      if (!frostRelevant && !data.disease?.active)
+      if (data.wind && data.wind.active && !isAlertStale(data.wind))
+        html +=
+          '<div class="alert alert-info" style="margin-top:8px;">\uD83D\uDCA8 ' +
+          escapeHtml(data.wind.message) +
+          "</div>";
+      if (data.heat && data.heat.active && !isAlertStale(data.heat))
+        html +=
+          '<div class="alert alert-danger" style="margin-top:8px;">\uD83C\uDF21\uFE0F ' +
+          escapeHtml(data.heat.message) +
+          "</div>";
+      if (data.rain && data.rain.active && !isAlertStale(data.rain))
+        html +=
+          '<div class="alert alert-info" style="margin-top:8px;">\uD83C\uDF27\uFE0F ' +
+          escapeHtml(data.rain.message) +
+          "</div>";
+      if (data.drought && data.drought.active && !isAlertStale(data.drought))
+        html +=
+          '<div class="alert alert-warning" style="margin-top:8px;">\u2600\uFE0F ' +
+          escapeHtml(data.drought.message) +
+          "</div>";
+      var anyActive =
+        frostRelevant ||
+        data.disease?.active ||
+        (data.wind?.active && !isAlertStale(data.wind)) ||
+        (data.heat?.active && !isAlertStale(data.heat)) ||
+        (data.rain?.active && !isAlertStale(data.rain)) ||
+        (data.drought?.active && !isAlertStale(data.drought));
+      if (!anyActive)
         html =
           '<p style="color:var(--accent);">\u2705 Nicio alert\u0103. Totul e \u00EEn regul\u0103!</p>';
     } else {

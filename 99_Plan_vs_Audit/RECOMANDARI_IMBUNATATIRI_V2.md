@@ -912,34 +912,109 @@ Conform CLAUDE.md: „Ramase: Faza 7 (strategic: II3 servicii locale, V3 doza ca
 
 ## MATRICE PRIORITATI SI EFORT
 
-| ID   | Descriere                       | Prioritate  | Efort | Dependente | Urgenta      |
-| ---- | ------------------------------- | ----------- | ----- | ---------- | ------------ |
-| F3.4 | CRON_SECRET in Vercel           | CRITICA     | XS    | —          | Azi          |
-| F3.1 | Frost alert cu apparent_temp    | CRITICA     | M     | —          | Azi-noapte   |
-| F0.1 | Ora in header                   | INALTA      | XS    | —          | Imediat      |
-| F0.2 | Badge-uri vizibile diagnose/ask | INALTA      | XS    | —          | Imediat      |
-| F5.1 | Auth bypass fix                 | INALTA      | XS    | —          | Imediat      |
-| F1.1 | Event Log Engine                | INALTA      | S     | —          | Sesiunea urm |
-| F1.3 | Instrumentare AI                | INALTA      | M     | F1.1       | Sesiunea urm |
-| F2.1 | Badge-uri complete              | INALTA      | S     | F0.2       | Sesiunea urm |
-| F2.2 | Model indicator post-raspuns    | INALTA      | S     | F1.3       | Sesiunea urm |
-| F3.2 | Alert multi-noapte consecutive  | INALTA      | M     | F3.1       | Sesiunea urm |
-| F6.1 | Calendar tratamente predictiv   | INALTA      | L     | F3.1       | Planificat   |
-| F1.2 | Debug Panel                     | MEDIE       | M     | F1.1       | Planificat   |
-| F1.4 | Error handling functii          | MEDIE       | S     | F1.1       | Planificat   |
-| F1.5 | Monitor cron meteo UI           | MEDIE       | S     | —          | Planificat   |
-| F3.3 | Yr.no sursa secundara           | MEDIE       | M     | F3.1       | Planificat   |
-| F4.1 | preferModel backend             | MEDIE       | M     | —          | Planificat   |
-| F4.2 | Cere alternativa button         | MEDIE       | M     | F4.1       | Planificat   |
-| F6.2 | Jurnal offline IndexedDB        | MEDIE       | L     | —          | Planificat   |
-| F6.3 | Export CSV jurnal               | MEDIE       | S     | —          | Planificat   |
-| F6.4 | Rezumat meteo saptamanal        | MEDIE       | S     | F3.4       | Planificat   |
-| F5.2 | SW update notification          | SCAZUTA     | S     | —          | Planificat   |
-| F4.3 | Comparator + raport diferente   | SCAZUTA     | L     | F4.2       | Planificat   |
-| F6.5 | Notificari Push frost           | SCAZUTA     | S     | —          | Planificat   |
-| F7.1 | Servicii locale Nadlac          | DE DISCUTAT | M     | —          | Planificat   |
-| F7.2 | Calculator doza tratamente      | PLANIFICAT  | M     | —          | Planificat   |
-| F7.3 | Harta livada                    | PLANIFICAT  | L     | —          | Planificat   |
+| ID   | Descriere                       | Prioritate  | Efort | Dependente | Urgenta            |
+| ---- | ------------------------------- | ----------- | ----- | ---------- | ------------------ |
+| F3.4 | CRON_SECRET in Vercel           | CRITICA     | XS    | —          | Azi                |
+| F3.1 | Frost alert cu apparent_temp    | CRITICA     | M     | —          | Azi-noapte         |
+| F0.1 | Ora in header                   | INALTA      | XS    | —          | Imediat            |
+| F0.2 | Badge-uri vizibile diagnose/ask | INALTA      | XS    | —          | Imediat            |
+| F5.1 | Auth bypass fix                 | INALTA      | XS    | —          | Imediat            |
+| F1.1 | Event Log Engine                | INALTA      | S     | —          | Sesiunea urm       |
+| F1.3 | Instrumentare AI                | INALTA      | M     | F1.1       | Sesiunea urm       |
+| F2.1 | Badge-uri complete              | INALTA      | S     | F0.2       | Sesiunea urm       |
+| F2.2 | Model indicator post-raspuns    | INALTA      | S     | F1.3       | Sesiunea urm       |
+| F3.2 | Alert multi-noapte consecutive  | INALTA      | M     | F3.1       | Sesiunea urm       |
+| F6.1 | Calendar tratamente predictiv   | INALTA      | L     | F3.1       | Planificat         |
+| F1.2 | Debug Panel                     | MEDIE       | M     | F1.1       | Planificat         |
+| F1.4 | Error handling functii          | MEDIE       | S     | F1.1       | Planificat         |
+| F1.5 | Monitor cron meteo UI           | MEDIE       | S     | —          | Planificat         |
+| F3.3 | Yr.no sursa secundara           | MEDIE       | M     | F3.1       | Planificat         |
+| F4.1 | preferModel backend             | MEDIE       | M     | —          | Planificat         |
+| F4.2 | Cere alternativa button         | MEDIE       | M     | F4.1       | Planificat         |
+| F6.2 | Jurnal offline IndexedDB        | MEDIE       | L     | —          | Planificat         |
+| F6.3 | Export CSV jurnal               | MEDIE       | S     | —          | Planificat         |
+| F6.4 | Rezumat meteo saptamanal        | MEDIE       | S     | F3.4       | Planificat         |
+| F5.2 | SW update notification          | SCAZUTA     | S     | —          | Planificat         |
+| F4.3 | Comparator + raport diferente   | SCAZUTA     | L     | F4.2       | Planificat         |
+| F6.5 | Notificari Push frost           | SCAZUTA     | S     | —          | Planificat         |
+| F7.1 | Servicii locale Nadlac          | DE DISCUTAT | M     | —          | Planificat         |
+| F7.2 | Calculator doza tratamente      | PLANIFICAT  | M     | —          | Planificat         |
+| F7.3 | Harta livada                    | PLANIFICAT  | L     | —          | Planificat         |
+| F8.1 | Senzor IoT local livada         | TODO        | L     | Hardware   | Pending            |
+| F8.2 | Sistem alerte complet v2        | CONFIRMAT   | L     | F8.3       | Urmatoarea sesiune |
+| F8.3 | Coordonate exacte + multi-model | CONFIRMAT   | S     | —          | Urmatoarea sesiune |
+
+---
+
+## FAZA 8 — Sistem Alerte v2 + Localizare Exacta + IoT (confirmat Roland 2026-04-12)
+
+### F8.1 — Senzor Local IoT (TODO / PENDING)
+
+**Descriere:** Instalare senzor de temperatura si umiditate direct in livada pentru date meteo REALE, nu prognozate. Cel mai precis mod de detectare frost, compensand limitarile prognozei (~1-7km rezolutie grid).
+
+**Context:** Livada este la ~270m de raul Mures (coordonate GPS verificate). Microclima de lunca poate diferi cu 2-4°C fata de prognoza generica. Un senzor local elimina aceasta incertitudine.
+
+**Optiuni hardware (de evaluat):**
+
+| Optiune                                     | Cost estimat | Comunicare               | Autonomie             |
+| ------------------------------------------- | ------------ | ------------------------ | --------------------- |
+| Xiaomi Temp & Humidity Sensor + Gateway BLE | ~50-80 lei   | Bluetooth/WiFi → cloud   | Baterie CR2032, ~1 an |
+| ESP32 + DHT22 (DIY)                         | ~30-50 lei   | WiFi direct → API custom | Alimentare USB/solar  |
+| Senzor LoRaWAN + Gateway                    | ~150-300 lei | Radio lung → TTN/Helium  | Baterie, 2+ ani       |
+| Statie meteo WiFi (ex: Ecowitt)             | ~200-400 lei | WiFi → ecowitt.net API   | Alimentare solara     |
+
+**Integrare cu dashboard-ul:**
+
+- API endpoint nou: `/api/sensor-data` — citeste ultimele valori de la senzor
+- Afisare in tab "Azi": temperatura REALA vs prognoza
+- Alerte bazate pe date REALE, nu prognozate — precizie maxima
+- Fallback pe prognoza Open-Meteo daca senzorul e offline
+
+**Status:** TODO — necesita achizitie hardware + decizie Roland pe optiune
+**Efort:** L (hardware setup + software integration)
+**Prioritate:** PENDING — proiect separat, se poate face oricand independent de F8.2/F8.3
+
+---
+
+### F8.2 — Sistem Alerte Complet v2
+
+**Descriere:** Upgrade complet al sistemului de alerte: fix stale alerts + alerte noi (vant, canicula, ploaie, seceta) + afisare ora + offset microclimat Mures.
+
+**Componente confirmate Roland (2026-04-12):**
+
+1. **Fix alerte stale (Varianta A):** filtrare ore trecute in cron + expiry pe ora in frontend
+2. **Alerte noi:** vant puternic, canicula, ploaie torentiala, seceta (din date Open-Meteo existente)
+3. **Ora in alerta:** afisare ora aproximativa a pericolului
+4. **Offset microclimat Mures:** corectie -1.5°C prag frost (livada la 270m de rau, zona lunca)
+
+**Fisiere afectate:** `api/meteo-cron.js`, `public/app.js`, `public/index.html`
+**Efort:** L
+**Dependente:** F8.3 (coordonate corecte)
+**Status:** CONFIRMAT — implementare in urmatoarea sesiune
+
+---
+
+### F8.3 — Coordonate Exacte + Multi-Model Meteo
+
+**Descriere:** Actualizare coordonate GPS la locatia reala a livezii + activare multi-model (3 modele meteo = prognoza mai fiabila).
+
+**Date GPS (confirmate Roland 2026-04-12):**
+
+| Locatie                         | Latitudine | Longitudine | Elevatie |
+| ------------------------------- | ---------- | ----------- | -------- |
+| Livada (ACTUAL)                 | 46.164779  | 20.716786   | 89m      |
+| Livada (VECHI — centrul Nadlac) | 46.17      | 20.75       | ~88m     |
+| Mures (cel mai apropiat punct)  | 46.162820  | 20.714802   | 88m      |
+
+**Diferenta fata de coordonatele vechi:** ~2.6 km vest — semnificativ la rezolutia gridului meteo.
+**Distanta livada→Mures:** ~270m (calculat GPS, nu 500m cum se estima initial).
+**Elevatie:** Livada +1m fata de Mures (grid 90m DEM). In realitate probabil +3-5m (livada pe teren usor mai ridicat decat lunca).
+
+**Multi-model:** Open-Meteo permite cererea simultana de la 3 modele (ICON-EU, ECMWF IFS, GFS). Daca 2/3 indica frost → alerta certa. Daca 1/3 → alerta cu mentiunea "incert".
+
+**Fisiere afectate:** `api/meteo-cron.js` (coordonate + URL API multi-model)
+**Efort:** S
+**Status:** CONFIRMAT
 
 ---
 
@@ -950,7 +1025,7 @@ Conform CLAUDE.md: „Ramase: Faza 7 (strategic: II3 servicii locale, V3 doza ca
 | Fragmentare `index.html` in componente | Contravine regulii „Single HTML" din CLAUDE.md (offline-first, PWA)   |
 | Migrare la TypeScript                  | Zero biblioteci — proiectul foloseste vanilla JS intentionat          |
 | ERP local (stoc, vanzari)              | Out of scope sesiune curenta, necesita decizie arhitecturala separata |
-| IoT sensors (Zigbee/LoRaWAN)           | [INCERT] — far future, necesita hardware fizic                        |
+| ~~IoT sensors (Zigbee/LoRaWAN)~~       | **Mutat la F8.1 — TODO/PENDING (decizie Roland 2026-04-12)**          |
 
 ---
 

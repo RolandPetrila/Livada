@@ -1,23 +1,12 @@
-Prognoza actualizată pentru Nădlac, județul Arad, confirmă o perioadă de nopți deosebit de reci, cu un risc iminent de îngheț în următoarele 48 de ore.
-## Nopți cu risc de îngheț
-Datele actualizate de la mai multe surse indică următoarele intervale critice:
+1. 46.164779, 20.716786 Oraș Nădlac livada 
+https://maps.app.goo.gl/tKmj2gGpVaJjQWcz9
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1075.5940410130336!2d20.71706640303789!3d46.16475138903561!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sro!2sro!4v1775998636082!5m2!1sro!2sro" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+link - https://www.google.com/maps/@46.1649405,20.7163858,165m/data=!3m1!1e3?authuser=0&entry=ttu&g_ep=EgoyMDI2MDQwOC4wIKXMDSoASAFQAw%3D%3D  din care am facut captura ecran cu livada marcata in cu un chenar - Poza_Info.png
 
-* Noaptea de Joi spre Vineri (9 - 10 aprilie): Temperaturile vor scădea până la pragul de îngheț. [AccuWeather](https://www.accuweather.com/ro/ro/nadlac/276010/daily-weather-forecast/276010) prognozează o minimă de 0°C (32°F), în timp ce [Yr.no](https://www.yr.no/en/forecast/daily-table/2-672546/Romania/Arad%20County/Ora%C5%9F%20N%C3%A3dlac/N%C4%83dlac) estimează chiar 0°C sau ușor peste. Este foarte probabil să se formeze brumă.
-* Noaptea de Vineri spre Sâmbătă (10 - 11 aprilie): Aceasta rămâne o noapte critică, cu minime prognozate între 0°C și 1°C. Yr.no indică o minimă de 1°C, ceea ce la nivelul solului poate însemna îngheț.
-* Noaptea de Sâmbătă spre Duminică (11 - 12 aprilie): Riscul scade ușor, dar temperaturile rămân scăzute, în jurul a 1°C - 3°C, menținând pericolul pentru plantele foarte sensibile.
+2. 46.162820, 20.714802 Mures in apropiere de livada , aproximativ 500 metri, muresul este mai in jos decaat livada . verifica diferenta conform coordonate ! 
 
-## Evoluția temperaturilor pe surse (9 - 15 aprilie)
+3. toate alertele mentionate de tine le vreau
 
-| Sursa | Joi (09.04) | Vineri (10.04) | Sâmbătă (11.04) | Duminică (12.04) | Luni (13.04) |
-|---|---|---|---|---|---|
-| AccuWeather | 11°C / 0°C | 12°C / 0°C | 15°C / 4°C | 16°C / 4°C | 18°C / 6°C |
-| Yr.no | 11°C / 2°C | 10°C / 0°C | 12°C / 0°C | 14°C / 1°C | 14°C / 3°C |
-| Weather.com | 12°C / 3°C | 11°C / 2°C | 14°C / 4°C | 16°C / 5°C | 21°C / 7°C |
+4. conform ca vreau multi-model
 
-## Detalii importante
-
-* Vântul: În noaptea de joi, vântul va sufla din sector nordic, accentuând senzația de frig (RealFeel® de aproximativ -1°C conform AccuWeather).
-* Precipitații: Sunt prognozate șanse de ploaie (aprox. 60%) în cursul zilei de joi, 9 aprilie, ceea ce ar putea crește umiditatea și favoriza depunerea brumei odată cu limpezirea cerului în timpul nopții.
-* Încălzire: Începând de luni, 13 aprilie, temperaturile nocturne vor crește constant peste 5°C, eliminând riscul de îngheț pentru restul săptămânii viitoare.
-
-
+5 de acord 

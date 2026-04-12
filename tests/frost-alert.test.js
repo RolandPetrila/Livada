@@ -1,7 +1,7 @@
-// Unit tests pentru helper-ul isFrostAlertStale din public/app.js
+// Unit tests pentru isAlertStale (fost isFrostAlertStale) din public/app.js
 // Replicat aici pentru test Node (app.js are dependente browser)
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 
 // Helper replicat din public/app.js
 function todayLocal() {
@@ -15,11 +15,22 @@ function todayLocal() {
   );
 }
 
-function isFrostAlertStale(frost) {
-  if (!frost || !frost.active) return true;
-  if (!frost.date) return false; // fara data → tratam ca relevant (backward compat)
-  return frost.date < todayLocal();
+// F8.2: isAlertStale cu suport frostHour/alertHour + 2h buffer
+function isAlertStale(alert) {
+  if (!alert || !alert.active) return true;
+  if (!alert.date) return false; // backward compat
+  var alertTime = alert.frostHour || alert.alertHour;
+  if (alertTime) {
+    var alertMs = new Date(alertTime).getTime();
+    if (!isNaN(alertMs)) {
+      return Date.now() > alertMs + 2 * 60 * 60 * 1000;
+    }
+  }
+  return alert.date < todayLocal();
 }
+
+// Alias backward compat
+var isFrostAlertStale = isAlertStale;
 
 // Helper pentru a genera data de ieri/maine
 function shiftDate(days) {
@@ -34,50 +45,140 @@ function shiftDate(days) {
   );
 }
 
-describe("isFrostAlertStale", () => {
+describe("isAlertStale (backward compat — date-only)", () => {
   it("returneaza true daca frost e null/undefined", () => {
-    expect(isFrostAlertStale(null)).toBe(true);
-    expect(isFrostAlertStale(undefined)).toBe(true);
+    expect(isAlertStale(null)).toBe(true);
+    expect(isAlertStale(undefined)).toBe(true);
   });
 
   it("returneaza true daca frost.active e false", () => {
-    expect(isFrostAlertStale({ active: false })).toBe(true);
-    expect(isFrostAlertStale({ active: false, date: "2026-04-11" })).toBe(true);
+    expect(isAlertStale({ active: false })).toBe(true);
+    expect(isAlertStale({ active: false, date: "2026-04-11" })).toBe(true);
   });
 
   it("returneaza false daca frost fara data (backward compat)", () => {
-    // Alerte vechi fara camp date sa ramana vizibile
-    expect(isFrostAlertStale({ active: true })).toBe(false);
+    expect(isAlertStale({ active: true })).toBe(false);
   });
 
   it("returneaza false daca data alertei e azi", () => {
-    expect(isFrostAlertStale({ active: true, date: todayLocal() })).toBe(false);
+    expect(isAlertStale({ active: true, date: todayLocal() })).toBe(false);
   });
 
   it("returneaza false daca data alertei e maine", () => {
-    expect(isFrostAlertStale({ active: true, date: shiftDate(1) })).toBe(false);
+    expect(isAlertStale({ active: true, date: shiftDate(1) })).toBe(false);
   });
 
   it("returneaza false daca data alertei e peste 3 zile", () => {
-    expect(isFrostAlertStale({ active: true, date: shiftDate(3) })).toBe(false);
+    expect(isAlertStale({ active: true, date: shiftDate(3) })).toBe(false);
   });
 
-  it("returneaza true daca data alertei e ieri (bug-ul din poza)", () => {
-    expect(isFrostAlertStale({ active: true, date: shiftDate(-1) })).toBe(true);
+  it("returneaza true daca data alertei e ieri", () => {
+    expect(isAlertStale({ active: true, date: shiftDate(-1) })).toBe(true);
   });
 
   it("returneaza true daca data alertei e acum o saptamana", () => {
-    expect(isFrostAlertStale({ active: true, date: shiftDate(-7) })).toBe(true);
+    expect(isAlertStale({ active: true, date: shiftDate(-7) })).toBe(true);
+  });
+});
+
+describe("isAlertStale (Varianta A — frostHour cu 2h buffer)", () => {
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
-  it("exemplu concret: data 2026-04-10 cand azi e 2026-04-11", () => {
-    // Simuleaza scenariul exact din poza lui Roland
-    // todayLocal() va returna data curenta reala — testul confirma comparatia string
-    const past = "2026-04-10";
-    const today = todayLocal();
-    // Cand today >= 2026-04-11, alerta pentru 2026-04-10 trebuie filtrata
-    if (today >= "2026-04-11") {
-      expect(isFrostAlertStale({ active: true, date: past })).toBe(true);
-    }
+  it("returneaza false daca frostHour e peste 3 ore", () => {
+    var futureTime = new Date(Date.now() + 3 * 60 * 60 * 1000);
+    var isoStr =
+      futureTime.getFullYear() +
+      "-" +
+      String(futureTime.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(futureTime.getDate()).padStart(2, "0") +
+      "T" +
+      String(futureTime.getHours()).padStart(2, "0") +
+      ":00";
+    expect(
+      isAlertStale({
+        active: true,
+        date: todayLocal(),
+        frostHour: isoStr,
+      }),
+    ).toBe(false);
+  });
+
+  it("returneaza false daca frostHour e acum 1 ora (in buffer 2h)", () => {
+    var pastTime = new Date(Date.now() - 1 * 60 * 60 * 1000);
+    var isoStr =
+      pastTime.getFullYear() +
+      "-" +
+      String(pastTime.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(pastTime.getDate()).padStart(2, "0") +
+      "T" +
+      String(pastTime.getHours()).padStart(2, "0") +
+      ":00";
+    expect(
+      isAlertStale({
+        active: true,
+        date: todayLocal(),
+        frostHour: isoStr,
+      }),
+    ).toBe(false);
+  });
+
+  it("returneaza true daca frostHour e acum 3 ore (depasit buffer 2h)", () => {
+    var pastTime = new Date(Date.now() - 3 * 60 * 60 * 1000);
+    var isoStr =
+      pastTime.getFullYear() +
+      "-" +
+      String(pastTime.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(pastTime.getDate()).padStart(2, "0") +
+      "T" +
+      String(pastTime.getHours()).padStart(2, "0") +
+      ":00";
+    expect(
+      isAlertStale({
+        active: true,
+        date: todayLocal(),
+        frostHour: isoStr,
+      }),
+    ).toBe(true);
+  });
+
+  it("functioneaza cu alertHour (pentru alerte vant/etc)", () => {
+    var futureTime = new Date(Date.now() + 5 * 60 * 60 * 1000);
+    var isoStr =
+      futureTime.getFullYear() +
+      "-" +
+      String(futureTime.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(futureTime.getDate()).padStart(2, "0") +
+      "T" +
+      String(futureTime.getHours()).padStart(2, "0") +
+      ":00";
+    expect(
+      isAlertStale({
+        active: true,
+        date: todayLocal(),
+        alertHour: isoStr,
+      }),
+    ).toBe(false);
+  });
+
+  it("fallback pe date daca frostHour e invalid", () => {
+    expect(
+      isAlertStale({
+        active: true,
+        date: todayLocal(),
+        frostHour: "invalid-time",
+      }),
+    ).toBe(false); // date = azi → nu e stale
+  });
+});
+
+describe("isFrostAlertStale alias", () => {
+  it("isFrostAlertStale este acelasi cu isAlertStale", () => {
+    expect(isFrostAlertStale).toBe(isAlertStale);
   });
 });
