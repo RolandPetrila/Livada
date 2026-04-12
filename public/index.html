@@ -967,6 +967,9 @@
       .alert-banner.disease {
         background: linear-gradient(135deg, #e8a838, #c48a20);
       }
+      .alert-banner.hail {
+        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      }
       .alert-banner.wind {
         background: linear-gradient(135deg, #5a8fd4, #3a6ab8);
       }
@@ -1562,6 +1565,17 @@
         class="ab-close"
         onclick="
           document.getElementById('diseaseBanner').classList.remove('active')
+        "
+      >
+        &#10005;
+      </button>
+    </div>
+    <div class="alert-banner hail" id="hailBanner">
+      <span>&#127786;</span><span class="ab-text" id="hailText"></span
+      ><button
+        class="ab-close"
+        onclick="
+          document.getElementById('hailBanner').classList.remove('active')
         "
       >
         &#10005;

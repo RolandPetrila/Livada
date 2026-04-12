@@ -23,19 +23,23 @@ export default async function handler(req) {
 
   try {
     const kv = Redis.fromEnv();
-    const [frost, disease, wind, heat, rain, drought] = await Promise.all([
-      withTimeout(kv.get("livada:frost-alert"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:disease-risk"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-wind"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-heat"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-rain"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-drought"), 5000).catch(() => null),
-    ]);
+    const [frost, disease, hail, wind, heat, rain, drought] = await Promise.all(
+      [
+        withTimeout(kv.get("livada:frost-alert"), 5000).catch(() => null),
+        withTimeout(kv.get("livada:disease-risk"), 5000).catch(() => null),
+        withTimeout(kv.get("livada:alert-hail"), 5000).catch(() => null),
+        withTimeout(kv.get("livada:alert-wind"), 5000).catch(() => null),
+        withTimeout(kv.get("livada:alert-heat"), 5000).catch(() => null),
+        withTimeout(kv.get("livada:alert-rain"), 5000).catch(() => null),
+        withTimeout(kv.get("livada:alert-drought"), 5000).catch(() => null),
+      ],
+    );
 
     return Response.json(
       {
         frost: frost || { active: false },
         disease: disease || { active: false },
+        hail: hail || { active: false },
         wind: wind || { active: false },
         heat: heat || { active: false },
         rain: rain || { active: false },
@@ -54,6 +58,7 @@ export default async function handler(req) {
       {
         frost: { active: false },
         disease: { active: false },
+        hail: { active: false },
         wind: { active: false },
         heat: { active: false },
         rain: { active: false },

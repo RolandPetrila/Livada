@@ -3917,6 +3917,13 @@ function applyAlerts(data) {
     "Alerta boala",
     "disease",
   );
+  applyAlertBanner(
+    data.hail,
+    "hailText",
+    "hailBanner",
+    "Alerta grindina",
+    "hail",
+  );
   applyAlertBanner(data.wind, "windText", "windBanner", "Alerta vant", "wind");
   applyAlertBanner(
     data.heat,

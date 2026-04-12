@@ -912,37 +912,38 @@ Conform CLAUDE.md: „Ramase: Faza 7 (strategic: II3 servicii locale, V3 doza ca
 
 ## MATRICE PRIORITATI SI EFORT
 
-| ID   | Descriere                       | Prioritate  | Efort | Dependente | Urgenta            |
-| ---- | ------------------------------- | ----------- | ----- | ---------- | ------------------ |
-| F3.4 | CRON_SECRET in Vercel           | CRITICA     | XS    | —          | Azi                |
-| F3.1 | Frost alert cu apparent_temp    | CRITICA     | M     | —          | Azi-noapte         |
-| F0.1 | Ora in header                   | INALTA      | XS    | —          | Imediat            |
-| F0.2 | Badge-uri vizibile diagnose/ask | INALTA      | XS    | —          | Imediat            |
-| F5.1 | Auth bypass fix                 | INALTA      | XS    | —          | Imediat            |
-| F1.1 | Event Log Engine                | INALTA      | S     | —          | Sesiunea urm       |
-| F1.3 | Instrumentare AI                | INALTA      | M     | F1.1       | Sesiunea urm       |
-| F2.1 | Badge-uri complete              | INALTA      | S     | F0.2       | Sesiunea urm       |
-| F2.2 | Model indicator post-raspuns    | INALTA      | S     | F1.3       | Sesiunea urm       |
-| F3.2 | Alert multi-noapte consecutive  | INALTA      | M     | F3.1       | Sesiunea urm       |
-| F6.1 | Calendar tratamente predictiv   | INALTA      | L     | F3.1       | Planificat         |
-| F1.2 | Debug Panel                     | MEDIE       | M     | F1.1       | Planificat         |
-| F1.4 | Error handling functii          | MEDIE       | S     | F1.1       | Planificat         |
-| F1.5 | Monitor cron meteo UI           | MEDIE       | S     | —          | Planificat         |
-| F3.3 | Yr.no sursa secundara           | MEDIE       | M     | F3.1       | Planificat         |
-| F4.1 | preferModel backend             | MEDIE       | M     | —          | Planificat         |
-| F4.2 | Cere alternativa button         | MEDIE       | M     | F4.1       | Planificat         |
-| F6.2 | Jurnal offline IndexedDB        | MEDIE       | L     | —          | Planificat         |
-| F6.3 | Export CSV jurnal               | MEDIE       | S     | —          | Planificat         |
-| F6.4 | Rezumat meteo saptamanal        | MEDIE       | S     | F3.4       | Planificat         |
-| F5.2 | SW update notification          | SCAZUTA     | S     | —          | Planificat         |
-| F4.3 | Comparator + raport diferente   | SCAZUTA     | L     | F4.2       | Planificat         |
-| F6.5 | Notificari Push frost           | SCAZUTA     | S     | —          | Planificat         |
-| F7.1 | Servicii locale Nadlac          | DE DISCUTAT | M     | —          | Planificat         |
-| F7.2 | Calculator doza tratamente      | PLANIFICAT  | M     | —          | Planificat         |
-| F7.3 | Harta livada                    | PLANIFICAT  | L     | —          | Planificat         |
-| F8.1 | Senzor IoT local livada         | TODO        | L     | Hardware   | Pending            |
-| F8.2 | Sistem alerte complet v2        | CONFIRMAT   | L     | F8.3       | Urmatoarea sesiune |
-| F8.3 | Coordonate exacte + multi-model | CONFIRMAT   | S     | —          | Urmatoarea sesiune |
+| ID   | Descriere                       | Prioritate  | Efort | Dependente | Urgenta                                                    |
+| ---- | ------------------------------- | ----------- | ----- | ---------- | ---------------------------------------------------------- |
+| F3.4 | CRON_SECRET in Vercel           | CRITICA     | XS    | —          | Azi                                                        |
+| F3.1 | Frost alert cu apparent_temp    | CRITICA     | M     | —          | Azi-noapte                                                 |
+| F0.1 | Ora in header                   | INALTA      | XS    | —          | Imediat                                                    |
+| F0.2 | Badge-uri vizibile diagnose/ask | INALTA      | XS    | —          | Imediat                                                    |
+| F5.1 | Auth bypass fix                 | INALTA      | XS    | —          | Imediat                                                    |
+| F1.1 | Event Log Engine                | INALTA      | S     | —          | Sesiunea urm                                               |
+| F1.3 | Instrumentare AI                | INALTA      | M     | F1.1       | Sesiunea urm                                               |
+| F2.1 | Badge-uri complete              | INALTA      | S     | F0.2       | Sesiunea urm                                               |
+| F2.2 | Model indicator post-raspuns    | INALTA      | S     | F1.3       | Sesiunea urm                                               |
+| F3.2 | Alert multi-noapte consecutive  | INALTA      | M     | F3.1       | Sesiunea urm                                               |
+| F6.1 | Calendar tratamente predictiv   | INALTA      | L     | F3.1       | Planificat                                                 |
+| F1.2 | Debug Panel                     | MEDIE       | M     | F1.1       | Planificat                                                 |
+| F1.4 | Error handling functii          | MEDIE       | S     | F1.1       | Planificat                                                 |
+| F1.5 | Monitor cron meteo UI           | MEDIE       | S     | —          | Planificat                                                 |
+| F3.3 | Yr.no sursa secundara           | MEDIE       | M     | F3.1       | Planificat                                                 |
+| F4.1 | preferModel backend             | MEDIE       | M     | —          | Planificat                                                 |
+| F4.2 | Cere alternativa button         | MEDIE       | M     | F4.1       | Planificat                                                 |
+| F6.2 | Jurnal offline IndexedDB        | MEDIE       | L     | —          | Planificat                                                 |
+| F6.3 | Export CSV jurnal               | MEDIE       | S     | —          | Planificat                                                 |
+| F6.4 | Rezumat meteo saptamanal        | MEDIE       | S     | F3.4       | Planificat                                                 |
+| F5.2 | SW update notification          | SCAZUTA     | S     | —          | Planificat                                                 |
+| F4.3 | Comparator + raport diferente   | SCAZUTA     | L     | F4.2       | Planificat                                                 |
+| F6.5 | Notificari Push frost           | SCAZUTA     | S     | —          | Planificat                                                 |
+| F7.1 | Servicii locale Nadlac          | DE DISCUTAT | M     | —          | Planificat                                                 |
+| F7.2 | Calculator doza tratamente      | PLANIFICAT  | M     | —          | Planificat                                                 |
+| F7.3 | Harta livada                    | PLANIFICAT  | L     | —          | Planificat                                                 |
+| F8.1 | Senzor IoT local livada         | TODO        | L     | Hardware   | Pending                                                    |
+| F8.2 | Sistem alerte complet v2        | IMPLEMENTAT | L     | F8.3       | 7 tipuri (frost, disease, hail, wind, heat, rain, drought) |
+| F8.3 | Coordonate exacte + multi-model | IMPLEMENTAT | S     | —          | GPS 46.1648/20.7168 + 3 modele + Yr.no                     |
+| F8.4 | Web Push real (background)      | TODO        | M     | VAPID keys | Pending — necesita push server                             |
 
 ---
 
@@ -1014,7 +1015,35 @@ Conform CLAUDE.md: „Ramase: Faza 7 (strategic: II3 servicii locale, V3 doza ca
 
 **Fisiere afectate:** `api/meteo-cron.js` (coordonate + URL API multi-model)
 **Efort:** S
-**Status:** CONFIRMAT
+**Status:** IMPLEMENTAT (commit aa72c9f + sesiune 2026-04-13)
+
+---
+
+### F8.4 — Web Push Real (Background Notifications)
+
+**Descriere:** Notificari push care functioneaza chiar cand aplicatia e inchisa. Acum, alertele sunt vizibile doar cand deschizi app-ul. Cu Web Push API + VAPID keys, un frost alert de la ora 3 dimineata ajunge pe telefon instant.
+
+**De ce e important:** Cron-ul orar actualizeaza alertele din ora in ora, dar daca telefonul e in buzunar si app-ul nu e deschis, nu primesti nimic. Pentru frost la ora 3 dimineata, diferenta intre "ai vazut alerta" si "nu ai vazut" poate insemna pierderea recoltei la piersic/cais.
+
+**Componente necesare:**
+
+1. **VAPID keys** — pereche public/private pentru Web Push (generare gratuita)
+2. **Service Worker push handler** — `sw.js` asculta evenimentul `push` si afiseaza notificarea
+3. **Subscribe endpoint** — API route care salveaza subscription-ul browserului in Redis
+4. **Trigger push** — `meteo-cron.js` trimite push la toti subscriberii cand o alerta devine activa
+5. **Push service** — gratuit prin standardul Web Push (nu necesita Firebase/FCM platit)
+
+**Complexitate:** M — necesita modificari in `sw.js`, API route noua (`api/push-subscribe.js`), modificari in `meteo-cron.js`, si generare VAPID keys.
+
+**Limitari:**
+
+- iOS Safari suporta Web Push doar din iOS 16.4+ si doar cu PWA instalata pe Home Screen
+- Vercel Hobby: push-ul trebuie trimis din Edge Runtime (fezabil cu `web-push` lite)
+
+**Fisiere afectate:** `sw.js`, `api/push-subscribe.js` (nou), `api/meteo-cron.js`, `public/app.js`
+**Efort:** M — 2-3 ore
+**Prioritate:** TODO / PENDING
+**Status:** PLANIFICAT
 
 ---
 

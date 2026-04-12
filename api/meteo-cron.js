@@ -333,13 +333,38 @@ export default async function handler(req) {
       if (rainyH >= 4 && avgT >= 10 && avgT <= 25 && avgH > 70) {
         diseaseRisk = {
           active: true,
+          date: today,
           message: `Risc crescut de boli fungice! Ploaie + ${Math.round(avgT)}°C + umiditate ${Math.round(avgH)}%. Verifica rapanul la mar/par si monilioza la cais/piersic.`,
           updatedAt: new Date().toISOString(),
         };
       }
     }
 
-    // F8.2: Wind alert — rafale >= 50 km/h
+    // F8.2: Hail alert — WMO codes 96 (grindina usoara) si 99 (grindina puternica)
+    let hailAlert = { active: false, updatedAt: new Date().toISOString() };
+    if (data.hourly?.weather_code) {
+      const hCodes = data.hourly.weather_code;
+      const hTimes = data.hourly.time;
+      for (let i = 0; i < hCodes.length; i++) {
+        if (new Date(hTimes[i]).getTime() < nowMs) continue;
+        if (hCodes[i] === 96 || hCodes[i] === 99) {
+          const hailDate = hTimes[i].split("T")[0];
+          const hailHourStr = hTimes[i].split("T")[1]?.slice(0, 5) || "";
+          const severity = hCodes[i] === 99 ? "puternica" : "usoara";
+          hailAlert = {
+            active: true,
+            severity,
+            date: hailDate,
+            alertHour: hTimes[i],
+            message: `GRINDINA ${severity}! Furtuna cu grindina pe ${hailDate} la ~${hailHourStr}. Protejeaza fructele si pomii tineri!`,
+            updatedAt: new Date().toISOString(),
+          };
+          break;
+        }
+      }
+    }
+
+    // F8.2: Wind alert — rafale >= 40 km/h (prag scazut pt pomi tineri)
     let windAlert = { active: false, updatedAt: new Date().toISOString() };
     if (data.hourly?.wind_gusts_10m) {
       const gusts = data.hourly.wind_gusts_10m;
@@ -353,7 +378,7 @@ export default async function handler(req) {
           gustTime = hTimes[i];
         }
       }
-      if (maxGust >= 50) {
+      if (maxGust >= 40) {
         const gustDate = gustTime.split("T")[0];
         const gustHourStr = gustTime.split("T")[1]?.slice(0, 5) || "";
         windAlert = {
@@ -436,6 +461,7 @@ export default async function handler(req) {
       kv.set("livada:meteo:history", history),
       kv.set("livada:frost-alert", frostAlert),
       kv.set("livada:disease-risk", diseaseRisk),
+      kv.set("livada:alert-hail", hailAlert),
       kv.set("livada:alert-wind", windAlert),
       kv.set("livada:alert-heat", heatAlert),
       kv.set("livada:alert-rain", rainAlert),
@@ -482,6 +508,7 @@ export default async function handler(req) {
       frostConfidence: frostAlert.confidence || null,
       frostConsecutive: !!consecutiveFrostMsg,
       diseaseRisk: diseaseRisk.active,
+      hailAlert: hailAlert.active,
       windAlert: windAlert.active,
       heatAlert: heatAlert.active,
       rainAlert: rainAlert.active,

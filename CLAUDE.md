@@ -194,7 +194,7 @@ Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier com
 Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V2.md` — plan complet V2.
 **Faze 1-6 + Runda 9+10 + V2 (F0-F6) implementate (170+ items total).**
 V2 implementat: F0.1-F0.2 (header+badges), F1.1-F1.5 (logging+debug+error handling+cron monitor), F2.1-F2.2 (AI badges+model indicator), F3.1-F3.3 (apparent_temp+multi-noapte+Yr.no), F4.1-F4.2 (preferModel+Cerebras alternativa), F5.2 (SW log), F6.1-F6.5 (calendar predictiv+offline journal+CSV+rezumat saptamanal+push frost).
-**Ramase:** F4.3 (comparator full, SCAZUTA), F7.1-F7.3 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere), F8.1-F8.3 (sistem alerte v2, coordonate exacte, IoT senzor pending).
+**Ramase:** F4.3 (comparator full, SCAZUTA), F7.1-F7.3 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere), F8.1 (IoT senzor pending), F8.4 (Web Push real, TODO/PENDING).
 
 **Decizii inchise (2026-04-11):**
 
