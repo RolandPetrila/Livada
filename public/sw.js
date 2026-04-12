@@ -101,12 +101,13 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // HTML + tot restul: NETWORK-FIRST
+  // HTML + tot restul: NETWORK-FIRST (bypass HTTP cache)
+  // cache:'no-cache' forteaza browserul sa revalideze cu serverul
   // Daca online → retea (intotdeauna versiunea cea mai noua)
   // Dupa fetch reusit → salveaza in cache pentru offline
   // Daca offline → serveste din cache (ultima versiune descarcata)
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, { cache: "no-cache" })
       .then((response) => {
         if (response.ok && event.request.method === "GET") {
           const clone = response.clone();

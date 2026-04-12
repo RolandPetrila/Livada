@@ -1869,7 +1869,7 @@ if ("serviceWorker" in navigator) {
       toastEl.style.cssText =
         "position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 18px;border-radius:10px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.25);display:flex;align-items:center;gap:12px;max-width:340px;";
       toastEl.innerHTML =
-        '<span>&#128260; Versiune nou&#259; disponibil&#259;</span><button onclick="location.reload()" style="background:#fff;color:var(--accent);border:none;border-radius:6px;padding:3px 12px;font-size:0.8rem;cursor:pointer;font-weight:600;">Reîncarc&#259;</button>';
+        '<span>&#128260; Versiune nou&#259; disponibil&#259;</span><button onclick="forceAppUpdate()" style="background:#fff;color:var(--accent);border:none;border-radius:6px;padding:3px 12px;font-size:0.8rem;cursor:pointer;font-weight:600;">Reîncarc&#259;</button>';
       document.body.appendChild(toastEl);
       setTimeout(function () {
         if (toastEl.parentNode) toastEl.parentNode.removeChild(toastEl);
