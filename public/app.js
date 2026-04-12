@@ -3789,7 +3789,16 @@ async function syncJournal(retryCount) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(local),
     });
-    if (!res.ok) throw new Error("sync fail");
+    if (!res.ok) {
+      // 429 = rate limit — NU reincerca (agraveaza problema)
+      if (res.status === 429) {
+        jSyncStatus = "error";
+        updateSyncBadge("Rate limit — asteapta 1 min");
+        _isSyncing = false;
+        return;
+      }
+      throw new Error("sync fail");
+    }
     var pullRes = await authFetch("/api/journal");
     if (pullRes.ok) {
       var remote = await pullRes.json();
