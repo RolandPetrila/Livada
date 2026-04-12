@@ -1,0 +1,26 @@
+name: Meteo Cron - Actualizare alerte orar
+
+on:
+  schedule:
+    # Ruleaza la fiecare ora, minut 5 (ex: 06:05, 07:05, ...) — evita minutul 0 pt fiabilitate GitHub
+    - cron: "5 * * * *"
+  workflow_dispatch: # permite rulare manuala din GitHub Actions UI
+
+jobs:
+  trigger-meteo-cron:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Trigger meteo-cron pe Vercel
+        run: |
+          response=$(curl -s -w "\n%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "https://livada-mea-psi.vercel.app/api/meteo-cron")
+          http_code=$(echo "$response" | tail -1)
+          body=$(echo "$response" | head -1)
+          echo "Status: $http_code"
+          echo "Response: $body"
+          if [ "$http_code" -ne 200 ]; then
+            echo "::error::Meteo cron failed with status $http_code"
+            exit 1
+          fi
