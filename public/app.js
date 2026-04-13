@@ -30,8 +30,8 @@ var INIT_ALERTS_DELAY_MS = 1500;
 var INIT_SYNC_DELAY_MS = 3000;
 var MODAL_FOCUS_DELAY_MS = 100;
 var CAL_NAV_DEBOUNCE_MS = 80;
-var LIVADA_LAT = 46.17;
-var LIVADA_LON = 20.75;
+var LIVADA_LAT = 46.164779;
+var LIVADA_LON = 20.716786;
 
 // ====== TAB SWITCHING ======
 $$(".tab[data-tab]").forEach(function (tab) {
@@ -1608,7 +1608,7 @@ function initMeteo() {
 
 async function checkCronMeteoStatus() {
   try {
-    var res = await fetch("/api/meteo-history?days=2");
+    var res = await fetchWithTimeout("/api/meteo-history?days=2", {}, 5000);
     if (!res.ok) return;
     var data = await res.json();
     var entries = Object.entries(data || {});
@@ -1769,10 +1769,9 @@ $("#dismissBtn").addEventListener("click", () => {
 
 // ====== VERSIUNE + SERVICE WORKER ======
 // DEPLOY_DATE + DEPLOY_TIME: actualizat la fiecare push (hardcodat = fiabil pe orice CDN)
-const DEPLOY_DATE = "2026-04-11";
-const DEPLOY_TIME = "02:17";
-const DEPLOY_INFO =
-  "chore: bump deploy date to 2026-04-11 + sw cache invalidation";
+const DEPLOY_DATE = "2026-04-13";
+const DEPLOY_TIME = "03:06";
+const DEPLOY_INFO = "fix: SW update toast nu actualizeaza pagina — doua cauze";
 
 const APP_BUILD = DEPLOY_DATE;
 
