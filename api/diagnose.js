@@ -1,6 +1,7 @@
 import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
 import { callGemini, callOpenAIVision, geminiText, openaiText } from "./_ai.js";
 import { fetchWithTimeout } from "./_timeout.js";
+import { checkAndIncrementQuota } from "./_quota.js";
 
 export const config = { runtime: "edge" };
 
@@ -99,6 +100,19 @@ export default async function handler(req) {
     return Response.json(
       { error: "GOOGLE_AI_API_KEY lipsa" },
       { status: 500, headers: corsHeaders(req) },
+    );
+  }
+
+  // T1 Sprint 1: quota guard Gemini — previne silent 429 dupa epuizare 1000 req/zi
+  const geminiQuota = await checkAndIncrementQuota("gemini");
+  if (!geminiQuota.ok) {
+    return Response.json(
+      {
+        error:
+          "Cota Gemini zilnica epuizata (1000 req/zi). Incearca dupa miezul noptii sau foloseste intrebare text in loc de diagnostic foto.",
+        _quota: geminiQuota,
+      },
+      { status: 429, headers: corsHeaders(req) },
     );
   }
 

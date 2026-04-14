@@ -31,6 +31,16 @@ vi.mock("../api/_ai.js", () => ({
   openaiText: mockOpenaiText,
 }));
 
+// T1 Sprint 1: mock quota module (nu cheie Redis in teste)
+vi.mock("../api/_quota.js", () => ({
+  checkAndIncrementQuota: vi.fn(async () => ({
+    ok: true,
+    used: 1,
+    limit: 1000,
+    percent: 0,
+  })),
+}));
+
 vi.mock("../api/_timeout.js", () => ({
   fetchWithTimeout: mockFetchWithTimeout,
 }));

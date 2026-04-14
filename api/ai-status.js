@@ -1,6 +1,8 @@
 import { corsHeaders, handleOptions, checkOrigin } from "./_auth.js";
+import { getQuotaStatus } from "./_quota.js";
 
 // Edge Runtime — health check pentru toate serviciile AI configurate
+// T1 Sprint 1: include si quota usage per provider
 export const config = { runtime: "edge" };
 
 export default async function handler(req) {
@@ -26,10 +28,18 @@ export default async function handler(req) {
     blob: !!process.env.BLOB_READ_WRITE_TOKEN,
   };
 
+  // T1: quota usage per provider (daca Redis indisponibil, quota e {error})
+  const quota = await getQuotaStatus();
+
   console.log(`[ai-status] ${JSON.stringify(status)} t+${Date.now() - t0}ms`);
 
   return Response.json(
-    { status, ts: Date.now() },
-    { headers: corsHeaders(req) },
+    { status, quota, ts: Date.now() },
+    {
+      headers: {
+        ...corsHeaders(req),
+        "Cache-Control": "public, max-age=60",
+      },
+    },
   );
 }
