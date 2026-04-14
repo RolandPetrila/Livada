@@ -11,15 +11,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Trigger meteo-cron pe Vercel
+      - name: Verifica CRON_SECRET configurat
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          response=$(curl -s -w "\n%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET nu e setat in GitHub Repository Secrets. Seteaza-l la https://github.com/RolandPetrila/Livada/settings/secrets/actions (aceeasi valoare ca in Vercel env vars)."
+            exit 1
+          fi
+      - name: Trigger meteo-cron pe Vercel
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          response=$(curl -s --max-time 25 -w "\n%{http_code}" \
+            -H "Authorization: Bearer $CRON_SECRET" \
             "https://livada-mea-psi.vercel.app/api/meteo-cron")
           http_code=$(echo "$response" | tail -1)
-          body=$(echo "$response" | head -1)
+          body=$(echo "$response" | head -n -1)
           echo "Status: $http_code"
           echo "Response: $body"
+          if [ "$http_code" = "401" ]; then
+            echo "::error::401 Neautorizat. CRON_SECRET din GitHub NU se potriveste cu Vercel env var. Regenereaza si sincronizeaza ambele."
+            exit 1
+          fi
           if [ "$http_code" -ne 200 ]; then
             echo "::error::Meteo cron failed with status $http_code"
             exit 1

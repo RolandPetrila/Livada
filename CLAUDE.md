@@ -200,7 +200,7 @@ V2 implementat: F0.1-F0.2 (header+badges), F1.1-F1.5 (logging+debug+error handli
 **Decizii inchise (2026-04-11):**
 
 - **F5.1 (LIVADA_API_TOKEN) — NU se implementeaza.** Decizie Roland: dashboard-ul e pentru uz personal + parinti pe telefon, prioritate UX simpla fara parole. Origin check + rate limit (30 req/min) + DOMPurify sunt suficiente pentru threat model-ul real (site obscur, fara trafic public). Codul in `_auth.js:59-67` gestioneaza corect cazul "token nesetat" (skip complet, backward compat).
-- **F3.4 CRON_SECRET — DEJA enforced** in `meteo-cron.js:72-78` (intoarce 500 daca lipseste env var). Bifat ca rezolvat in audit 2026-04-11.
+- **F3.4 CRON_SECRET — REZOLVAT OPERATIONAL 2026-04-14.** Cod: `meteo-cron.js:76-87` intoarce 500 daca env var lipseste + 401 daca secretul nu se potriveste. Operational: sincronizat in Vercel env (production) SI GitHub Actions secrets (repo). Workflow-ul `.github/workflows/meteo-cron.yml` contine acum fail-fast check pe secret empty si mesaj explicit la 401 (previne repetarea incidentului 2026-04-12→14 unde secretul nu era setat in GitHub, 25+ esecuri). Orice rotatie a secretului trebuie facuta in AMBELE locuri atomic.
 
 ## Audit findings — actiuni amanate
 
