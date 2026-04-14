@@ -68,8 +68,32 @@ export function checkAuth(req) {
 
 // M8: 30 req/min general; AI endpoints (ask, diagnose, report) folosesc rateLimit(req, 10)
 const RATE_MAX = 30;
+const RATE_WINDOW_MS = 60_000;
+
+// T2 (Sprint 1): in-memory sliding window fallback cand Redis cade
+// Scope: per Edge instance (nu cross-instance), safety net previne DDoS
+// Atunci cand Upstash are downtime sau timeout (fail-closed contra fail-open initial)
+const _memBuckets = new Map(); // IP → array timestamps
+
+function rateLimitInMemory(ip, max, windowMs) {
+  const now = Date.now();
+  const arr = (_memBuckets.get(ip) || []).filter((ts) => now - ts < windowMs);
+  arr.push(now);
+  _memBuckets.set(ip, arr);
+  // Cleanup periodic best-effort daca Map-ul creste
+  if (_memBuckets.size > 1000) {
+    for (const [k, v] of _memBuckets) {
+      if (!v.length || now - v[v.length - 1] > windowMs * 2) {
+        _memBuckets.delete(k);
+      }
+    }
+  }
+  return arr.length > max;
+}
+
 // H2: folosim DOAR x-real-ip (de incredere de la Vercel) — x-forwarded-for e spoofabil
 // Redis-based rate limiting — persistent cross-isolate pe Vercel Edge
+// Fallback in-memory cand Redis cade (T2 Sprint 1 — fail-closed)
 export async function rateLimit(req, maxOverride) {
   const max = maxOverride !== undefined ? maxOverride : RATE_MAX;
   const ip = getHeader(req, "x-real-ip") || "unknown";
@@ -81,7 +105,13 @@ export async function rateLimit(req, maxOverride) {
     const pipeline = kv.pipeline();
     pipeline.incr(key);
     pipeline.expire(key, 60); // fereastra 60s
-    const [count] = await pipeline.exec();
+    // Timeout strict 1.5s — daca Redis lent, fallback in-memory
+    const [count] = await Promise.race([
+      pipeline.exec(),
+      new Promise((_, rej) =>
+        setTimeout(() => rej(new Error("Redis RL timeout")), 1500),
+      ),
+    ]);
 
     if (count > max) {
       return Response.json(
@@ -91,7 +121,13 @@ export async function rateLimit(req, maxOverride) {
     }
     return null;
   } catch {
-    // Redis indisponibil — fail open (nu bloca request-ul)
+    // Redis indisponibil — fallback in-memory (fail-closed, nu fail-open)
+    if (rateLimitInMemory(ip, max, RATE_WINDOW_MS)) {
+      return Response.json(
+        { error: "Prea multe cereri. Incearca din nou peste un minut." },
+        { status: 429, headers: corsHeaders(req) },
+      );
+    }
     return null;
   }
 }
