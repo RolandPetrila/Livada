@@ -239,35 +239,74 @@ var _suggFocusIdx = -1;
 
 function buildSearchIndex() {
   _searchIndex = [];
+  // Dedup set — previne aceeasi termen indexat de N ori in specii diferite
+  var seenTerms = Object.create(null);
+  function addEntry(text, tabId, type, el, icon, priority) {
+    var key = type + "|" + text.toLowerCase();
+    if (seenTerms[key]) return;
+    seenTerms[key] = true;
+    _searchIndex.push({
+      text: text,
+      tabId: tabId,
+      type: type,
+      el: el,
+      icon: icon,
+      priority: priority || 0,
+    });
+  }
+
   $$(".tab[data-tab]").forEach(function (tab) {
     var tabId = tab.dataset.tab;
     var iconEl = tab.querySelector(".tab-icon");
     var icon = iconEl ? iconEl.textContent : "";
     var tabName = tab.textContent.replace(icon, "").trim();
-    _searchIndex.push({
-      text: tabName,
-      tabId: tabId,
-      type: "Specie",
-      el: null,
-      icon: icon,
-    });
+    addEntry(tabName, tabId, "Specie", null, icon, 10);
+
     var content = document.getElementById(tabId);
     if (!content) return;
+    // Titluri h2/h3 (priority 8)
     content.querySelectorAll("h2, h3").forEach(function (h) {
       var t = h.textContent
         .trim()
-        .replace(/^[▸►▼▶⮞\s]+/, "")
+        .replace(/^[\u25B8\u25BA\u25BC\u25B6\u2B9E\s]+/, "")
         .trim();
       if (t.length >= 4 && t.length < 95) {
-        _searchIndex.push({
-          text: t,
-          tabId: tabId,
-          type: "Sec\u021biune",
-          el: h,
-          icon: icon,
-        });
+        addEntry(t, tabId, "Sec\u021biune", h, icon, 8);
       }
     });
+    // E2 Sprint 2: extinde cu <strong> (termeni importanti in paragrafe)
+    content.querySelectorAll("strong, b").forEach(function (s) {
+      var t = s.textContent
+        .trim()
+        .replace(/[:.,;]+$/, "")
+        .trim();
+      // Filtreaza: lungime rezonabila + nu e deja titlu + nu e doar cifre
+      if (
+        t.length >= 4 &&
+        t.length < 60 &&
+        !/^\d+(?:[.,]\d+)?$/.test(t) &&
+        !/^\d{1,2}[-.]\d{1,2}/.test(t)
+      ) {
+        addEntry(t, tabId, "Termen", s, icon, 5);
+      }
+    });
+    // E2: primele celule din tabele (adesea nume produse/caracteristici)
+    content
+      .querySelectorAll("table tr > th:first-child, table tr > td:first-child")
+      .forEach(function (c) {
+        var t = c.textContent
+          .trim()
+          .replace(/[:.,;]+$/, "")
+          .trim();
+        if (t.length >= 4 && t.length < 80) {
+          addEntry(t, tabId, "Tabel", c, icon, 4);
+        }
+      });
+  });
+
+  // Sortare stabila dupa priority DESC (specie > sectiune > termen > tabel)
+  _searchIndex.sort(function (a, b) {
+    return (b.priority || 0) - (a.priority || 0);
   });
 }
 
