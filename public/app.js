@@ -588,10 +588,34 @@ function updateCalcConc() {
     }
   }
 }
+// E1 Sprint 1: persist tank volume user-configurabil (16L default pt pulverizator mediu)
+function getSavedTankVolume() {
+  var v = parseFloat(localStorage.getItem("livada:tank-volume"));
+  return isFinite(v) && v > 0 ? v : 16;
+}
+function saveTankVolume(v) {
+  if (isFinite(v) && v > 0) {
+    localStorage.setItem("livada:tank-volume", String(v));
+  }
+}
+// La prima deschidere: seteaza input-ul la valoarea salvata (daca exista)
+function initTankVolumePersistence() {
+  var input = document.getElementById("calcVolume");
+  if (input) {
+    input.value = getSavedTankVolume();
+    input.addEventListener("change", function () {
+      saveTankVolume(parseFloat(input.value));
+    });
+  }
+}
+
 function calculateDose() {
   const conc = parseFloat($("#calcConc").value);
   const vol = parseFloat($("#calcVolume").value);
   if (isNaN(conc) || isNaN(vol) || conc <= 0 || vol <= 0) return;
+
+  // Persist volum tank la fiecare calcul reusit
+  saveTankVolume(vol);
 
   const dose = conc * vol * 10;
   const sel = $("#calcProduct");
@@ -7216,6 +7240,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // Panel AI Status pe sectiunea Identificare specie (statica in HTML)
   renderAiStatusPanel("identify", "aiIdentLoading", "beforebegin");
+  // E1 Sprint 1: restaureaza volum tank salvat (default 16L)
+  initTankVolumePersistence();
 });
 
 // ====== II4: IMPORT CSV JURNAL ======
