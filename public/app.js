@@ -6293,64 +6293,102 @@ function renderPredictiveCalendar(containerEl, meteoHistory, frostData) {
   el.innerHTML = html;
 }
 
-// ====== N12: JURNAL VOCAL (Web Speech API) ======
+// ====== N12/N1 Sprint 1: JURNAL VOCAL + AI ASK VOCAL (Web Speech API ro-RO) ======
+// Extins pentru parinti Roland: interim results (vezi text pe masura ce vorbesti)
+// + suport multi-target (jurnalNote, askInput, etc.)
 var _voiceRec = null;
+var _voiceCurrentTarget = null;
+var _voiceBaseText = "";
+
 function startVoiceInput(targetId) {
   var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-  var btn = document.getElementById("voiceDictateBtn");
+  // Toate butoanele voice (pot fi multiple pe pagina — jurnal, ask)
+  var allBtns = document.querySelectorAll(".voice-btn, #voiceDictateBtn");
+  function resetButtons() {
+    allBtns.forEach(function (b) {
+      b.textContent = "🎤";
+      b.style.background = "";
+      b.classList.remove("voice-active");
+    });
+  }
   if (!SpeechRec) {
     showToast(
       "Dictarea vocală nu este suportată. Foloseste Chrome pe Android.",
       "warning",
     );
-    if (btn) btn.style.display = "none";
+    allBtns.forEach(function (b) {
+      b.style.display = "none";
+    });
     return;
   }
+  // Toggle: daca recognizer activ pe acelasi target → stop
   if (_voiceRec) {
     try {
       _voiceRec.stop();
     } catch (e) {}
     _voiceRec = null;
-    return;
+    resetButtons();
+    if (_voiceCurrentTarget === targetId) return; // toggle off same target
+    // else fall-through: pornim pe alt target
   }
   var inputEl = document.getElementById(targetId);
   if (!inputEl) return;
+  _voiceCurrentTarget = targetId;
+  _voiceBaseText = inputEl.value ? inputEl.value.trim() + " " : "";
+
   _voiceRec = new SpeechRec();
   _voiceRec.lang = "ro-RO";
-  _voiceRec.interimResults = false;
+  _voiceRec.continuous = false;
+  _voiceRec.interimResults = true; // vezi text pe masura ce vorbesti
   _voiceRec.maxAlternatives = 1;
-  if (btn) {
-    btn.textContent = "🎤 Ascult…";
-    btn.style.background = "rgba(212,83,74,0.3)";
+
+  // Highlight butonul pentru target-ul curent
+  var activeBtn = document.querySelector(
+    '[data-voice-target="' + targetId + '"]',
+  );
+  if (!activeBtn && targetId === "jurnalNote") {
+    activeBtn = document.getElementById("voiceDictateBtn");
   }
+  if (activeBtn) {
+    activeBtn.textContent = "🎤 Ascult…";
+    activeBtn.classList.add("voice-active");
+  }
+
   _voiceRec.onresult = function (e) {
-    var text = e.results[0][0].transcript;
-    inputEl.value =
-      (inputEl.value ? inputEl.value.trim() + ". " : "") +
-      text.charAt(0).toUpperCase() +
-      text.slice(1);
+    var finalText = "";
+    var interimText = "";
+    for (var i = e.resultIndex; i < e.results.length; i++) {
+      var t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) finalText += t;
+      else interimText += t;
+    }
+    var combined = (finalText + interimText).trim();
+    if (combined) {
+      // Capitalizeaza prima litera
+      combined = combined.charAt(0).toUpperCase() + combined.slice(1);
+      inputEl.value = _voiceBaseText + combined;
+    }
   };
+
   _voiceRec.onend = function () {
     _voiceRec = null;
-    if (btn) {
-      btn.textContent = "🎤";
-      btn.style.background = "";
-    }
+    _voiceCurrentTarget = null;
+    resetButtons();
   };
   _voiceRec.onerror = function (e) {
     _voiceRec = null;
-    if (btn) {
-      btn.textContent = "🎤";
-      btn.style.background = "";
-    }
+    _voiceCurrentTarget = null;
+    resetButtons();
     var msgs = {
       "not-allowed": "Permisiune microfon refuzată.",
       "no-speech": "Nicio voce detectată.",
       network: "Eroare rețea.",
+      "audio-capture": "Microfonul nu e disponibil.",
     };
     showToast(msgs[e.error] || "Eroare dictare: " + e.error, "error");
   };
   _voiceRec.start();
+  livadaLog("VOICE", "start", "OK", targetId);
 }
 
 // ====== N13: COMPARATOR SPECII — Calendare tratamente aliniate ======
