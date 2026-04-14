@@ -43,14 +43,21 @@ function hourlyTimes(count = 120) {
   return times;
 }
 
-// Generate daily dates starting from today
+// Generate daily dates starting from today (Europe/Bucharest — match production)
+// Foloseste aceeasi formatare ca meteo-cron.js pentru a evita flakiness
+// intre 22:00 si 24:00 UTC cand UTC.day != Romania.day.
 function dailyDates(count = 5) {
+  const fmt = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Bucharest",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
   const dates = [];
-  const today = new Date();
+  const base = new Date();
   for (let i = 0; i < count; i++) {
-    const d = new Date(today);
-    d.setDate(d.getDate() + i);
-    dates.push(d.toISOString().slice(0, 10));
+    const d = new Date(base.getTime() + i * 24 * 3600 * 1000);
+    dates.push(fmt.format(d));
   }
   return dates;
 }

@@ -192,10 +192,23 @@ Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier com
 
 ## Imbunatatiri pendinte
 
-Vezi `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V2.md` — plan complet V2.
-**Faze 1-6 + Runda 9+10 + V2 (F0-F6) implementate (170+ items total).**
-V2 implementat: F0.1-F0.2 (header+badges), F1.1-F1.5 (logging+debug+error handling+cron monitor), F2.1-F2.2 (AI badges+model indicator), F3.1-F3.3 (apparent_temp+multi-noapte+Yr.no), F4.1-F4.2 (preferModel+Cerebras alternativa), F5.2 (SW log), F6.1-F6.5 (calendar predictiv+offline journal+CSV+rezumat saptamanal+push frost).
-**Ramase:** F4.3 (comparator full, SCAZUTA), F7.1-F7.3 (strategic: II3 servicii locale, V3 doza calculator, harta livada extindere), F8.1 (IoT senzor pending), F8.4 (Web Push real, TODO/PENDING).
+**ACTUAL:** `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V3.md` — plan complet V3 (36 recomandari, generat 2026-04-15).
+Vezi si `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V2.md` (arhivat — 25/31 itemi DONE) si snapshot V3 in `.claude-outputs/imbunatatiri/2026-04-15_013111/`.
+
+**Status V2 (la 2026-04-15):** DONE 25 / PARTIAL 1 / PENDING 4 / INCHIS 1 (81% completare).
+Ramase din V2 → migrat in V3: F4.3 (→N6), F7.1 (→N8), F7.2 (→E1), F7.3 (→N7), F8.1 (→N14), F8.4 (→T4).
+
+**V3 — 5 P0 URGENT:**
+
+- T1: AI cost tracking + quota guard (risc Gemini 1000 req/zi)
+- T2: Redis fallback in-memory rate limit (DDoS vuln la cadere Upstash)
+- E1: Calculator doze: volum tank configurabil (acum 10L hardcoded)
+- N1: Voice input jurnal (Web Speech API ro-RO) — pt parinti
+- N2: EPPO API integrare (date oficiale boli/daunatori EU, gratuit)
+
+**V3 — 5 P1 IMPORTANT:** E2 search continut, N3 GDD/Chill Hours JS, N4 TTS alerte, T3 lazy load specii, T4 Web Push VAPID.
+
+**Total V3:** 8 imbunatatiri pe functii existente + 18 functii noi + 10 tehnice = 36 recomandari prioritizate P0-P4.
 
 **Decizii inchise (2026-04-11):**
 
