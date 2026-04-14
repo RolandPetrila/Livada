@@ -30005,10 +30005,20 @@ BAZA         &larr; 4-6 lujeri noi pastrati
               onclick="startVoiceInput('askInput')"
               title="Dicteaza intrebarea (microfon ro-RO)"
               aria-label="Inregistreaza vocea pentru intrebare"
-              style="position: absolute; right: 44px; bottom: 6px; width: 36px; height: 36px; border-radius: 50%; background: var(--bg-surface); border: 1px solid var(--border); cursor: pointer; font-size: 1.1em;"
+              style="
+                position: absolute;
+                right: 44px;
+                bottom: 6px;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                background: var(--bg-surface);
+                border: 1px solid var(--border);
+                cursor: pointer;
+                font-size: 1.1em;
+              "
             >
-              🎤
-            </button
+              🎤</button
             ><button
               class="textarea-copy-btn"
               onclick="copyTextEl('askInput')"
@@ -30033,7 +30043,22 @@ BAZA         &larr; 4-6 lujeri noi pastrati
             id="askCopyRow"
             style="display: none; margin-top: 8px; text-align: right"
           >
-            <button class="copy-btn" onclick="copyTextEl('askResult')">
+            <button
+              class="tts-btn"
+              onclick="speakFromElement('askResult', this)"
+              title="Asculta raspunsul cu voce (ro-RO)"
+              aria-label="Citeste cu voce raspunsul AI"
+              style="
+                margin-right: 6px;
+                padding: 6px 10px;
+                background: var(--bg-surface);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                cursor: pointer;
+              "
+            >
+              &#128266;</button
+            ><button class="copy-btn" onclick="copyTextEl('askResult')">
               &#128203; Copiaz&#259; r&#259;spunsul
             </button>
           </div>

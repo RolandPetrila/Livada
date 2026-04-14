@@ -6293,6 +6293,131 @@ function renderPredictiveCalendar(containerEl, meteoHistory, frostData) {
   el.innerHTML = html;
 }
 
+// ====== N4 Sprint 2: TTS (Text-to-Speech) ro-RO pentru alerte + AI answers ======
+// Web Speech Synthesis e nativ in Chrome/Edge/Safari Android+Desktop, gratuit.
+// Voce default pentru ro-RO — daca nu exista, fallback pe en-US cu pronuntie rezonabila.
+var _ttsUtterance = null;
+
+function isTtsSupported() {
+  return typeof window !== "undefined" && "speechSynthesis" in window;
+}
+
+function pickRomanianVoice() {
+  if (!isTtsSupported()) return null;
+  var voices = window.speechSynthesis.getVoices() || [];
+  // Prioritate: ro-RO exact → ro-* → default
+  var exact = voices.find(function (v) {
+    return v.lang === "ro-RO";
+  });
+  if (exact) return exact;
+  var ro = voices.find(function (v) {
+    return /^ro/i.test(v.lang);
+  });
+  return ro || null;
+}
+
+function stopSpeaking() {
+  if (isTtsSupported() && window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+  }
+  _ttsUtterance = null;
+  document.querySelectorAll(".tts-btn").forEach(function (b) {
+    b.textContent = "🔊";
+    b.classList.remove("tts-active");
+  });
+}
+
+// Citeste text cu voce ro-RO. btnEl (opt) primeste highlight pt feedback vizual.
+function speakText(text, btnEl) {
+  if (!text || typeof text !== "string") return;
+  if (!isTtsSupported()) {
+    showToast(
+      "Citirea vocală nu este suportată. Foloseste Chrome/Edge.",
+      "warning",
+    );
+    return;
+  }
+  // Toggle: daca vorbeste deja → stop
+  if (window.speechSynthesis.speaking) {
+    stopSpeaking();
+    return;
+  }
+  // Stripheaza HTML elementar (AI answers pot avea <strong> etc.)
+  var cleanText = text
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!cleanText) return;
+  // Truncheaza la 4000 chars (Speech API practic nu accepta mult mai mult)
+  if (cleanText.length > 4000) cleanText = cleanText.substring(0, 4000) + "...";
+
+  _ttsUtterance = new SpeechSynthesisUtterance(cleanText);
+  _ttsUtterance.lang = "ro-RO";
+  _ttsUtterance.rate = 1.0;
+  _ttsUtterance.pitch = 1.0;
+  _ttsUtterance.volume = 1.0;
+  var voice = pickRomanianVoice();
+  if (voice) _ttsUtterance.voice = voice;
+
+  _ttsUtterance.onstart = function () {
+    if (btnEl) {
+      btnEl.textContent = "⏹";
+      btnEl.classList.add("tts-active");
+    }
+    livadaLog("TTS", "speak", "START", cleanText.length + " chars");
+  };
+  _ttsUtterance.onend = function () {
+    _ttsUtterance = null;
+    if (btnEl) {
+      btnEl.textContent = "🔊";
+      btnEl.classList.remove("tts-active");
+    }
+  };
+  _ttsUtterance.onerror = function (e) {
+    _ttsUtterance = null;
+    if (btnEl) {
+      btnEl.textContent = "🔊";
+      btnEl.classList.remove("tts-active");
+    }
+    showToast("Eroare TTS: " + (e.error || "necunoscut"), "error");
+  };
+  window.speechSynthesis.speak(_ttsUtterance);
+}
+
+// Handler pentru butonul TTS de pe un container text (ex: askResult)
+function speakFromElement(elementId, btn) {
+  var el = document.getElementById(elementId);
+  if (!el) return;
+  speakText(el.textContent || el.innerText || "", btn);
+}
+
+// Citeste toate alertele active in secventa
+function speakAllActiveAlerts(btn) {
+  var alerts = [];
+  ["frost", "hail", "wind", "heat", "rain", "drought", "disease"].forEach(
+    function (k) {
+      var banner = document.getElementById(k + "Banner");
+      var text = document.getElementById(k + "Text");
+      if (
+        banner &&
+        banner.classList.contains("active") &&
+        text &&
+        text.textContent
+      ) {
+        alerts.push(text.textContent.trim());
+      }
+    },
+  );
+  if (alerts.length === 0) {
+    showToast("Nicio alertă activă de citit.", "info");
+    return;
+  }
+  speakText(alerts.join(". Urmează. "), btn);
+}
+
+// La schimbare pagina/reload: opreste orice TTS in curs
+window.addEventListener("beforeunload", stopSpeaking);
+
 // ====== N12/N1 Sprint 1: JURNAL VOCAL + AI ASK VOCAL (Web Speech API ro-RO) ======
 // Extins pentru parinti Roland: interim results (vezi text pe masura ce vorbesti)
 // + suport multi-target (jurnalNote, askInput, etc.)
