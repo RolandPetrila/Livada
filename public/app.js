@@ -1833,9 +1833,9 @@ $("#dismissBtn").addEventListener("click", () => {
 // ====== VERSIUNE + SERVICE WORKER ======
 // DEPLOY_DATE + DEPLOY_TIME: actualizat la fiecare push (hardcodat = fiabil pe orice CDN)
 const DEPLOY_DATE = "2026-04-15";
-const DEPLOY_TIME = "01:34";
+const DEPLOY_TIME = "02:50";
 const DEPLOY_INFO =
-  "chore: sync pre-existing local changes (sw.js BUILD_DATE + info.md notes)";
+  "fix(build): EMERGENCY revert minify-js — rupe JavaScript in productie";
 
 const APP_BUILD = DEPLOY_DATE;
 
