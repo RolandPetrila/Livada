@@ -1,8 +1,9 @@
-import { corsHeaders, handleOptions, checkOrigin } from "./_auth.js";
+import { corsHeaders, handleOptions, checkOrigin, rateLimit } from "./_auth.js";
 import { getQuotaStatus } from "./_quota.js";
 
 // Edge Runtime — health check pentru toate serviciile AI configurate
 // T1 Sprint 1: include si quota usage per provider
+// Sprint 2 fix: rate limit adaugat (era expus fara protectie)
 export const config = { runtime: "edge" };
 
 export default async function handler(req) {
@@ -10,6 +11,9 @@ export default async function handler(req) {
 
   const originErr = checkOrigin(req);
   if (originErr) return originErr;
+
+  const rlErr = await rateLimit(req); // 30 req/min default
+  if (rlErr) return rlErr;
 
   const t0 = Date.now();
 

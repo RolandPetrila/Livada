@@ -15,6 +15,7 @@ vi.mock("@upstash/redis", () => ({
 vi.mock("../api/_auth.js", () => ({
   corsHeaders: vi.fn(() => ({ "Access-Control-Allow-Origin": "*" })),
   handleOptions: vi.fn(() => new Response(null, { status: 204 })),
+  rateLimit: vi.fn(async () => null),
 }));
 
 import handler from "../api/ping.js";

@@ -1,9 +1,10 @@
-import { corsHeaders, handleOptions } from "./_auth.js";
+import { corsHeaders, handleOptions, rateLimit } from "./_auth.js";
 import { Redis } from "@upstash/redis";
 
 // H3 Sprint 1: health check extins — verifica si varsta cronului meteo
 // Util pentru UptimeRobot sau alt monitor extern: daca cronul cade (ca 2026-04-14),
 // ping returneaza 503 cu stale:true si monitorul trimite notificare.
+// Sprint 2 fix: rate limit 60/min adaugat (UptimeRobot 5min + browser = under limit)
 export const config = { runtime: "edge" };
 
 // Cron meteo ar trebui sa ruleze orar (:05) si zilnic 02:00 UTC.
@@ -12,6 +13,10 @@ const STALE_THRESHOLD_MS = 90 * 60 * 1000;
 
 export default async function handler(req) {
   if (req.method === "OPTIONS") return handleOptions(req);
+
+  // Rate limit mai permisiv pt health check (60/min) — UptimeRobot + browser + dev tools
+  const rlErr = await rateLimit(req, 60);
+  if (rlErr) return rlErr;
 
   const now = Date.now();
   let cron = null;
