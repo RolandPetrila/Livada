@@ -2097,6 +2097,88 @@ function clearLivadaLog() {
   } catch (e) {}
 }
 
+// ====== B Sprint 3: GLOBAL ERROR HANDLER ======
+// Captureaza erori JS runtime si promise rejections neprinse in try/catch.
+// Previne "silent failures" in care butoane par sa nu raspunda fara explicatie.
+(function installGlobalErrorHandler() {
+  if (typeof window === "undefined") return;
+  window.addEventListener("error", function (e) {
+    try {
+      var msg = (e.message || "unknown").substring(0, 120);
+      var src = e.filename
+        ? e.filename.split("/").pop() + ":" + (e.lineno || 0)
+        : "";
+      livadaLog("ERR", "runtime", "FAIL", src + " " + msg);
+    } catch (_) {}
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    try {
+      var reason = e.reason;
+      var msg =
+        reason && reason.message
+          ? String(reason.message).substring(0, 120)
+          : String(reason || "unknown").substring(0, 120);
+      livadaLog("ERR", "promise", "FAIL", msg);
+    } catch (_) {}
+  });
+})();
+
+// ====== C Sprint 3: BACKEND ACTIVITY LOG (fire-and-forget) ======
+// Trimite activitate spre /api/user-activity pentru audit server-side Redis.
+// Batch 5 entries sau 10s → reduce Redis writes (max 6/min chiar la 30 actiuni)
+// Daca endpoint-ul cade sau rate limit, cade silent (client log localStorage ramane).
+var _activityBuffer = [];
+var _activityFlushTimer = null;
+var ACTIVITY_FLUSH_SIZE = 5;
+var ACTIVITY_FLUSH_MS = 10000;
+
+function pushActivity(module, action, status, detail) {
+  try {
+    _activityBuffer.push({
+      ts: Date.now(),
+      module: String(module || "").substring(0, 20),
+      action: String(action || "").substring(0, 40),
+      status: String(status || "").substring(0, 20),
+      detail: String(detail || "").substring(0, 100),
+    });
+    if (_activityBuffer.length >= ACTIVITY_FLUSH_SIZE) flushActivity();
+    else if (!_activityFlushTimer) {
+      _activityFlushTimer = setTimeout(flushActivity, ACTIVITY_FLUSH_MS);
+    }
+  } catch (_) {}
+}
+
+function flushActivity() {
+  if (_activityFlushTimer) {
+    clearTimeout(_activityFlushTimer);
+    _activityFlushTimer = null;
+  }
+  if (_activityBuffer.length === 0) return;
+  var batch = _activityBuffer;
+  _activityBuffer = [];
+  if (!navigator.onLine) return; // nu trimite offline
+  try {
+    fetch("/api/user-activity", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ events: batch }),
+      keepalive: true,
+    }).catch(function () {
+      // silent fail — activity log e best-effort
+    });
+  } catch (_) {}
+}
+
+// Flush buffer la unload
+window.addEventListener("beforeunload", flushActivity);
+window.addEventListener("pagehide", flushActivity);
+
+// Wrapper care loagheaza LOCAL + trimite la backend
+function logActivity(module, action, status, detail) {
+  livadaLog(module, action, status, detail);
+  pushActivity(module, action, status, detail);
+}
+
 // ====== FETCH WITH TIMEOUT ======
 async function fetchWithTimeout(url, opts, ms) {
   ms = ms || 10000;
@@ -2821,6 +2903,7 @@ function injectSpeciesHistory(speciesId, container) {
 
 // ====== GALLERY FUNCTIONS ======
 function openGalleryModal() {
+  logActivity("UI", "modal-open", "gallery", activeSpeciesId || "-");
   document.getElementById("galSpecies").textContent =
     SPECIES[activeSpeciesId] || activeSpeciesId;
   openModal("gallery");
@@ -3067,6 +3150,7 @@ function openJurnalFromDiag() {
 
 // ====== DIAGNOSE FUNCTIONS ======
 function openDiagnoseModal() {
+  logActivity("UI", "modal-open", "diagnose", activeSpeciesId || "-");
   document.getElementById("diagSpecies").textContent =
     SPECIES[activeSpeciesId] || activeSpeciesId;
   document.getElementById("diagResult").style.display = "none";
@@ -3281,6 +3365,7 @@ function submitDiagnose(input) {
 
 // ====== ASK AI FUNCTIONS ======
 function openAskModal() {
+  logActivity("UI", "modal-open", "ask", activeSpeciesId || "-");
   document.getElementById("askSpecies").textContent =
     SPECIES[activeSpeciesId] || activeSpeciesId;
   document.getElementById("askResult").style.display = "none";
@@ -5090,6 +5175,7 @@ function restoreData(input) {
 
 // ====== CHECKLIST PRE-STROPIRE (B5) ======
 function openChecklist() {
+  logActivity("UI", "modal-open", "checklist", activeSpeciesId || "-");
   var overlay = document.getElementById("modal-checklist");
   if (!overlay) {
     overlay = document.createElement("div");
