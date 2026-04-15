@@ -1,22 +1,16 @@
-import { corsHeaders, handleOptions, rateLimit } from "./_auth.js";
+import { corsHeaders, handleOptions } from "./_auth.js";
 import { Redis } from "@upstash/redis";
 
-// H3 Sprint 1: health check extins — verifica si varsta cronului meteo
-// Util pentru UptimeRobot sau alt monitor extern: daca cronul cade (ca 2026-04-14),
-// ping returneaza 503 cu stale:true si monitorul trimite notificare.
-// Sprint 2 fix: rate limit 60/min adaugat (UptimeRobot 5min + browser = under limit)
+// Health check server: raspunde mereu 200 daca Edge runtime traieste.
+// Varsta cronului meteo ramane vizibila in body (cron.stale, cron.ageMinutes),
+// dar nu mai triggereaza alarma externa — GitHub Actions cron are delay-uri
+// best-effort (2-3h) care produceau false positive pe UptimeRobot.
 export const config = { runtime: "edge" };
 
-// Cron meteo ar trebui sa ruleze orar (:05) si zilnic 02:00 UTC.
-// Daca ultima executie reusita e > 90 min in urma → stale.
 const STALE_THRESHOLD_MS = 90 * 60 * 1000;
 
 export default async function handler(req) {
   if (req.method === "OPTIONS") return handleOptions(req);
-
-  // Rate limit mai permisiv pt health check (60/min) — UptimeRobot + browser + dev tools
-  const rlErr = await rateLimit(req, 60);
-  if (rlErr) return rlErr;
 
   const now = Date.now();
   let cron = null;
@@ -50,15 +44,15 @@ export default async function handler(req) {
     // Nu marcam stale=true doar din cauza Redis — pinger-ul extern decide
   }
 
-  const status = stale ? 503 : 200;
   const body = {
-    ok: !stale,
+    ok: true,
     t: now,
     cron,
+    cronStale: stale,
   };
 
   return new Response(JSON.stringify(body), {
-    status,
+    status: 200,
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-store",
