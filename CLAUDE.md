@@ -215,6 +215,12 @@ Ramase din V2 → migrat in V3: F4.3 (→N6), F7.1 (→N8), F7.2 (→E1), F7.3 (
 - **F5.1 (LIVADA_API_TOKEN) — NU se implementeaza.** Decizie Roland: dashboard-ul e pentru uz personal + parinti pe telefon, prioritate UX simpla fara parole. Origin check + rate limit (30 req/min) + DOMPurify sunt suficiente pentru threat model-ul real (site obscur, fara trafic public). Codul in `_auth.js:59-67` gestioneaza corect cazul "token nesetat" (skip complet, backward compat).
 - **F3.4 CRON_SECRET — REZOLVAT OPERATIONAL 2026-04-14.** Cod: `meteo-cron.js:76-87` intoarce 500 daca env var lipseste + 401 daca secretul nu se potriveste. Operational: sincronizat in Vercel env (production) SI GitHub Actions secrets (repo). Workflow-ul `.github/workflows/meteo-cron.yml` contine acum fail-fast check pe secret empty si mesaj explicit la 401 (previne repetarea incidentului 2026-04-12→14 unde secretul nu era setat in GitHub, 25+ esecuri). Orice rotatie a secretului trebuie facuta in AMBELE locuri atomic.
 
+**Imbunatatiri frost (2026-04-22) — Pachet A + G6:**
+
+- **Frontend (app.js):** cardul meteo afiseaza acum `dew_point_2m` (Rouă) + `cloud_cover` (Nori); trigger "Risc îngheț" pe `apparent_temperature ≤ 2°C` (nu temp ≤ 0); prognoza 5 zile — border albastru pe `apparent_temperature_min < 3.5°C`. URL client Open-Meteo extins cu `dew_point_2m, cloud_cover, apparent_temperature_min`.
+- **Backend (meteo-cron.js) G6:** fereastra frost alert extinsa pe tot anul — Mar-Mai + Sep-Nov (prag 3.5°C, pomi activi/fructe), Dec-Feb (prag sever −10°C, rodiu+kaki in dormancy). Mesaj si `speciesHint` dinamice per sezon. Multi-model consensus foloseste pragul dinamic.
+- Commit `a0aa022` (2026-04-22). Teste: 39/39 pass (meteo-cron + frost-alert).
+
 ## Audit findings — actiuni amanate
 
 - **H1 CSP `unsafe-inline`** (audit 2026-04-11, severitate HIGH teoretica) — migrare amanata dupa stabilizare V2. Plan detaliat salvat in `.claude-outputs/CSP_MIGRATION_PLAN.md` (Optiunea B — hash-based CSP, 6–8h implementare). Justificare: DOMPurify e deja strat de protectie activ, risc real mic pentru un site obscur, nu merita introdusa complexitate build pipeline in plin V2 development. A se relua dupa F7 decis.
