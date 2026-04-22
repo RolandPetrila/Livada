@@ -1774,7 +1774,7 @@ async function fetchMeteo() {
         var tMin = Math.round(d.daily.temperature_2m_min[i]);
         var tApparentMin =
           d.daily.apparent_temperature_min &&
-          d.daily.apparent_temperature_min[i] !== undefined
+          d.daily.apparent_temperature_min[i] != null
             ? d.daily.apparent_temperature_min[i]
             : tMin;
         var prec = d.daily.precipitation_sum[i];

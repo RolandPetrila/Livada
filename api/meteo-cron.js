@@ -185,7 +185,7 @@ export default async function handler(req) {
     const isSevereWinter = month === 12 || month <= 2;
     const frostThresholdDynamic = isActiveFrostSeason ? FROST_THRESHOLD : -10;
     const speciesHint = isSevereWinter
-      ? "rodiu, kaki (frost SEVER, risc mortalitate)"
+      ? "rodiu si kaki — frost SEVER, risc mortalitate"
       : "piersic, cais, migdal, rodiu";
     let frostAlert = { active: false, updatedAt: new Date().toISOString() };
 
