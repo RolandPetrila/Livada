@@ -175,13 +175,24 @@ export default async function handler(req) {
     }
     await kv.set("livada:meteo:history", history);
 
-    // F8.2: Frost alert (March–May): apparent_temperature + cloud_cover + dew_point
-    // Varianta A: skip ore trecute, salveaza frostHour, prag FROST_THRESHOLD (microclimat Mures)
+    // G6: Frost alert pe tot anul cu prag si mesaj dinamice
+    //   - sezon activ (Mar-Mai primavara, Sep-Nov toamna): prag FROST_THRESHOLD (3.5°C), risc pe pomi activi/fructe
+    //   - iarna severa (Dec-Feb): prag -10°C, alerte doar pt specii sensibile in dormancy (rodiu, kaki)
     const month = new Date().getMonth() + 1;
     const nowMs = Date.now();
+    const isActiveFrostSeason =
+      (month >= 3 && month <= 5) || (month >= 9 && month <= 11);
+    const isSevereWinter = month === 12 || month <= 2;
+    const frostThresholdDynamic = isActiveFrostSeason ? FROST_THRESHOLD : -10;
+    const speciesHint = isSevereWinter
+      ? "rodiu, kaki (frost SEVER, risc mortalitate)"
+      : "piersic, cais, migdal, rodiu";
     let frostAlert = { active: false, updatedAt: new Date().toISOString() };
 
-    if (month >= 3 && month <= 5 && data.hourly?.temperature_2m) {
+    if (
+      (isActiveFrostSeason || isSevereWinter) &&
+      data.hourly?.temperature_2m
+    ) {
       const apparentTemps =
         data.hourly.apparent_temperature || data.hourly.temperature_2m;
       const cloudCovers = data.hourly.cloud_cover || [];
@@ -193,13 +204,16 @@ export default async function handler(req) {
         frostCloudless = false,
         frostDewPoint = null;
       for (let i = 0; i < apparentTemps.length; i++) {
-        // Varianta A: skip ore deja trecute — nu crea alerte pt frost din trecut
         if (new Date(times[i]).getTime() < nowMs) continue;
         const apparentTemp = apparentTemps[i];
         const dewPoint = dewPoints[i] ?? null;
         const cloudCover = cloudCovers[i] ?? 100;
-        const frostRisk =
-          apparentTemp < FROST_THRESHOLD || (dewPoint !== null && dewPoint < 0);
+        // In sezon activ: frost daca apparent < prag SAU dew_point < 0 (bruma radiativa)
+        // In iarna severa: doar apparent < -10 (dew_point e aproape mereu negativ iarna)
+        const frostRisk = isActiveFrostSeason
+          ? apparentTemp < frostThresholdDynamic ||
+            (dewPoint !== null && dewPoint < 0)
+          : apparentTemp < frostThresholdDynamic;
         if (frostRisk && apparentTemp < worstApparent) {
           worstApparent = apparentTemp;
           frostTime = times[i];
@@ -216,12 +230,15 @@ export default async function handler(req) {
           frostDewPoint !== null && frostDewPoint < 0
             ? ` Punct de roua: ${Math.round(frostDewPoint * 10) / 10}°C (bruma sigura).`
             : "";
+        const prefix = isSevereWinter
+          ? "Inghet SEVER prognozat"
+          : "Inghet prognozat";
         frostAlert = {
           active: true,
           minTemp: Math.round(worstApparent * 10) / 10,
           date: frostDate,
           frostHour: frostTime,
-          message: `Inghet prognozat: ${Math.round(worstApparent)}°C (perceput) pe ${frostDate} la ~${frostHourStr}${cerinaSen}${dewMsg} Protejeaza pomii sensibili (piersic, cais, migdal, rodiu)!`,
+          message: `${prefix}: ${Math.round(worstApparent)}°C (perceput) pe ${frostDate} la ~${frostHourStr}${cerinaSen}${dewMsg} Protejeaza pomii sensibili (${speciesHint})!`,
           updatedAt: new Date().toISOString(),
         };
       }
@@ -229,13 +246,17 @@ export default async function handler(req) {
 
     // F3.2 — Alert multi-noapte consecutive (apparent_temperature_min zilnic)
     let consecutiveFrostMsg = "";
-    if (month >= 3 && month <= 5 && data.daily?.apparent_temperature_min) {
+    if (
+      (isActiveFrostSeason || isSevereWinter) &&
+      data.daily?.apparent_temperature_min
+    ) {
       const frostNights = [];
       const dailyDates = data.daily.time || [];
       const dailyApparent = data.daily.apparent_temperature_min;
       dailyDates.forEach(function (date, i) {
         if (date < today) return; // skip zile trecute
-        if ((dailyApparent[i] ?? 99) < FROST_THRESHOLD) frostNights.push(date);
+        if ((dailyApparent[i] ?? 99) < frostThresholdDynamic)
+          frostNights.push(date);
       });
       if (frostNights.length >= 2) {
         consecutiveFrostMsg =
@@ -260,7 +281,7 @@ export default async function handler(req) {
             date: frostNights[0],
             message:
               consecutiveFrostMsg +
-              ". Protejeaza pomii sensibili (piersic, cais, migdal, rodiu)!",
+              `. Protejeaza pomii sensibili (${speciesHint})!`,
             consecutiveMsg: consecutiveFrostMsg,
             frostNights,
             updatedAt: new Date().toISOString(),
@@ -275,8 +296,8 @@ export default async function handler(req) {
       }
     }
 
-    // F8.3: Multi-model frost consensus (ICON-EU, ECMWF, GFS)
-    if (month >= 3 && month <= 5 && frostAlert.active) {
+    // F8.3: Multi-model frost consensus (ICON-EU, ECMWF, GFS) — G6 fereastra extinsa
+    if ((isActiveFrostSeason || isSevereWinter) && frostAlert.active) {
       try {
         const mmUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=apparent_temperature&forecast_days=2&timezone=Europe/Bucharest&models=icon_seamless,ecmwf_ifs025,gfs_seamless`;
         const mmCtrl = new AbortController();
@@ -293,7 +314,7 @@ export default async function handler(req) {
             const temps = mmData.hourly?.[key] || [];
             for (let i = 0; i < temps.length; i++) {
               if (new Date(mmTimes[i]).getTime() < nowMs) continue;
-              if (temps[i] < FROST_THRESHOLD) {
+              if (temps[i] < frostThresholdDynamic) {
                 modelsFrost++;
                 break;
               }

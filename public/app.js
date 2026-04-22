@@ -1645,7 +1645,7 @@ var METEO_URL_FULL =
   LIVADA_LAT +
   "&longitude=" +
   LIVADA_LON +
-  "&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,relative_humidity_2m_mean,weather_code&timezone=Europe/Bucharest&forecast_days=5";
+  "&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation,dew_point_2m,cloud_cover&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_min,precipitation_sum,wind_speed_10m_max,relative_humidity_2m_mean,weather_code&timezone=Europe/Bucharest&forecast_days=5";
 var METEO_URL_FAST =
   "https://api.open-meteo.com/v1/forecast?latitude=" +
   LIVADA_LAT +
@@ -1717,8 +1717,10 @@ async function fetchMeteo() {
     var desc = WMO_CODES[code] || "Necunoscut";
     var emoji = wmoEmoji(code);
     var alertHtml =
-      c.temperature_2m <= 0
-        ? '<div class="alert alert-danger meteo-alert"><strong>\u26A0\uFE0F Temperaturi negative!</strong> Verific\u0103 protec\u021bia pomilor sensibili.</div>'
+      c.apparent_temperature <= 2
+        ? '<div class="alert alert-danger meteo-alert"><strong>\u26A0\uFE0F Risc inghet!</strong> Temperatura simtita ' +
+          Math.round(c.apparent_temperature) +
+          "°C &mdash; verific\u0103 protec\u021bia pomilor sensibili.</div>"
         : c.temperature_2m >= 30
           ? '<div class="alert alert-warning meteo-alert"><strong>\u2600\uFE0F C\u0103ldur\u0103 excesiv\u0103!</strong> Verific\u0103 irigarea.</div>'
           : "";
@@ -1744,6 +1746,12 @@ async function fetchMeteo() {
       "<span>\uD83C\uDF2C\uFE0F V\u00E2nt: " +
       Math.round(c.wind_speed_10m) +
       " km/h</span>" +
+      (c.dew_point_2m !== undefined && c.dew_point_2m !== null
+        ? "<span>🌫️ Rouă: " + Math.round(c.dew_point_2m) + "°C</span>"
+        : "") +
+      (c.cloud_cover !== undefined && c.cloud_cover !== null
+        ? "<span>☁️ Nori: " + c.cloud_cover + "%</span>"
+        : "") +
       (c.precipitation > 0
         ? "<span>\uD83C\uDF27\uFE0F Precipita\u021Bii: " +
           c.precipitation +
@@ -1764,9 +1772,14 @@ async function fetchMeteo() {
         var zi = ZILE[dt.getDay()];
         var tMax = Math.round(d.daily.temperature_2m_max[i]);
         var tMin = Math.round(d.daily.temperature_2m_min[i]);
+        var tApparentMin =
+          d.daily.apparent_temperature_min &&
+          d.daily.apparent_temperature_min[i] !== undefined
+            ? d.daily.apparent_temperature_min[i]
+            : tMin;
         var prec = d.daily.precipitation_sum[i];
         var wc = d.daily.weather_code[i];
-        var frost = tMin < 0 ? "border:2px solid var(--info);" : "";
+        var frost = tApparentMin < 3.5 ? "border:2px solid var(--info);" : "";
         fc +=
           '<div class="mf-day" style="' +
           frost +
