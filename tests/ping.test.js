@@ -53,36 +53,43 @@ describe("ping API route", () => {
     expect(body.cron.ageMinutes).toBeLessThanOrEqual(31);
   });
 
-  it("returns 503 when cron is stale (>90min)", async () => {
+  // Nota: dupa commit c686d6b (2026-04-14), ping.js intoarce mereu 200 ca
+  // health check server. Staleness cronului ramane vizibila in body
+  // (cron.stale + cronStale), dar nu mai triggereaza 503 — pinger-ul extern
+  // (UptimeRobot) decide, iar delay-uri GitHub Actions cron nu mai fac false
+  // positive. Testele verifica acum body-ul, nu status code.
+  it("returns 200 but body signals stale when cron >90min", async () => {
     mockKv.get.mockResolvedValue({
       success: true,
       timestamp: Date.now() - 2 * 60 * 60 * 1000, // 2h in urma
     });
     const res = await handler(fakeReq("GET"));
-    expect(res.status).toBe(503);
+    expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.ok).toBe(false);
+    expect(body.ok).toBe(true);
     expect(body.cron.stale).toBe(true);
+    expect(body.cronStale).toBe(true);
   });
 
-  it("returns 503 when last cron run had success:false", async () => {
+  it("returns 200 but body marks stale when last cron had success:false", async () => {
     mockKv.get.mockResolvedValue({
       success: false,
       timestamp: Date.now() - 5 * 60 * 1000, // fresh but failed
       error: "Open-Meteo timeout",
     });
     const res = await handler(fakeReq("GET"));
-    expect(res.status).toBe(503);
+    expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.cron.stale).toBe(true);
   });
 
-  it("returns 503 when no cron data in Redis", async () => {
+  it("returns 200 with reason:no_data when Redis has no cron data", async () => {
     mockKv.get.mockResolvedValue(null);
     const res = await handler(fakeReq("GET"));
-    expect(res.status).toBe(503);
+    expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.cron.reason).toBe("no_data");
+    expect(body.cronStale).toBe(true);
   });
 
   it("returns 200 when Redis errors (extern monitor decide)", async () => {

@@ -1845,10 +1845,10 @@ $("#dismissBtn").addEventListener("click", () => {
 
 // ====== VERSIUNE + SERVICE WORKER ======
 // DEPLOY_DATE + DEPLOY_TIME: actualizat la fiecare push (hardcodat = fiabil pe orice CDN)
-const DEPLOY_DATE = "2026-04-15";
-const DEPLOY_TIME = "02:50";
+const DEPLOY_DATE = "2026-04-23";
+const DEPLOY_TIME = "14:12";
 const DEPLOY_INFO =
-  "fix(build): EMERGENCY revert minify-js — rupe JavaScript in productie";
+  "fix(meteo): null guard G2 + elimin paranteze imbricate G6";
 
 const APP_BUILD = DEPLOY_DATE;
 
@@ -2303,7 +2303,8 @@ function renderModelIndicator(containerId, modelName, isFallback, ms) {
 }
 
 var _aiStatus = null,
-  _aiStatusTs = 0;
+  _aiStatusTs = 0,
+  _aiQuota = null;
 
 function loadAiStatus() {
   if (_aiStatus && Date.now() - _aiStatusTs < 600000)
@@ -2316,6 +2317,7 @@ function loadAiStatus() {
       if (data && data.status) {
         _aiStatus = data.status;
         _aiStatusTs = Date.now();
+        _aiQuota = data.quota || null;
       }
       return _aiStatus || {};
     })
@@ -2323,6 +2325,26 @@ function loadAiStatus() {
       console.warn("[ai-status]", e.message);
       return {};
     });
+}
+
+// V3 T1 — intoarce warning text daca oricare provider AI e peste 80% quota
+function getAiQuotaWarning() {
+  if (!_aiQuota) return null;
+  var warnings = [];
+  Object.keys(_aiQuota).forEach(function (k) {
+    var q = _aiQuota[k];
+    if (!q || q.error) return;
+    if (q.used >= q.limit) {
+      warnings.push(
+        (q.label || k) + " EPUIZAT (" + q.used + "/" + q.limit + ")",
+      );
+    } else if (q.percent >= 80) {
+      warnings.push(
+        (q.label || k) + " " + q.percent + "% (" + q.used + "/" + q.limit + ")",
+      );
+    }
+  });
+  return warnings.length ? warnings.join(" • ") : null;
 }
 
 function renderAiStatusPanel(tabName, anchorId, position) {
@@ -2374,6 +2396,17 @@ function renderAiStatusPanel(tabName, anchorId, position) {
       "')\" " +
       'title="Reincarca status AI" style="background:none;border:none;cursor:pointer;color:var(--text-dim);' +
       'font-size:0.8rem;padding:0 4px;margin-left:auto;flex-shrink:0;">&#8635;</button>';
+    // V3 T1 — avertizare quota AI (badge discret, vizibil doar la 80%+ usage)
+    var quotaWarn = getAiQuotaWarning();
+    if (quotaWarn) {
+      html +=
+        '<div style="flex-basis:100%;margin-top:6px;padding:6px 10px;' +
+        "border-radius:6px;font-size:0.7rem;background:rgba(217,119,6,0.15);" +
+        'border:1px solid rgba(217,119,6,0.35);color:#d97706;">' +
+        "&#9888;&#65039; Quota zilnica: " +
+        escapeHtml(quotaWarn) +
+        "</div>";
+    }
     html += "</div>";
     anchor.insertAdjacentHTML(position || "beforebegin", html);
   });
@@ -4074,9 +4107,50 @@ function formatAlertTime(isoStr) {
   }
 }
 
+// Audit #4 — Dismiss banner persistent (per tip + data)
+// Cheia: livada-dismissed:<type>:<date>. User dismiss azi → banner ramane
+// inchis pana cand alertData.date se schimba.
+function isBannerDismissed(key, date) {
+  if (!date) return false;
+  try {
+    return localStorage.getItem("livada-dismissed:" + key + ":" + date) === "1";
+  } catch (e) {
+    return false;
+  }
+}
+
+function dismissAlertBanner(key, date) {
+  var b = document.getElementById(key + "Banner");
+  if (b) b.classList.remove("active");
+  if (date) {
+    try {
+      localStorage.setItem("livada-dismissed:" + key + ":" + date, "1");
+      // Cleanup cheile mai vechi de 30 zile
+      var cutoff = new Date(Date.now() - 30 * 86400000)
+        .toISOString()
+        .slice(0, 10);
+      for (var i = localStorage.length - 1; i >= 0; i--) {
+        var lk = localStorage.key(i);
+        if (lk && lk.indexOf("livada-dismissed:") === 0) {
+          var parts = lk.split(":");
+          if (parts.length >= 3 && parts[2] < cutoff) {
+            localStorage.removeItem(lk);
+          }
+        }
+      }
+    } catch (e) {}
+  }
+}
+
 function applyAlertBanner(alertData, textId, bannerId, title, key) {
   var timeId = key + "Time";
   if (alertData && alertData.active && !isAlertStale(alertData)) {
+    // Audit #4: respecta dismiss persistent — NU afisa daca user inchis azi
+    if (isBannerDismissed(key, alertData.date)) {
+      var bh0 = document.getElementById(bannerId);
+      if (bh0) bh0.classList.remove("active");
+      return;
+    }
     var t = document.getElementById(textId);
     var b = document.getElementById(bannerId);
     var tm = document.getElementById(timeId);
@@ -4085,8 +4159,16 @@ function applyAlertBanner(alertData, textId, bannerId, title, key) {
       var timeStr = formatAlertTime(alertData.updatedAt);
       tm.textContent = timeStr ? "\u23F0 " + timeStr : "";
     }
-    if (b) b.classList.add("active");
-    sendLivadaNotification(title, alertData.message || title, key);
+    if (b) {
+      b.classList.add("active");
+      // Severity class pentru CSS distinct
+      b.classList.remove("sev-critical", "sev-warning", "sev-info");
+      if (alertData.severity) b.classList.add("sev-" + alertData.severity);
+      b.dataset.alertDate = alertData.date || "";
+    }
+    // Audit #9: foloseste shortMessage pt notificare (actionable pe mobil)
+    var notifBody = alertData.shortMessage || alertData.message || title;
+    sendLivadaNotification(title, notifBody, key, alertData.date);
   } else {
     var bh = document.getElementById(bannerId);
     if (bh) bh.classList.remove("active");
@@ -4181,15 +4263,57 @@ function renderAlertJournal(journal) {
   el.innerHTML = html;
 }
 
-// II2: Notification API helper
-var _notifSentKeys = {};
-function sendLivadaNotification(title, body, key) {
+// II2 + Audit #2: Notification API helper
+// Dedupe persistent in localStorage — cheia `(type+date)` cu TTL 24h.
+// Inainte era doar in memorie → 5 reload = 5 notificari identice.
+var _notifSentKeys = {}; // pastrat pentru backward compat in sesiune
+function _notifSentRecently(key, date) {
+  var combined = "livada-notif-sent:" + key + ":" + (date || "");
+  try {
+    var raw = localStorage.getItem(combined);
+    if (!raw) return false;
+    var ts = Number(raw);
+    if (!ts || Date.now() - ts > 24 * 3600 * 1000) {
+      localStorage.removeItem(combined);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+function _markNotifSent(key, date) {
+  try {
+    localStorage.setItem(
+      "livada-notif-sent:" + key + ":" + (date || ""),
+      String(Date.now()),
+    );
+    // Cleanup TTL: la fiecare marcare verifica cheile mai vechi de 24h
+    for (var i = localStorage.length - 1; i >= 0; i--) {
+      var lk = localStorage.key(i);
+      if (lk && lk.indexOf("livada-notif-sent:") === 0) {
+        var v = Number(localStorage.getItem(lk) || 0);
+        if (!v || Date.now() - v > 24 * 3600 * 1000) {
+          localStorage.removeItem(lk);
+        }
+      }
+    }
+  } catch (e) {}
+}
+function sendLivadaNotification(title, body, key, date) {
   if (!("Notification" in window)) return;
   if (Notification.permission !== "granted") return;
   if (localStorage.getItem("livada-notif-disabled") === "1") return;
-  // Evita spam: trimite o singura notificare per tip per sesiune
+  // Evita spam:
+  //   - per sesiune (_notifSentKeys) — rapid, 0ms
+  //   - persistent 24h (_notifSentRecently) — supravietuieste reload
   if (_notifSentKeys[key]) return;
+  if (_notifSentRecently(key, date)) {
+    _notifSentKeys[key] = true;
+    return;
+  }
   _notifSentKeys[key] = true;
+  _markNotifSent(key, date);
   try {
     new Notification(title, {
       body: body,
@@ -4224,6 +4348,16 @@ function requestLivadaNotifPermission() {
       localStorage.removeItem("livada-notif-disabled");
       showToast("Notificari activate! Vei primi alerte de inghet si boli.");
       updateNotifBtn();
+      // Audit #1 — subscribe la Web Push imediat dupa grant
+      livadaEnsurePushSubscription()
+        .then(function (r) {
+          if (r && r.ok) {
+            showToast(
+              "Push notificari configurate — alerte si cu app inchisa.",
+            );
+          }
+        })
+        .catch(function () {});
     } else {
       showToast(
         "Notificari refuzate. Poti activa mai tarziu din setarile browserului.",
@@ -5597,6 +5731,91 @@ function injectSeasonalTip(tabId, container) {
   container.insertBefore(div, container.firstChild);
 }
 
+// ====== Audit #7 — Indicator UI cron stale ======
+async function updateCronStaleIndicator() {
+  var el = document.getElementById("cronStaleBadge");
+  if (!el) return;
+  if (!navigator.onLine) {
+    el.style.display = "none";
+    return;
+  }
+  try {
+    var res = await fetchWithTimeout("/api/ping", {}, 3000);
+    if (!res.ok) return;
+    var data = await res.json();
+    var c = data.cron || {};
+    if (c.stale === true) {
+      el.textContent =
+        "⚠️ Cron stale" +
+        (c.ageMinutes ? " (" + Math.round(c.ageMinutes / 60) + "h)" : "");
+      el.style.background = "#d97706";
+      el.style.color = "#fff";
+      el.style.display = "inline-flex";
+      el.title =
+        "Datele meteo pot fi invechite (>90 min fara update cron). " +
+        "Click pentru a actualiza manual.";
+    } else if (c.lastRun) {
+      el.textContent = "✔ Cron OK";
+      el.style.background = "#059669";
+      el.style.color = "#fff";
+      el.style.display = "inline-flex";
+      el.title = "Cron meteo rulat ultimul: " + c.lastRun;
+    } else {
+      el.style.display = "none";
+    }
+  } catch (e) {
+    el.style.display = "none";
+  }
+}
+
+// ====== Audit #1 — Web Push VAPID subscription flow ======
+function urlBase64ToUint8Array(base64String) {
+  var padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  var base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  var rawData = atob(base64);
+  var outputArray = new Uint8Array(rawData.length);
+  for (var i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+async function livadaEnsurePushSubscription() {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+    return { ok: false, reason: "unsupported" };
+  }
+  if (Notification.permission !== "granted") {
+    return { ok: false, reason: "no_permission" };
+  }
+  try {
+    var keyRes = await fetchWithTimeout("/api/push-public-key", {}, 5000);
+    if (!keyRes.ok) return { ok: false, reason: "no_key_endpoint" };
+    var keyData = await keyRes.json();
+    if (!keyData.configured || !keyData.publicKey) {
+      return { ok: false, reason: "vapid_not_configured" };
+    }
+    var reg = await navigator.serviceWorker.ready;
+    var sub = await reg.pushManager.getSubscription();
+    if (!sub) {
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(keyData.publicKey),
+      });
+    }
+    await fetchWithTimeout(
+      "/api/push-subscribe",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subscription: sub.toJSON() }),
+      },
+      5000,
+    );
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, reason: "error", error: e && e.message };
+  }
+}
+
 // ====== INIT NEW FEATURES ======
 (function initNewFeatures() {
   // Init
@@ -5621,6 +5840,79 @@ function injectSeasonalTip(tabId, container) {
       console.error("syncJournal init:", e);
     });
   }, INIT_SYNC_DELAY_MS);
+
+  // Audit #3 — polling foreground la 30 min cand tab vizibil.
+  // Inainte: doar init + click manual + tab-switch. 24h tab open = stale.
+  var _alertsPollTimer = null;
+  function startAlertsPolling() {
+    if (_alertsPollTimer) return;
+    _alertsPollTimer = setInterval(
+      function () {
+        if (document.visibilityState === "visible" && navigator.onLine) {
+          checkAlerts().catch(function (e) {
+            console.error("checkAlerts poll:", e);
+          });
+          updateCronStaleIndicator();
+        }
+      },
+      30 * 60 * 1000,
+    );
+  }
+  function stopAlertsPolling() {
+    if (_alertsPollTimer) {
+      clearInterval(_alertsPollTimer);
+      _alertsPollTimer = null;
+    }
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+      startAlertsPolling();
+      // Refresh immediat la revenire
+      checkAlerts().catch(function () {});
+      updateCronStaleIndicator();
+    } else {
+      stopAlertsPolling();
+    }
+  });
+  window.addEventListener("pagehide", stopAlertsPolling);
+  startAlertsPolling();
+
+  // Audit #7 — cron stale indicator init
+  setTimeout(updateCronStaleIndicator, 2500);
+
+  // Audit #5 — Periodic Background Sync (6h) cand SW are permisiunea
+  if (
+    "serviceWorker" in navigator &&
+    "periodicSync" in
+      (navigator.serviceWorker.ready ? ServiceWorkerRegistration.prototype : {})
+  ) {
+    navigator.serviceWorker.ready
+      .then(function (reg) {
+        if (!reg.periodicSync) return;
+        return navigator.permissions
+          .query({ name: "periodic-background-sync" })
+          .then(function (status) {
+            if (status.state === "granted") {
+              return reg.periodicSync.register("livada-alerts", {
+                minInterval: 6 * 3600 * 1000,
+              });
+            }
+          })
+          .catch(function () {});
+      })
+      .catch(function () {});
+  }
+
+  // Audit #1 — Web Push auto-resubscribe daca user are permission + SW activ
+  setTimeout(function () {
+    if (
+      "Notification" in window &&
+      Notification.permission === "granted" &&
+      localStorage.getItem("livada-notif-disabled") !== "1"
+    ) {
+      livadaEnsurePushSubscription().catch(function () {});
+    }
+  }, 3500);
 })();
 
 // ====== KEYBOARD SHORTCUTS (P3-6) ======

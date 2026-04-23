@@ -5,8 +5,8 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6: logging, meteo apparent_temp, debug panel, AI instrumentare, calendar predictiv, offline jurnal, CSV export) | **HTML:** 12,490 linii (minified, 761 KB) | **API:** 12 routes + 3 utilitare
-**Ultima actualizare:** 2026-04-10 | **Performance:** FCP 3–4s → 2–2.5s (−33%), HTML 1.2MB → 761KB (−36%), gzip 217KB
+**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 15 routes + 4 utilitare
+**Ultima actualizare:** 2026-04-23 (Audit Alerte Meteo — FULL REMEDIERE: 8/8 itemi + Web Push VAPID + cron hardening)
 
 ## Arhitectura
 
@@ -84,24 +84,28 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 ## API Routes — Status Runtime
 
-| Route            | Runtime | Timeout | Serviciu extern                                                             |
-| ---------------- | ------- | ------- | --------------------------------------------------------------------------- |
-| ai-status.js     | Edge    | —       | Health check servicii AI (boolean, fara call extern)                        |
-| ask.js           | Edge    | 28s     | Groq                                                                        |
-| diagnose.js      | Edge    | 22s     | Gemini 2.5-flash (fallback: 2.5-flash-lite)                                 |
-| diagnose-test.js | Edge    | 12s     | Gemini                                                                      |
-| frost-alert.js   | Edge    | 5s      | Redis                                                                       |
-| identify.js      | Edge    | 20s     | Gemini (identificare specie din fotografie)                                 |
-| journal.js       | Edge    | 5s      | Redis                                                                       |
-| meteo-cron.js    | Edge    | 25s     | Open-Meteo + Redis                                                          |
-| meteo-history.js | Edge    | 5s      | Redis                                                                       |
-| meteo-refresh.js | Edge    | 25s     | Proxy catre meteo-cron (origin+rate limit, fara CRON_SECRET in frontend)    |
-| photos.js        | Node.js | 10s     | Vercel Blob (ATENTIE: @vercel/blob incompatibil cu Edge — foloseste undici) |
-| ping.js          | Edge    | —       | Redis (health check server: mereu 200; cron staleness doar in body)         |
-| report.js        | Edge    | 25s     | Redis + Groq                                                                |
-| \_auth.js        | Utility | —       | —                                                                           |
-| \_ai.js          | Utility | —       | Wrapper comun Gemini + fallback modele                                      |
-| \_timeout.js     | Utility | —       | fetchWithTimeout helper                                                     |
+| Route              | Runtime | Timeout | Serviciu extern                                                             |
+| ------------------ | ------- | ------- | --------------------------------------------------------------------------- |
+| ai-status.js       | Edge    | —       | Health check servicii AI + quota usage per provider (T1)                    |
+| ask.js             | Edge    | 28s     | Groq                                                                        |
+| diagnose.js        | Edge    | 22s     | Gemini 2.5-flash + quota guard (T1 — blocheaza la 1000 req/zi)              |
+| diagnose-test.js   | Edge    | 12s     | Gemini                                                                      |
+| frost-alert.js     | Edge    | 5s      | Redis                                                                       |
+| identify.js        | Edge    | 20s     | Gemini + quota guard (T1) + Pl@ntNet + fallback vision                      |
+| journal.js         | Edge    | 5s      | Redis                                                                       |
+| meteo-cron.js      | Edge    | 25s     | Open-Meteo + Redis + trigger push-broadcast pe alerta activa                |
+| meteo-history.js   | Edge    | 5s      | Redis                                                                       |
+| meteo-refresh.js   | Edge    | 25s     | Proxy catre meteo-cron (origin+rate limit, fara CRON_SECRET in frontend)    |
+| photos.js          | Node.js | 10s     | Vercel Blob (ATENTIE: @vercel/blob incompatibil cu Edge — foloseste undici) |
+| ping.js            | Edge    | —       | Redis (health check server: mereu 200; cron staleness doar in body)         |
+| push-broadcast.js  | Node.js | 10s     | web-push VAPID — trimite alerte la subscriberi (chemat de meteo-cron)       |
+| push-public-key.js | Edge    | —       | Expune VAPID_PUBLIC_KEY pentru frontend subscribe                           |
+| push-subscribe.js  | Edge    | 5s      | Salveaza/elimina subscription in Redis SET (livada:push-subs)               |
+| report.js          | Edge    | 25s     | Redis + Groq                                                                |
+| \_auth.js          | Utility | —       | CORS/origin/rateLimit Redis+in-memory fallback                              |
+| \_ai.js            | Utility | —       | Wrapper comun Gemini + OpenAI-compat + Cerebras                             |
+| \_quota.js         | Utility | —       | Quota tracking per provider (T1) — INCR Redis + limits free tier            |
+| \_timeout.js       | Utility | —       | fetchWithTimeout helper                                                     |
 
 ## Variabile de mediu (Vercel Dashboard)
 
@@ -112,6 +116,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 - `UPSTASH_REDIS_REST_TOKEN` — Redis auth
 - `BLOB_READ_WRITE_TOKEN` — Vercel Blob galerie foto
 - `CRON_SECRET` — autentificare cron job meteo-cron (_enforce non-empty necesar_)
+- `VAPID_PUBLIC_KEY` + `VAPID_PRIVATE_KEY` + `VAPID_CONTACT` — Web Push notificari (Audit #1, 2026-04-23). Keys in `.env.local` (gitignored). Trebuie adaugate MANUAL in Vercel Dashboard pentru activare push real. Fara ele, `/api/push-broadcast` intoarce 503 iar frontend-ul ramane pe Notification API fallback in-browser.
 
 ## Dependente externe
 
@@ -198,13 +203,13 @@ Vezi si `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V2.md` (arhivat — 25/31 ite
 **Status V2 (la 2026-04-15):** DONE 25 / PARTIAL 1 / PENDING 4 / INCHIS 1 (81% completare).
 Ramase din V2 → migrat in V3: F4.3 (→N6), F7.1 (→N8), F7.2 (→E1), F7.3 (→N7), F8.1 (→N14), F8.4 (→T4).
 
-**V3 — 5 P0 URGENT:**
+**V3 — 5 P0 URGENT (status):**
 
-- T1: AI cost tracking + quota guard (risc Gemini 1000 req/zi)
-- T2: Redis fallback in-memory rate limit (DDoS vuln la cadere Upstash)
-- E1: Calculator doze: volum tank configurabil (acum 10L hardcoded)
-- N1: Voice input jurnal (Web Speech API ro-RO) — pt parinti
-- N2: EPPO API integrare (date oficiale boli/daunatori EU, gratuit)
+- T1: AI cost tracking + quota guard — **EXTINS 2026-04-23** — integrat deja in diagnose.js + ai-status.js, acum si in identify.js; badge UI in panel AI cand >80% quota folosita. `_quota.js` centralizat cu limits per provider.
+- T2: Redis fallback in-memory rate limit — DONE (commit anterior, `_auth.js:73-92` `rateLimitInMemory`).
+- E1: Calculator doze: volum tank configurabil (acum 10L hardcoded) — PENDING
+- N1: Voice input jurnal — DONE in V2 F0 + extins in N1 V3
+- N2: EPPO API integrare (date oficiale boli/daunatori EU, gratuit) — PENDING
 
 **V3 — 5 P1 IMPORTANT:** E2 search continut, N3 GDD/Chill Hours JS, N4 TTS alerte, T3 lazy load specii, T4 Web Push VAPID.
 
@@ -224,6 +229,18 @@ Ramase din V2 → migrat in V3: F4.3 (→N6), F7.1 (→N8), F7.2 (→E1), F7.3 (
 ## Audit findings — actiuni amanate
 
 - **H1 CSP `unsafe-inline`** (audit 2026-04-11, severitate HIGH teoretica) — migrare amanata dupa stabilizare V2. Plan detaliat salvat in `.claude-outputs/CSP_MIGRATION_PLAN.md` (Optiunea B — hash-based CSP, 6–8h implementare). Justificare: DOMPurify e deja strat de protectie activ, risc real mic pentru un site obscur, nu merita introdusa complexitate build pipeline in plin V2 development. A se relua dupa F7 decis.
+
+- **Audit Alerte & Notificari Meteo** (2026-04-22, **REMEDIAT COMPLET 2026-04-23**) — fisier: `99_Plan_vs_Audit/AUDIT_ALERTE_METEO_20260422.md`. Scor 7/10 → tinta 9/10.
+  - **#1 Web Push VAPID end-to-end** — `api/push-{subscribe,broadcast,public-key}.js`, `web-push@npm`, `meteo-cron` fire-and-forget broadcast pe alerta activa, sw.js push handler cu severity vibrate + requireInteraction pt critical, client `livadaEnsurePushSubscription()` auto pe grant. **ATENTIE: necesita VAPID_PUBLIC_KEY + VAPID_PRIVATE_KEY + VAPID_CONTACT in Vercel env vars** (generate local in `.env.local` gitignored). Fara ele, push-broadcast raspunde 503 si frontend-ul ramane pe Notification API fallback.
+  - **#2 Dedupe notif persistent** — `localStorage["livada-notif-sent:<type>:<date>"]` cu TTL 24h + cleanup automat; previne spam la reload.
+  - **#3 Polling foreground 30min** cand `visibilityState === "visible"`, pause/resume pe visibilitychange, refresh immediat la revenire.
+  - **#4 Dismiss banner persistent** — `localStorage["livada-dismissed:<type>:<date>"]` cu cleanup >30 zile; `dismissAlertBanner(key, date)` nou, onclick-uri index.html actualizate.
+  - **#5 Periodic Background Sync** — sw.js `periodicsync` tag `livada-alerts` la 6h + sync fallback `livada-alerts-retry`; frontend se inregistreaza cand Permissions API acorda.
+  - **#6 Gradient iarna** — banda tranzitie Nov-29→Dec-15 si Feb-15→Mar-15 interpoleaza prag 3.5°C↔−10°C linear, elimina discontinuitatea (27 Feb silent → 1 Mar alert).
+  - **#7 Cron stale indicator UI** — badge `#cronStaleBadge` in header citeste `/api/ping`; click → refresh manual. Verde "Cron OK" / portocaliu "Cron stale Xh".
+  - **#8 Notif body scurt** — backend genereaza `shortMessage` per alerta (~100 chars actionable); frontend `sendLivadaNotification` foloseste shortMessage pt body.
+  - **Bonus hardening `meteo-cron.js`**: elimin duplicate write `livada:meteo:history`, batch Redis global timeout 10s, error logging detaliat (name+stack), severity flag + shortMessage pe toate alertele + jurnal.
+  - **Teste:** 185/185 pass (3 ping.test.js actualizate pt noul comportament mereu-200 din c686d6b).
 
 ## Localizare Livada (confirmat 2026-04-12)
 

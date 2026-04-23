@@ -26,6 +26,18 @@ id="appVersionBadge"
 style="color: var(--accent); cursor: pointer"
 title="Info versiune"
 onclick="showAppInfo()"
+></span><span
+id="cronStaleBadge"
+style="
+display: none;
+margin-left: 8px;
+padding: 2px 8px;
+border-radius: 10px;
+font-size: 0.65rem;
+font-weight: 600;
+cursor: pointer;
+"
+onclick="triggerMeteoRefresh && triggerMeteoRefresh()"
 ></span></div></div><div class="header-actions"><button
 class="icon-btn"
 id="btnSearch"
@@ -63,8 +75,9 @@ dar AI, meteo &#537;i sincronizarea nu sunt disponibile.
 ><button
 class="ab-close"
 onclick="
-document.getElementById('frostBanner').classList.remove('active')
+dismissAlertBanner('frost', this.parentElement.dataset.alertDate)
 "
+title="Inchide — nu reapare pana la alerta noua"
 >
 &#10005;
 </button></div><div class="alert-banner disease" id="diseaseBanner"><span>&#9888;&#65039;</span><span class="ab-text" id="diseaseText"></span
@@ -72,8 +85,9 @@ document.getElementById('frostBanner').classList.remove('active')
 ><button
 class="ab-close"
 onclick="
-document.getElementById('diseaseBanner').classList.remove('active')
+dismissAlertBanner('disease', this.parentElement.dataset.alertDate)
 "
+title="Inchide — nu reapare pana la alerta noua"
 >
 &#10005;
 </button></div><div class="alert-banner hail" id="hailBanner"><span>&#127786;</span><span class="ab-text" id="hailText"></span
@@ -81,8 +95,9 @@ document.getElementById('diseaseBanner').classList.remove('active')
 ><button
 class="ab-close"
 onclick="
-document.getElementById('hailBanner').classList.remove('active')
+dismissAlertBanner('hail', this.parentElement.dataset.alertDate)
 "
+title="Inchide — nu reapare pana la alerta noua"
 >
 &#10005;
 </button></div><div class="alert-banner wind" id="windBanner"><span>&#128168;</span><span class="ab-text" id="windText"></span
@@ -90,8 +105,9 @@ document.getElementById('hailBanner').classList.remove('active')
 ><button
 class="ab-close"
 onclick="
-document.getElementById('windBanner').classList.remove('active')
+dismissAlertBanner('wind', this.parentElement.dataset.alertDate)
 "
+title="Inchide — nu reapare pana la alerta noua"
 >
 &#10005;
 </button></div><div class="alert-banner heat" id="heatBanner"><span>&#127777;&#65039;</span><span class="ab-text" id="heatText"></span
@@ -99,8 +115,9 @@ document.getElementById('windBanner').classList.remove('active')
 ><button
 class="ab-close"
 onclick="
-document.getElementById('heatBanner').classList.remove('active')
+dismissAlertBanner('heat', this.parentElement.dataset.alertDate)
 "
+title="Inchide — nu reapare pana la alerta noua"
 >
 &#10005;
 </button></div><div class="alert-banner rain" id="rainBanner"><span>&#127783;&#65039;</span><span class="ab-text" id="rainText"></span
@@ -108,8 +125,9 @@ document.getElementById('heatBanner').classList.remove('active')
 ><button
 class="ab-close"
 onclick="
-document.getElementById('rainBanner').classList.remove('active')
+dismissAlertBanner('rain', this.parentElement.dataset.alertDate)
 "
+title="Inchide — nu reapare pana la alerta noua"
 >
 &#10005;
 </button></div><div class="alert-banner drought" id="droughtBanner"><span>&#9728;&#65039;</span><span class="ab-text" id="droughtText"></span
@@ -117,8 +135,9 @@ document.getElementById('rainBanner').classList.remove('active')
 ><button
 class="ab-close"
 onclick="
-document.getElementById('droughtBanner').classList.remove('active')
+dismissAlertBanner('drought', this.parentElement.dataset.alertDate)
 "
+title="Inchide — nu reapare pana la alerta noua"
 >
 &#10005;
 </button></div><!-- ====== SEARCH ====== --><div class="search-panel" id="searchPanel"><div class="search-input-wrap"><input

@@ -173,26 +173,77 @@ export default async function handler(req) {
     if (dates.length > 90) {
       for (const d of dates.slice(0, dates.length - 90)) delete history[d];
     }
-    await kv.set("livada:meteo:history", history);
+    // History se scrie doar in batch (jos) — evita duplicate write + ofera
+    // rollback automat daca urmatorii pasi esueaza. Vezi hardening 2026-04-23.
 
-    // G6: Frost alert pe tot anul cu prag si mesaj dinamice
-    //   - sezon activ (Mar-Mai primavara, Sep-Nov toamna): prag FROST_THRESHOLD (3.5°C), risc pe pomi activi/fructe
-    //   - iarna severa (Dec-Feb): prag -10°C, alerte doar pt specii sensibile in dormancy (rodiu, kaki)
-    const month = new Date().getMonth() + 1;
-    const nowMs = Date.now();
+    // G6 + gradient iarna: frost alert pe tot anul cu prag/mesaj dinamice.
+    //   - sezon activ (Mar-Mai, Sep-Nov): prag 3.5°C, pomi activi/fructe
+    //   - iarna severa (Dec-Feb): prag -10°C, pt rodiu+kaki in dormancy
+    //   - BANDA INTERMEDIARA (Nov-29→Dec-15 + Feb-15→Mar-15): pragul
+    //     gliseaza linear intre 3.5°C si -10°C → elimina discontinuitatea
+    //     sezoniera (inainte: 27 Feb -8°C silent, 1 Mar -8°C alert).
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const nowMs = now.getTime();
     const isActiveFrostSeason =
-      (month >= 3 && month <= 5) || (month >= 9 && month <= 11);
-    const isSevereWinter = month === 12 || month <= 2;
-    const frostThresholdDynamic = isActiveFrostSeason ? FROST_THRESHOLD : -10;
+      (month >= 3 && day >= 16 && month <= 5) ||
+      (month > 3 && month < 5) ||
+      month === 5 ||
+      (month >= 9 && month <= 10) ||
+      (month === 11 && day <= 29);
+    const isSevereWinter =
+      (month === 12 && day >= 16) || month === 1 || (month === 2 && day <= 14);
+    // Banda intermediara: interpolare liniara intre cele doua praguri.
+    // Exemple: Nov 30 ~3.4°C, Dec 5 ~1°C, Dec 10 ~-4°C, Dec 15 ~-9°C.
+    //          Feb 15 ~-9°C, Feb 28 ~-3°C, Mar 10 ~1.5°C.
+    let frostThresholdDynamic;
+    let bandLabel = "";
+    if (isActiveFrostSeason) {
+      frostThresholdDynamic = FROST_THRESHOLD;
+      bandLabel = "activ";
+    } else if (isSevereWinter) {
+      frostThresholdDynamic = -10;
+      bandLabel = "iarna-severa";
+    } else {
+      // Banda de tranzitie — lerpeaza intre 3.5 si -10 peste ~15 zile fiecare capat.
+      // Calculam fractiunea intre "ultima zi activ" si "prima zi iarna severa".
+      const dayOfYear = Math.floor(
+        (now - new Date(now.getFullYear(), 0, 0)) / 86400000,
+      );
+      // Nov 30 = day ~334, Dec 15 = day ~349 (toamna → iarna)
+      // Feb 15 = day ~46, Mar 15 = day ~74 (iarna → primavara)
+      let frac;
+      if (month === 11 || (month === 12 && day <= 15)) {
+        // Toamna → iarna
+        const startDoy = 334; // Nov 30
+        const endDoy = 349; // Dec 15
+        frac = Math.min(
+          1,
+          Math.max(0, (dayOfYear - startDoy) / (endDoy - startDoy)),
+        );
+      } else {
+        // Iarna → primavara (Feb 15 → Mar 15)
+        const startDoy = 46; // Feb 15
+        const endDoy = 74; // Mar 15
+        frac = Math.min(
+          1,
+          Math.max(0, 1 - (dayOfYear - startDoy) / (endDoy - startDoy)),
+        );
+      }
+      // frac=0 → activ (3.5), frac=1 → iarna (-10)
+      frostThresholdDynamic = FROST_THRESHOLD - frac * (FROST_THRESHOLD + 10);
+      frostThresholdDynamic = Math.round(frostThresholdDynamic * 10) / 10;
+      bandLabel = `tranzitie (prag ${frostThresholdDynamic}°C)`;
+    }
     const speciesHint = isSevereWinter
       ? "rodiu si kaki — frost SEVER, risc mortalitate"
-      : "piersic, cais, migdal, rodiu";
+      : isActiveFrostSeason
+        ? "piersic, cais, migdal, rodiu"
+        : "rodiu, kaki si soiuri in dormancy tardiva";
     let frostAlert = { active: false, updatedAt: new Date().toISOString() };
 
-    if (
-      (isActiveFrostSeason || isSevereWinter) &&
-      data.hourly?.temperature_2m
-    ) {
+    if (data.hourly?.temperature_2m) {
       const apparentTemps =
         data.hourly.apparent_temperature || data.hourly.temperature_2m;
       const cloudCovers = data.hourly.cloud_cover || [];
@@ -208,12 +259,13 @@ export default async function handler(req) {
         const apparentTemp = apparentTemps[i];
         const dewPoint = dewPoints[i] ?? null;
         const cloudCover = cloudCovers[i] ?? 100;
-        // In sezon activ: frost daca apparent < prag SAU dew_point < 0 (bruma radiativa)
-        // In iarna severa: doar apparent < -10 (dew_point e aproape mereu negativ iarna)
-        const frostRisk = isActiveFrostSeason
-          ? apparentTemp < frostThresholdDynamic ||
-            (dewPoint !== null && dewPoint < 0)
-          : apparentTemp < frostThresholdDynamic;
+        // In sezon activ sau banda tranzitie: frost daca apparent < prag SAU
+        //   dew_point < 0 (bruma radiativa).
+        // In iarna severa: doar apparent < prag (dew_point negativ e normal).
+        const frostRisk = isSevereWinter
+          ? apparentTemp < frostThresholdDynamic
+          : apparentTemp < frostThresholdDynamic ||
+            (dewPoint !== null && dewPoint < 0);
         if (frostRisk && apparentTemp < worstApparent) {
           worstApparent = apparentTemp;
           frostTime = times[i];
@@ -233,12 +285,25 @@ export default async function handler(req) {
         const prefix = isSevereWinter
           ? "Inghet SEVER prognozat"
           : "Inghet prognozat";
+        const tempRounded = Math.round(worstApparent);
+        const fullMessage = `${prefix}: ${tempRounded}°C (perceput) pe ${frostDate} la ~${frostHourStr}${cerinaSen}${dewMsg} Protejeaza pomii sensibili (${speciesHint})!`;
+        // Audit #9: mesaj scurt pt notificare mobila (~100 chars vizibili)
+        const shortTarget = isSevereWinter ? "rodiu/kaki" : "piersic/cais";
+        const shortMessage = `Inghet ${tempRounded}°C ${frostDate} ${frostHourStr} — protejeaza ${shortTarget}`;
         frostAlert = {
           active: true,
           minTemp: Math.round(worstApparent * 10) / 10,
           date: frostDate,
           frostHour: frostTime,
-          message: `${prefix}: ${Math.round(worstApparent)}°C (perceput) pe ${frostDate} la ~${frostHourStr}${cerinaSen}${dewMsg} Protejeaza pomii sensibili (${speciesHint})!`,
+          message: fullMessage,
+          shortMessage,
+          severity:
+            worstApparent < -5
+              ? "critical"
+              : worstApparent < 0
+                ? "warning"
+                : "info",
+          band: bandLabel,
           updatedAt: new Date().toISOString(),
         };
       }
@@ -246,17 +311,18 @@ export default async function handler(req) {
 
     // F3.2 — Alert multi-noapte consecutive (apparent_temperature_min zilnic)
     let consecutiveFrostMsg = "";
-    if (
-      (isActiveFrostSeason || isSevereWinter) &&
-      data.daily?.apparent_temperature_min
-    ) {
+    if (data.daily?.apparent_temperature_min) {
       const frostNights = [];
+      const frostNightTemps = [];
       const dailyDates = data.daily.time || [];
       const dailyApparent = data.daily.apparent_temperature_min;
       dailyDates.forEach(function (date, i) {
         if (date < today) return; // skip zile trecute
-        if ((dailyApparent[i] ?? 99) < frostThresholdDynamic)
+        const t = dailyApparent[i];
+        if (t != null && t < frostThresholdDynamic) {
           frostNights.push(date);
+          frostNightTemps.push(t);
+        }
       });
       if (frostNights.length >= 2) {
         consecutiveFrostMsg =
@@ -271,17 +337,25 @@ export default async function handler(req) {
           frostAlert.consecutiveMsg = consecutiveFrostMsg;
           frostAlert.frostNights = frostNights;
         } else {
+          // Fix: Math.min din temperaturile REALE ale noptilor cu frost
+          // (inainte mapam index local in array daily, producand cifre eronate).
+          const minTempMulti =
+            frostNightTemps.length > 0 ? Math.min(...frostNightTemps) : 99;
           frostAlert = {
             active: true,
-            minTemp: Math.min(
-              ...frostNights.map(
-                (_, i) => data.daily.apparent_temperature_min[i] ?? 99,
-              ),
-            ),
+            minTemp: Math.round(minTempMulti * 10) / 10,
             date: frostNights[0],
             message:
               consecutiveFrostMsg +
               `. Protejeaza pomii sensibili (${speciesHint})!`,
+            shortMessage: `${frostNights.length} nopti frost ${frostNights[0]}→${frostNights[frostNights.length - 1]} — protejeaza pomii`,
+            severity:
+              minTempMulti < -5
+                ? "critical"
+                : minTempMulti < 0
+                  ? "warning"
+                  : "info",
+            band: bandLabel,
             consecutiveMsg: consecutiveFrostMsg,
             frostNights,
             updatedAt: new Date().toISOString(),
@@ -296,8 +370,9 @@ export default async function handler(req) {
       }
     }
 
-    // F8.3: Multi-model frost consensus (ICON-EU, ECMWF, GFS) — G6 fereastra extinsa
-    if ((isActiveFrostSeason || isSevereWinter) && frostAlert.active) {
+    // F8.3: Multi-model frost consensus (ICON-EU, ECMWF, GFS) — ruleaza
+    // oricand frostAlert activa (inclusiv in banda tranzitie).
+    if (frostAlert.active) {
       try {
         const mmUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=apparent_temperature&forecast_days=2&timezone=Europe/Bucharest&models=icon_seamless,ecmwf_ifs025,gfs_seamless`;
         const mmCtrl = new AbortController();
@@ -356,6 +431,8 @@ export default async function handler(req) {
           active: true,
           date: today,
           message: `Risc crescut de boli fungice! Ploaie + ${Math.round(avgT)}°C + umiditate ${Math.round(avgH)}%. Verifica rapanul la mar/par si monilioza la cais/piersic.`,
+          shortMessage: `Risc boli fungice — ${Math.round(avgT)}°C, umiditate ${Math.round(avgH)}%`,
+          severity: "warning",
           updatedAt: new Date().toISOString(),
         };
       }
@@ -378,6 +455,7 @@ export default async function handler(req) {
             date: hailDate,
             alertHour: hTimes[i],
             message: `GRINDINA ${severity}! Furtuna cu grindina pe ${hailDate} la ~${hailHourStr}. Protejeaza fructele si pomii tineri!`,
+            shortMessage: `Grindina ${severity} ${hailDate} ${hailHourStr} — acopera pomii`,
             updatedAt: new Date().toISOString(),
           };
           break;
@@ -408,6 +486,8 @@ export default async function handler(req) {
           date: gustDate,
           alertHour: gustTime,
           message: `Rafale puternice: ${Math.round(maxGust)} km/h pe ${gustDate} la ~${gustHourStr}. Verifica pomii tineri si spalierele!`,
+          shortMessage: `Vant ${Math.round(maxGust)} km/h ${gustDate} ${gustHourStr} — verifica spalierele`,
+          severity: maxGust >= 70 ? "critical" : "warning",
           updatedAt: new Date().toISOString(),
         };
       }
@@ -425,6 +505,9 @@ export default async function handler(req) {
             maxTemp: Math.round(data.daily.temperature_2m_max[i] * 10) / 10,
             date: hDate,
             message: `Canicula: ${Math.round(data.daily.temperature_2m_max[i])}°C maxima pe ${hDate}. Iriga pomii dimineata devreme sau seara!`,
+            shortMessage: `Canicula ${Math.round(data.daily.temperature_2m_max[i])}°C ${hDate} — iriga devreme/seara`,
+            severity:
+              data.daily.temperature_2m_max[i] >= 40 ? "critical" : "warning",
             updatedAt: new Date().toISOString(),
           };
           break;
@@ -444,6 +527,9 @@ export default async function handler(req) {
             amount: Math.round(data.daily.precipitation_sum[i] * 10) / 10,
             date: rDate,
             message: `Ploaie abundenta: ${Math.round(data.daily.precipitation_sum[i])} mm pe ${rDate}. Risc eroziune si inec radacini!`,
+            shortMessage: `Ploaie ${Math.round(data.daily.precipitation_sum[i])} mm ${rDate} — risc eroziune`,
+            severity:
+              data.daily.precipitation_sum[i] >= 50 ? "critical" : "warning",
             updatedAt: new Date().toISOString(),
           };
           break;
@@ -472,6 +558,8 @@ export default async function handler(req) {
           soilMoisture: smAvg,
           totalRain: Math.round(totalRain5d * 10) / 10,
           message: `Stres hidric posibil! ET0 ${Math.round(maxEt0 * 10) / 10} mm/zi, ploaie doar ${Math.round(totalRain5d)} mm in 5 zile. Iriga pomii tineri si fructiferi!`,
+          shortMessage: `Seceta — ET0 ${Math.round(maxEt0 * 10) / 10} mm/zi, ploaie ${Math.round(totalRain5d)} mm/5z — iriga`,
+          severity: "warning",
           updatedAt: new Date().toISOString(),
         };
       }
@@ -489,6 +577,8 @@ export default async function handler(req) {
         date: frostAlert.date,
         hour: frostAlert.frostHour || null,
         message: frostAlert.message,
+        shortMessage: frostAlert.shortMessage,
+        severity: frostAlert.severity,
       },
       diseaseRisk.active && {
         type: "disease",
@@ -497,6 +587,8 @@ export default async function handler(req) {
         date: diseaseRisk.date,
         hour: null,
         message: diseaseRisk.message,
+        shortMessage: diseaseRisk.shortMessage,
+        severity: diseaseRisk.severity,
       },
       hailAlert.active && {
         type: "hail",
@@ -505,6 +597,8 @@ export default async function handler(req) {
         date: hailAlert.date,
         hour: hailAlert.alertHour || null,
         message: hailAlert.message,
+        shortMessage: hailAlert.shortMessage,
+        severity: hailAlert.severity,
       },
       windAlert.active && {
         type: "wind",
@@ -513,6 +607,8 @@ export default async function handler(req) {
         date: windAlert.date,
         hour: windAlert.alertHour || null,
         message: windAlert.message,
+        shortMessage: windAlert.shortMessage,
+        severity: windAlert.severity,
       },
       heatAlert.active && {
         type: "heat",
@@ -521,6 +617,8 @@ export default async function handler(req) {
         date: heatAlert.date,
         hour: null,
         message: heatAlert.message,
+        shortMessage: heatAlert.shortMessage,
+        severity: heatAlert.severity,
       },
       rainAlert.active && {
         type: "rain",
@@ -529,6 +627,8 @@ export default async function handler(req) {
         date: rainAlert.date,
         hour: null,
         message: rainAlert.message,
+        shortMessage: rainAlert.shortMessage,
+        severity: rainAlert.severity,
       },
       droughtAlert.active && {
         type: "drought",
@@ -537,6 +637,8 @@ export default async function handler(req) {
         date: droughtAlert.date,
         hour: null,
         message: droughtAlert.message,
+        shortMessage: droughtAlert.shortMessage,
+        severity: droughtAlert.severity,
       },
     ].filter(Boolean);
     for (const entry of alertsToLog) {
@@ -550,6 +652,8 @@ export default async function handler(req) {
           date: entry.date,
           hour: entry.hour,
           message: entry.message,
+          shortMessage: entry.shortMessage,
+          severity: entry.severity,
           loggedAt: nowIso,
         });
       }
@@ -599,8 +703,62 @@ export default async function handler(req) {
       }),
     );
 
-    // Batch all Redis operations
-    await Promise.all(redisWrites);
+    // Batch all Redis operations cu timeout global (hardening 2026-04-23):
+    // daca Upstash incetineste > 10s, abandonam batch-ul si semnalam eroare
+    // clara in loc sa prindem 500-uri generice dupa Edge timeout.
+    await Promise.race([
+      Promise.all(redisWrites),
+      new Promise((_, rej) =>
+        setTimeout(() => rej(new Error("Redis batch timeout (>10s)")), 10000),
+      ),
+    ]);
+
+    // Audit #1 — Web Push broadcast (fire-and-forget pentru alerte active).
+    // Daca oricare dintre alerte devine activa si nu a mai trimis azi,
+    // declansam broadcast la toti subscriberii. Endpoint separat (Node.js)
+    // pt compatibilitate cu `web-push` library care are nevoie de Node crypto.
+    try {
+      const activeAlerts = [
+        frostAlert.active && frostAlert,
+        diseaseRisk.active && diseaseRisk,
+        hailAlert.active && hailAlert,
+        windAlert.active && windAlert,
+        heatAlert.active && heatAlert,
+        rainAlert.active && rainAlert,
+        droughtAlert.active && droughtAlert,
+      ].filter(Boolean);
+      if (activeAlerts.length > 0) {
+        const origin = req.headers?.get?.("host")
+          ? `https://${req.headers.get("host")}`
+          : "https://livada-mea-psi.vercel.app";
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 4000);
+        await fetch(`${origin}/api/push-broadcast`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cronSecret}`,
+          },
+          body: JSON.stringify({
+            alerts: activeAlerts.map((a) => ({
+              type:
+                alertsToLog.find((e) => e.message === a.message)?.type ||
+                "alert",
+              title:
+                alertsToLog.find((e) => e.message === a.message)?.label ||
+                "Livada",
+              body: a.shortMessage || a.message,
+              severity: a.severity || "info",
+              date: a.date,
+            })),
+          }),
+          signal: ctrl.signal,
+        }).catch(() => {});
+        clearTimeout(timer);
+      }
+    } catch {
+      // Push broadcast best-effort — nu blocheaza success-ul cronului
+    }
 
     return Response.json({
       success: true,
@@ -618,14 +776,34 @@ export default async function handler(req) {
       yrnoMin,
     });
   } catch (err) {
+    // Hardening 2026-04-23: log detaliat pentru debugging intermitent 500.
+    const errInfo = {
+      success: false,
+      error: err?.message || String(err),
+      errorName: err?.name || "unknown",
+      timestamp: Date.now(),
+    };
     try {
-      await kv.set("livada:cron:last-run", {
-        success: false,
-        error: err.message,
-        timestamp: Date.now(),
-      });
+      await Promise.race([
+        kv.set("livada:cron:last-run", errInfo),
+        new Promise((_, rej) =>
+          setTimeout(() => rej(new Error("redis timeout on error path")), 2000),
+        ),
+      ]);
     } catch {}
-    console.error("meteo-cron error:", err);
-    return Response.json({ error: "Eroare interna server" }, { status: 500 });
+    console.error(
+      "meteo-cron error:",
+      errInfo.errorName,
+      errInfo.error,
+      err?.stack || "",
+    );
+    return Response.json(
+      {
+        error: "Eroare interna server",
+        detail: errInfo.error,
+        name: errInfo.errorName,
+      },
+      { status: 500 },
+    );
   }
 }

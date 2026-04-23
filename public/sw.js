@@ -6,7 +6,7 @@
 // Offline: HTML servit din cache dupa ultima vizita reusita
 
 // T11: BUILD_DATE actualizat la fiecare deploy — forteaza refresh cache dupa update
-const BUILD_DATE = "20260415";
+const BUILD_DATE = "20260423";
 const STATIC_CACHE = "livada-static-" + BUILD_DATE;
 const FONT_CACHE = "livada-fonts-v1";
 
@@ -135,9 +135,20 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// ====== N7: PUSH NOTIFICATIONS ======
+// ====== N7: PUSH NOTIFICATIONS (VAPID end-to-end — Audit #1) ======
 self.addEventListener("push", (event) => {
-  const data = event.data ? event.data.json() : {};
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch (e) {
+    // payload non-JSON — fallback text
+    try {
+      data = { body: event.data ? event.data.text() : "Alerta noua" };
+    } catch {}
+  }
+  const severity = data.severity || "info";
+  const vibrate =
+    severity === "critical" ? [300, 100, 300, 100, 300] : [200, 100, 200];
   event.waitUntil(
     self.registration.showNotification(data.title || "Livada Mea", {
       body: data.body || "Notificare noua",
@@ -145,7 +156,9 @@ self.addEventListener("push", (event) => {
       badge: "/icon-192.png",
       tag: data.tag || "livada-alert",
       renotify: true,
-      data: { url: data.url || "/" },
+      requireInteraction: severity === "critical",
+      vibrate,
+      data: { url: data.url || "/", severity },
     }),
   );
 });
@@ -153,4 +166,53 @@ self.addEventListener("push", (event) => {
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   event.waitUntil(clients.openWindow(event.notification.data?.url || "/"));
+});
+
+// ====== Audit #5 — Periodic Background Sync (6h) ======
+// Ruleaza chiar cu app inchisa (daca user a acordat permisiunea).
+// Actualizeaza cache-ul de alerte astfel incat la urmatoarea deschidere
+// user vede imediat date recente, iar push-urile ramase sunt afisate.
+self.addEventListener("periodicsync", (event) => {
+  if (event.tag !== "livada-alerts") return;
+  event.waitUntil(
+    fetch("/api/frost-alert")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data) return;
+        // Best-effort: daca exista frost/disease activ, emite local notification
+        // fara a dubla cele deja trimise server-side (server face dedup 24h).
+        const active = [
+          data.frost,
+          data.disease,
+          data.hail,
+          data.wind,
+          data.heat,
+          data.rain,
+          data.drought,
+        ].filter((a) => a && a.active);
+        return Promise.all(
+          active.slice(0, 2).map((a) =>
+            self.registration.showNotification(
+              "Livada Mea — " + (a.type || "alerta"),
+              {
+                body: a.shortMessage || a.message,
+                icon: "/icon-192.png",
+                badge: "/icon-192.png",
+                tag: "livada-psync-" + (a.type || "x") + "-" + (a.date || ""),
+                renotify: false,
+              },
+            ),
+          ),
+        );
+      })
+      .catch(() => {}),
+  );
+});
+
+// ====== Audit #5 — Background Sync (fallback pt one-shot) ======
+// Pentru retry la eventuri gen "dismiss" cand offline
+self.addEventListener("sync", (event) => {
+  if (event.tag === "livada-alerts-retry") {
+    event.waitUntil(fetch("/api/frost-alert").catch(() => {}));
+  }
 });

@@ -1,6 +1,7 @@
 import { corsHeaders, handleOptions, checkOrigin, rateLimit } from "./_auth.js";
 import { callGemini, callOpenAIVision, geminiText, openaiText } from "./_ai.js";
 import { fetchWithTimeout } from "./_timeout.js";
+import { checkAndIncrementQuota } from "./_quota.js";
 
 export const config = { runtime: "edge" };
 
@@ -117,6 +118,19 @@ export default async function handler(req) {
 
   const limitErr = await rateLimit(req, 10); // AI endpoint — limita 10 req/min
   if (limitErr) return limitErr;
+
+  // V3 T1 — quota guard Gemini (identify foloseste si Gemini ca fallback)
+  const geminiQuota = await checkAndIncrementQuota("gemini");
+  if (!geminiQuota.ok) {
+    return Response.json(
+      {
+        error:
+          "Cota Gemini zilnica epuizata. Revine dupa miezul noptii (ora Romania).",
+        _quota: geminiQuota,
+      },
+      { status: 429, headers: corsHeaders(req) },
+    );
+  }
 
   const t0 = Date.now();
   const log = (msg) => console.log(`[identify] ${msg} t+${Date.now() - t0}ms`);
