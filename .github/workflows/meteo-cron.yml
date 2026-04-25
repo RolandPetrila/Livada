@@ -31,10 +31,16 @@ jobs:
           echo "Status: $http_code"
           echo "Response: $body"
           if [ "$http_code" = "401" ]; then
-            echo "::error::401 Neautorizat. CRON_SECRET din GitHub NU se potriveste cu Vercel env var. Regenereaza si sincronizeaza ambele."
+            echo "::error::401 Neautorizat — CRON_SECRET din GitHub nu se potriveste cu Vercel. Regenereaza si sincronizeaza ambele."
             exit 1
           fi
           if [ "$http_code" -ne 200 ]; then
-            echo "::error::Meteo cron failed with status $http_code"
+            echo "::error::Meteo cron failed cu status $http_code (Redis sau alta eroare critica — verifica Vercel logs)"
             exit 1
+          fi
+          # 200 cu cached:true = Open-Meteo indisponibil temporar, nu o eroare critica.
+          # Dashboard-ul continua sa afiseze datele din ultimul run reusit.
+          # Badge-ul "Cron stale" din UI apare automat dupa 2+ ore fara date noi.
+          if echo "$body" | grep -q '"cached":true'; then
+            echo "::warning::Open-Meteo indisponibil temporar — date din ultimul run reusit. Nicio actiune necesara."
           fi

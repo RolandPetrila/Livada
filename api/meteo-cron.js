@@ -116,8 +116,20 @@ export default async function handler(req) {
       }
       if (attempt < 1) await new Promise((r) => setTimeout(r, 2000));
     }
-    if (!meteoRes?.ok)
-      throw lastMeteoError || new Error("Open-Meteo indisponibil");
+    if (!meteoRes?.ok) {
+      // Open-Meteo indisponibil temporar (timeout sau eroare HTTP) — returnam
+      // 200 cu flag cached:true ca sa nu generam email-uri false in GitHub Actions.
+      // livada:cron:last-run ramane nemodificat → badge-ul "Cron stale" din UI
+      // apare corect dupa 2+ ore de esecuri consecutive.
+      return Response.json({
+        success: false,
+        cached: true,
+        reason:
+          lastMeteoError?.name === "AbortError"
+            ? "Open-Meteo timeout (>6s/attempt)"
+            : `Open-Meteo HTTP ${meteoRes?.status ?? "error"}`,
+      });
+    }
     const data = await meteoRes.json();
 
     // Salveaza in Redis — format identic
