@@ -4887,6 +4887,19 @@ async function initDashboardAzi() {
           '<div class="alert alert-warning" style="margin-top:8px;">\u2600\uFE0F ' +
           escapeHtml(data.drought.message) +
           "</div>";
+      if (data.spray && data.spray.available)
+        html +=
+          '<div class="alert" style="margin-top:8px;background:rgba(106,191,105,0.12);border-left:3px solid var(--accent);">' +
+          '\uD83D\uDCA7 <strong>Fereastra tratamente:</strong> ' +
+          escapeHtml(data.spray.message) +
+          "</div>";
+      if (data.gdd && data.gdd.cumulative != null)
+        html +=
+          '<div style="margin-top:6px;font-size:0.78rem;color:var(--text-dim);">' +
+          '\uD83C\uDF21\uFE0F GDD acumulat ' + data.gdd.year + ': <strong>' +
+          data.gdd.cumulative + ' grade-zile</strong>' +
+          (data.gdd.lastDate ? ' (pana la ' + data.gdd.lastDate + ')' : '') +
+          "</div>";
       var anyActive =
         frostRelevant ||
         (data.disease?.active && !isAlertStale(data.disease)) ||

@@ -38,6 +38,48 @@ const WMO_CODES = {
   99: "Furtuna cu grindina puternica",
 };
 
+// Opțiunea 1 — NASA POWER: acumuleaza GDD (Growing Degree Days) din
+// temperatura reala de ieri (NASA POWER are latency 1-2 zile).
+// Base temp 5°C (standard pomicultură). Reset automat la 1 ian.
+// Fara API key, gratuit permanent.
+async function fetchAndAccumulateGdd(kv) {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yStr = yesterday.toISOString().split("T")[0].replace(/-/g, ""); // YYYYMMDD pt NASA API
+  const yISO = yesterday.toISOString().split("T")[0]; // YYYY-MM-DD pt storage
+
+  let gddData = null;
+  try {
+    gddData = await kv.get("livada:gdd:annual");
+  } catch {}
+  const currentYear = new Date().getFullYear();
+  if (!gddData || gddData.year !== currentYear) {
+    gddData = { year: currentYear, cumulative: 0, lastDate: null };
+  }
+  if (gddData.lastDate === yISO) return gddData; // deja procesat azi
+
+  const url = `https://power.larc.nasa.gov/api/temporal/daily/point?lat=${LAT}&lon=${LON}&parameters=T2M_MAX,T2M_MIN&community=AG&start=${yStr}&end=${yStr}&format=JSON`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 8000);
+  try {
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!res.ok) return gddData;
+    const nasaData = await res.json();
+    const tmax = nasaData.properties?.parameter?.T2M_MAX?.[yStr];
+    const tmin = nasaData.properties?.parameter?.T2M_MIN?.[yStr];
+    // NASA POWER returneaza -999 pentru date invalide/lipsa
+    if (tmax != null && tmin != null && tmax > -990 && tmin > -990) {
+      const gddDay = Math.max(0, Math.round(((tmax + tmin) / 2 - 5) * 10) / 10);
+      gddData.cumulative = Math.round((gddData.cumulative + gddDay) * 10) / 10;
+      gddData.lastDate = yISO;
+    }
+  } catch {
+    clearTimeout(timer);
+  }
+  return gddData;
+}
+
 // F3.3 — Yr.no: fetch prognoza minima noapte urmatoare pentru comparare
 async function fetchYrnoMin() {
   try {
@@ -98,7 +140,9 @@ export default async function handler(req) {
 
   try {
     // F3.1 — URL extins cu apparent_temperature, cloud_cover, dew_point_2m, precipitation_probability
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&hourly=temperature_2m,apparent_temperature,precipitation,precipitation_probability,relative_humidity_2m,weather_code,uv_index,soil_moisture_0_to_1cm,cloud_cover,dew_point_2m,wind_gusts_10m&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_min,precipitation_sum,weather_code,uv_index_max,et0_fao_evapotranspiration,wind_gusts_10m_max&timezone=Europe/Bucharest&forecast_days=5`;
+    // Optiunea 2: icon_seamless = ICON-EU 2.2km pt Europa (cel mai precis pt
+    // campie joasa Nadlac). wind_speed_10m orar adaugat pt spray window.
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&hourly=temperature_2m,apparent_temperature,precipitation,precipitation_probability,relative_humidity_2m,weather_code,uv_index,soil_moisture_0_to_1cm,cloud_cover,dew_point_2m,wind_gusts_10m,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_min,precipitation_sum,weather_code,uv_index_max,et0_fao_evapotranspiration,wind_gusts_10m_max&timezone=Europe/Bucharest&forecast_days=5&models=icon_seamless`;
 
     let meteoRes, lastMeteoError;
     for (let attempt = 0; attempt < 2; attempt++) {
@@ -382,11 +426,15 @@ export default async function handler(req) {
       }
     }
 
-    // F8.3: Multi-model frost consensus (ICON-EU, ECMWF, GFS) — ruleaza
-    // oricand frostAlert activa (inclusiv in banda tranzitie).
-    if (frostAlert.active) {
+    // Optiunea 3 — Multi-model consensus extins: frost + vant critic (>=70 km/h)
+    // + canicula severa (>=38°C). Un singur fetch suplimentar pt toate alertele.
+    const runMultiModel =
+      frostAlert.active ||
+      (windAlert.active && windAlert.maxGust >= 70) ||
+      (heatAlert.active && heatAlert.maxTemp >= 38);
+    if (runMultiModel) {
       try {
-        const mmUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=apparent_temperature&forecast_days=2&timezone=Europe/Bucharest&models=icon_seamless,ecmwf_ifs025,gfs_seamless`;
+        const mmUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=apparent_temperature&daily=temperature_2m_max,wind_gusts_10m_max&forecast_days=2&timezone=Europe/Bucharest&models=icon_seamless,ecmwf_ifs025,gfs_seamless`;
         const mmCtrl = new AbortController();
         const mmTimer = setTimeout(() => mmCtrl.abort(), 5000);
         const mmRes = await fetch(mmUrl, { signal: mmCtrl.signal });
@@ -394,31 +442,69 @@ export default async function handler(req) {
         if (mmRes.ok) {
           const mmData = await mmRes.json();
           const models = ["icon_seamless", "ecmwf_ifs025", "gfs_seamless"];
-          let modelsFrost = 0;
           const mmTimes = mmData.hourly?.time || [];
-          for (const model of models) {
-            const key = `apparent_temperature_${model}`;
-            const temps = mmData.hourly?.[key] || [];
-            for (let i = 0; i < temps.length; i++) {
-              if (new Date(mmTimes[i]).getTime() < nowMs) continue;
-              if (temps[i] < frostThresholdDynamic) {
-                modelsFrost++;
-                break;
+
+          if (frostAlert.active) {
+            let modelsFrost = 0;
+            for (const model of models) {
+              const temps =
+                mmData.hourly?.[`apparent_temperature_${model}`] || [];
+              for (let i = 0; i < temps.length; i++) {
+                if (new Date(mmTimes[i]).getTime() < nowMs) continue;
+                if (temps[i] < frostThresholdDynamic) {
+                  modelsFrost++;
+                  break;
+                }
               }
             }
+            const confidence =
+              modelsFrost >= 3
+                ? "cert"
+                : modelsFrost >= 2
+                  ? "probabil"
+                  : "posibil";
+            frostAlert.confidence = confidence;
+            frostAlert.modelsAgree = modelsFrost;
+            frostAlert.message += ` [${confidence.toUpperCase()} — ${modelsFrost}/3 modele]`;
           }
-          const confidence =
-            modelsFrost >= 3
-              ? "cert"
-              : modelsFrost >= 2
-                ? "probabil"
-                : "posibil";
-          frostAlert.confidence = confidence;
-          frostAlert.modelsAgree = modelsFrost;
-          frostAlert.message += ` [${confidence.toUpperCase()} — ${modelsFrost}/3 modele]`;
+
+          if (windAlert.active && windAlert.maxGust >= 70) {
+            let modelsWind = 0;
+            for (const model of models) {
+              const gusts = mmData.daily?.[`wind_gusts_10m_max_${model}`] || [];
+              if (gusts.some((g) => g >= 70)) modelsWind++;
+            }
+            const windConf =
+              modelsWind >= 3
+                ? "cert"
+                : modelsWind >= 2
+                  ? "probabil"
+                  : "posibil";
+            windAlert.confidence = windConf;
+            windAlert.modelsAgree = modelsWind;
+            windAlert.message += ` [${windConf.toUpperCase()} — ${modelsWind}/3 modele]`;
+          }
+
+          if (heatAlert.active && heatAlert.maxTemp >= 38) {
+            let modelsHeat = 0;
+            for (const model of models) {
+              const maxTemps =
+                mmData.daily?.[`temperature_2m_max_${model}`] || [];
+              if (maxTemps.some((t) => t >= 38)) modelsHeat++;
+            }
+            const heatConf =
+              modelsHeat >= 3
+                ? "cert"
+                : modelsHeat >= 2
+                  ? "probabil"
+                  : "posibil";
+            heatAlert.confidence = heatConf;
+            heatAlert.modelsAgree = modelsHeat;
+            heatAlert.message += ` [${heatConf.toUpperCase()} — ${modelsHeat}/3 modele]`;
+          }
         }
       } catch {
-        // Multi-model e optional — daca esueaza, alerta ramane fara confidence
+        // Multi-model e optional — daca esueaza, alertele raman fara confidence
       }
     }
 
@@ -577,6 +663,51 @@ export default async function handler(req) {
       }
     }
 
+    // Optiunea 4 — Fereastra optima tratamente (spray window): urmatoarele 48h
+    // cu conditii ideale pentru aplicarea pesticidelor/fungicidelor.
+    // Criterii: vant <15 km/h, fara ploaie (prob <20%, precip <0.1mm),
+    //           temperatura 10-25°C, umiditate <85%. Minim 2h consecutive.
+    let sprayWindow = { available: false, updatedAt: new Date().toISOString() };
+    if (data.hourly?.wind_speed_10m) {
+      const swTimes = data.hourly.time;
+      const swN = Math.min(48, swTimes.length);
+      let goodHours = [];
+      for (let i = 0; i < swN; i++) {
+        if (new Date(swTimes[i]).getTime() < nowMs) continue;
+        const ok =
+          (data.hourly.wind_speed_10m?.[i] ?? 99) < 15 &&
+          (data.hourly.temperature_2m?.[i] ?? -99) >= 10 &&
+          (data.hourly.temperature_2m?.[i] ?? 99) <= 25 &&
+          (data.hourly.relative_humidity_2m?.[i] ?? 99) < 85 &&
+          (data.hourly.precipitation_probability?.[i] ?? 100) < 20 &&
+          (data.hourly.precipitation?.[i] ?? 1) < 0.1;
+        if (ok) {
+          goodHours.push(swTimes[i]);
+        } else if (goodHours.length >= 2) {
+          break;
+        } else {
+          goodHours = [];
+        }
+      }
+      if (goodHours.length >= 2) {
+        const swDate = goodHours[0].split("T")[0];
+        const swStart = goodHours[0].split("T")[1]?.slice(0, 5) || "";
+        const swEnd =
+          goodHours[goodHours.length - 1].split("T")[1]?.slice(0, 5) || "";
+        const swDur = goodHours.length;
+        sprayWindow = {
+          available: true,
+          date: swDate,
+          startHour: goodHours[0],
+          endHour: goodHours[goodHours.length - 1],
+          durationH: swDur,
+          message: `Fereastra tratamente: ${swDate} ${swStart}–${swEnd} (${swDur}h). Vant slab (<15km/h), fara ploaie, temperatura optima.`,
+          shortMessage: `Spray optim ${swDate} ${swStart}–${swEnd} (${swDur}h)`,
+          updatedAt: new Date().toISOString(),
+        };
+      }
+    }
+
     // Jurnal alerte — acumuleaza intrari cand o alerta devine activa
     // Deduplicare pe type+date (o singura intrare per tip per zi)
     const journal = (await kv.get("livada:alert-journal")) || [];
@@ -683,11 +814,15 @@ export default async function handler(req) {
       kv.set("livada:alert-heat", heatAlert),
       kv.set("livada:alert-rain", rainAlert),
       kv.set("livada:alert-drought", droughtAlert),
+      kv.set("livada:alert-spray", sprayWindow),
       kv.set("livada:alert-journal", journal),
     ];
 
-    // F3.3 — Yr.no: compara cu Open-Meteo, salveaza avertizare divergenta
-    const yrnoMin = await fetchYrnoMin();
+    // Yr.no (divergenta) + NASA POWER GDD — in paralel (ambele best-effort)
+    const [yrnoMin, gddData] = await Promise.all([
+      fetchYrnoMin(),
+      fetchAndAccumulateGdd(kv),
+    ]);
     if (yrnoMin !== null && data.hourly?.apparent_temperature) {
       const openMeteoApparent = data.hourly.apparent_temperature;
       const openMeteoMin =
@@ -707,6 +842,7 @@ export default async function handler(req) {
     }
 
     redisWrites.push(
+      kv.set("livada:gdd:annual", gddData),
       kv.set("livada:cron:last-run", {
         date: today,
         success: true,
@@ -782,9 +918,15 @@ export default async function handler(req) {
       diseaseRisk: diseaseRisk.active,
       hailAlert: hailAlert.active,
       windAlert: windAlert.active,
+      windConfidence: windAlert.confidence || null,
       heatAlert: heatAlert.active,
+      heatConfidence: heatAlert.confidence || null,
       rainAlert: rainAlert.active,
       droughtAlert: droughtAlert.active,
+      sprayWindow: sprayWindow.available,
+      sprayDate: sprayWindow.date || null,
+      gddCumulative: gddData.cumulative,
+      gddLastDate: gddData.lastDate,
       yrnoMin,
     });
   } catch (err) {
