@@ -5,8 +5,8 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 15 routes + 4 utilitare
-**Ultima actualizare:** 2026-04-23 (Audit Alerte Meteo — FULL REMEDIERE: 8/8 itemi + Web Push VAPID + cron hardening)
+**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo + Imbunatatiri Prognoze (4/4) | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 15 routes + 4 utilitare
+**Ultima actualizare:** 2026-04-26 (Imbunatatiri prognoze: ICON-EU 2.2km + NASA POWER GDD + multi-model extins + spray window + fix cron email fals)
 
 ## Arhitectura
 
@@ -93,7 +93,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | frost-alert.js     | Edge    | 5s      | Redis                                                                       |
 | identify.js        | Edge    | 20s     | Gemini + quota guard (T1) + Pl@ntNet + fallback vision                      |
 | journal.js         | Edge    | 5s      | Redis                                                                       |
-| meteo-cron.js      | Edge    | 25s     | Open-Meteo + Redis + trigger push-broadcast pe alerta activa                |
+| meteo-cron.js      | Edge    | 25s     | Open-Meteo ICON-EU 2.2km + NASA POWER GDD + Redis + push-broadcast alerte   |
 | meteo-history.js   | Edge    | 5s      | Redis                                                                       |
 | meteo-refresh.js   | Edge    | 25s     | Proxy catre meteo-cron (origin+rate limit, fara CRON_SECRET in frontend)    |
 | photos.js          | Node.js | 10s     | Vercel Blob (ATENTIE: @vercel/blob incompatibil cu Edge — foloseste undici) |
@@ -225,6 +225,18 @@ Ramase din V2 → migrat in V3: F4.3 (→N6), F7.1 (→N8), F7.2 (→E1), F7.3 (
 - **Frontend (app.js):** cardul meteo afiseaza acum `dew_point_2m` (Rouă) + `cloud_cover` (Nori); trigger "Risc îngheț" pe `apparent_temperature ≤ 2°C` (nu temp ≤ 0); prognoza 5 zile — border albastru pe `apparent_temperature_min < 3.5°C`. URL client Open-Meteo extins cu `dew_point_2m, cloud_cover, apparent_temperature_min`.
 - **Backend (meteo-cron.js) G6:** fereastra frost alert extinsa pe tot anul — Mar-Mai + Sep-Nov (prag 3.5°C, pomi activi/fructe), Dec-Feb (prag sever −10°C, rodiu+kaki in dormancy). Mesaj si `speciesHint` dinamice per sezon. Multi-model consensus foloseste pragul dinamic.
 - Commit `a0aa022` (2026-04-22). Teste: 39/39 pass (meteo-cron + frost-alert).
+
+## Imbunatatiri prognoze meteo (2026-04-26)
+
+Commits `2a28a24` (fix cron email fals) + `e7c4b4d` (4 optiuni prognoze).
+
+- **Fix cron email fals** — Open-Meteo timeout returneaza acum 200 `{cached:true}` in loc de 500. `meteo-cron.yml`: `cached:true` → `::warning` (nu eroare), erori reale (Redis, 401) raman `::error`. Badge UI "Cron stale" apare corect dupa 2+ ore fara date noi.
+- **ICON-EU 2.2km primar** — `&models=icon_seamless` in URL Open-Meteo. Rezolutie 2.2km vs ~28km GFS blend. Optim pt campie joasa Nadlac langa Mures.
+- **NASA POWER GDD** — `fetchAndAccumulateGdd()`: fetch zilnic NASA POWER (fara API key, gratuit), Growing Degree Days base 5°C, Redis `livada:gdd:annual`. Afisare GDD in sectiunea Alerte frontend.
+- **Multi-model consensus extins** — ruleaza acum si pt vant critic (>=70 km/h) + canicula severa (>=38°C), nu doar frost. URL extins cu `daily=temperature_2m_max,wind_gusts_10m_max`.
+- **Spray Window alert** — detecta fereastra optima tratamente (48h, vant <15 km/h, fara ploaie, temp 10-25°C, umid <85%, >=2h consecutive). Redis `livada:alert-spray`. Banner verde frontend. `frost-alert.js` include acum si `spray` + `gdd`.
+
+**Redis keys noi:** `livada:alert-spray`, `livada:gdd:annual`
 
 ## Audit findings — actiuni amanate
 
