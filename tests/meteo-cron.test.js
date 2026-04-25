@@ -137,12 +137,12 @@ describe("meteo-cron API route", () => {
       vi.fn((url) => {
         if (
           url.includes("open-meteo.com/v1/forecast") &&
-          !url.includes("models=")
+          !url.includes("ecmwf_ifs025")
         )
           return mockFetchOk(makeOpenMeteoResponse());
         if (url.includes("met.no"))
           return Promise.reject(new Error("yr.no skip"));
-        if (url.includes("models="))
+        if (url.includes("ecmwf_ifs025"))
           return Promise.reject(new Error("multi-model skip"));
         return mockFetchErr(404);
       }),
@@ -233,7 +233,7 @@ describe("meteo-cron API route", () => {
     globalThis.fetch = vi.fn((url) => {
       if (
         url.includes("open-meteo.com/v1/forecast") &&
-        !url.includes("models=")
+        !url.includes("ecmwf_ifs025")
       ) {
         return mockFetchOk(
           makeOpenMeteoResponse({
@@ -291,7 +291,7 @@ describe("meteo-cron API route", () => {
     globalThis.fetch = vi.fn((url) => {
       if (
         url.includes("open-meteo.com/v1/forecast") &&
-        !url.includes("models=")
+        !url.includes("ecmwf_ifs025")
       ) {
         return mockFetchOk(
           makeOpenMeteoResponse({
@@ -328,7 +328,7 @@ describe("meteo-cron API route", () => {
     globalThis.fetch = vi.fn((url) => {
       if (
         url.includes("open-meteo.com/v1/forecast") &&
-        !url.includes("models=")
+        !url.includes("ecmwf_ifs025")
       ) {
         return mockFetchOk(
           makeOpenMeteoResponse({
@@ -362,7 +362,7 @@ describe("meteo-cron API route", () => {
     globalThis.fetch = vi.fn((url) => {
       if (
         url.includes("open-meteo.com/v1/forecast") &&
-        !url.includes("models=")
+        !url.includes("ecmwf_ifs025")
       ) {
         return mockFetchOk(
           makeOpenMeteoResponse({
@@ -393,7 +393,7 @@ describe("meteo-cron API route", () => {
     globalThis.fetch = vi.fn((url) => {
       if (
         url.includes("open-meteo.com/v1/forecast") &&
-        !url.includes("models=")
+        !url.includes("ecmwf_ifs025")
       ) {
         return mockFetchOk(
           makeOpenMeteoResponse({
@@ -432,7 +432,7 @@ describe("meteo-cron API route", () => {
     globalThis.fetch = vi.fn((url) => {
       if (
         url.includes("open-meteo.com/v1/forecast") &&
-        !url.includes("models=")
+        !url.includes("ecmwf_ifs025")
       ) {
         return mockFetchOk(
           makeOpenMeteoResponse({
@@ -467,7 +467,7 @@ describe("meteo-cron API route", () => {
     globalThis.fetch = vi.fn((url) => {
       if (
         url.includes("open-meteo.com/v1/forecast") &&
-        !url.includes("models=")
+        !url.includes("ecmwf_ifs025")
       ) {
         callCount++;
         if (callCount === 1) return mockFetchErr(503);
@@ -481,17 +481,17 @@ describe("meteo-cron API route", () => {
     expect(callCount).toBe(2);
   });
 
-  it("returns 500 when Open-Meteo fails on all retries", async () => {
+  it("returns 200 with cached:true when Open-Meteo fails on all retries (degradare gratiosa)", async () => {
     globalThis.fetch = vi.fn(() => mockFetchErr(503));
 
     const res = await handler(fakeReq("Bearer test-cron-secret"));
-    expect(res.status).toBe(500);
-    // Verify error is logged to Redis
-    const lastRunCall = mockKv.set.mock.calls.find(
-      (c) => c[0] === "livada:cron:last-run",
-    );
-    expect(lastRunCall).toBeDefined();
-    expect(lastRunCall[1].success).toBe(false);
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.success).toBe(false);
+    expect(body.cached).toBe(true);
+    expect(body.reason).toMatch(/Open-Meteo HTTP 503/);
+    // livada:cron:last-run NU se actualizeaza — ramane la ultimul run reusit
+    expect(mockKv.set).not.toHaveBeenCalled();
   });
 
   // ── Alert journal dedup ───────────────────────────────────────────────────

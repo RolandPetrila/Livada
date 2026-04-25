@@ -426,88 +426,6 @@ export default async function handler(req) {
       }
     }
 
-    // Optiunea 3 — Multi-model consensus extins: frost + vant critic (>=70 km/h)
-    // + canicula severa (>=38°C). Un singur fetch suplimentar pt toate alertele.
-    const runMultiModel =
-      frostAlert.active ||
-      (windAlert.active && windAlert.maxGust >= 70) ||
-      (heatAlert.active && heatAlert.maxTemp >= 38);
-    if (runMultiModel) {
-      try {
-        const mmUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=apparent_temperature&daily=temperature_2m_max,wind_gusts_10m_max&forecast_days=2&timezone=Europe/Bucharest&models=icon_seamless,ecmwf_ifs025,gfs_seamless`;
-        const mmCtrl = new AbortController();
-        const mmTimer = setTimeout(() => mmCtrl.abort(), 5000);
-        const mmRes = await fetch(mmUrl, { signal: mmCtrl.signal });
-        clearTimeout(mmTimer);
-        if (mmRes.ok) {
-          const mmData = await mmRes.json();
-          const models = ["icon_seamless", "ecmwf_ifs025", "gfs_seamless"];
-          const mmTimes = mmData.hourly?.time || [];
-
-          if (frostAlert.active) {
-            let modelsFrost = 0;
-            for (const model of models) {
-              const temps =
-                mmData.hourly?.[`apparent_temperature_${model}`] || [];
-              for (let i = 0; i < temps.length; i++) {
-                if (new Date(mmTimes[i]).getTime() < nowMs) continue;
-                if (temps[i] < frostThresholdDynamic) {
-                  modelsFrost++;
-                  break;
-                }
-              }
-            }
-            const confidence =
-              modelsFrost >= 3
-                ? "cert"
-                : modelsFrost >= 2
-                  ? "probabil"
-                  : "posibil";
-            frostAlert.confidence = confidence;
-            frostAlert.modelsAgree = modelsFrost;
-            frostAlert.message += ` [${confidence.toUpperCase()} — ${modelsFrost}/3 modele]`;
-          }
-
-          if (windAlert.active && windAlert.maxGust >= 70) {
-            let modelsWind = 0;
-            for (const model of models) {
-              const gusts = mmData.daily?.[`wind_gusts_10m_max_${model}`] || [];
-              if (gusts.some((g) => g >= 70)) modelsWind++;
-            }
-            const windConf =
-              modelsWind >= 3
-                ? "cert"
-                : modelsWind >= 2
-                  ? "probabil"
-                  : "posibil";
-            windAlert.confidence = windConf;
-            windAlert.modelsAgree = modelsWind;
-            windAlert.message += ` [${windConf.toUpperCase()} — ${modelsWind}/3 modele]`;
-          }
-
-          if (heatAlert.active && heatAlert.maxTemp >= 38) {
-            let modelsHeat = 0;
-            for (const model of models) {
-              const maxTemps =
-                mmData.daily?.[`temperature_2m_max_${model}`] || [];
-              if (maxTemps.some((t) => t >= 38)) modelsHeat++;
-            }
-            const heatConf =
-              modelsHeat >= 3
-                ? "cert"
-                : modelsHeat >= 2
-                  ? "probabil"
-                  : "posibil";
-            heatAlert.confidence = heatConf;
-            heatAlert.modelsAgree = modelsHeat;
-            heatAlert.message += ` [${heatConf.toUpperCase()} — ${modelsHeat}/3 modele]`;
-          }
-        }
-      } catch {
-        // Multi-model e optional — daca esueaza, alertele raman fara confidence
-      }
-    }
-
     // Disease risk (next 48h): rain + warm + humid + probability > 50%
     let diseaseRisk = { active: false, updatedAt: new Date().toISOString() };
     if (data.hourly?.temperature_2m) {
@@ -610,6 +528,89 @@ export default async function handler(req) {
           };
           break;
         }
+      }
+    }
+
+    // Optiunea 3 — Multi-model consensus extins: frost + vant critic (>=70 km/h)
+    // + canicula severa (>=38°C). Un singur fetch suplimentar pt toate alertele.
+    // windAlert si heatAlert sunt deja declarate mai sus — fara TDZ.
+    const runMultiModel =
+      frostAlert.active ||
+      (windAlert.active && windAlert.maxGust >= 70) ||
+      (heatAlert.active && heatAlert.maxTemp >= 38);
+    if (runMultiModel) {
+      try {
+        const mmUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=apparent_temperature&daily=temperature_2m_max,wind_gusts_10m_max&forecast_days=2&timezone=Europe/Bucharest&models=icon_seamless,ecmwf_ifs025,gfs_seamless`;
+        const mmCtrl = new AbortController();
+        const mmTimer = setTimeout(() => mmCtrl.abort(), 5000);
+        const mmRes = await fetch(mmUrl, { signal: mmCtrl.signal });
+        clearTimeout(mmTimer);
+        if (mmRes.ok) {
+          const mmData = await mmRes.json();
+          const models = ["icon_seamless", "ecmwf_ifs025", "gfs_seamless"];
+          const mmTimes = mmData.hourly?.time || [];
+
+          if (frostAlert.active) {
+            let modelsFrost = 0;
+            for (const model of models) {
+              const temps =
+                mmData.hourly?.[`apparent_temperature_${model}`] || [];
+              for (let i = 0; i < temps.length; i++) {
+                if (new Date(mmTimes[i]).getTime() < nowMs) continue;
+                if (temps[i] < frostThresholdDynamic) {
+                  modelsFrost++;
+                  break;
+                }
+              }
+            }
+            const confidence =
+              modelsFrost >= 3
+                ? "cert"
+                : modelsFrost >= 2
+                  ? "probabil"
+                  : "posibil";
+            frostAlert.confidence = confidence;
+            frostAlert.modelsAgree = modelsFrost;
+            frostAlert.message += ` [${confidence.toUpperCase()} — ${modelsFrost}/3 modele]`;
+          }
+
+          if (windAlert.active && windAlert.maxGust >= 70) {
+            let modelsWind = 0;
+            for (const model of models) {
+              const gusts = mmData.daily?.[`wind_gusts_10m_max_${model}`] || [];
+              if (gusts.some((g) => g >= 70)) modelsWind++;
+            }
+            const windConf =
+              modelsWind >= 3
+                ? "cert"
+                : modelsWind >= 2
+                  ? "probabil"
+                  : "posibil";
+            windAlert.confidence = windConf;
+            windAlert.modelsAgree = modelsWind;
+            windAlert.message += ` [${windConf.toUpperCase()} — ${modelsWind}/3 modele]`;
+          }
+
+          if (heatAlert.active && heatAlert.maxTemp >= 38) {
+            let modelsHeat = 0;
+            for (const model of models) {
+              const maxTemps =
+                mmData.daily?.[`temperature_2m_max_${model}`] || [];
+              if (maxTemps.some((t) => t >= 38)) modelsHeat++;
+            }
+            const heatConf =
+              modelsHeat >= 3
+                ? "cert"
+                : modelsHeat >= 2
+                  ? "probabil"
+                  : "posibil";
+            heatAlert.confidence = heatConf;
+            heatAlert.modelsAgree = modelsHeat;
+            heatAlert.message += ` [${heatConf.toUpperCase()} — ${modelsHeat}/3 modele]`;
+          }
+        }
+      } catch {
+        // Multi-model e optional — daca esueaza, alertele raman fara confidence
       }
     }
 

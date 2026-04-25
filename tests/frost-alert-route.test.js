@@ -116,9 +116,8 @@ describe("frost-alert API route", () => {
     expect(body.frost).toEqual({ active: false });
   });
 
-  it("reads all 8 Redis keys in parallel", async () => {
+  it("reads all Redis keys in parallel", async () => {
     await handler(fakeReq("GET"));
-    expect(mockKv.get).toHaveBeenCalledTimes(8);
     const keys = mockKv.get.mock.calls.map((c) => c[0]);
     expect(keys).toContain("livada:frost-alert");
     expect(keys).toContain("livada:disease-risk");
@@ -127,6 +126,8 @@ describe("frost-alert API route", () => {
     expect(keys).toContain("livada:alert-heat");
     expect(keys).toContain("livada:alert-rain");
     expect(keys).toContain("livada:alert-drought");
+    expect(keys).toContain("livada:alert-spray");
+    expect(keys).toContain("livada:gdd:annual");
     expect(keys).toContain("livada:alert-journal");
   });
 });
