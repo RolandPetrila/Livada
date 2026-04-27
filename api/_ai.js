@@ -2,29 +2,40 @@
 // Importat de: diagnose.js, identify.js
 import { fetchWithTimeout } from "./_timeout.js";
 
+// Normalizeaza input la array de {base64, mimeType}.
+// Accepta:
+//  - (base64String, mimeTypeString)
+//  - (imagesArray, ignoredMimeArg) — array de {base64, mimeType}
+function normalizeImages(base64OrArr, mimeType) {
+  if (Array.isArray(base64OrArr)) {
+    return base64OrArr
+      .filter((i) => i && i.base64)
+      .map((i) => ({ base64: i.base64, mimeType: i.mimeType || "image/jpeg" }));
+  }
+  return [{ base64: base64OrArr, mimeType: mimeType || "image/jpeg" }];
+}
+
 export async function callGemini(
   apiKey,
   model,
-  base64,
+  base64OrImages,
   mimeType,
   prompt,
   timeoutMs,
   { maxTokens = 8192, temperature = 0.3 } = {},
 ) {
+  const images = normalizeImages(base64OrImages, mimeType);
+  const parts = [{ text: prompt }];
+  for (const img of images) {
+    parts.push({ inline_data: { mime_type: img.mimeType, data: img.base64 } });
+  }
   return fetchWithTimeout(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
       body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              { text: prompt },
-              { inline_data: { mime_type: mimeType, data: base64 } },
-            ],
-          },
-        ],
+        contents: [{ parts }],
         generationConfig: { maxOutputTokens: maxTokens, temperature },
       }),
     },
@@ -36,12 +47,20 @@ export async function callOpenAIVision(
   endpoint,
   apiKey,
   model,
-  base64,
+  base64OrImages,
   mimeType,
   prompt,
   timeoutMs,
   { maxTokens = 8192, temperature = 0.3 } = {},
 ) {
+  const images = normalizeImages(base64OrImages, mimeType);
+  const content = [{ type: "text", text: prompt }];
+  for (const img of images) {
+    content.push({
+      type: "image_url",
+      image_url: { url: `data:${img.mimeType};base64,${img.base64}` },
+    });
+  }
   return fetchWithTimeout(
     endpoint,
     {
@@ -52,18 +71,7 @@ export async function callOpenAIVision(
       },
       body: JSON.stringify({
         model,
-        messages: [
-          {
-            role: "user",
-            content: [
-              { type: "text", text: prompt },
-              {
-                type: "image_url",
-                image_url: { url: `data:${mimeType};base64,${base64}` },
-              },
-            ],
-          },
-        ],
+        messages: [{ role: "user", content }],
         max_tokens: maxTokens,
         temperature,
       }),

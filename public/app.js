@@ -1847,8 +1847,7 @@ $("#dismissBtn").addEventListener("click", () => {
 // DEPLOY_DATE + DEPLOY_TIME: actualizat la fiecare push (hardcodat = fiabil pe orice CDN)
 const DEPLOY_DATE = "2026-04-23";
 const DEPLOY_TIME = "14:12";
-const DEPLOY_INFO =
-  "fix(meteo): null guard G2 + elimin paranteze imbricate G6";
+const DEPLOY_INFO = "fix(meteo): null guard G2 + elimin paranteze imbricate G6";
 
 const APP_BUILD = DEPLOY_DATE;
 
@@ -3195,6 +3194,10 @@ function openJurnalFromDiag() {
 }
 
 // ====== DIAGNOSE FUNCTIONS ======
+// Multi-photo state: max 4 poze per prefix
+var _diagPhotos = { diag: [], aiGenDiag: [] };
+var DIAG_MAX_PHOTOS = 4;
+
 function openDiagnoseModal() {
   logActivity("UI", "modal-open", "diagnose", activeSpeciesId || "-");
   document.getElementById("diagSpecies").textContent =
@@ -3206,6 +3209,8 @@ function openDiagnoseModal() {
   document.getElementById("diagChatSection").style.display = "none";
   document.getElementById("diagChatMessages").innerHTML = "";
   _diagChatHistory["diag"] = [];
+  _diagPhotos.diag = [];
+  renderDiagThumbnails("diag");
   renderAiStatusPanel("diagnose", "diagModalBody", "afterbegin");
   openModal("diagnose");
 }
@@ -3262,10 +3267,103 @@ function compressDiagnoseImage(file) {
   });
 }
 
-// Functie unificata pentru diagnostic foto — folosita de modal specie si tab AI General
-async function runDiagnose(input, species, prefix) {
-  var file = input.files[0];
-  if (!file) return;
+// Render thumbnails grid pentru pozele selectate
+function renderDiagThumbnails(prefix) {
+  var container = document.getElementById(prefix + "Thumbs");
+  var analyzeRow = document.getElementById(prefix + "AnalyzeRow");
+  if (!container) return;
+  var slot = _diagPhotos[prefix] || [];
+  container.innerHTML = "";
+  if (!slot.length) {
+    container.style.display = "none";
+    if (analyzeRow) analyzeRow.style.display = "none";
+    return;
+  }
+  container.style.display = "flex";
+  if (analyzeRow) analyzeRow.style.display = "block";
+  for (var i = 0; i < slot.length; i++) {
+    var wrap = document.createElement("div");
+    wrap.style.cssText =
+      "position:relative;width:80px;height:80px;border-radius:8px;overflow:hidden;border:1px solid var(--border);";
+    var img = document.createElement("img");
+    img.src = "data:image/jpeg;base64," + slot[i].base64;
+    img.style.cssText =
+      "width:100%;height:100%;object-fit:cover;display:block;";
+    var btn = document.createElement("button");
+    btn.textContent = "×";
+    btn.setAttribute("aria-label", "Sterge poza");
+    btn.dataset.idx = i;
+    btn.dataset.prefix = prefix;
+    btn.style.cssText =
+      "position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;border:none;background:rgba(0,0,0,0.65);color:#fff;font-size:14px;line-height:1;cursor:pointer;padding:0;";
+    btn.addEventListener("click", function () {
+      var idx = parseInt(this.dataset.idx, 10);
+      var pfx = this.dataset.prefix;
+      _diagPhotos[pfx].splice(idx, 1);
+      renderDiagThumbnails(pfx);
+    });
+    wrap.appendChild(img);
+    wrap.appendChild(btn);
+    container.appendChild(wrap);
+  }
+  var counter = document.createElement("div");
+  counter.style.cssText =
+    "width:100%;font-size:0.75rem;opacity:0.7;margin-top:4px;";
+  counter.textContent =
+    slot.length + "/" + DIAG_MAX_PHOTOS + " poze (max " + DIAG_MAX_PHOTOS + ")";
+  container.appendChild(counter);
+}
+
+// Adauga poze in slot dupa selectie input. Comprima fiecare. Nu submite — user apasa "Analizeaza".
+async function addDiagPhotos(input, prefix) {
+  var files = Array.from(input.files || []);
+  input.value = "";
+  if (!files.length) return;
+  if (!_diagPhotos[prefix]) _diagPhotos[prefix] = [];
+  var slot = _diagPhotos[prefix];
+  var available = DIAG_MAX_PHOTOS - slot.length;
+  if (available <= 0) {
+    showAiError(
+      "Maxim " + DIAG_MAX_PHOTOS + " poze. Sterge una pentru a adauga alta.",
+    );
+    return;
+  }
+  var toAdd = files.slice(0, available);
+  for (var i = 0; i < toAdd.length; i++) {
+    try {
+      var compressed = await compressDiagnoseImage(toAdd[i]);
+      slot.push(compressed);
+    } catch (e) {
+      showAiError("Nu am putut procesa o poza: " + (e.message || e));
+    }
+  }
+  renderDiagThumbnails(prefix);
+}
+
+// Trimite pozele acumulate la /api/diagnose
+function triggerDiagnoseSubmit(prefix) {
+  var slot = _diagPhotos[prefix] || [];
+  if (!slot.length) {
+    showAiError("Adauga cel putin o poza inainte de analiza.");
+    return;
+  }
+  var species;
+  if (prefix === "diag") {
+    species = SPECIES[activeSpeciesId] || activeSpeciesId || "necunoscut";
+  } else {
+    var inp = document.getElementById("aiGenDiagSpecies");
+    species = ((inp && inp.value) || "").trim() || "necunoscut";
+    species = species
+      .replace(/[^a-zA-ZĂăÂâÎîŞşȘșŢţȚț0-9\s_-]/g, "")
+      .substring(0, 100);
+  }
+  return runDiagnose(null, species, prefix);
+}
+
+// Functie unificata pentru diagnostic foto — citeste din _diagPhotos[prefix]
+async function runDiagnose(_legacyInput, species, prefix) {
+  var slot = _diagPhotos[prefix] || [];
+  if (!slot.length) return;
   var _t0Diag = Date.now();
   var g = function (id) {
     return document.getElementById(id);
@@ -3275,27 +3373,28 @@ async function runDiagnose(input, species, prefix) {
   g(prefix + "Loading").style.display = "block";
   g(prefix + "Result").style.display = "none";
   g(prefix + "CopyRow").style.display = "none";
-
-  var reader = new FileReader();
-  reader.onload = function (e) {
-    g(prefix + "Img").src = e.target.result;
-    g(prefix + "Preview").style.display = "block";
-  };
-  reader.readAsDataURL(file);
+  var analyzeRow = g(prefix + "AnalyzeRow");
+  if (analyzeRow) analyzeRow.style.display = "none";
 
   try {
-    var result = await compressDiagnoseImage(file);
-    var uploadSize = result.blob.size;
+    var images = slot.map(function (p) {
+      return { base64: p.base64, mimeType: "image/jpeg" };
+    });
+    var totalKB =
+      slot.reduce(function (s, p) {
+        return s + (p.size || 0);
+      }, 0) / 1024;
+    var pxLabels = slot
+      .map(function (p) {
+        return p.px;
+      })
+      .join(", ");
     var res = await authFetch(
       "/api/diagnose",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          base64: result.base64,
-          mimeType: "image/jpeg",
-          species: species,
-        }),
+        body: JSON.stringify({ images: images, species: species }),
       },
       65000,
     );
@@ -3311,10 +3410,16 @@ async function runDiagnose(input, species, prefix) {
     g(prefix + "Loading").style.display = "none";
     var resultEl = g(prefix + "Result");
     var sizeInfo =
-      '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">Poza comprimata: ' +
-      (uploadSize / 1024).toFixed(0) +
-      "KB (" +
-      result.px +
+      '<p style="font-size:0.8em;opacity:0.6;margin:0 0 8px">' +
+      slot.length +
+      " poz" +
+      (slot.length > 1 ? "e" : "a") +
+      " comprimat" +
+      (slot.length > 1 ? "e" : "a") +
+      ": " +
+      totalKB.toFixed(0) +
+      "KB total (" +
+      pxLabels +
       ")</p>";
     if (data.error) {
       resultEl.textContent = "Eroare: " + data.error;
@@ -3398,15 +3503,10 @@ async function runDiagnose(input, species, prefix) {
     r.style.display = "block";
     g(prefix + "CopyRow").style.display = copyRowDisplay;
   }
-  input.value = "";
 }
 
 function submitDiagnose(input) {
-  return runDiagnose(
-    input,
-    SPECIES[activeSpeciesId] || activeSpeciesId,
-    "diag",
-  );
+  return addDiagPhotos(input, "diag");
 }
 
 // ====== ASK AI FUNCTIONS ======
@@ -3788,12 +3888,7 @@ async function submitAiGenAsk() {
 }
 
 function submitAiGenDiagnose(input) {
-  var species = (
-    document.getElementById("aiGenDiagSpecies").value.trim() || "necunoscut"
-  )
-    .replace(/[^a-zA-ZăâîșțĂÂÎȘȚ0-9\s_-]/g, "")
-    .substring(0, 100);
-  return runDiagnose(input, species, "aiGenDiag");
+  return addDiagPhotos(input, "aiGenDiag");
 }
 
 // ====== DIAGNOSTIC CHAT ======
@@ -4890,15 +4985,18 @@ async function initDashboardAzi() {
       if (data.spray && data.spray.available)
         html +=
           '<div class="alert" style="margin-top:8px;background:rgba(106,191,105,0.12);border-left:3px solid var(--accent);">' +
-          '\uD83D\uDCA7 <strong>Fereastra tratamente:</strong> ' +
+          "\uD83D\uDCA7 <strong>Fereastra tratamente:</strong> " +
           escapeHtml(data.spray.message) +
           "</div>";
       if (data.gdd && data.gdd.cumulative != null)
         html +=
           '<div style="margin-top:6px;font-size:0.78rem;color:var(--text-dim);">' +
-          '\uD83C\uDF21\uFE0F GDD acumulat ' + data.gdd.year + ': <strong>' +
-          data.gdd.cumulative + ' grade-zile</strong>' +
-          (data.gdd.lastDate ? ' (pana la ' + data.gdd.lastDate + ')' : '') +
+          "\uD83C\uDF21\uFE0F GDD acumulat " +
+          data.gdd.year +
+          ": <strong>" +
+          data.gdd.cumulative +
+          " grade-zile</strong>" +
+          (data.gdd.lastDate ? " (pana la " + data.gdd.lastDate + ")" : "") +
           "</div>";
       var anyActive =
         frostRelevant ||

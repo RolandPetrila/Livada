@@ -70,6 +70,8 @@ describe("diagnose API route", () => {
     vi.resetAllMocks();
     process.env.GOOGLE_AI_API_KEY = "test-gemini-key";
     delete process.env.PLANT_ID_API_KEY;
+    delete process.env.PLANTNET_API_KEY;
+    delete process.env.PLANT_ID_USE_V3;
     delete process.env.GITHUB_MODELS_TOKEN;
     delete process.env.GOOGLE_AI_API_KEY_2;
     delete process.env.MISTRAL_API_KEY;
@@ -133,7 +135,7 @@ describe("diagnose API route", () => {
       }),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).error).toMatch(/prea mare/i);
+    expect((await res.json()).error).toMatch(/prea mar[ie]/i);
   });
 
   it("sanitizes invalid mimeType to image/jpeg", async () => {
@@ -141,11 +143,11 @@ describe("diagnose API route", () => {
       fakeReq("POST", { ...validBody, mimeType: "text/html" }),
     );
     expect(res.status).toBe(200);
-    // Verify callGemini was called — first call is the pro attempt
     expect(mockCallGemini).toHaveBeenCalled();
-    // The mimeType in the call should be image/jpeg (sanitized)
-    const calledMime = mockCallGemini.mock.calls[0][3]; // 4th arg is mimeType
-    expect(calledMime).toBe("image/jpeg");
+    // 3rd arg now is images array; mimeType lives in images[0].mimeType
+    const imgsArg = mockCallGemini.mock.calls[0][2];
+    expect(Array.isArray(imgsArg)).toBe(true);
+    expect(imgsArg[0].mimeType).toBe("image/jpeg");
   });
 
   it("accepts valid mimeTypes (png, webp, gif, heic, heif)", async () => {
@@ -255,6 +257,7 @@ describe("diagnose API route", () => {
   // ── Plant.id integration ──────────────────────────────────────────────────
   it("prepends Plant.id result when available", async () => {
     process.env.PLANT_ID_API_KEY = "test-plantid-key";
+    process.env.PLANT_ID_USE_V3 = "1";
 
     // Plant.id v3 success
     mockFetchWithTimeout.mockResolvedValue({
@@ -283,6 +286,7 @@ describe("diagnose API route", () => {
 
   it("skips Plant.id prefix when plant is healthy", async () => {
     process.env.PLANT_ID_API_KEY = "test-plantid-key";
+    process.env.PLANT_ID_USE_V3 = "1";
 
     mockFetchWithTimeout.mockResolvedValue({
       ok: true,
@@ -301,6 +305,81 @@ describe("diagnose API route", () => {
     const body = await res.json();
     expect(body.diagnosis).toContain("SANATOASA");
     expect(body.diagnosis).toContain("Gemini text");
+  });
+
+  // ── Multi-image (max 4) ───────────────────────────────────────────────────
+  it("accepts images[] array (multi-photo)", async () => {
+    mockGeminiText.mockReturnValue("Diag multi");
+    const res = await handler(
+      fakeReq("POST", {
+        images: [
+          { base64: "img1aaa", mimeType: "image/jpeg" },
+          { base64: "img2bbb", mimeType: "image/jpeg" },
+          { base64: "img3ccc", mimeType: "image/jpeg" },
+        ],
+        species: "Cires",
+      }),
+    );
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body._imagesCount).toBe(3);
+    // callGemini receives the images array as 3rd arg
+    const imgsArg = mockCallGemini.mock.calls[0][2];
+    expect(Array.isArray(imgsArg)).toBe(true);
+    expect(imgsArg.length).toBe(3);
+  });
+
+  it("rejects more than 4 images", async () => {
+    const big = Array.from({ length: 5 }, (_, i) => ({
+      base64: "img" + i,
+      mimeType: "image/jpeg",
+    }));
+    const res = await handler(fakeReq("POST", { images: big, species: "Mar" }));
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/Maxim 4/i);
+  });
+
+  it("rejects when total bytes across images exceed limit", async () => {
+    const huge = [
+      { base64: "x".repeat(3 * 1024 * 1024), mimeType: "image/jpeg" },
+      { base64: "x".repeat(3 * 1024 * 1024), mimeType: "image/jpeg" },
+    ];
+    const res = await handler(
+      fakeReq("POST", { images: huge, species: "Mar" }),
+    );
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/prea mari/i);
+  });
+
+  // ── P1 fix: mesaj corect cand Plant.id v2 e singurul disponibil ──────────
+  it("returns honest fallback message when only Plant.id v2 ID + AI all failed", async () => {
+    process.env.PLANT_ID_API_KEY = "test-plantid-key";
+    // Default: PLANT_ID_USE_V3 not set → v2 path. Mock v2 response.
+    mockFetchWithTimeout.mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        suggestions: [
+          {
+            plant_name: "Magnolia grandiflora",
+            probability: 0.81,
+            plant_details: { common_names: ["southern magnolia"] },
+          },
+        ],
+      }),
+    });
+    // All AI fails
+    mockCallGemini.mockResolvedValue({ ok: false, status: 500 });
+    mockGeminiText.mockReturnValue(null);
+
+    const res = await handler(fakeReq("POST", validBody));
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body._fallback).toBe(true);
+    expect(body._plantid).toBe(true);
+    expect(body.diagnosis).toContain("Magnolia grandiflora");
+    // Mesajul nou — nu mai pretinde ca au fost detectate boli
+    expect(body.diagnosis).not.toContain("a detectat bolile de mai sus");
+    expect(body.diagnosis).toMatch(/Diagnostic.*indisponibil|indisponibil/i);
   });
 
   // ── Gemini key2 fallback ──────────────────────────────────────────────────

@@ -5,55 +5,75 @@ import { checkAndIncrementQuota } from "./_quota.js";
 
 export const config = { runtime: "edge" };
 
-// ── Helper: apel Plant.id v3 → v2 fallback ───────────────────────────────────
-async function callPlantId(apiKey, base64, mimeType, timeoutMs) {
-  // Incearca v3 (specializat boli)
-  const v3Res = await fetchWithTimeout(
-    "https://plant.id/api/v3/identification",
-    {
-      method: "POST",
-      headers: { "Api-Key": apiKey, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        images: [`data:${mimeType};base64,${base64}`],
-        health: "all",
-        similar_images: false,
-      }),
-    },
-    Math.min(timeoutMs, 12000),
-  );
-  if (v3Res.ok) return v3Res;
+const MAX_IMAGES = 4;
+const MAX_TOTAL_BYTES = 5 * 1024 * 1024; // 5MB total base64 (toate pozele)
+const VALID_MIMES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/heic",
+  "image/heif",
+];
 
-  // Fallback la v2 daca v3 respinge (401/402/400)
-  console.log(`[diagnose] plant.id v3 fail (${v3Res.status}), trying v2`);
-  return fetchWithTimeout(
+// ── Plant.id v2 (free tier) — identificare specie + boli pe cont free ─────────
+// v3 cu health="all" cere abonament platit — skip pe free tier.
+// PLANT_ID_USE_V3=1 reactiveaza v3 daca user-ul upgradeaza la Plus/Premium.
+async function callPlantId(apiKey, images, timeoutMs) {
+  const dataUrls = images.map(
+    (img) => `data:${img.mimeType};base64,${img.base64}`,
+  );
+
+  if (process.env.PLANT_ID_USE_V3 === "1") {
+    const v3Res = await fetchWithTimeout(
+      "https://plant.id/api/v3/identification",
+      {
+        method: "POST",
+        headers: { "Api-Key": apiKey, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          images: dataUrls,
+          health: "all",
+          similar_images: false,
+        }),
+      },
+      Math.min(timeoutMs, 12000),
+    );
+    if (v3Res.ok) return { res: v3Res, version: "v3" };
+    console.log(`[diagnose] plant.id v3 fail (${v3Res.status}), trying v2`);
+  }
+
+  const v2Res = await fetchWithTimeout(
     "https://api.plant.id/v2/identify",
     {
       method: "POST",
       headers: { "Api-Key": apiKey, "Content-Type": "application/json" },
       body: JSON.stringify({
-        images: [`data:${mimeType};base64,${base64}`],
+        images: dataUrls,
         plant_details: ["common_names", "url"],
       }),
     },
     Math.min(timeoutMs, 12000),
   );
+  return { res: v2Res, version: "v2" };
 }
 
-// ── Formateaza rezultatul Plant.id (v3 sau v2) in romana ─────────────────────
-function formatPlantIdResult(data) {
+// Formateaza Plant.id; intoarce { prefix, hasDiseases, identifiedSpecies }
+function formatPlantIdResult(data, version) {
   try {
-    // Format v3: data.result.disease.suggestions
-    if (data.result) {
+    if (version === "v3" && data.result) {
       const result = data.result;
-      const isPlant = result.is_plant?.binary;
-      if (!isPlant) return null;
+      if (!result.is_plant?.binary) return null;
       const isHealthy = result.is_healthy?.binary;
       const healthyProb = Math.round(
         (result.is_healthy?.probability || 0) * 100,
       );
       const diseases = result.disease?.suggestions || [];
       if (isHealthy && healthyProb >= 70) {
-        return `**[Plant.id] Stare sanatate: SANATOASA** (${healthyProb}% sanatoasa)\n`;
+        return {
+          prefix: `**[Plant.id] Stare sanatate: SANATOASA** (${healthyProb}% sanatoasa)\n`,
+          hasDiseases: false,
+          identifiedSpecies: null,
+        };
       }
       if (!diseases.length) return null;
       let txt = `**[Plant.id] Boli detectate (diagnostic specializat):**\n`;
@@ -61,19 +81,63 @@ function formatPlantIdResult(data) {
         txt += `- **${d.name}** — ${Math.round((d.probability || 0) * 100)}% probabilitate\n`;
       });
       txt += "\n---\n";
-      return txt;
+      return { prefix: txt, hasDiseases: true, identifiedSpecies: null };
     }
 
-    // Format v2: data.suggestions (planta identificata, fara diagnostic boli)
+    // v2: doar identificare specie (NU detecteaza boli)
     if (data.suggestions && data.suggestions.length > 0) {
       const top = data.suggestions[0];
       const prob = Math.round((top.probability || 0) * 100);
       const name = top.plant_name || "necunoscuta";
       const common = top.plant_details?.common_names?.[0] || "";
-      return `**[Plant.id v2] Planta identificata:** ${name}${common ? " (" + common + ")" : ""} — ${prob}% probabilitate\n\n---\n`;
+      return {
+        prefix: `**[Plant.id v2] Planta identificata:** ${name}${common ? " (" + common + ")" : ""} — ${prob}% probabilitate\n\n---\n`,
+        hasDiseases: false,
+        identifiedSpecies: { name, common, prob },
+      };
     }
-
     return null;
+  } catch {
+    return null;
+  }
+}
+
+// ── Pl@ntNet — identificare specie (gratuit, 500 req/zi) ─────────────────────
+async function callPlantNet(apiKey, images, timeoutMs) {
+  const formData = new FormData();
+  for (const img of images) {
+    let binaryStr;
+    try {
+      binaryStr = atob(img.base64);
+    } catch {
+      continue;
+    }
+    const bytes = new Uint8Array(binaryStr.length);
+    for (let i = 0; i < binaryStr.length; i++)
+      bytes[i] = binaryStr.charCodeAt(i);
+    const blob = new Blob([bytes], { type: img.mimeType });
+    formData.append("images", blob, "plant.jpg");
+    formData.append("organs", "auto");
+  }
+  return fetchWithTimeout(
+    `https://my-api.plantnet.org/v2/identify/all?api-key=${apiKey}&lang=ro&nb-results=3&include-related-images=false`,
+    { method: "POST", body: formData },
+    Math.min(timeoutMs, 12000),
+  );
+}
+
+function formatPlantNetResult(data) {
+  try {
+    const results = (data.results || []).slice(0, 3);
+    if (!results.length) return null;
+    const top = results[0];
+    const sci = top.species?.scientificNameWithoutAuthor || "necunoscuta";
+    const common = top.species?.commonNames?.[0] || "";
+    const score = Math.round((top.score || 0) * 100);
+    return {
+      prefix: `**[Pl@ntNet] Specie identificata:** ${sci}${common ? " (" + common + ")" : ""} — ${score}% probabilitate\n\n---\n`,
+      identifiedSpecies: { name: sci, common, prob: score },
+    };
   } catch {
     return null;
   }
@@ -92,7 +156,7 @@ export default async function handler(req) {
     );
   }
 
-  const limitErr = await rateLimit(req, 10); // M8: AI endpoint — limita 10 req/min
+  const limitErr = await rateLimit(req, 10);
   if (limitErr) return limitErr;
 
   const GEMINI_KEY1 = process.env.GOOGLE_AI_API_KEY;
@@ -103,7 +167,6 @@ export default async function handler(req) {
     );
   }
 
-  // T1 Sprint 1: quota guard Gemini — previne silent 429 dupa epuizare 1000 req/zi
   const geminiQuota = await checkAndIncrementQuota("gemini");
   if (!geminiQuota.ok) {
     return Response.json(
@@ -117,35 +180,53 @@ export default async function handler(req) {
   }
 
   const t0 = Date.now();
+  let images, species;
 
-  let base64, mimeType, species;
   try {
     const body = await req.json();
-    base64 = body.base64;
-    // H8: valideaza mimeType — accepta doar imagini cunoscute
-    const VALID_MIMES = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "image/gif",
-      "image/heic",
-      "image/heif",
-    ];
-    mimeType = VALID_MIMES.includes(body.mimeType)
-      ? body.mimeType
-      : "image/jpeg";
     species = (body.species || "necunoscut")
       .replace(/[^a-zA-Z0-9\s_-]/g, "")
       .substring(0, 100);
-    if (!base64 || typeof base64 !== "string") {
+
+    // Acceptam: (1) images:[{base64,mimeType}] sau (2) base64+mimeType (legacy)
+    let raw = [];
+    if (Array.isArray(body.images) && body.images.length > 0) {
+      raw = body.images;
+    } else if (body.base64) {
+      raw = [{ base64: body.base64, mimeType: body.mimeType }];
+    } else {
       return Response.json(
-        { error: "Lipseste imaginea (base64)." },
+        { error: "Lipseste imaginea (images[] sau base64)." },
         { status: 400, headers: corsHeaders(req) },
       );
     }
-    if (base64.length > 5 * 1024 * 1024) {
+
+    if (raw.length > MAX_IMAGES) {
       return Response.json(
-        { error: "Imaginea este prea mare. Comprima mai mult." },
+        { error: `Maxim ${MAX_IMAGES} fotografii per diagnostic.` },
+        { status: 400, headers: corsHeaders(req) },
+      );
+    }
+
+    images = [];
+    let totalBytes = 0;
+    for (const item of raw) {
+      if (!item || typeof item.base64 !== "string" || !item.base64) continue;
+      const mime = VALID_MIMES.includes(item.mimeType)
+        ? item.mimeType
+        : "image/jpeg";
+      totalBytes += item.base64.length;
+      images.push({ base64: item.base64, mimeType: mime });
+    }
+    if (!images.length) {
+      return Response.json(
+        { error: "Nicio imagine valida primita." },
+        { status: 400, headers: corsHeaders(req) },
+      );
+    }
+    if (totalBytes > MAX_TOTAL_BYTES) {
+      return Response.json(
+        { error: "Imaginile sunt prea mari (total). Comprima mai mult." },
         { status: 400, headers: corsHeaders(req) },
       );
     }
@@ -157,19 +238,28 @@ export default async function handler(req) {
     );
   }
 
-  console.log(
-    `[diagnose] start — base64 ${base64.length}chars, ${species}, t+${Date.now() - t0}ms`,
-  );
+  const log = (msg) => console.log(`[diagnose] ${msg} t+${Date.now() - t0}ms`);
+  log(`start — ${images.length} imagine(i), species=${species}`);
+
+  const multiNote =
+    images.length > 1
+      ? `\n\nIMPORTANT: Ai primit ${images.length} fotografii ale ACELEIASI plante din unghiuri diferite (frunza fata/verso, ramura, ansamblu). Foloseste TOATE pentru un diagnostic mai precis. Nu le trata ca plante diferite.`
+      : "";
 
   const prompt = `Esti expert agronom si fitopatolog specializat in pomicultura din zona Nadlac/Arad, Romania (climat continental, sol predominant cernoziom, pH 7-8).
 
-Analizeaza aceasta fotografie a speciei: ${species}.
+Analizeaza fotografia (sau fotografiile) speciei declarate de utilizator: ${species}.${multiNote}
 
 Raspunde STRUCTURAT in romana:
 
+**VERIFICARE SPECIE:**
+- Specia declarata de utilizator este "${species}". Confirma sau contesta — ce vezi in poza?
+- Daca planta din poza pare alta specie, semnaleaza CLAR si continua diagnosticul pe specia reala observata.
+
 **DIAGNOSTIC:**
-- Ce boli sau daunatori observi? Descrie simptomele vizibile.
-- Daca nu vezi probleme, spune ca planta pare sanatoasa.
+- Ce boli, daunatori sau dezechilibre observi? Descrie simptomele vizibile (cu referinta la unghiurile vazute, daca sunt mai multe poze).
+- Daca planta pare sanatoasa, spune asta explicit.
+- Daca simptomele pot avea cauze multiple (ex: ingalbenire = chloroza fier SAU exces apa SAU deficit azot), enumera-le si spune ce ar ajuta la diferentiere.
 
 **SEVERITATE:** Usoara / Medie / Grava
 
@@ -181,22 +271,19 @@ Raspunde STRUCTURAT in romana:
 **PREVENTIE:**
 - Ce masuri preventive pentru viitor
 
-**URGENTA:** Cat de repede trebuie actionat (imediat / saptamana aceasta / la urmatorul tratament programat)
+**URGENTA:** imediat / saptamana aceasta / la urmatorul tratament programat
 
 Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat.`;
 
-  const log = (msg) => console.log(`[diagnose] ${msg} t+${Date.now() - t0}ms`);
-
-  // ── AI5: Gemini 2.5-pro → flash fallback (pro mai precis la analiza vizuala) ─
-  async function callGeminiProWithFallback(key, b64, mime, pr, timeout, opts) {
-    // PERF: Reduce pro timeout 5s → fast fail to flash (50% faster fallback)
+  // ── AI5: Gemini 2.5-pro → flash fallback ─
+  async function callGeminiProWithFallback(key, imgs, pr, timeout, opts) {
     const proRes = await callGemini(
       key,
       "gemini-2.5-pro-preview-03-25",
-      b64,
-      mime,
+      imgs,
+      null,
       pr,
-      5000, // ← reduced from 10s for faster fallback chain
+      5000,
       opts,
     );
     if (proRes.ok) {
@@ -204,27 +291,32 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
       return proRes;
     }
     log(`gemini-2.5-pro quota/fail (${proRes.status}), fallback flash`);
-    return callGemini(key, "gemini-2.5-flash", b64, mime, pr, timeout, opts);
+    return callGemini(key, "gemini-2.5-flash", imgs, null, pr, timeout, opts);
   }
 
-  // ── Plant.id + Gemini + GPT-4.1 IN PARALEL ──────────────────────────────────
+  // ── Plant.id + Pl@ntNet + Gemini + GPT-4.1 IN PARALEL ─────────────────────
   const PLANT_ID_KEY = process.env.PLANT_ID_API_KEY;
+  const PLANTNET_KEY = process.env.PLANTNET_API_KEY;
   const GH_TOKEN = process.env.GITHUB_MODELS_TOKEN;
-  const [geminiSettled, plantIdSettled, gpt41Settled] =
+
+  const [geminiSettled, plantIdSettled, plantNetSettled, gpt41Settled] =
     await Promise.allSettled([
-      callGeminiProWithFallback(GEMINI_KEY1, base64, mimeType, prompt, 20000, {
+      callGeminiProWithFallback(GEMINI_KEY1, images, prompt, 20000, {
         maxTokens: 8192,
       }),
       PLANT_ID_KEY
-        ? callPlantId(PLANT_ID_KEY, base64, mimeType, 18000)
-        : Promise.reject(new Error("no key")),
+        ? callPlantId(PLANT_ID_KEY, images, 18000)
+        : Promise.reject(new Error("no plant.id key")),
+      PLANTNET_KEY
+        ? callPlantNet(PLANTNET_KEY, images, 12000)
+        : Promise.reject(new Error("no plantnet key")),
       GH_TOKEN
         ? callOpenAIVision(
             "https://models.inference.ai.azure.com/chat/completions",
             GH_TOKEN,
             "gpt-4.1",
-            base64,
-            mimeType,
+            images,
+            null,
             prompt,
             18000,
             { maxTokens: 8192 },
@@ -232,34 +324,43 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         : Promise.reject(new Error("no github token")),
     ]);
 
-  // Extrage rezultat Plant.id
-  let plantIdPrefix = "";
-  if (plantIdSettled.status === "fulfilled" && plantIdSettled.value.ok) {
+  // ── Plant.id ───────────────────────────────────────────────────────────────
+  let plantIdInfo = null;
+  if (plantIdSettled.status === "fulfilled" && plantIdSettled.value?.res?.ok) {
     try {
-      const pidJson = await plantIdSettled.value.json();
-      plantIdPrefix = formatPlantIdResult(pidJson) || "";
-      log(`plant.id ok — prefix: ${plantIdPrefix ? "da" : "nu"}`);
+      const pidJson = await plantIdSettled.value.res.json();
+      plantIdInfo = formatPlantIdResult(pidJson, plantIdSettled.value.version);
+      log(
+        `plant.id ${plantIdSettled.value.version} ok — diseases:${!!plantIdInfo?.hasDiseases}`,
+      );
     } catch {
       log("plant.id parse err");
     }
   } else {
-    const skipStatus = plantIdSettled.value?.status;
-    const skipMsg = plantIdSettled.reason?.message || "";
-    log(`plant.id skip: ${skipStatus || skipMsg}`.substring(0, 120));
-    // Citeste body exact pt depanare 4xx
-    if (plantIdSettled.status === "fulfilled" && plantIdSettled.value) {
-      plantIdSettled.value
-        .text()
-        .then((body) =>
-          console.log(
-            `[diagnose] plant.id err body: ${body.substring(0, 300)}`,
-          ),
-        )
-        .catch(() => {});
-    }
+    const status =
+      plantIdSettled.value?.res?.status || plantIdSettled.reason?.message;
+    log(`plant.id skip: ${String(status).substring(0, 80)}`);
   }
 
-  // Extrage rezultat Gemini primary
+  // ── Pl@ntNet ───────────────────────────────────────────────────────────────
+  let plantNetInfo = null;
+  if (plantNetSettled.status === "fulfilled" && plantNetSettled.value.ok) {
+    try {
+      const pnJson = await plantNetSettled.value.json();
+      plantNetInfo = formatPlantNetResult(pnJson);
+      log(`plantnet ok — sp:${plantNetInfo?.identifiedSpecies?.name || "?"}`);
+    } catch {
+      log("plantnet parse err");
+    }
+  } else {
+    log(
+      `plantnet skip: ${plantNetSettled.value?.status || plantNetSettled.reason?.message}`,
+    );
+  }
+
+  const idPrefix = (plantIdInfo?.prefix || "") + (plantNetInfo?.prefix || "");
+
+  // ── Gemini primary ─────────────────────────────────────────────────────────
   let diagnosisText = null;
   let diagnosisMeta = {};
 
@@ -279,7 +380,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     );
   }
 
-  // Daca Gemini a picat, incearca GPT-4.1 (rulat deja in paralel)
+  // GPT-4.1 (rulat in paralel)
   if (!diagnosisText) {
     if (gpt41Settled.status === "fulfilled" && gpt41Settled.value.ok) {
       try {
@@ -287,6 +388,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         if (text) {
           diagnosisText = text;
           diagnosisMeta._fallback = true;
+          diagnosisMeta._model = "GPT-4.1";
           log("gpt-4.1 ok (primary parallel)");
         }
       } catch {
@@ -299,49 +401,28 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     }
   }
 
-  // Returneaza daca cel putin un primar AI a raspuns
   if (diagnosisText) {
-    const finalText = plantIdPrefix
-      ? plantIdPrefix + diagnosisText
-      : diagnosisText;
-    if (plantIdPrefix) diagnosisMeta._plantid = true;
-    diagnosisMeta._model = diagnosisMeta._fallback
-      ? "GPT-4.1"
-      : "Gemini 2.5-flash";
-    log(
-      `ok — gemini=${!diagnosisMeta._fallback} gpt41=${!!diagnosisMeta._fallback} plantid=${!!plantIdPrefix}`,
-    );
+    const finalText = idPrefix ? idPrefix + diagnosisText : diagnosisText;
+    if (plantIdInfo) diagnosisMeta._plantid = true;
+    if (plantNetInfo) diagnosisMeta._plantnet = true;
+    diagnosisMeta._model = diagnosisMeta._model || "Gemini 2.5-flash";
+    diagnosisMeta._imagesCount = images.length;
+    log(`ok — model=${diagnosisMeta._model} images=${images.length}`);
     return Response.json(
       { diagnosis: finalText, ...diagnosisMeta },
       { headers: corsHeaders(req) },
     );
   }
 
-  // ── Ambele primary AI au picat dar Plant.id a reusit ─────────────────────────
-  if (plantIdPrefix) {
-    log("returning plant.id only (both primary AI failed)");
-    return Response.json(
-      {
-        diagnosis:
-          plantIdPrefix +
-          "\n_Analiza AI detaliata indisponibila momentan. Plant.id a detectat bolile de mai sus._",
-        _fallback: true,
-        _plantid: true,
-        _model: "Plant.id",
-      },
-      { headers: corsHeaders(req) },
-    );
-  }
-
-  // ── Fallback 2: Gemini 2.5-flash cheia 2 ─────────────────────────────────────
+  // ── Fallback 2: Gemini 2.5-flash cheia 2 ─────────────────────────────────
   const GEMINI_KEY2 = process.env.GOOGLE_AI_API_KEY_2;
   if (GEMINI_KEY2) {
     try {
       const res = await callGemini(
         GEMINI_KEY2,
         "gemini-2.5-flash",
-        base64,
-        mimeType,
+        images,
+        null,
         prompt,
         20000,
         { maxTokens: 8192 },
@@ -349,22 +430,26 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
       log(`gemini-2.5-flash key2 → ${res.status}`);
       if (res.ok) {
         const text = geminiText(await res.json());
-        if (text)
+        if (text) {
           return Response.json(
             {
-              diagnosis: text,
+              diagnosis: idPrefix ? idPrefix + text : text,
               _fallback: true,
               _model: "Gemini 2.5-flash (key2)",
+              _plantid: !!plantIdInfo,
+              _plantnet: !!plantNetInfo,
+              _imagesCount: images.length,
             },
             { headers: corsHeaders(req) },
           );
+        }
       }
     } catch (e) {
       log(`gemini key2 err: ${e.name}`);
     }
   }
 
-  // ── Fallback 4: Pixtral-12B via Mistral ──────────────────────────────────────
+  // ── Fallback 4: Pixtral-12B via Mistral ──────────────────────────────────
   const MISTRAL_KEY = process.env.MISTRAL_API_KEY;
   if (MISTRAL_KEY) {
     try {
@@ -372,8 +457,8 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         "https://api.mistral.ai/v1/chat/completions",
         MISTRAL_KEY,
         "pixtral-12b-2409",
-        base64,
-        mimeType,
+        images,
+        null,
         prompt,
         20000,
         { maxTokens: 8192 },
@@ -383,7 +468,14 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         const text = openaiText(await res.json());
         if (text)
           return Response.json(
-            { diagnosis: text, _fallback: true, _model: "Pixtral-12B" },
+            {
+              diagnosis: idPrefix ? idPrefix + text : text,
+              _fallback: true,
+              _model: "Pixtral-12B",
+              _plantid: !!plantIdInfo,
+              _plantnet: !!plantNetInfo,
+              _imagesCount: images.length,
+            },
             { headers: corsHeaders(req) },
           );
       }
@@ -392,7 +484,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
     }
   }
 
-  // ── Fallback 5: Grok-2-vision (xAI) ──────────────────────────────────────────
+  // ── Fallback 5: Grok-2-vision (xAI) ──────────────────────────────────────
   const XAI_KEY = process.env.XAI_API_KEY;
   if (XAI_KEY) {
     try {
@@ -400,8 +492,8 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         "https://api.x.ai/v1/chat/completions",
         XAI_KEY,
         "grok-2-vision-1212",
-        base64,
-        mimeType,
+        images,
+        null,
         prompt,
         20000,
         { maxTokens: 8192 },
@@ -411,13 +503,47 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         const text = openaiText(await res.json());
         if (text)
           return Response.json(
-            { diagnosis: text, _fallback: true, _model: "Grok-2-vision" },
+            {
+              diagnosis: idPrefix ? idPrefix + text : text,
+              _fallback: true,
+              _model: "Grok-2-vision",
+              _plantid: !!plantIdInfo,
+              _plantnet: !!plantNetInfo,
+              _imagesCount: images.length,
+            },
             { headers: corsHeaders(req) },
           );
       }
     } catch (e) {
       log(`grok err: ${e.name}`);
     }
+  }
+
+  // ── Toate AI vision au picat — returneaza identificare specie + nota onesta ─
+  if (idPrefix) {
+    log("returning ID-only (all vision AI failed)");
+    let note = "_Diagnostic AI detaliat indisponibil momentan._";
+    if (plantIdInfo?.hasDiseases) {
+      note =
+        "_Plant.id v3 a detectat bolile listate mai sus. Diagnostic AI extins indisponibil momentan._";
+    } else if (
+      plantIdInfo?.identifiedSpecies ||
+      plantNetInfo?.identifiedSpecies
+    ) {
+      note =
+        "_Specia a fost identificata de Plant.id/Pl@ntNet. Diagnosticul AI de boli si tratamente este indisponibil momentan — incearca din nou peste cateva minute._";
+    }
+    return Response.json(
+      {
+        diagnosis: idPrefix + "\n" + note,
+        _fallback: true,
+        _plantid: !!plantIdInfo,
+        _plantnet: !!plantNetInfo,
+        _model: plantIdInfo ? "Plant.id" : "Pl@ntNet",
+        _imagesCount: images.length,
+      },
+      { headers: corsHeaders(req) },
+    );
   }
 
   log("toate fallback-urile epuizate");
