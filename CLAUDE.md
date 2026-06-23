@@ -6,7 +6,7 @@ Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, ju
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
 **Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo + Imbunatatiri Prognoze (4/4) + V4 Integrare (I1 cost + I2 stoc + I3 treeId) | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 17 routes + 4 utilitare
-**Ultima actualizare:** 2026-06-23 (V4 I2+I3: decrement stoc fitosanitar la tratament + legare jurnal/diagnostic/galerie de pom prin `treeId` + istoric per pom. Commit `c55899c`, prod LIVE verde, QA Playwright pe preview, 189/189 teste.)
+**Ultima actualizare:** 2026-06-24 (V4 I2+I3 commit `c55899c` + **fix critic `/api/photos` 504 total** commit `362141f`: galeria era complet rupta — `export default function` pe Node = handler legacy → Response ignorat → 504; fix = `export default { fetch }` Web Standard + cache Redis. Prod LIVE verde, 189/189 teste.)
 
 ## Arhitectura
 
@@ -84,29 +84,29 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 ## API Routes — Status Runtime
 
-| Route              | Runtime | Timeout | Serviciu extern                                                             |
-| ------------------ | ------- | ------- | --------------------------------------------------------------------------- |
-| ai-status.js       | Edge    | —       | Health check servicii AI + quota usage per provider (T1)                    |
-| ask.js             | Edge    | 28s     | Groq                                                                        |
-| diagnose.js        | Edge    | 22s     | Gemini 2.5-flash + quota guard (T1 — blocheaza la 1000 req/zi)              |
-| diagnose-test.js   | Edge    | 12s     | Gemini                                                                      |
-| frost-alert.js     | Edge    | 5s      | Redis                                                                       |
-| identify.js        | Edge    | 20s     | Gemini + quota guard (T1) + Pl@ntNet + fallback vision                      |
-| journal.js         | Edge    | 5s      | Redis                                                                       |
-| meteo-cron.js      | Edge    | 25s     | Open-Meteo ICON-EU 2.2km + NASA POWER GDD + Redis + push-broadcast alerte   |
-| meteo-history.js   | Edge    | 5s      | Redis                                                                       |
-| meteo-refresh.js   | Edge    | 25s     | Proxy catre meteo-cron (origin+rate limit, fara CRON_SECRET in frontend)    |
-| photos.js          | Node.js | 10s     | Vercel Blob (ATENTIE: @vercel/blob incompatibil cu Edge — foloseste undici) |
-| ping.js            | Edge    | —       | Redis (health check server: mereu 200; cron staleness doar in body)         |
-| push-broadcast.js  | Node.js | 10s     | web-push VAPID — trimite alerte la subscriberi (chemat de meteo-cron)       |
-| push-public-key.js | Edge    | —       | Expune VAPID_PUBLIC_KEY pentru frontend subscribe                           |
-| push-subscribe.js  | Edge    | 5s      | Salveaza/elimina subscription in Redis SET (livada:push-subs)               |
-| report.js          | Edge    | 25s     | Redis + Groq                                                                |
-| user-activity.js   | Edge    | 5s      | Redis activity log (POST batch events, GET ultimele 200; rolling 1000)      |
-| \_auth.js          | Utility | —       | CORS/origin/rateLimit Redis+in-memory fallback                              |
-| \_ai.js            | Utility | —       | Wrapper comun Gemini + OpenAI-compat + Cerebras                             |
-| \_quota.js         | Utility | —       | Quota tracking per provider (T1) — INCR Redis + limits free tier            |
-| \_timeout.js       | Utility | —       | fetchWithTimeout helper                                                     |
+| Route              | Runtime | Timeout | Serviciu extern                                                                                                                                                  |
+| ------------------ | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ai-status.js       | Edge    | —       | Health check servicii AI + quota usage per provider (T1)                                                                                                         |
+| ask.js             | Edge    | 28s     | Groq                                                                                                                                                             |
+| diagnose.js        | Edge    | 22s     | Gemini 2.5-flash + quota guard (T1 — blocheaza la 1000 req/zi)                                                                                                   |
+| diagnose-test.js   | Edge    | 12s     | Gemini                                                                                                                                                           |
+| frost-alert.js     | Edge    | 5s      | Redis                                                                                                                                                            |
+| identify.js        | Edge    | 20s     | Gemini + quota guard (T1) + Pl@ntNet + fallback vision                                                                                                           |
+| journal.js         | Edge    | 5s      | Redis                                                                                                                                                            |
+| meteo-cron.js      | Edge    | 25s     | Open-Meteo ICON-EU 2.2km + NASA POWER GDD + Redis + push-broadcast alerte                                                                                        |
+| meteo-history.js   | Edge    | 5s      | Redis                                                                                                                                                            |
+| meteo-refresh.js   | Edge    | 25s     | Proxy catre meteo-cron (origin+rate limit, fara CRON_SECRET in frontend)                                                                                         |
+| photos.js          | Node.js | 10s     | Vercel Blob + cache Redis lista (ATENTIE: `export default { fetch }` Web Standard, NU `export default function` → altfel 504; @vercel/blob incompatibil cu Edge) |
+| ping.js            | Edge    | —       | Redis (health check server: mereu 200; cron staleness doar in body)                                                                                              |
+| push-broadcast.js  | Node.js | 10s     | web-push VAPID — trimite alerte la subscriberi (chemat de meteo-cron)                                                                                            |
+| push-public-key.js | Edge    | —       | Expune VAPID_PUBLIC_KEY pentru frontend subscribe                                                                                                                |
+| push-subscribe.js  | Edge    | 5s      | Salveaza/elimina subscription in Redis SET (livada:push-subs)                                                                                                    |
+| report.js          | Edge    | 25s     | Redis + Groq                                                                                                                                                     |
+| user-activity.js   | Edge    | 5s      | Redis activity log (POST batch events, GET ultimele 200; rolling 1000)                                                                                           |
+| \_auth.js          | Utility | —       | CORS/origin/rateLimit Redis+in-memory fallback                                                                                                                   |
+| \_ai.js            | Utility | —       | Wrapper comun Gemini + OpenAI-compat + Cerebras                                                                                                                  |
+| \_quota.js         | Utility | —       | Quota tracking per provider (T1) — INCR Redis + limits free tier                                                                                                 |
+| \_timeout.js       | Utility | —       | fetchWithTimeout helper                                                                                                                                          |
 
 ## Variabile de mediu (Vercel Dashboard)
 
@@ -251,7 +251,7 @@ Commits `2a28a24` (fix cron email fals) + `e7c4b4d` (4 optiuni prognoze).
 
 ## Audit findings — actiuni amanate
 
-- **🔴 `/api/photos` GET → 504 FUNCTION_INVOCATION_TIMEOUT** (descoperit 2026-06-23 in QA I3, SEV2, **PRE-EXISTENT — nelegat de I2/I3**). Listarea Blob (`list({prefix})` din `@vercel/blob`) dureaza >10s → depaseste maxDuration Node 10s pe Vercel Hobby. Confirmat pe PROD (cod vechi) + preview, ~11s consistent. **Impact:** galeria foto (`loadGallery`) + strip-ul de poze din `toggleTreeHistory` (I3) nu incarca (degradeaza grațios — istoricul din jurnal apare instant, fara crash). **Fix propus (separat):** cache Redis al listei foto cu TTL (ca meteo-history), refresh la upload/delete; SAU paginare/limitare `list`. Nu se poate rezolva prin maxDuration (Hobby capat la 10s — vezi `feedback_maxduration_hobby`).
+- **✅ `/api/photos` 504 total — REMEDIAT 2026-06-24** (commit `362141f`, prod LIVE verificat). **ROOT CAUSE real (ipoteza initiala „list() lent" era GRESITA):** `export default async function handler(req)` care intoarce un `Response` — pe Vercel **Node runtime** e tratat ca handler LEGACY `(req, res)`, deci `Response`-ul intors e ignorat (runtime asteapta `res.end()`) → **504 FUNCTION_INVOCATION_TIMEOUT la ORICE metoda** (GET/POST/OPTIONS). Galeria foto era complet rupta (nici upload, nici listare; store Blob gol). `list()` e de fapt rapid (~250ms). **FIX:** `export default { async fetch(req) {...} }` (Web Standard — `req` devine `Request` real cu `.formData()`). Verificat e2e pe preview: OPTIONS 204, GET 200, upload→list→delete cu treeId, cache HIT. **Bonus hardening:** cache Redis lista foto (TTL 1h, invalidat la upload/delete) + `list()` cu timeout `Promise.race` (degradare grațioasa) + POST gol→400. **LECTIE (vezi memory):** orice ruta **Node** noua care intoarce `Response` TREBUIE `export default { fetch }` sau named exports `GET/POST/...`, NU `export default function` (care merge doar pe Edge).
 
 - **H1 CSP `unsafe-inline`** (audit 2026-04-11, severitate HIGH teoretica) — migrare amanata dupa stabilizare V2. Plan detaliat salvat in `.claude-outputs/CSP_MIGRATION_PLAN.md` (Optiunea B — hash-based CSP, 6–8h implementare). Justificare: DOMPurify e deja strat de protectie activ, risc real mic pentru un site obscur, nu merita introdusa complexitate build pipeline in plin V2 development. A se relua dupa F7 decis.
 
