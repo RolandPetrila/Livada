@@ -3809,6 +3809,16 @@ async function submitAsk() {
         !!data._fallback,
         Date.now() - _t0Ask,
       );
+      // Porneste conversatia de continuare (chat cu context)
+      _askChatHistory = [
+        { role: "user", content: question },
+        { role: "assistant", content: data.answer || "" },
+      ];
+      var askChatSec = document.getElementById("askChatSection");
+      if (askChatSec) {
+        document.getElementById("askChatMessages").innerHTML = "";
+        askChatSec.style.display = "block";
+      }
     }
     r.style.display = "block";
     document.getElementById("askCopyRow").style.display = "block";
@@ -3837,6 +3847,87 @@ async function submitAsk() {
     r2.style.display = "block";
     document.getElementById("askCopyRow").style.display = "block";
     livadaLog("AI", "ask", "ERR", e.message, Date.now() - _t0Ask);
+  }
+}
+
+// Chat de continuare in modalul "Intreaba" — conversatie cu context
+var _askChatHistory = [];
+async function sendAskChat() {
+  var inputEl = document.getElementById("askChatInput");
+  var question = (inputEl.value || "").trim();
+  if (!question) return;
+  var species = SPECIES[activeSpeciesId] || activeSpeciesId || "general";
+  var msgsEl = document.getElementById("askChatMessages");
+  var loadEl = document.getElementById("askChatLoading");
+  var userBubble = document.createElement("div");
+  userBubble.className = "chat-bubble-user";
+  userBubble.textContent = question;
+  msgsEl.appendChild(userBubble);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  inputEl.value = "";
+  loadEl.style.display = "block";
+  var fullQuestion;
+  if (_askChatHistory.length === 0) {
+    fullQuestion = "Intrebare despre " + species + ": " + question;
+  } else {
+    var recent = _askChatHistory.slice(-6);
+    var lines = recent.map(function (e) {
+      return (
+        (e.role === "user" ? "Utilizator" : "AI") +
+        ": " +
+        e.content.substring(0, 400)
+      );
+    });
+    fullQuestion =
+      "Context conversatie (specia " +
+      species +
+      "):\n" +
+      lines.join("\n") +
+      "\n\nIntrebare noua: " +
+      question;
+  }
+  _askChatHistory.push({ role: "user", content: question });
+  var _t0 = Date.now();
+  try {
+    var res = await authFetch(
+      "/api/ask",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: fullQuestion, species: species }),
+      },
+      65000,
+    );
+    var data = await res.json();
+    loadEl.style.display = "none";
+    var answer = data.answer || data.error || "Eroare.";
+    _askChatHistory.push({ role: "assistant", content: answer });
+    var aiBubble = document.createElement("div");
+    aiBubble.className = "chat-bubble-ai";
+    aiBubble.innerHTML = sanitizeAI(answer);
+    msgsEl.appendChild(aiBubble);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+    if (data._fallback)
+      showAiFallback(data._fallbackModel || "rezerva", data._fallbackReason);
+    livadaLog(
+      "AI",
+      "ask-chat",
+      data._fallback ? "FALLBACK" : "OK",
+      data._model || "?",
+      Date.now() - _t0,
+    );
+  } catch (e) {
+    loadEl.style.display = "none";
+    var errBubble = document.createElement("div");
+    errBubble.className = "chat-bubble-err";
+    errBubble.textContent =
+      e.name === "AbortError"
+        ? "Raspuns lent. Incearca din nou."
+        : "Eroare: " + e.message;
+    msgsEl.appendChild(errBubble);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+    _askChatHistory.pop();
+    livadaLog("AI", "ask-chat", "ERR", e.message, Date.now() - _t0);
   }
 }
 
@@ -3871,7 +3962,12 @@ async function askAlternative() {
     if (altRow) {
       altRow.innerHTML =
         '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">' +
-        '<div style="font-size:0.78rem;color:var(--text-dim);font-weight:600;margin-bottom:6px;">Cerebras llama-3.3-70b:</div>' +
+        '<div style="font-size:0.78rem;color:var(--text-dim);font-weight:600;margin-bottom:6px;">' +
+        (data._altFallback
+          ? escapeHtml(data._model || "Groq llama-3.3-70b") +
+            " (a doua parere — Cerebras indisponibil)"
+          : "Cerebras llama-3.3-70b") +
+        ":</div>" +
         sanitizeAI(data.answer || "") +
         "</div>";
       renderModelIndicator(
@@ -4243,6 +4339,10 @@ document.addEventListener("keydown", function (e) {
     if (t.id === "aiGenDiagChatInput") {
       e.preventDefault();
       sendDiagChat("aiGenDiag");
+    }
+    if (t.id === "askChatInput") {
+      e.preventDefault();
+      sendAskChat();
     }
   }
 });

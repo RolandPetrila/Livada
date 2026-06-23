@@ -91,10 +91,21 @@ export default async function handler(req) {
       }
     } catch {}
 
+    let todayRo = "";
+    try {
+      todayRo = new Intl.DateTimeFormat("ro-RO", {
+        timeZone: "Europe/Bucharest",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(new Date());
+    } catch {
+      todayRo = new Date().toISOString().slice(0, 10);
+    }
     const reportMessages = [
       {
         role: "system",
-        content: `Esti consultant pomicol expert. Genereaza un RAPORT ANUAL detaliat pentru o livada din Nadlac, judetul Arad:
+        content: `Esti consultant pomicol expert. Data de azi: ${todayRo}. Genereaza un RAPORT ANUAL detaliat pentru o livada din Nadlac, judetul Arad:
 - 100+ pomi, 17 specii (cires, visin, cais, piersic, prun, migdal, par, mar, zmeur, mur, afin, alun, rodiu)
 - Proprietar: profesor, abordare semi-comerciala
 - Clima: continental, ierni reci, veri calde, sol cernoziom pH 7-8

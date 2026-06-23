@@ -57,7 +57,23 @@ export default async function handler(req) {
 
   const ctx = context ? context.substring(0, 12000) : "";
 
+  // Data curenta (Europe/Bucharest) — ca AI-ul sa stie ziua de azi / sezonul, nu data din training
+  let todayRo = "";
+  try {
+    todayRo = new Intl.DateTimeFormat("ro-RO", {
+      timeZone: "Europe/Bucharest",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date());
+  } catch {
+    todayRo = new Date().toISOString().slice(0, 10);
+  }
+
   const systemPrompt = `Esti consultant pomicol expert, specializat in livezi din zona Nadlac/Arad, Romania (climat continental, sol cernoziom pH 7-8).
+
+Data de azi este ${todayRo}. Foloseste-o cand intrebarea tine de timp, sezon, calendar sau "ce urmeaza". NU inventa alta data si NU folosi data din memoria ta de antrenament.
 
 Reguli:
 - Raspunde DOAR in romana
@@ -110,6 +126,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
     // F4.1 — Daca preferModel === "cerebras" → sari direct la Cerebras
     if (preferModel === "cerebras") {
       log("start → cerebras (preferModel)");
+      let cerebrasErr = "";
       try {
         const cerebrasRes = await callCerebras(cerebrasMessages, 20000);
         if (cerebrasRes.ok) {
@@ -123,11 +140,40 @@ Specia curenta: ${species || "general (toate speciile)"}`;
             { headers: corsHeaders(req) },
           );
         }
+        cerebrasErr = "HTTP " + cerebrasRes.status;
+        const eb = await cerebrasRes.text().catch(() => "");
+        log(`cerebras non-ok ${cerebrasRes.status}: ${eb.substring(0, 160)}`);
       } catch (e) {
+        cerebrasErr = e.message || "eroare";
         log(`cerebras preferModel err: ${e.message}`);
       }
+      // Cerebras a picat → a doua parere de la Groq llama-3.3-70b (alt model fata de primar)
+      try {
+        const gRes = await callGroq("llama-3.3-70b-versatile", 20000);
+        if (gRes.ok) {
+          const r = await gRes.json();
+          const answer =
+            r.choices?.[0]?.message?.content ||
+            "Nu am putut genera un raspuns.";
+          log("alt fallback groq-70b ok");
+          return Response.json(
+            {
+              answer,
+              _model: "Groq llama-3.3-70b",
+              _altFallback: true,
+              _altReason: "Cerebras indisponibil (" + cerebrasErr + ")",
+            },
+            { headers: corsHeaders(req) },
+          );
+        }
+      } catch (e2) {
+        log(`alt groq-70b err: ${e2.message}`);
+      }
       return Response.json(
-        { error: "Cerebras indisponibil momentan." },
+        {
+          error:
+            "A doua parere indisponibila momentan. Cerebras: " + cerebrasErr,
+        },
         { status: 503, headers: corsHeaders(req) },
       );
     }
