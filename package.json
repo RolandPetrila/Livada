@@ -9,6 +9,7 @@
     "deploy": "vercel --prod",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "build": "node scripts/update-deploy-date.js && node scripts/minify-html.js && node --check public/app.js"
   },
   "engines": {

@@ -8278,7 +8278,19 @@ function renderCostStats() {
     return e.date && e.date.startsWith(String(currentYear));
   });
 
-  if (entries.length === 0) {
+  // I1 (V4): include si costurile inline din jurnal (entry.cost) — erau un siloz separat de cost-tracker
+  var jurnalCost = 0;
+  try {
+    (typeof getJurnalEntries === "function" ? getJurnalEntries() : []).forEach(
+      function (e) {
+        var c = parseFloat(e.cost) || 0;
+        if (c > 0 && e.date && String(e.date).startsWith(String(currentYear)))
+          jurnalCost += c;
+      },
+    );
+  } catch (e) {}
+
+  if (entries.length === 0 && jurnalCost === 0) {
     container.innerHTML =
       '<p style="color:var(--text-dim);text-align:center;padding:16px;">Nicio cheltuială înregistrată în ' +
       currentYear +
@@ -8286,10 +8298,11 @@ function renderCostStats() {
     return;
   }
 
-  // Total general
-  var total = entries.reduce(function (sum, e) {
-    return sum + e.qty * e.pricePerUnit;
-  }, 0);
+  // Total general (cost-tracker + jurnal)
+  var total =
+    entries.reduce(function (sum, e) {
+      return sum + e.qty * e.pricePerUnit;
+    }, 0) + jurnalCost;
 
   // Per categorie
   var byCategory = {};
@@ -8297,6 +8310,7 @@ function renderCostStats() {
     var t = e.qty * e.pricePerUnit;
     byCategory[e.category] = (byCategory[e.category] || 0) + t;
   });
+  if (jurnalCost > 0) byCategory["Jurnal (interventii)"] = jurnalCost;
   var maxCat = Math.max.apply(null, Object.values(byCategory).concat([1]));
 
   var catHTML = Object.entries(byCategory)

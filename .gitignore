@@ -28,6 +28,7 @@ livada-backup-*.json
 # Claude Code outputs + Playwright MCP data
 .claude-outputs/
 .playwright-mcp/
+.ruff_cache/
 
 # Gemini Documentatie — folder local exclusiv, NICIODATA in git
 Gemini_Documentatie/
