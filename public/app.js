@@ -3208,7 +3208,8 @@ function openJurnalFromDiag() {
     var dateEl = document.getElementById("jurnalDate");
     var noteEl = document.getElementById("jurnalNote");
     if (typeEl) {
-      typeEl.value = "fitosanitar";
+      // "tratament" = optiunea reala din select (era "fitosanitar", inexistenta → camp gol)
+      typeEl.value = "tratament";
       typeEl.dispatchEvent(new Event("change"));
     }
     if (dateEl) dateEl.value = today;
