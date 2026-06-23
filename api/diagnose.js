@@ -167,17 +167,13 @@ export default async function handler(req) {
     );
   }
 
+  // Cota Gemini (cheia 1): daca e atinsa NU mai blocam tot — sarim Gemini si folosim
+  // modelele vision de rezerva (GPT-4.1 / cheia 2 / Mistral / xAI), cu notificare. (2026-06-24)
   const geminiQuota = await checkAndIncrementQuota("gemini");
-  if (!geminiQuota.ok) {
-    return Response.json(
-      {
-        error:
-          "Cota Gemini zilnica epuizata (1000 req/zi). Incearca dupa miezul noptii sau foloseste intrebare text in loc de diagnostic foto.",
-        _quota: geminiQuota,
-      },
-      { status: 429, headers: corsHeaders(req) },
-    );
-  }
+  const geminiBlocked = !geminiQuota.ok;
+  const fallbackReason = geminiBlocked
+    ? "Limita zilnica Gemini atinsa (1000/zi)"
+    : "Gemini indisponibil temporar";
 
   const t0 = Date.now();
   let images, species;
@@ -301,9 +297,11 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
 
   const [geminiSettled, plantIdSettled, plantNetSettled, gpt41Settled] =
     await Promise.allSettled([
-      callGeminiProWithFallback(GEMINI_KEY1, images, prompt, 20000, {
-        maxTokens: 8192,
-      }),
+      geminiBlocked
+        ? Promise.reject(new Error("gemini-quota-blocked"))
+        : callGeminiProWithFallback(GEMINI_KEY1, images, prompt, 20000, {
+            maxTokens: 8192,
+          }),
       PLANT_ID_KEY
         ? callPlantId(PLANT_ID_KEY, images, 18000)
         : Promise.reject(new Error("no plant.id key")),
@@ -388,6 +386,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
         if (text) {
           diagnosisText = text;
           diagnosisMeta._fallback = true;
+          diagnosisMeta._fallbackReason = fallbackReason;
           diagnosisMeta._model = "GPT-4.1";
           log("gpt-4.1 ok (primary parallel)");
         }
@@ -435,6 +434,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
             {
               diagnosis: idPrefix ? idPrefix + text : text,
               _fallback: true,
+              _fallbackReason: fallbackReason,
               _model: "Gemini 2.5-flash (key2)",
               _plantid: !!plantIdInfo,
               _plantnet: !!plantNetInfo,
@@ -471,6 +471,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
             {
               diagnosis: idPrefix ? idPrefix + text : text,
               _fallback: true,
+              _fallbackReason: fallbackReason,
               _model: "Pixtral-12B",
               _plantid: !!plantIdInfo,
               _plantnet: !!plantNetInfo,
@@ -506,6 +507,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
             {
               diagnosis: idPrefix ? idPrefix + text : text,
               _fallback: true,
+              _fallbackReason: fallbackReason,
               _model: "Grok-2-vision",
               _plantid: !!plantIdInfo,
               _plantnet: !!plantNetInfo,
@@ -537,6 +539,7 @@ Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat
       {
         diagnosis: idPrefix + "\n" + note,
         _fallback: true,
+        _fallbackReason: fallbackReason,
         _plantid: !!plantIdInfo,
         _plantnet: !!plantNetInfo,
         _model: plantIdInfo ? "Plant.id" : "Pl@ntNet",

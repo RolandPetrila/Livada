@@ -140,8 +140,13 @@ Specia curenta: ${species || "general (toate speciile)"}`;
     );
     let usedFallback = false;
     let activeModel = "llama-4-scout";
+    let fallbackReason = "";
 
     if (!groqRes.ok && groqRes.status !== 401 && groqRes.status !== 403) {
+      fallbackReason =
+        groqRes.status === 429
+          ? "Groq suprasolicitat (limita atinsa)"
+          : "Groq indisponibil temporar";
       log(`llama-4-scout failed ${groqRes.status} → llama-3.3-70b`);
 
       // Fallback 1: llama-3.3-70b-versatile (confirmat functional)
@@ -174,6 +179,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
                 answer,
                 _fallback: true,
                 _fallbackModel: "cerebras-llama-3.3-70b",
+                _fallbackReason: fallbackReason || "Groq indisponibil",
                 _model: "cerebras-llama-3.3-70b",
               },
               { headers: corsHeaders(req) },
@@ -212,7 +218,11 @@ Specia curenta: ${species || "general (toate speciile)"}`;
         answer,
         _model: activeModel,
         ...(usedFallback
-          ? { _fallback: true, _fallbackModel: activeModel }
+          ? {
+              _fallback: true,
+              _fallbackModel: activeModel,
+              _fallbackReason: fallbackReason,
+            }
           : {}),
       },
       { headers: corsHeaders(req) },

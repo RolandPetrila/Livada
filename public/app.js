@@ -1908,7 +1908,7 @@ function showAppInfo() {
     '<div style="background:var(--bg-card,#15201a);color:var(--text);border:1px solid var(--border);border-radius:14px;max-width:380px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.45);">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);">' +
     '<strong style="font-size:0.95rem;">🌿 Livada Mea</strong>' +
-    "<button onclick=\"var o=document.getElementById('appInfoOverlay');if(o)o.remove();\" aria-label=\"Inchide\" style=\"background:none;border:none;color:var(--text-dim);font-size:1.3rem;cursor:pointer;line-height:1;min-width:40px;min-height:40px;\">&#10005;</button>" +
+    '<button onclick="var o=document.getElementById(\'appInfoOverlay\');if(o)o.remove();" aria-label="Inchide" style="background:none;border:none;color:var(--text-dim);font-size:1.3rem;cursor:pointer;line-height:1;min-width:40px;min-height:40px;">&#10005;</button>' +
     "</div>" +
     '<div style="padding:14px 16px;">' +
     '<div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:3px;">Ultima actualizare</div>' +
@@ -1922,6 +1922,7 @@ function showAppInfo() {
     "</div>" +
     '<div style="font-size:0.85rem;font-weight:700;border-top:1px solid var(--border);padding-top:12px;margin-bottom:8px;">📊 Status AI / Quota <span style="font-weight:400;color:var(--text-dim);font-size:0.72rem;">— azi</span></div>' +
     '<div id="appInfoQuota" style="font-size:0.8rem;color:var(--text-dim);">Se încarcă…</div>' +
+    '<button onclick="var o=document.getElementById(\'appInfoOverlay\');if(o)o.remove();openDebugPanel();" style="width:100%;margin-top:14px;padding:10px;background:var(--bg-surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:0.82rem;cursor:pointer;">🔧 Diagnostic / Jurnal tehnic backend</button>' +
     "</div></div>";
   document.body.appendChild(ov);
 
@@ -3651,7 +3652,8 @@ async function runDiagnose(_legacyInput, species, prefix) {
       showAiError(data.error);
       livadaLog("AI", "diagnose", "ERR", data.error);
     } else {
-      if (data._fallback) showAiFallback(data._fallbackModel || "gemini");
+      if (data._fallback)
+        showAiFallback(data._fallbackModel || "gemini", data._fallbackReason);
       resultEl.innerHTML = sizeInfo + sanitizeAI(data.diagnosis || "");
       // F1.3+F2.2 — log + model indicator
       var _diagModel =
@@ -3785,7 +3787,10 @@ async function submitAsk() {
       livadaLog("AI", "ask", "ERR", data.error);
     } else {
       if (data._fallback)
-        showAiFallback(data._fallbackModel || "llama-3.3-70b-versatile");
+        showAiFallback(
+          data._fallbackModel || "llama-3.3-70b-versatile",
+          data._fallbackReason,
+        );
       r.innerHTML = sanitizeAI(data.answer || "");
       // F1.3+F2.2 — log + model indicator
       var _askModel =
@@ -4093,7 +4098,10 @@ async function submitAiGenAsk() {
       showAiError(data.error);
     } else {
       if (data._fallback)
-        showAiFallback(data._fallbackModel || "llama-3.3-70b-versatile");
+        showAiFallback(
+          data._fallbackModel || "llama-3.3-70b-versatile",
+          data._fallbackReason,
+        );
       r.innerHTML = sanitizeAI(data.answer || "");
     }
     r.style.display = "block";
@@ -4273,8 +4281,14 @@ function showToast(msg, type) {
 function showAiError(msg) {
   showToast("\u26A0\uFE0F AI: " + msg, "error");
 }
-function showAiFallback(model) {
-  showToast("\u2139\uFE0F Model rezerv\u0103 activ: " + model, "warning");
+function showAiFallback(model, reason) {
+  var msg = reason
+    ? "\u2139\uFE0F " + reason + " \u2014 folosesc rezerva: " + model
+    : "\u2139\uFE0F Model rezerv\u0103 activ: " + model;
+  showToast(msg, "warning");
+  try {
+    livadaLog("AI", "fallback", model, reason || "necunoscut");
+  } catch (e) {}
 }
 
 // ====== JOURNAL SYNC ======
@@ -5000,7 +5014,10 @@ async function generateReport() {
       showAiError(data.error);
     } else {
       if (data._fallback)
-        showAiFallback(data._fallbackModel || "llama-3.3-70b-versatile");
+        showAiFallback(
+          data._fallbackModel || "llama-3.3-70b-versatile",
+          data._fallbackReason,
+        );
       result.innerHTML =
         '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">Bazat pe ' +
         data.journalCount +

@@ -120,17 +120,10 @@ export default async function handler(req) {
   if (limitErr) return limitErr;
 
   // V3 T1 — quota guard Gemini (identify foloseste si Gemini ca fallback)
+  // Cota Gemini: daca e atinsa NU mai blocam — identify foloseste Pl@ntNet + GPT-4.1
+  // ca surse principale; sarim doar Gemini. (2026-06-24)
   const geminiQuota = await checkAndIncrementQuota("gemini");
-  if (!geminiQuota.ok) {
-    return Response.json(
-      {
-        error:
-          "Cota Gemini zilnica epuizata. Revine dupa miezul noptii (ora Romania).",
-        _quota: geminiQuota,
-      },
-      { status: 429, headers: corsHeaders(req) },
-    );
-  }
+  const geminiBlocked = !geminiQuota.ok;
 
   const t0 = Date.now();
   const log = (msg) => console.log(`[identify] ${msg} t+${Date.now() - t0}ms`);
@@ -215,7 +208,7 @@ export default async function handler(req) {
         : Promise.reject(new Error("no plantnet key")),
 
       // Gemini 2.5-flash — identificare AI cu descriere in romana
-      GEMINI_KEY1
+      GEMINI_KEY1 && !geminiBlocked
         ? callGemini(
             GEMINI_KEY1,
             "gemini-2.5-flash",
@@ -225,7 +218,9 @@ export default async function handler(req) {
             18000,
             IDENTIFY_OPTS,
           )
-        : Promise.reject(new Error("no gemini key")),
+        : Promise.reject(
+            new Error(geminiBlocked ? "gemini-quota-blocked" : "no gemini key"),
+          ),
 
       // GPT-4.1 via GitHub Models (gratuit, 50-150 req/zi)
       GH_TOKEN

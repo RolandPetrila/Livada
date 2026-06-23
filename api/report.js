@@ -147,8 +147,13 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
     );
     let usedFallback = false;
     let activeModel = "llama-4-scout";
+    let fallbackReason = "";
 
     if (!groqRes.ok && groqRes.status !== 401 && groqRes.status !== 403) {
+      fallbackReason =
+        groqRes.status === 429
+          ? "Groq suprasolicitat (limita atinsa)"
+          : "Groq indisponibil temporar";
       logR(`llama-4-scout failed ${groqRes.status} → llama-3.3-70b`);
       let anyFbOk = false;
 
@@ -189,6 +194,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
               generatedAt: Date.now(),
               _fallback: true,
               _fallbackModel: "cerebras-llama-3.3-70b",
+              _fallbackReason: fallbackReason || "Groq indisponibil",
             };
             await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});
             return Response.json(payload, { headers: corsHeaders(req) });
@@ -228,7 +234,13 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
       journalCount: yearEntries.length,
       meteoDays: meteoEntries.length,
       generatedAt: Date.now(),
-      ...(usedFallback ? { _fallback: true, _fallbackModel: activeModel } : {}),
+      ...(usedFallback
+        ? {
+            _fallback: true,
+            _fallbackModel: activeModel,
+            _fallbackReason: fallbackReason,
+          }
+        : {}),
     };
 
     // Salveaza in cache Redis cu TTL 1h
