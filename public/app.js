@@ -1890,27 +1890,114 @@ const APP_BUILD = DEPLOY_DATE;
   }
 })();
 
+// Buton "i" — modal: doar ultima actualizare + tabel Status AI / Quota (mereu vizibil)
 function showAppInfo() {
-  alert(
-    "\uD83C\uDF3F Livada Mea Dashboard\n" +
-      "\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n" +
-      "Ultima actualizare: " +
-      DEPLOY_DATE +
-      " " +
-      DEPLOY_TIME +
-      "\n" +
-      "Ce s-a adaugat: " +
-      DEPLOY_INFO +
-      "\n\n" +
-      "✅ Actualizare automata: ACTIVA\n" +
-      "Esti mereu pe ultima versiune cand deschizi aplicatia.\n" +
-      "Butonul de actualizare verifica manual si confirma daca esti la zi.\n\n" +
-      "Deploy: Vercel (livada-mea-psi.vercel.app)\n" +
-      "AI: Groq llama-4-scout + Gemini 2.5-flash\n" +
-      "Meteo: Open-Meteo + Yr.no (comparare)\n" +
-      "Documentatie: 20 specii \xd7 25 sectiuni (A-Y)",
-  );
+  var ex = document.getElementById("appInfoOverlay");
+  if (ex) {
+    ex.remove();
+    return;
+  } // toggle: a doua apasare inchide
+  var ov = document.createElement("div");
+  ov.id = "appInfoOverlay";
+  ov.style.cssText =
+    "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9998;display:flex;align-items:flex-start;justify-content:center;padding:60px 16px 16px;overflow-y:auto;";
+  ov.addEventListener("click", function (e) {
+    if (e.target === ov) ov.remove();
+  });
+  ov.innerHTML =
+    '<div style="background:var(--bg-card,#15201a);color:var(--text);border:1px solid var(--border);border-radius:14px;max-width:380px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.45);">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);">' +
+    '<strong style="font-size:0.95rem;">🌿 Livada Mea</strong>' +
+    "<button onclick=\"var o=document.getElementById('appInfoOverlay');if(o)o.remove();\" aria-label=\"Inchide\" style=\"background:none;border:none;color:var(--text-dim);font-size:1.3rem;cursor:pointer;line-height:1;min-width:40px;min-height:40px;\">&#10005;</button>" +
+    "</div>" +
+    '<div style="padding:14px 16px;">' +
+    '<div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:3px;">Ultima actualizare</div>' +
+    '<div style="font-size:0.95rem;font-weight:700;color:var(--accent);">' +
+    DEPLOY_DATE +
+    " " +
+    DEPLOY_TIME +
+    "</div>" +
+    '<div style="font-size:0.82rem;margin:5px 0 16px;line-height:1.4;">' +
+    escapeHtml(DEPLOY_INFO) +
+    "</div>" +
+    '<div style="font-size:0.85rem;font-weight:700;border-top:1px solid var(--border);padding-top:12px;margin-bottom:8px;">📊 Status AI / Quota <span style="font-weight:400;color:var(--text-dim);font-size:0.72rem;">— azi</span></div>' +
+    '<div id="appInfoQuota" style="font-size:0.8rem;color:var(--text-dim);">Se încarcă…</div>' +
+    "</div></div>";
+  document.body.appendChild(ov);
+
+  loadAiStatus()
+    .then(function () {
+      var box = document.getElementById("appInfoQuota");
+      if (!box) return;
+      var q = _aiQuota;
+      if (!q || q.error) {
+        box.innerHTML =
+          '<span style="color:var(--warning,#d97706);">Indisponibil momentan. Încearcă din nou mai târziu.</span>';
+        return;
+      }
+      var rows = Object.keys(q)
+        .map(function (k) {
+          var it = q[k];
+          if (!it || typeof it.limit === "undefined") return "";
+          var pct = it.percent || 0;
+          var color =
+            it.used >= it.limit
+              ? "var(--danger,#ef4444)"
+              : pct >= 80
+                ? "var(--warning,#d97706)"
+                : "#22c55e";
+          return (
+            '<tr style="border-bottom:1px solid var(--border);">' +
+            '<td style="padding:6px 4px;white-space:nowrap;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
+            color +
+            ';margin-right:6px;"></span>' +
+            escapeHtml(it.label || k) +
+            "</td>" +
+            '<td style="padding:6px 4px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">' +
+            (it.used || 0) +
+            "</td>" +
+            '<td style="padding:6px 4px;text-align:right;color:var(--text-dim);font-variant-numeric:tabular-nums;">' +
+            it.limit +
+            "</td>" +
+            '<td style="padding:6px 4px;text-align:right;font-variant-numeric:tabular-nums;color:' +
+            color +
+            ';">' +
+            pct +
+            "%</td></tr>"
+          );
+        })
+        .join("");
+      box.innerHTML =
+        '<table style="width:100%;border-collapse:collapse;font-size:0.78rem;">' +
+        '<thead><tr style="color:var(--text-dim);font-size:0.68rem;text-align:left;border-bottom:1px solid var(--border);">' +
+        '<th style="padding:4px;font-weight:600;">Serviciu</th><th style="padding:4px;text-align:right;font-weight:600;">Folosit</th><th style="padding:4px;text-align:right;font-weight:600;">Limită/zi</th><th style="padding:4px;text-align:right;font-weight:600;">%</th>' +
+        "</tr></thead><tbody>" +
+        rows +
+        "</tbody></table>" +
+        '<div style="font-size:0.68rem;color:var(--text-dim);margin-top:8px;line-height:1.45;">Estimări numărate de aplicație, resetate zilnic (ora României). Nu includ Mistral/Grok (fallback foto), Vercel Blob, Redis.</div>';
+    })
+    .catch(function () {
+      var box = document.getElementById("appInfoQuota");
+      if (box) box.textContent = "Nu am putut încărca statusul AI.";
+    });
 }
+
+// Confirma automat versiunea la fiecare incarcare/refresh (inlocuieste butonul de verificare)
+function showVersionToast() {
+  showUpdateToast("✓ v" + DEPLOY_DATE + " — ești pe ultima versiune");
+  setTimeout(function () {
+    var el = document.getElementById("swUpdateToast");
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+  }, 3200);
+}
+(function () {
+  var fire = function () {
+    setTimeout(showVersionToast, 1200);
+  };
+  if (document.readyState === "loading")
+    window.addEventListener("DOMContentLoaded", fire);
+  else fire();
+})();
 
 // Buton update fortat — goleste cache SW + localStorage + reload
 function forceAppUpdate() {
