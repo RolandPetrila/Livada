@@ -1879,13 +1879,13 @@ const APP_BUILD = DEPLOY_DATE;
 (function () {
   var el = document.getElementById("appVersionBadge");
   if (el) {
-    el.textContent = "actualizat " + DEPLOY_DATE + " " + DEPLOY_TIME;
+    el.textContent = "✓ v" + DEPLOY_DATE + " " + DEPLOY_TIME;
     el.title =
-      "Ultima actualizare: " +
+      "Ești pe ultima versiune (" +
       DEPLOY_DATE +
       " " +
       DEPLOY_TIME +
-      " — " +
+      "). Actualizare automată activă — apasă pentru info. " +
       DEPLOY_INFO;
   }
 })();
@@ -1902,6 +1902,9 @@ function showAppInfo() {
       "Ce s-a adaugat: " +
       DEPLOY_INFO +
       "\n\n" +
+      "✅ Actualizare automata: ACTIVA\n" +
+      "Esti mereu pe ultima versiune cand deschizi aplicatia.\n" +
+      "Butonul de actualizare verifica manual si confirma daca esti la zi.\n\n" +
       "Deploy: Vercel (livada-mea-psi.vercel.app)\n" +
       "AI: Groq llama-4-scout + Gemini 2.5-flash\n" +
       "Meteo: Open-Meteo + Yr.no (comparare)\n" +
@@ -1951,29 +1954,125 @@ function forceAppUpdate() {
     });
 }
 
+// Toast scurt (reutilizabil) pentru statusul actualizarii
+function showUpdateToast(msg) {
+  try {
+    var old = document.getElementById("swUpdateToast");
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+    var t = document.createElement("div");
+    t.id = "swUpdateToast";
+    t.style.cssText =
+      "position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 18px;border-radius:10px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.25);text-align:center;max-width:320px;";
+    t.textContent = msg || "🔄 Versiune nouă — se actualizează…";
+    document.body.appendChild(t);
+  } catch (e) {}
+}
+
+// Reload sigur: daca user-ul tasteaza/dicteaza (ex. nota jurnal), amana pana termina
+// ca sa NU piarda textul; altfel reincarca dupa un toast scurt.
+var _swReloading = false;
+function doSwReload() {
+  if (_swReloading) return;
+  _swReloading = true;
+  var done = false;
+  var go = function () {
+    if (done) return;
+    done = true;
+    window.location.reload();
+  };
+  var ae = document.activeElement;
+  var typing =
+    ae &&
+    (ae.tagName === "TEXTAREA" ||
+      ae.tagName === "INPUT" ||
+      ae.isContentEditable);
+  if (typing) {
+    showUpdateToast("🔄 Versiune nouă pregătită — se aplică când termini.");
+    ae.addEventListener(
+      "blur",
+      function () {
+        setTimeout(go, 400);
+      },
+      { once: true },
+    );
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") go();
+    });
+    return;
+  }
+  showUpdateToast();
+  setTimeout(go, 1000);
+}
+
+// Verificare manuala (butonul de actualizare): confirma clar daca esti la zi sau aplica update-ul
+function checkForUpdates() {
+  if (!("serviceWorker" in navigator)) {
+    window.location.reload();
+    return;
+  }
+  showUpdateToast("⏳ Verific actualizări…");
+  navigator.serviceWorker
+    .getRegistration()
+    .then(function (reg) {
+      if (!reg) {
+        window.location.reload();
+        return;
+      }
+      return reg
+        .update()
+        .catch(function () {})
+        .then(function () {
+          setTimeout(function () {
+            if (_swReloading) return; // update in curs → se reincarca singur
+            if (reg.installing || reg.waiting) return; // update detectat → controllerchange reincarca
+            var t = document.getElementById("swUpdateToast");
+            if (t)
+              t.textContent =
+                "✓ Ești pe ultima versiune (v" + DEPLOY_DATE + ")";
+            setTimeout(function () {
+              var el = document.getElementById("swUpdateToast");
+              if (el && el.parentNode) el.parentNode.removeChild(el);
+            }, 2600);
+          }, 1500);
+        });
+    })
+    .catch(function () {});
+}
+
 if ("serviceWorker" in navigator) {
+  // AUTO-UPDATE: cand un SW nou preia controlul, reincarca o singura data (sigur).
+  // Guard `_swHadController`: NU reincarca la prima instalare (altfel bucla infinita).
+  var _swHadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", function () {
+    if (!_swHadController) return; // prima instalare — nimic de actualizat
+    livadaLog("SW", "auto-update", "RELOAD", "controllerchange");
+    doSwReload();
+  });
+
   navigator.serviceWorker
     .register("/sw.js", {
-      updateViaCache: "none", // browserul NU foloseste HTTP cache pt sw.js — verifica intotdeauna
+      updateViaCache: "none", // browserul verifica intotdeauna sw.js (fara HTTP cache)
     })
     .then(function (reg) {
       reg.update().catch(function () {});
+      // Reverifica periodic (1h) + la revenirea aplicatiei in prim-plan
+      setInterval(
+        function () {
+          reg.update().catch(function () {});
+        },
+        60 * 60 * 1000,
+      );
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible")
+          reg.update().catch(function () {});
+      });
     })
     .catch(function () {});
 
-  // Notificare versiune noua (trimisa de SW la activate) — F5.2
+  // SW_UPDATED (de la activate) — doar log; reload-ul e gestionat de controllerchange
   navigator.serviceWorker.addEventListener("message", function (event) {
     if (event.data && event.data.type === "SW_UPDATED") {
-      livadaLog("SW", "update", "AVAILABLE", event.data.version || "noua");
-      var toastEl = document.createElement("div");
-      toastEl.style.cssText =
-        "position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 18px;border-radius:10px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.25);display:flex;align-items:center;gap:12px;max-width:340px;";
-      toastEl.innerHTML =
-        '<span>&#128260; Versiune nou&#259; disponibil&#259;</span><button onclick="forceAppUpdate()" style="background:#fff;color:var(--accent);border:none;border-radius:6px;padding:3px 12px;font-size:0.8rem;cursor:pointer;font-weight:600;">Reîncarc&#259;</button>';
-      document.body.appendChild(toastEl);
-      setTimeout(function () {
-        if (toastEl.parentNode) toastEl.parentNode.removeChild(toastEl);
-      }, 12000);
+      livadaLog("SW", "update", "ACTIVATED", event.data.version || "noua");
     }
   });
 }
