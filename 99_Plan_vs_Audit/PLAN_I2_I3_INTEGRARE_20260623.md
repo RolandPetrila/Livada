@@ -224,18 +224,18 @@ function getTreeHistory(treeId) {
 
 ## 6. CHECKLIST (bifeaza pe masura ce executi)
 
-- [ ] Citit acest plan + V4 (`RECOMANDARI_IMBUNATATIRI_V4.md`) integral
-- [ ] I2: helper `decrementStoc` + `fillStocPicker` adaugate
-- [ ] I2: UI stoc in modal jurnal + hook in `addJurnalEntry`
-- [ ] I3: helper `fillTreePicker` + `getTreeHistory`
-- [ ] I3: `jurnalTree` select + `entry.treeId`
-- [ ] I3: `diagTree` + propagare in `openJurnalFromDiag`
-- [ ] I3: `treeId` in metadata galerie (`uploadPhoto`)
-- [ ] I3: istoric per pom in `renderTreePanel`
-- [ ] `node --check` OK + `npm test` 189/189
-- [ ] Preview deploy + Playwright QA (jurnal, voice, pom, mobil 360px, console fara erori)
-- [ ] Commit + push prod + verificare Ready/200
-- [ ] Actualizat acest plan (jurnal executie) + CLAUDE.md/memory daca e cazul
+- [x] Citit acest plan integral (V4 referentiat via plan + memory)
+- [x] I2: helper `decrementStoc` + `fillStocPicker` adaugate (+ `updateJurnalStocRow`)
+- [x] I2: UI stoc in modal jurnal (`jurnalStocRow`) + hook in `addJurnalEntry` (dupa save)
+- [x] I3: helper `fillTreePicker` + `getTreeHistory` (+ `treeIdFromPathname`, `toggleTreeHistory`)
+- [x] I3: `jurnalTree` select + `entry.treeId`
+- [x] I3: `diagTree` + propagare in `openJurnalFromDiag`
+- [x] I3: `treeId` in galerie — `galTree` picker + `uploadPhoto` FormData + `photos.js` pathname encoding `<treeId>__<ts>` (backwards-compat)
+- [x] I3: istoric per pom in `renderTreePanel` (buton Istoric + box + poze best-effort)
+- [x] `node --check` OK (app.js + photos.js) + `npm test` **189/189**
+- [x] Preview deploy + Playwright QA: jurnal (stoc 100→90 + treeId), voice, pom+istoric, diag→jurnal, mobil 360px, **0 exceptii JS**
+- [x] Commit + push prod + verificare Ready/200
+- [x] Actualizat acest plan (jurnal executie) + CLAUDE.md/memory
 
 ---
 
@@ -252,4 +252,10 @@ function getTreeHistory(treeId) {
 ## 8. JURNAL EXECUTIE (completeaza pe parcurs)
 
 - 2026-06-23: plan creat (sesiune anterioara). I1/CSP/cache/CI deja livrate.
-- _(adauga aici ce executi)_
+- 2026-06-23 (executie): **I2 + I3 IMPLEMENTATE si LIVRATE pe prod.**
+  - **Arhitectura confirmata:** `index.html` incarca JS via `<script defer src="/app.js">` → logica JS in `app.js` (sursa), markup modale in `index.html` (sursa neminificata). Vercel `npm run build` minifica index.html la deploy (NU app.js). Editari: 11 in app.js, 4 in index.html, 2 in photos.js.
+  - **I2:** `decrementStoc()` + `fillStocPicker()` + `updateJurnalStocRow()` (langa `saveStoc`); rand `#jurnalStocRow` in modal jurnal (vizibil doar la tratament/fitosanitar, toggle pe `change`); hook in `addJurnalEntry` dupa `saveJurnalEntries`. Toate cu guard-uri (backwards-compat).
+  - **I3:** `fillTreePicker()` + `getTreeHistory()` + `treeIdFromPathname()` + `toggleTreeHistory()` (langa `saveAllTrees`); `#jurnalTree` + `entry.treeId` in `addJurnalEntry`; `#diagTree` in `openDiagnoseModal` + propagare in `openJurnalFromDiag`; `#galTree` + `uploadPhoto` FormData `treeId` + `photos.js` pathname `livada/photos/<sp>/<treeId>__<ts>.<ext>`; buton „Istoric" + box per pom in `renderTreePanel`.
+  - **QA Playwright (preview, autentificat via Vercel share-link bypass):** add tratament → stoc 100→90 OK; `entry.treeId=cires-999` OK; istoric pom afiseaza intervenția OK; diag→jurnal propagare OK; mobil 360px fara overflow + toggle OK; voice 🎤 OK. **0 exceptii JS uncaught.** Scrierile API neutralizate in test (`syncJournal`/`logActivity` override) → fara poluare Redis/Blob prod.
+  - **Commit prod:** push `main` → auto-deploy Vercel. Verificat Ready + 200.
+  - **⚠️ FINDING pre-existent (NU din aceasta sesiune):** `/api/photos` GET da **504 FUNCTION_INVOCATION_TIMEOUT** (~11s > 10s maxDuration Node Hobby) — confirmat si pe PROD cu cod vechi. Listarea Blob e lenta. Afecteaza galeria foto (`loadGallery`) + strip-ul de poze din `toggleTreeHistory` (degradeaza grațios — istoricul din jurnal apare instant). **De rezolvat separat** (cache Redis al listei foto, ca meteo). Vezi memory.

@@ -489,6 +489,10 @@ function openModal(name) {
     if (name === "jurnal") {
       renderJurnal();
       syncJournal();
+      if (typeof fillStocPicker === "function") fillStocPicker();
+      var _jt = document.getElementById("jurnalTree");
+      if (_jt && typeof fillTreePicker === "function") fillTreePicker(_jt);
+      if (typeof updateJurnalStocRow === "function") updateJurnalStocRow();
     }
     if (name === "calendar") {
       renderCalendar();
@@ -828,6 +832,7 @@ window.addEventListener("online", function () {
 document.getElementById("jurnalType")?.addEventListener("change", function () {
   var rf = document.getElementById("recoltaFields");
   if (rf) rf.style.display = this.value === "recoltare" ? "block" : "none";
+  if (typeof updateJurnalStocRow === "function") updateJurnalStocRow();
 });
 // Istoric conversatii chat diagnostic (per prefix: 'diag' | 'aiGenDiag')
 var _diagChatHistory = {};
@@ -901,6 +906,9 @@ function addJurnalEntry() {
       }
     }
     var entry = { id: Date.now(), date: date, type: type, note: note };
+    // I3: leaga intrarea de un pom anume (optional)
+    var _treeSel = document.getElementById("jurnalTree");
+    if (_treeSel && _treeSel.value) entry.treeId = _treeSel.value;
     // N4: Cost per tratament
     var entryCost =
       parseFloat(document.getElementById("jurnalCost")?.value) || 0;
@@ -958,6 +966,23 @@ function addJurnalEntry() {
     var entries = getJurnalEntries();
     entries.unshift(entry);
     saveJurnalEntries(entries);
+    // I2: scade din stoc produsul folosit (doar la tratament fitosanitar)
+    if (type === "fitosanitar" || type === "tratament") {
+      var prodSel = document.getElementById("jurnalStocProdus");
+      var qtyUsed =
+        parseFloat(
+          document.getElementById("jurnalStocQty") &&
+            document.getElementById("jurnalStocQty").value,
+        ) || 0;
+      if (prodSel && prodSel.value && qtyUsed > 0) {
+        var unit = prodSel.options[prodSel.selectedIndex]
+          ? prodSel.options[prodSel.selectedIndex].getAttribute("data-unit")
+          : "";
+        decrementStoc(prodSel.value, qtyUsed, unit);
+        var qEl = document.getElementById("jurnalStocQty");
+        if (qEl) qEl.value = "";
+      }
+    }
     document.getElementById("jurnalNote").value = "";
     if (document.getElementById("jurnalKg"))
       document.getElementById("jurnalKg").value = "";
@@ -2951,6 +2976,9 @@ function openGalleryModal() {
   logActivity("UI", "modal-open", "gallery", activeSpeciesId || "-");
   document.getElementById("galSpecies").textContent =
     SPECIES[activeSpeciesId] || activeSpeciesId;
+  var _gt = document.getElementById("galTree");
+  if (_gt && typeof fillTreePicker === "function")
+    fillTreePicker(_gt, activeSpeciesId);
   openModal("gallery");
   loadGallery();
 }
@@ -3143,6 +3171,8 @@ async function uploadPhoto(input) {
     var fd = new FormData();
     fd.append("file", uploadFile);
     fd.append("species", activeSpeciesId);
+    var _gt = document.getElementById("galTree");
+    if (_gt && _gt.value) fd.append("treeId", _gt.value);
     var res = await authFetch("/api/photos", { method: "POST", body: fd });
     if (!res.ok) throw new Error("Eroare server (" + res.status + ")");
     var data = await res.json();
@@ -3182,6 +3212,11 @@ function openJurnalFromDiag() {
       typeEl.dispatchEvent(new Event("change"));
     }
     if (dateEl) dateEl.value = today;
+    // I3: propaga pomul selectat in diagnostic catre intrarea de jurnal
+    var treeSel = document.getElementById("jurnalTree");
+    var diagTreeSel = document.getElementById("diagTree");
+    if (treeSel && diagTreeSel && diagTreeSel.value)
+      treeSel.value = diagTreeSel.value;
     if (noteEl)
       noteEl.value =
         (SPECIES[activeSpeciesId] ? SPECIES[activeSpeciesId] + " — " : "") +
@@ -3211,6 +3246,9 @@ function openDiagnoseModal() {
   _diagChatHistory["diag"] = [];
   _diagPhotos.diag = [];
   renderDiagThumbnails("diag");
+  var _dt = document.getElementById("diagTree");
+  if (_dt && typeof fillTreePicker === "function")
+    fillTreePicker(_dt, activeSpeciesId);
   renderAiStatusPanel("diagnose", "diagModalBody", "afterbegin");
   openModal("diagnose");
 }
@@ -7367,6 +7405,114 @@ function saveAllTrees(list) {
   localStorage.setItem("livada-trees", JSON.stringify(list));
 }
 
+// ====== I3: Legare jurnal/diagnostic/galerie de pom (treeId) ======
+// Populeaza un <select> cu pomii (optional filtrati pe specie). Pastreaza selectia.
+function fillTreePicker(selectEl, species) {
+  if (!selectEl) return;
+  var prev = selectEl.value;
+  var trees = getTrees(species || undefined);
+  selectEl.innerHTML =
+    '<option value="">— fără pom anume —</option>' +
+    trees
+      .map(function (t) {
+        return (
+          '<option value="' +
+          escapeHtml(t.id) +
+          '">' +
+          escapeHtml(t.label || t.id) +
+          "</option>"
+        );
+      })
+      .join("");
+  if (prev) selectEl.value = prev;
+}
+// Extrage treeId din pathname poza: livada/photos/<specie>/<treeId>__<ts>.<ext>
+function treeIdFromPathname(pathname) {
+  if (!pathname) return "";
+  var file = String(pathname).split("/").pop() || "";
+  var i = file.indexOf("__");
+  return i > 0 ? file.slice(0, i) : "";
+}
+// Istoric per pom: intrarile din jurnal legate de acest treeId.
+function getTreeHistory(treeId) {
+  return {
+    jurnal: getJurnalEntries().filter(function (e) {
+      return e.treeId === treeId;
+    }),
+  };
+}
+// Toggle panoul de istoric afisat sub un pom in renderTreePanel.
+function toggleTreeHistory(treeId, speciesId) {
+  var box = document.getElementById("treehist-" + treeId);
+  if (!box) return;
+  if (box.style.display === "block") {
+    box.style.display = "none";
+    return;
+  }
+  var hist = getTreeHistory(treeId);
+  var html;
+  if (!hist.jurnal.length) {
+    html =
+      '<p style="color:var(--text-dim);font-size:0.78rem;margin:4px 0;">Nicio intervenție legată de acest pom încă. Leagă o intrare selectând pomul în jurnal sau diagnostic.</p>';
+  } else {
+    html = hist.jurnal
+      .map(function (e) {
+        return (
+          '<div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:0.78rem;">' +
+          '<span style="color:var(--accent);font-weight:700;">' +
+          escapeHtml(e.date || "") +
+          "</span> " +
+          '<span style="color:var(--text-dim);">[' +
+          escapeHtml(e.type || "") +
+          "]</span> " +
+          escapeHtml(e.note || "") +
+          (e.cost
+            ? ' <span style="color:var(--text-dim);">· ' +
+              e.cost +
+              " RON</span>"
+            : "") +
+          "</div>"
+        );
+      })
+      .join("");
+  }
+  box.innerHTML =
+    '<div style="font-size:0.72rem;color:var(--text-dim);margin:4px 0;">📋 Istoric pom (' +
+    hist.jurnal.length +
+    " intervenții)</div>" +
+    html +
+    '<div id="treehistphotos-' +
+    treeId +
+    '" style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;"></div>';
+  box.style.display = "block";
+  // Best-effort: incarca pozele legate de pom (doar online).
+  if (navigator.onLine && typeof authFetch === "function") {
+    var sp = speciesId || treeId.split("-")[0];
+    authFetch("/api/photos?species=" + encodeURIComponent(sp))
+      .then(function (r) {
+        return r.ok ? r.json() : [];
+      })
+      .then(function (photos) {
+        if (!Array.isArray(photos)) return;
+        var mine = photos.filter(function (p) {
+          return treeIdFromPathname(p.pathname) === treeId;
+        });
+        var strip = document.getElementById("treehistphotos-" + treeId);
+        if (!strip || !mine.length) return;
+        strip.innerHTML = mine
+          .map(function (p) {
+            return (
+              '<img src="' +
+              escapeHtml(p.url) +
+              '" alt="foto pom" loading="lazy" style="width:54px;height:54px;object-fit:cover;border-radius:6px;border:1px solid var(--border);">'
+            );
+          })
+          .join("");
+      })
+      .catch(function () {});
+  }
+}
+
 function openTreePanel(speciesId) {
   var panel = document.getElementById("treePanel-" + speciesId);
   if (!panel) return;
@@ -7411,15 +7557,21 @@ function renderTreePanel(speciesId) {
         '<div style="padding:8px 10px;margin:4px 0;background:var(--bg-surface);border-radius:8px;border-left:3px solid ' +
         sc +
         ';">' +
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">' +
         '<strong style="font-size:0.85rem;">' +
         escapeHtml(t.label || t.id) +
         "</strong>" +
+        '<span style="display:flex;gap:4px;flex-shrink:0;">' +
         "<button onclick=\"editTreeNote('" +
         t.id +
         "','" +
         speciesId +
-        '\')" style="font-size:0.7rem;padding:3px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);">✏️ Edit</button></div>' +
+        '\')" style="font-size:0.7rem;padding:3px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);">✏️ Edit</button>' +
+        "<button onclick=\"toggleTreeHistory('" +
+        t.id +
+        "','" +
+        speciesId +
+        '\')" style="font-size:0.7rem;padding:3px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);">📋 Istoric</button></span></div>' +
         (t.planted
           ? '<div style="font-size:0.72rem;color:var(--text-dim);">Plantat: ' +
             escapeHtml(t.planted) +
@@ -7431,6 +7583,9 @@ function renderTreePanel(speciesId) {
             escapeHtml(t.notes) +
             "</div>"
           : "") +
+        '<div id="treehist-' +
+        t.id +
+        '" style="display:none;margin-top:6px;border-top:1px dashed var(--border);padding-top:6px;"></div>' +
         "</div>";
     });
   }
@@ -7818,6 +7973,61 @@ function getStoc() {
 }
 function saveStoc(stoc) {
   localStorage.setItem(STOC_KEY, JSON.stringify(stoc));
+}
+// ====== I2: Decrement stoc la tratament ======
+// Scade din stoc cantitatea folosita la un produs (match pe nume, case-insensitive).
+function decrementStoc(productName, qtyUsed, unit) {
+  if (!productName || !(qtyUsed > 0)) return false;
+  var stoc = getStoc();
+  var p = stoc.find(function (x) {
+    return (x.name || "").toLowerCase() === String(productName).toLowerCase();
+  });
+  if (!p) return false;
+  p.cantitate = Math.max(0, (parseFloat(p.cantitate) || 0) - qtyUsed);
+  saveStoc(stoc);
+  if (typeof renderStoc === "function") renderStoc();
+  if (p.cantitate <= 0)
+    showToast(
+      'Stoc epuizat: "' + p.name + '". Adaugă pe lista de cumpărături.',
+      "warning",
+    );
+  livadaLog("STOC", "decrement", "OK", p.name + " -" + qtyUsed + (unit || ""));
+  return true;
+}
+// Populeaza select-ul de produse din stoc in modalul jurnal (pastreaza selectia).
+function fillStocPicker() {
+  var sel = document.getElementById("jurnalStocProdus");
+  if (!sel) return;
+  var prev = sel.value;
+  var stoc = getStoc();
+  sel.innerHTML =
+    '<option value="">— niciunul —</option>' +
+    stoc
+      .map(function (p) {
+        return (
+          '<option value="' +
+          escapeHtml(p.name) +
+          '" data-unit="' +
+          escapeHtml(p.unitate || "") +
+          '">' +
+          escapeHtml(p.name) +
+          " (" +
+          (p.cantitate || 0) +
+          " " +
+          escapeHtml(p.unitate || "") +
+          ")</option>"
+        );
+      })
+      .join("");
+  if (prev) sel.value = prev;
+}
+// Arata randul de stoc doar la interventii de tip tratament fitosanitar.
+function updateJurnalStocRow() {
+  var row = document.getElementById("jurnalStocRow");
+  var t = document.getElementById("jurnalType");
+  if (!row || !t) return;
+  row.style.display =
+    t.value === "tratament" || t.value === "fitosanitar" ? "block" : "none";
 }
 function addStocProdus() {
   var name = (document.getElementById("stocName")?.value || "").trim();

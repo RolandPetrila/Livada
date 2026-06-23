@@ -55,6 +55,11 @@ export default async function handler(req) {
         "",
       );
       if (!species) species = "general";
+      // I3: leaga poza de un pom anume (optional) — encodat in pathname
+      const treeId = (formData.get("treeId") || "").replace(
+        /[^a-zA-Z0-9_-]/g,
+        "",
+      );
 
       if (!file) {
         return Response.json(
@@ -89,7 +94,9 @@ export default async function handler(req) {
       const allowedExt = ["jpg", "jpeg", "png", "webp", "heic"];
       let ext = (file.name?.split(".").pop() || "jpg").toLowerCase();
       if (!allowedExt.includes(ext)) ext = "jpg";
-      const pathname = `livada/photos/${species}/${timestamp}.${ext}`;
+      const pathname = treeId
+        ? `livada/photos/${species}/${treeId}__${timestamp}.${ext}`
+        : `livada/photos/${species}/${timestamp}.${ext}`;
 
       const blob = await put(pathname, file, {
         access: "public",
