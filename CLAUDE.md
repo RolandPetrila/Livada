@@ -5,7 +5,7 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo + Imbunatatiri Prognoze (4/4) | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 15 routes + 4 utilitare
+**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo + Imbunatatiri Prognoze (4/4) | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 17 routes + 4 utilitare
 **Ultima actualizare:** 2026-04-26 (Imbunatatiri prognoze: ICON-EU 2.2km + NASA POWER GDD + multi-model extins + spray window + fix cron email fals)
 
 ## Arhitectura
@@ -102,6 +102,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | push-public-key.js | Edge    | —       | Expune VAPID_PUBLIC_KEY pentru frontend subscribe                           |
 | push-subscribe.js  | Edge    | 5s      | Salveaza/elimina subscription in Redis SET (livada:push-subs)               |
 | report.js          | Edge    | 25s     | Redis + Groq                                                                |
+| user-activity.js   | Edge    | 5s      | Redis activity log (POST batch events, GET ultimele 200; rolling 1000)      |
 | \_auth.js          | Utility | —       | CORS/origin/rateLimit Redis+in-memory fallback                              |
 | \_ai.js            | Utility | —       | Wrapper comun Gemini + OpenAI-compat + Cerebras                             |
 | \_quota.js         | Utility | —       | Quota tracking per provider (T1) — INCR Redis + limits free tier            |
@@ -111,12 +112,20 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 - `LIVADA_API_TOKEN` — autentificare API (dezactivata momentan, rate limit activ)
 - `GROQ_API_KEY` — AI ask + raport (llama-4-maverick primary, llama-3.3-70b-versatile fallback)
-- `GOOGLE_AI_API_KEY` — AI diagnostic foto (Gemini 2.5-flash, fallback 2.0-flash)
+- `GOOGLE_AI_API_KEY` — AI diagnostic foto + identificare specii — Gemini 2.5-flash primary (diagnose.js, identify.js)
+- `GOOGLE_AI_API_KEY_2` — a doua cheie Gemini 2.5-flash — fallback #1 cand prima atinge quota/esueaza (identify.js:35, diagnose.js:418)
+- `MISTRAL_API_KEY` — Pixtral-12b vision (api.mistral.ai) — fallback #2 in lantul foto (identify.js:57, diagnose.js:453)
+- `XAI_API_KEY` — Grok-2-vision (api.x.ai) — fallback #3 in lantul foto (identify.js:80, diagnose.js:488)
+- `GITHUB_MODELS_TOKEN` — GitHub Models (inferenta AI gratuita) — fallback vision aditional (identify.js, diagnose.js, ai-status.js)
+- `CEREBRAS_API_KEY` — Cerebras llama-3.3-70b (gratuit) — alternativa AI text la cerere (\_ai.js, ai-status.js)
+- `PLANTNET_API_KEY` — Pl@ntNet — identificare specii din poza (identify.js, diagnose.js)
+- `PLANT_ID_API_KEY` — Plant.id — identificare + diagnostic boli (v2 free tier; v3 cere abonament) (diagnose.js)
+- `PLANT_ID_USE_V3` — flag config: "1" reactiveaza Plant.id API v3 (cere abonament Plus/Premium); default v2 free (diagnose.js:27)
 - `UPSTASH_REDIS_REST_URL` — Redis cache meteo + jurnal sync
 - `UPSTASH_REDIS_REST_TOKEN` — Redis auth
 - `BLOB_READ_WRITE_TOKEN` — Vercel Blob galerie foto
 - `CRON_SECRET` — autentificare cron job meteo-cron (_enforce non-empty necesar_)
-- `VAPID_PUBLIC_KEY` + `VAPID_PRIVATE_KEY` + `VAPID_CONTACT` — Web Push notificari (Audit #1, 2026-04-23). Keys in `.env.local` (gitignored). Trebuie adaugate MANUAL in Vercel Dashboard pentru activare push real. Fara ele, `/api/push-broadcast` intoarce 503 iar frontend-ul ramane pe Notification API fallback in-browser.
+- `VAPID_PUBLIC_KEY` + `VAPID_PRIVATE_KEY` + `VAPID_CONTACT` — Web Push notificari (Audit #1, 2026-04-23). Keys in `.env.local` (gitignored). **Prezente in Vercel production (verificat 2026-06-23 via `vercel env ls`, adaugate de ~61 zile) → push real ACTIV.** (Daca lipsesc vreodata: `/api/push-broadcast` intoarce 503 + fallback Notification API in-browser.)
 
 ## Dependente externe
 
@@ -125,8 +134,8 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 - Google Gemini (gemini-2.5-pro → flash fallback) — diagnostic foto AI
 - Open-Meteo (gratuit, fara API key) — date meteo curente + prognoza 5 zile (apparent_temp, cloud_cover, dew_point)
 - Yr.no / met.no (gratuit, fara API key) — sursa meteo secundara pentru comparare (F3.3)
-- Upstash Redis (@upstash/redis 1.37.0) — persistenta jurnal + meteo history cache
-- Vercel Blob (@vercel/blob 2.3.2) — stocare fotografii galerie
+- Upstash Redis (@upstash/redis 1.38.0) — persistenta jurnal + meteo history cache
+- Vercel Blob (@vercel/blob 2.4.1) — stocare fotografii galerie
 - DOMPurify @3 (cdn.jsdelivr.net) — sanitizare HTML raspunsuri AI (_pin la @3.3.3 necesar_)
 
 ## Continut per specie — Structura A-Z
@@ -252,7 +261,7 @@ Commits `2a28a24` (fix cron email fals) + `e7c4b4d` (4 optiuni prognoze).
   - **#7 Cron stale indicator UI** — badge `#cronStaleBadge` in header citeste `/api/ping`; click → refresh manual. Verde "Cron OK" / portocaliu "Cron stale Xh".
   - **#8 Notif body scurt** — backend genereaza `shortMessage` per alerta (~100 chars actionable); frontend `sendLivadaNotification` foloseste shortMessage pt body.
   - **Bonus hardening `meteo-cron.js`**: elimin duplicate write `livada:meteo:history`, batch Redis global timeout 10s, error logging detaliat (name+stack), severity flag + shortMessage pe toate alertele + jurnal.
-  - **Teste:** 185/185 pass (3 ping.test.js actualizate pt noul comportament mereu-200 din c686d6b).
+  - **Teste:** 185/185 pass la momentul remedierii (2026-04-23). **Actual: 189/189 pass** (13 fisiere, verificat 2026-06-23).
 
 ## Localizare Livada (confirmat 2026-04-12)
 
