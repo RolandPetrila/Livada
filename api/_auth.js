@@ -97,7 +97,19 @@ function rateLimitInMemory(ip, max, windowMs) {
 export async function rateLimit(req, maxOverride) {
   const max = maxOverride !== undefined ? maxOverride : RATE_MAX;
   const ip = getHeader(req, "x-real-ip") || "unknown";
-  const key = `livada:rl:${ip}`;
+  // Bucket per-ruta: fiecare endpoint are propriul contor. Altfel un singur contor
+  // per-IP era partajat de TOATE rutele, iar traficul general (meteo/journal/ai-status/...)
+  // umplea pragul mic al AI-ului (10) → "Prea multe cereri" la prima intrebare. (Fix 2026-06-24)
+  let bucket = "gen";
+  try {
+    bucket =
+      new URL(req.url, "http://localhost").pathname
+        .replace(/[^a-z0-9]/gi, "")
+        .slice(0, 24) || "gen";
+  } catch {
+    /* req.url indisponibil → bucket implicit */
+  }
+  const key = `livada:rl:${bucket}:${ip}`;
 
   try {
     const kv = Redis.fromEnv();
@@ -122,7 +134,7 @@ export async function rateLimit(req, maxOverride) {
     return null;
   } catch {
     // Redis indisponibil — fallback in-memory (fail-closed, nu fail-open)
-    if (rateLimitInMemory(ip, max, RATE_WINDOW_MS)) {
+    if (rateLimitInMemory(bucket + ":" + ip, max, RATE_WINDOW_MS)) {
       return Response.json(
         { error: "Prea multe cereri. Incearca din nou peste un minut." },
         { status: 429, headers: corsHeaders(req) },
