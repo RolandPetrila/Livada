@@ -5,8 +5,8 @@
 Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, judetul Arad.
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
-**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo + Imbunatatiri Prognoze (4/4) | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 17 routes + 4 utilitare
-**Ultima actualizare:** 2026-04-26 (Imbunatatiri prognoze: ICON-EU 2.2km + NASA POWER GDD + multi-model extins + spray window + fix cron email fals)
+**Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo + Imbunatatiri Prognoze (4/4) + V4 Integrare (I1 cost + I2 stoc + I3 treeId) | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 17 routes + 4 utilitare
+**Ultima actualizare:** 2026-06-23 (V4 I2+I3: decrement stoc fitosanitar la tratament + legare jurnal/diagnostic/galerie de pom prin `treeId` + istoric per pom. Commit `c55899c`, prod LIVE verde, QA Playwright pe preview, 189/189 teste.)
 
 ## Arhitectura
 
@@ -250,6 +250,8 @@ Commits `2a28a24` (fix cron email fals) + `e7c4b4d` (4 optiuni prognoze).
 **Redis keys noi:** `livada:alert-spray`, `livada:gdd:annual`
 
 ## Audit findings — actiuni amanate
+
+- **🔴 `/api/photos` GET → 504 FUNCTION_INVOCATION_TIMEOUT** (descoperit 2026-06-23 in QA I3, SEV2, **PRE-EXISTENT — nelegat de I2/I3**). Listarea Blob (`list({prefix})` din `@vercel/blob`) dureaza >10s → depaseste maxDuration Node 10s pe Vercel Hobby. Confirmat pe PROD (cod vechi) + preview, ~11s consistent. **Impact:** galeria foto (`loadGallery`) + strip-ul de poze din `toggleTreeHistory` (I3) nu incarca (degradeaza grațios — istoricul din jurnal apare instant, fara crash). **Fix propus (separat):** cache Redis al listei foto cu TTL (ca meteo-history), refresh la upload/delete; SAU paginare/limitare `list`. Nu se poate rezolva prin maxDuration (Hobby capat la 10s — vezi `feedback_maxduration_hobby`).
 
 - **H1 CSP `unsafe-inline`** (audit 2026-04-11, severitate HIGH teoretica) — migrare amanata dupa stabilizare V2. Plan detaliat salvat in `.claude-outputs/CSP_MIGRATION_PLAN.md` (Optiunea B — hash-based CSP, 6–8h implementare). Justificare: DOMPurify e deja strat de protectie activ, risc real mic pentru un site obscur, nu merita introdusa complexitate build pipeline in plin V2 development. A se relua dupa F7 decis.
 
