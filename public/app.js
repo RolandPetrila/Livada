@@ -2444,7 +2444,7 @@ var AI_PANEL_CONFIG = {
   ask: [
     { name: "Groq llama-4-scout", key: "groq", role: "primar" },
     { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
-    { name: "Cerebras llama-3.3-70b", key: "cerebras", role: "rezerva" },
+    { name: "Cerebras gpt-oss-120b", key: "cerebras", role: "rezerva" },
   ],
   diagnose: [
     { name: "Gemini 2.5-flash", key: "gemini", role: "primar" },
@@ -2459,7 +2459,7 @@ var AI_PANEL_CONFIG = {
   report: [
     { name: "Groq llama-4-scout", key: "groq", role: "primar" },
     { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
-    { name: "Cerebras llama-3.3-70b", key: "cerebras", role: "rezerva" },
+    { name: "Cerebras gpt-oss-120b", key: "cerebras", role: "rezerva" },
   ],
   frost: [
     { name: "Open-Meteo", key: "meteo", role: "sursa" },
