@@ -101,6 +101,11 @@ export function callCerebras(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${KEY}`,
+        // Cerebras e in spatele Cloudflare; fara User-Agent "de browser" cererea de la
+        // Vercel Edge e blocata cu 403 (pagina challenge Cloudflare). (Fix 2026-06-24)
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        Accept: "application/json",
       },
       body: JSON.stringify({
         model: "llama-3.3-70b",
