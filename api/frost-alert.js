@@ -16,6 +16,20 @@ export default async function handler(req) {
 
   try {
     const kv = Redis.fromEnv();
+    // O singura comanda Redis (MGET) in loc de 10 GET-uri separate — reduce
+    // command-count Upstash de ~10x pe ruta cea mai apelata (load + polling).
+    const ALERT_KEYS = [
+      "livada:frost-alert",
+      "livada:disease-risk",
+      "livada:alert-hail",
+      "livada:alert-wind",
+      "livada:alert-heat",
+      "livada:alert-rain",
+      "livada:alert-drought",
+      "livada:alert-spray",
+      "livada:gdd:annual",
+      "livada:alert-journal",
+    ];
     const [
       frost,
       disease,
@@ -27,18 +41,9 @@ export default async function handler(req) {
       spray,
       gdd,
       journal,
-    ] = await Promise.all([
-      withTimeout(kv.get("livada:frost-alert"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:disease-risk"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-hail"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-wind"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-heat"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-rain"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-drought"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-spray"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:gdd:annual"), 5000).catch(() => null),
-      withTimeout(kv.get("livada:alert-journal"), 5000).catch(() => null),
-    ]);
+    ] = await withTimeout(kv.mget(...ALERT_KEYS), 5000).catch(() =>
+      new Array(ALERT_KEYS.length).fill(null),
+    );
 
     return Response.json(
       {

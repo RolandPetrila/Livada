@@ -89,8 +89,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | ai-status.js       | Edge    | —       | Health check servicii AI + quota usage per provider (T1)                                                                                                         |
 | ask.js             | Edge    | 28s     | Groq                                                                                                                                                             |
 | diagnose.js        | Edge    | 22s     | Gemini 2.5-flash + quota guard (T1 — blocheaza la 1000 req/zi)                                                                                                   |
-| diagnose-test.js   | Edge    | 12s     | Gemini                                                                                                                                                           |
-| frost-alert.js     | Edge    | 5s      | Redis                                                                                                                                                            |
+| frost-alert.js     | Edge    | 5s      | Redis (MGET unic pe toate cheile de alerta)                                                                                                                      |
 | identify.js        | Edge    | 20s     | Gemini + quota guard (T1) + Pl@ntNet + fallback vision                                                                                                           |
 | journal.js         | Edge    | 5s      | Redis                                                                                                                                                            |
 | meteo-cron.js      | Edge    | 25s     | Open-Meteo ICON-EU 2.2km + NASA POWER GDD + Redis + push-broadcast alerte                                                                                        |

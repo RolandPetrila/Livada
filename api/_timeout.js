@@ -1,5 +1,5 @@
 // M10: Shared timeout utilities — elimina duplicarea din API routes
-// fetchWithTimeout: importat de _ai.js, ask.js, report.js, diagnose.js, diagnose-test.js
+// fetchWithTimeout: importat de _ai.js, ask.js, report.js, diagnose.js
 // withTimeout: importat de frost-alert.js, journal.js, meteo-history.js
 
 export function withTimeout(promise, ms) {

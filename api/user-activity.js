@@ -77,7 +77,6 @@ export default async function handler(req) {
         action: String(e.action || "").substring(0, 40),
         status: String(e.status || "").substring(0, 20),
         detail: String(e.detail || "").substring(0, 100),
-        ip: req.headers?.get?.("x-real-ip") || null,
       });
     }
     if (sanitized.length === 0) {
@@ -124,7 +123,10 @@ export default async function handler(req) {
       const events = [];
       for (const r of raw || []) {
         try {
-          events.push(typeof r === "string" ? JSON.parse(r) : r);
+          const ev = typeof r === "string" ? JSON.parse(r) : r;
+          // Strip defensiv: intrarile vechi pot contine `ip` (nu mai stocam PII)
+          if (ev && typeof ev === "object" && "ip" in ev) delete ev.ip;
+          events.push(ev);
         } catch {
           // entry corupt — skip
         }

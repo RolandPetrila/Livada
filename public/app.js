@@ -4849,6 +4849,31 @@ async function triggerMeteoRefresh() {
   btn.textContent = "\uD83D\uDD04 Actualizeaza acum";
 }
 
+// FT3: cache in-memory partajat pentru /api/frost-alert. La load, initDashboardAzi
+// si checkAlerts cer aceleasi date CONCURENT — cache pe rezultat (TTL 60s) plus
+// dedup pe promisiunea in-flight (altfel apelurile concurente tot dubleaza fetch-ul).
+var _frostAlertCache = null,
+  _frostAlertCacheTs = 0,
+  _frostAlertInflight = null;
+async function fetchFrostAlertData(force) {
+  var now = Date.now();
+  if (!force && _frostAlertCache && now - _frostAlertCacheTs < 60000)
+    return _frostAlertCache;
+  if (_frostAlertInflight) return _frostAlertInflight;
+  _frostAlertInflight = (async function () {
+    try {
+      var res = await fetchWithTimeout("/api/frost-alert", {}, 5000);
+      if (!res.ok) throw new Error("frost-alert " + res.status);
+      _frostAlertCache = await res.json();
+      _frostAlertCacheTs = Date.now();
+      return _frostAlertCache;
+    } finally {
+      _frostAlertInflight = null;
+    }
+  })();
+  return _frostAlertInflight;
+}
+
 async function checkAlerts() {
   // Afiseaza cache-ul existent imediat (vizibil chiar offline)
   try {
@@ -4861,9 +4886,7 @@ async function checkAlerts() {
 
   if (!navigator.onLine) return;
   try {
-    var res = await fetchWithTimeout("/api/frost-alert", {}, 5000);
-    if (!res.ok) return;
-    var data = await res.json();
+    var data = await fetchFrostAlertData(false);
     localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify(data));
     applyAlerts(data);
     if (data.journal) renderAlertJournal(data.journal);
@@ -5257,9 +5280,7 @@ async function initDashboardAzi() {
 
   // B3: Fetch-uri PARALELE — meteo foloseste cache-ul in-memory (T8)
   var [alertRes, meteoRes] = await Promise.allSettled([
-    navigator.onLine
-      ? fetchWithTimeout("/api/frost-alert", {}, 5000)
-      : Promise.reject("offline"),
+    navigator.onLine ? fetchFrostAlertData(false) : Promise.reject("offline"),
     navigator.onLine ? fetchMeteoData(false) : Promise.reject("offline"),
   ]);
 
@@ -5267,8 +5288,8 @@ async function initDashboardAzi() {
   var _frostDataForCalendar = null; // refolosit in F6.1
   if (alerteEl) {
     var html = "";
-    if (alertRes.status === "fulfilled" && alertRes.value.ok) {
-      var data = await alertRes.value.json();
+    if (alertRes.status === "fulfilled" && alertRes.value) {
+      var data = alertRes.value;
       _frostDataForCalendar = data;
       var frostRelevant =
         data.frost && data.frost.active && !isAlertStale(data.frost);
@@ -5493,7 +5514,7 @@ async function initDashboardAzi() {
   // F3.2 — Nopti consecutive cu frost — UI indicator
   if (alertRes.status === "fulfilled" && alertRes.value) {
     try {
-      // Re-read — alertRes.value a fost deja consumat prin .json(), dar datele sunt in 'data' de mai sus
+      // Datele frost sunt deja in 'data' (alertRes.value) de mai sus
     } catch (e) {}
   }
 

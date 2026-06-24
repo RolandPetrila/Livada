@@ -5,7 +5,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const { mockKv, mockFromEnv } = vi.hoisted(() => {
-  const mockKv = { get: vi.fn() };
+  const mockKv = { mget: vi.fn() };
   return { mockKv, mockFromEnv: vi.fn(() => mockKv) };
 });
 
@@ -36,8 +36,10 @@ describe("frost-alert API route", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockFromEnv.mockReturnValue(mockKv);
-    // Default: all Redis keys return null
-    mockKv.get.mockResolvedValue(null);
+    // Default: MGET returneaza null pentru fiecare cheie ceruta
+    mockKv.mget.mockImplementation((...keys) =>
+      Promise.resolve(keys.map(() => null)),
+    );
   });
 
   it("OPTIONS returns 204", async () => {
@@ -76,12 +78,16 @@ describe("frost-alert API route", () => {
       { key: "frost:2026-04-14", type: "frost", message: "test" },
     ];
 
-    // Mock Redis.get to return different data based on key
-    mockKv.get.mockImplementation((key) => {
-      if (key === "livada:frost-alert") return Promise.resolve(frostData);
-      if (key === "livada:alert-journal") return Promise.resolve(journalData);
-      return Promise.resolve(null);
-    });
+    // Mock MGET: intoarce un array in ordinea cheilor cerute
+    mockKv.mget.mockImplementation((...keys) =>
+      Promise.resolve(
+        keys.map((key) => {
+          if (key === "livada:frost-alert") return frostData;
+          if (key === "livada:alert-journal") return journalData;
+          return null;
+        }),
+      ),
+    );
 
     const res = await handler(fakeReq("GET"));
     const body = await res.json();
@@ -107,18 +113,19 @@ describe("frost-alert API route", () => {
     expect(body.journal).toEqual([]);
   });
 
-  it("handles individual Redis key timeout gracefully", async () => {
-    // All .get() calls have .catch(() => null), so individual failures return null
-    mockKv.get.mockRejectedValue(new Error("timeout"));
+  it("handles Redis MGET timeout gracefully", async () => {
+    // MGET are .catch(() => array de null), deci esecul intoarce defaults
+    mockKv.mget.mockRejectedValue(new Error("timeout"));
     const res = await handler(fakeReq("GET"));
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.frost).toEqual({ active: false });
   });
 
-  it("reads all Redis keys in parallel", async () => {
+  it("reads all Redis keys in a single MGET", async () => {
     await handler(fakeReq("GET"));
-    const keys = mockKv.get.mock.calls.map((c) => c[0]);
+    expect(mockKv.mget).toHaveBeenCalledTimes(1);
+    const keys = mockKv.mget.mock.calls[0];
     expect(keys).toContain("livada:frost-alert");
     expect(keys).toContain("livada:disease-risk");
     expect(keys).toContain("livada:alert-hail");
