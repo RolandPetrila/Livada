@@ -1,6 +1,6 @@
 import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
 import { fetchWithTimeout } from "./_timeout.js";
-import { callCerebras } from "./_ai.js";
+import { callCerebras, CEREBRAS_MODEL } from "./_ai.js";
 
 // Edge Runtime: raspunsul este trimis imediat, fara sa astepte I/O background
 export const config = { runtime: "edge" };
@@ -136,7 +136,7 @@ Specia curenta: ${species || "general (toate speciile)"}`;
             "Nu am putut genera un raspuns.";
           log("cerebras ok (preferModel)");
           return Response.json(
-            { answer, _model: "cerebras-llama-3.3-70b" },
+            { answer, _model: "Cerebras " + CEREBRAS_MODEL },
             { headers: corsHeaders(req) },
           );
         }
@@ -227,9 +227,9 @@ Specia curenta: ${species || "general (toate speciile)"}`;
               {
                 answer,
                 _fallback: true,
-                _fallbackModel: "cerebras-llama-3.3-70b",
+                _fallbackModel: "Cerebras " + CEREBRAS_MODEL,
                 _fallbackReason: fallbackReason || "Groq indisponibil",
-                _model: "cerebras-llama-3.3-70b",
+                _model: "Cerebras " + CEREBRAS_MODEL,
               },
               { headers: corsHeaders(req) },
             );

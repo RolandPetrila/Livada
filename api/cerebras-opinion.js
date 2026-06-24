@@ -3,6 +3,7 @@
 // venite de la Vercel Edge. Runtime Node (IP datacenter normal) are sanse sa treaca.
 // Forma `export default { fetch }` = Web Standard pe Node (NU `export default function` → 504).
 import { corsHeaders, handleOptions, checkOrigin, rateLimit } from "./_auth.js";
+import { CEREBRAS_MODEL } from "./_ai.js";
 
 export const config = { maxDuration: 15 };
 
@@ -78,8 +79,7 @@ export default {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          // Cerebras a retras llama-3.3-70b; gpt-oss-120b e disponibil pe cheia curenta
-          model: "gpt-oss-120b",
+          model: CEREBRAS_MODEL,
           messages: [
             { role: "system", content: sys },
             { role: "user", content: userMsg },
@@ -103,7 +103,7 @@ export default {
       const answer =
         j.choices?.[0]?.message?.content || "Nu am putut genera un raspuns.";
       return Response.json(
-        { answer, _model: "Cerebras gpt-oss-120b" },
+        { answer, _model: "Cerebras " + CEREBRAS_MODEL },
         { headers: corsHeaders(req) },
       );
     } catch (e) {

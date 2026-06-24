@@ -55,8 +55,9 @@ export default async function handler(req) {
       { headers: corsHeaders(req) },
     );
   } catch (err) {
+    console.error("push-subscribe error:", err?.message);
     return Response.json(
-      { error: "Eroare salvare subscription", detail: err?.message },
+      { error: "Eroare salvare subscription" },
       { status: 500, headers: corsHeaders(req) },
     );
   }

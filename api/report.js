@@ -1,6 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
-import { callCerebras } from "./_ai.js";
+import { callCerebras, CEREBRAS_MODEL } from "./_ai.js";
 import { fetchWithTimeout } from "./_timeout.js";
 
 export const config = { runtime: "edge" };
@@ -204,7 +204,7 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
               meteoDays: meteoEntries.length,
               generatedAt: Date.now(),
               _fallback: true,
-              _fallbackModel: "cerebras-llama-3.3-70b",
+              _fallbackModel: "Cerebras " + CEREBRAS_MODEL,
               _fallbackReason: fallbackReason || "Groq indisponibil",
             };
             await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});

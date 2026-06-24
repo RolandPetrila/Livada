@@ -34,6 +34,7 @@ vi.mock("../api/_timeout.js", () => ({
 
 vi.mock("../api/_ai.js", () => ({
   callCerebras: mockCallCerebras,
+  CEREBRAS_MODEL: "gpt-oss-120b",
 }));
 
 import handler from "../api/report.js";
@@ -273,7 +274,7 @@ describe("report API route", () => {
     const res = await handler(fakeReq("POST"));
     const body = await res.json();
     expect(body.report).toBe("Cerebras report");
-    expect(body._fallbackModel).toBe("cerebras-llama-3.3-70b");
+    expect(body._fallbackModel).toBe("Cerebras gpt-oss-120b");
   });
 
   it("returns 503 when all AI providers fail", async () => {

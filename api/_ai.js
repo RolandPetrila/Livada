@@ -2,6 +2,10 @@
 // Importat de: diagnose.js, identify.js
 import { fetchWithTimeout } from "./_timeout.js";
 
+// Model Cerebras curent — centralizat ca sa nu existe label drift in UI.
+// Cerebras a retras llama-3.3-70b; gpt-oss-120b e disponibil pe cheia curenta.
+export const CEREBRAS_MODEL = "gpt-oss-120b";
+
 // Normalizeaza input la array de {base64, mimeType}.
 // Accepta:
 //  - (base64String, mimeTypeString)
@@ -108,10 +112,9 @@ export function callCerebras(
         Accept: "application/json",
       },
       body: JSON.stringify({
-        // Cerebras a retras llama-3.3-70b; gpt-oss-120b e disponibil. NOTA: pe Edge runtime
-        // Cerebras e blocat de Cloudflare (403) — fallback-ul adanc Edge ramane nesigur;
-        // a doua parere reala merge prin api/cerebras-opinion.js (Node).
-        model: "gpt-oss-120b",
+        // NOTA: pe Edge runtime Cerebras e blocat de Cloudflare (403) — fallback-ul adanc
+        // Edge ramane nesigur; a doua parere reala merge prin api/cerebras-opinion.js (Node).
+        model: CEREBRAS_MODEL,
         messages,
         max_tokens: maxTokens,
         temperature,

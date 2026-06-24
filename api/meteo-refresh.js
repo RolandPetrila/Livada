@@ -21,8 +21,9 @@ export default async function handler(req) {
   }
 
   try {
-    // Apeleaza meteo-cron pe aceeasi origine, cu CRON_SECRET server-side
-    const origin = new URL(req.url).origin;
+    // Apeleaza meteo-cron cu CRON_SECRET server-side. Origine HARDCODATA (nu derivata
+    // din req.url) ca CRON_SECRET sa nu poata pleca vreodata catre un Host falsificat.
+    const origin = "https://livada-mea-psi.vercel.app";
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 22000);
     const res = await fetch(`${origin}/api/meteo-cron`, {
