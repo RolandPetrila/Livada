@@ -140,9 +140,12 @@ Specia curenta: ${species || "general (toate speciile)"}`;
             { headers: corsHeaders(req) },
           );
         }
-        cerebrasErr = "HTTP " + cerebrasRes.status;
         const eb = await cerebrasRes.text().catch(() => "");
-        log(`cerebras non-ok ${cerebrasRes.status}: ${eb.substring(0, 160)}`);
+        cerebrasErr =
+          "HTTP " +
+          cerebrasRes.status +
+          (eb ? ": " + eb.replace(/\s+/g, " ").substring(0, 180) : "");
+        log(`cerebras non-ok ${cerebrasRes.status}: ${eb.substring(0, 200)}`);
       } catch (e) {
         cerebrasErr = e.message || "eroare";
         log(`cerebras preferModel err: ${e.message}`);
