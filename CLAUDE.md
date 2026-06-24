@@ -6,7 +6,7 @@ Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, ju
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
 **Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo + Imbunatatiri Prognoze (4/4) + V4 Integrare (I1 cost + I2 stoc + I3 treeId) | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 17 routes + 4 utilitare
-**Ultima actualizare:** 2026-06-24 (V4 I2+I3 commit `c55899c` + **fix critic `/api/photos` 504 total** commit `362141f`: galeria era complet rupta — `export default function` pe Node = handler legacy → Response ignorat → 504; fix = `export default { fetch }` Web Standard + cache Redis. Prod LIVE verde, 189/189 teste.)
+**Ultima actualizare:** 2026-06-24 (**Fortify full P0** commit `731b126`: sters `diagnose-test.js` mort, oprit leak IP in `user-activity.js`, `frost-alert` 10×get→1×mget + cache/dedup in-flight in `app.js`. Raport: `.claude-outputs/fortify/2026-06-24_034604/`. Backlog P1-P3 in `plan.md`. Anterior: V4 I2+I3 `c55899c` + fix `/api/photos` 504 `362141f`. Prod LIVE verde, 189/189 teste.)
 
 ## Arhitectura
 
