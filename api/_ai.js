@@ -108,7 +108,10 @@ export function callCerebras(
         Accept: "application/json",
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b",
+        // Cerebras a retras llama-3.3-70b; gpt-oss-120b e disponibil. NOTA: pe Edge runtime
+        // Cerebras e blocat de Cloudflare (403) — fallback-ul adanc Edge ramane nesigur;
+        // a doua parere reala merge prin api/cerebras-opinion.js (Node).
+        model: "gpt-oss-120b",
         messages,
         max_tokens: maxTokens,
         temperature,

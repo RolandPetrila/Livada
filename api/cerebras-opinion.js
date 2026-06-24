@@ -14,31 +14,6 @@ export default {
     if (req.method === "OPTIONS") return handleOptions(req);
     const originErr = checkOrigin(req);
     if (originErr) return originErr;
-
-    // DIAG temporar: lista modelelor disponibile pt cheia curenta (?models=1)
-    try {
-      const u = new URL(req.url, "http://x");
-      if (u.searchParams.get("models") === "1") {
-        const mr = await fetch("https://api.cerebras.ai/v1/models", {
-          headers: {
-            Authorization: `Bearer ${process.env.CEREBRAS_API_KEY || ""}`,
-            "User-Agent": UA,
-            Accept: "application/json",
-          },
-        });
-        const mb = await mr.text();
-        return Response.json(
-          { status: mr.status, body: mb.substring(0, 1200) },
-          { headers: corsHeaders(req) },
-        );
-      }
-    } catch (e) {
-      return Response.json(
-        { error: String(e && e.message) },
-        { headers: corsHeaders(req) },
-      );
-    }
-
     if (req.method !== "POST")
       return Response.json(
         { error: "Metoda nepermisa" },

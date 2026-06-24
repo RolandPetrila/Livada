@@ -3944,7 +3944,7 @@ async function askAlternative() {
   var _t0Alt = Date.now();
   try {
     var res = await authFetch(
-      "/api/ask",
+      "/api/cerebras-opinion",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -3952,7 +3952,6 @@ async function askAlternative() {
           question: question,
           species: SPECIES[activeSpeciesId] || activeSpeciesId,
           context: context,
-          preferModel: "cerebras",
         }),
       },
       65000,
@@ -3963,16 +3962,13 @@ async function askAlternative() {
       altRow.innerHTML =
         '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">' +
         '<div style="font-size:0.78rem;color:var(--text-dim);font-weight:600;margin-bottom:6px;">' +
-        (data._altFallback
-          ? escapeHtml(data._model || "Groq llama-3.3-70b") +
-            " (a doua parere — Cerebras indisponibil)"
-          : "Cerebras llama-3.3-70b") +
-        ":</div>" +
+        escapeHtml(data._model || "Cerebras gpt-oss-120b") +
+        " (a doua parere):</div>" +
         sanitizeAI(data.answer || "") +
         "</div>";
       renderModelIndicator(
         "askAltRow",
-        data._model || "cerebras-llama-3.3-70b",
+        data._model || "Cerebras gpt-oss-120b",
         false,
         Date.now() - _t0Alt,
       );
