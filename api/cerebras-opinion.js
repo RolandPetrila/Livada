@@ -103,7 +103,8 @@ export default {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b",
+          // Cerebras a retras llama-3.3-70b; gpt-oss-120b e disponibil pe cheia curenta
+          model: "gpt-oss-120b",
           messages: [
             { role: "system", content: sys },
             { role: "user", content: userMsg },
@@ -127,7 +128,7 @@ export default {
       const answer =
         j.choices?.[0]?.message?.content || "Nu am putut genera un raspuns.";
       return Response.json(
-        { answer, _model: "cerebras-llama-3.3-70b" },
+        { answer, _model: "Cerebras gpt-oss-120b" },
         { headers: corsHeaders(req) },
       );
     } catch (e) {
