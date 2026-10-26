@@ -6,7 +6,7 @@ Dashboard PWA (Progressive Web App) pentru livada semi-comerciala din Nadlac, ju
 100+ pomi, 20 specii/soiuri, proprietar Roland Petrila.
 
 **Status sesiuni:** S1-S17 complete + Runda 9+10 + V2 (F0-F6) + V3 Sprint Audit Alerte Meteo + Imbunatatiri Prognoze (4/4) + V4 Integrare (I1 cost + I2 stoc + I3 treeId) | **HTML:** ~12,500 linii (minified, 760 KB) | **API:** 17 routes + 4 utilitare
-**Ultima actualizare:** 2026-06-24 (**Fortify full P0** commit `731b126`: sters `diagnose-test.js` mort, oprit leak IP in `user-activity.js`, `frost-alert` 10×get→1×mget + cache/dedup in-flight in `app.js`. Raport: `.claude-outputs/fortify/2026-06-24_034604/`. Backlog P1-P3 in `plan.md`. Anterior: V4 I2+I3 `c55899c` + fix `/api/photos` 504 `362141f`. Prod LIVE verde, 189/189 teste.)
+**Ultima actualizare:** 2026-10-27 (**Remediere AI completa** commit `01eab00`: toate AI-urile erau cazute — Groq llama retrase, Cerebras 402, GitHub Models retras, grok-2-vision retras, diagnostic 504 — + cron meteo orar oprit de GitHub. Detalii + dovezi: `ISSUES.md`, plan: `99_Plan_vs_Audit/PLAN_REMEDIERE_AI_20261027.md`. Prod verificat e2e, 263/263 teste. Anterior 2026-06-24: **Fortify full P0** commit `731b126`: sters `diagnose-test.js` mort, oprit leak IP in `user-activity.js`, `frost-alert` 10×get→1×mget + cache/dedup in-flight in `app.js`. Raport: `.claude-outputs/fortify/2026-06-24_034604/`. Backlog P1-P3 in `plan.md`. Anterior: V4 I2+I3 `c55899c` + fix `/api/photos` 504 `362141f`. Prod LIVE verde, 189/189 teste.)
 
 ## Arhitectura
 
@@ -52,6 +52,8 @@ Roland.md        — Cerinte originale Roland (C1-C5, toate implementate)
 git add [fisiere] && git commit -m "feat: ..." && git push origin main && vercel --prod
 ```
 
+**Cron meteo (2026-10-27):** 12 Vercel Cron zilnice in `vercel.json` (`/api/meteo-cron?slot=HH`, ore pare UTC; Hobby = max 1×/zi per cron, ±59 min) = baza permanenta. GitHub Actions orar (`meteo-cron.yml`) e bonus: GitHub il dezactiveaza dupa 60 zile fara commit (repo public) → reactivare: `gh workflow enable "Meteo Cron - Actualizare alerte orar"`. Push-ul are dedup 24h, deci rularile duble nu trimit notificari duble.
+
 **Automatizari build (ruleaza automat pe Vercel la fiecare deploy):**
 
 - `scripts/update-deploy-date.js` — actualizeaza automat `DEPLOY_DATE`, `DEPLOY_TIME`, `DEPLOY_INFO` in `public/app.js` si `BUILD_DATE` in `public/sw.js`. Foloseste timestamp Europe/Bucharest + `VERCEL_GIT_COMMIT_MESSAGE` ca DEPLOY_INFO. **Zero interventie manuala — NU mai edita manual aceste constante.** Trigger via `vercel.json` → `"buildCommand": "npm run build"`.
@@ -86,11 +88,11 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 | Route              | Runtime | Timeout | Serviciu extern                                                                                                                                                  |
 | ------------------ | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ai-status.js       | Edge    | —       | Health check servicii AI + quota usage per provider (T1)                                                                                                         |
-| ask.js             | Edge    | 28s     | Groq                                                                                                                                                             |
-| diagnose.js        | Edge    | 22s     | Gemini 2.5-flash + quota guard (T1 — blocheaza la 1000 req/zi)                                                                                                   |
+| ai-status.js       | Edge    | —       | Cheie prezenta + **stare reala** (`ai-health:<provider>` scris de rute la fiecare apel) + quota per provider                                                     |
+| ask.js             | Edge+flux | 50s   | Groq GPT-OSS 120B → Groq Qwen 3.8 → Gemini 3.5 Flash-Lite; `preferModel:"second"` = a doua parere (Gemini intai)                                                 |
+| diagnose.js        | Edge+flux | 55s   | Gemini 2.5 Flash (thinking 0) → 3.5 Flash-Lite → cheia 2 → Pixtral → Grok 4.3; Pl@ntNet paralel; Plant.id DOAR daca AI + Pl@ntNet pica                         |
 | frost-alert.js     | Edge    | 5s      | Redis (MGET unic pe toate cheile de alerta)                                                                                                                      |
-| identify.js        | Edge    | 20s     | Gemini + quota guard (T1) + Pl@ntNet + fallback vision                                                                                                           |
+| identify.js        | Edge+flux | 50s   | Pl@ntNet + acelasi lant vision ca diagnose (`visionSteps` din `_ai.js`)                                                                                          |
 | journal.js         | Edge    | 5s      | Redis                                                                                                                                                            |
 | meteo-cron.js      | Edge    | 25s     | Open-Meteo ICON-EU 2.2km + NASA POWER GDD + Redis + push-broadcast alerte                                                                                        |
 | meteo-history.js   | Edge    | 5s      | Redis                                                                                                                                                            |
@@ -100,25 +102,26 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | push-broadcast.js  | Node.js | 10s     | web-push VAPID — trimite alerte la subscriberi (chemat de meteo-cron)                                                                                            |
 | push-public-key.js | Edge    | —       | Expune VAPID_PUBLIC_KEY pentru frontend subscribe                                                                                                                |
 | push-subscribe.js  | Edge    | 5s      | Salveaza/elimina subscription in Redis SET (livada:push-subs)                                                                                                    |
-| report.js          | Edge    | 25s     | Redis + Groq                                                                                                                                                     |
+| report.js          | Edge+flux | 55s   | Redis + acelasi lant text ca ask.js (cache 1h)                                                                                                                   |
 | user-activity.js   | Edge    | 5s      | Redis activity log (POST batch events, GET ultimele 200; rolling 1000)                                                                                           |
 | \_auth.js          | Utility | —       | CORS/origin/rateLimit Redis+in-memory fallback                                                                                                                   |
-| \_ai.js            | Utility | —       | Wrapper comun Gemini + OpenAI-compat + Cerebras                                                                                                                  |
-| \_quota.js         | Utility | —       | Quota tracking per provider (T1) — INCR Redis + limits free tier                                                                                                 |
+| \_ai.js            | Utility | —       | **Sursa unica modele** (`MODELS`/`LABELS`) + Groq/Gemini/OpenAI-compat + `runChain` (fallback cu buget de timp) + `textSteps`/`visionSteps`                     |
+| \_stream.js        | Utility | —       | `streamJson` — raspuns keep-alive (spatii + JSON) ca Edge sa nu loveasca limita de 25 s la primul byte; erorile vin in corp `{error}` cu status 200              |
+| \_quota.js         | Utility | —       | `isOverQuota` (citire) + `recordAiCalls` (cota + ultima stare reala, 1 pipeline) + `getQuotaStatus`/`getHealthStatus`                                            |
 | \_timeout.js       | Utility | —       | fetchWithTimeout helper                                                                                                                                          |
 
 ## Variabile de mediu (Vercel Dashboard)
 
 - `LIVADA_API_TOKEN` — autentificare API (dezactivata momentan, rate limit activ)
-- `GROQ_API_KEY` — AI ask + raport (llama-4-maverick primary, llama-3.3-70b-versatile fallback)
-- `GOOGLE_AI_API_KEY` — AI diagnostic foto + identificare specii — Gemini 2.5-flash primary (diagnose.js, identify.js)
-- `GOOGLE_AI_API_KEY_2` — a doua cheie Gemini 2.5-flash — fallback #1 cand prima atinge quota/esueaza (identify.js:35, diagnose.js:418)
-- `MISTRAL_API_KEY` — Pixtral-12b vision (api.mistral.ai) — fallback #2 in lantul foto (identify.js:57, diagnose.js:453)
-- `XAI_API_KEY` — Grok-2-vision (api.x.ai) — fallback #3 in lantul foto (identify.js:80, diagnose.js:488)
-- `GITHUB_MODELS_TOKEN` — GitHub Models (inferenta AI gratuita) — fallback vision aditional (identify.js, diagnose.js, ai-status.js)
-- `CEREBRAS_API_KEY` — Cerebras llama-3.3-70b (gratuit) — alternativa AI text la cerere (\_ai.js, ai-status.js)
+- `GROQ_API_KEY` — AI ask + raport (`openai/gpt-oss-120b` primar, `qwen/qwen3.8-27b` rezerva — vezi `MODELS` in `api/_ai.js`)
+- `GOOGLE_AI_API_KEY` — Gemini 2.5 Flash (diagnose/identify primar) + 3.5 Flash-Lite (rezerva vision + text)
+- `GOOGLE_AI_API_KEY_2` — Gemini cheia 2: 3.5 Flash-Lite pt „a doua parere”/text + 2.5 Flash rezerva vision
+- `MISTRAL_API_KEY` — Pixtral-12B vision (rezerva in lantul foto)
+- `XAI_API_KEY` — Grok 4.3 vision (ultimul fallback foto; lent 9–17 s; credite gratuite finite [INCERT permanenta])
+- ~~`GITHUB_MODELS_TOKEN`~~ — **NEFOLOSIT**: GitHub Models retras 30.07.2026. Poate fi sters din Vercel.
+- ~~`CEREBRAS_API_KEY`~~ — **NEFOLOSIT**: Cerebras fara plan gratuit (402, verificat 2026-10-27). Poate fi sters din Vercel.
 - `PLANTNET_API_KEY` — Pl@ntNet — identificare specii din poza (identify.js, diagnose.js)
-- `PLANT_ID_API_KEY` — Plant.id — identificare + diagnostic boli (v2 free tier; v3 cere abonament) (diagnose.js)
+- `PLANT_ID_API_KEY` — Plant.id v2 — DOAR ultima sursa in diagnose (50 credite TOTALE, 21 ramase la 2026-10-27)
 - `PLANT_ID_USE_V3` — flag config: "1" reactiveaza Plant.id API v3 (cere abonament Plus/Premium); default v2 free (diagnose.js:27)
 - `UPSTASH_REDIS_REST_URL` — Redis cache meteo + jurnal sync
 - `UPSTASH_REDIS_REST_TOKEN` — Redis auth
@@ -128,9 +131,9 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 ## Dependente externe
 
-- Groq API (llama-4-scout primary, llama-3.3-70b-versatile fallback) — raspunsuri AI intrebari + rapoarte
-- Cerebras (llama-3.3-70b, gratuit) — alternativa AI la cerere (F4.2)
-- Google Gemini (gemini-2.5-pro → flash fallback) — diagnostic foto AI
+- Groq API (GPT-OSS 120B primar, Qwen 3.8 rezerva) — raspunsuri AI intrebari + rapoarte
+- Google Gemini (2.5 Flash + 3.5 Flash-Lite) — diagnostic/identificare foto + a doua parere + rezerva text
+- **Verificare modele:** furnizorii retrag modele fara aviz (2026: 5 retrageri). La „AI indisponibil” → ruleaza GET `/models` la furnizor + schimba DOAR `MODELS` in `api/_ai.js`. Panoul AI (portocaliu = ultimul apel a esuat) arata problema.
 - Open-Meteo (gratuit, fara API key) — date meteo curente + prognoza 5 zile (apparent_temp, cloud_cover, dew_point)
 - Yr.no / met.no (gratuit, fara API key) — sursa meteo secundara pentru comparare (F3.3)
 - Upstash Redis (@upstash/redis 1.38.0) — persistenta jurnal + meteo history cache
