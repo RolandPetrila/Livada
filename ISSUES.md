@@ -90,6 +90,7 @@
   - #11 Plant.id apelat doar cand AI vision + Pl@ntNet au picat.
   - #13 `CLAUDE.md` actualizat (tabel API, env vars, cron, verificare modele).
   - Teste: 263/263 (rescrise pe router de fetch). CI GitHub verde. UI verificat cu Playwright (Intreaba + a doua parere, 0 erori consola).
+- **2026-10-27 — commit `b6640f6`:** `ai-health` salveaza doar categoria erorii (`HTTP 4xx`/`timeout`), nu corpul brut (ruta `ai-status` e publica). Streaming verificat pe prod: primul byte la 0,4–0,6 s, raspuns complet la ~10 s (si cu compresie gzip/br).
 - **Ramas / neverificat:**
   - #12 limite quota reale — doar in Google AI Studio (necesita login Roland). Guard-ul e oricum doar soft: la 429 lantul trece mai departe.
   - Pixtral + Grok 4.3 verificate cu cheile LOCALE (OK), nu cu cheile din Vercel (nu au fost atinse pe prod — apar „inca netestat” in panou pana la primul fallback real).
