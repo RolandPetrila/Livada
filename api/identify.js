@@ -1,8 +1,10 @@
 import { corsHeaders, handleOptions, checkOrigin, rateLimit } from "./_auth.js";
-import { callGemini, callOpenAIVision, geminiText, openaiText } from "./_ai.js";
+import { runChain, visionSteps } from "./_ai.js";
 import { fetchWithTimeout } from "./_timeout.js";
-import { checkAndIncrementQuota } from "./_quota.js";
+import { isOverQuota, recordAiCalls } from "./_quota.js";
+import { streamJson } from "./_stream.js";
 
+// Edge Runtime + raspuns in flux (vezi _stream.js) — lantul de fallback poate depasi 25 s
 export const config = { runtime: "edge" };
 
 const AI_PROMPT = `Esti botanist si agronom expert. Analizeaza fotografia si identifica planta.
@@ -27,81 +29,8 @@ Raspunde DIRECT cu structura de mai jos, fara introducere sau text generic inain
 
 Daca nu poti identifica cu certitudine, spune ce grupuri/familii sunt posibile.`;
 
-const IDENTIFY_OPTS = { maxTokens: 8192, temperature: 0.2 };
-
-// ── Fallback AI chain ─────────────────────────────────────────────────────────
-async function tryAiFallbacks(base64, mimeType, log) {
-  // Fallback 1: Gemini 2.5-flash cheia 2
-  const KEY2 = process.env.GOOGLE_AI_API_KEY_2;
-  if (KEY2) {
-    try {
-      const res = await callGemini(
-        KEY2,
-        "gemini-2.5-flash",
-        base64,
-        mimeType,
-        AI_PROMPT,
-        14000,
-        IDENTIFY_OPTS,
-      );
-      log(`gemini key2 → ${res.status}`);
-      if (res.ok) {
-        const text = geminiText(await res.json());
-        if (text) return { text, model: "gemini-2.5-flash (key2)" };
-      }
-    } catch (e) {
-      log(`gemini key2 err: ${e.name}`);
-    }
-  }
-
-  const MISTRAL = process.env.MISTRAL_API_KEY;
-  if (MISTRAL) {
-    try {
-      const res = await callOpenAIVision(
-        "https://api.mistral.ai/v1/chat/completions",
-        MISTRAL,
-        "pixtral-12b-2409",
-        base64,
-        mimeType,
-        AI_PROMPT,
-        18000,
-        IDENTIFY_OPTS,
-      );
-      log(`pixtral → ${res.status}`);
-      if (res.ok) {
-        const text = openaiText(await res.json());
-        if (text) return { text, model: "pixtral-12b (mistral)" };
-      }
-    } catch (e) {
-      log(`pixtral err: ${e.name}`);
-    }
-  }
-
-  const XAI = process.env.XAI_API_KEY;
-  if (XAI) {
-    try {
-      const res = await callOpenAIVision(
-        "https://api.x.ai/v1/chat/completions",
-        XAI,
-        "grok-2-vision-1212",
-        base64,
-        mimeType,
-        AI_PROMPT,
-        14000,
-        IDENTIFY_OPTS,
-      );
-      log(`grok → ${res.status}`);
-      if (res.ok) {
-        const text = openaiText(await res.json());
-        if (text) return { text, model: "grok-2-vision-1212" };
-      }
-    } catch (e) {
-      log(`grok err: ${e.name}`);
-    }
-  }
-
-  return null;
-}
+const IDENTIFY_OPTS = { maxTokens: 4096, temperature: 0.2, thinkingBudget: 0 };
+const BUDGET_MS = 50000; // frontend asteapta 65 s
 
 export default async function handler(req) {
   if (req.method === "OPTIONS") return handleOptions(req);
@@ -118,12 +47,6 @@ export default async function handler(req) {
 
   const limitErr = await rateLimit(req, 10); // AI endpoint — limita 10 req/min
   if (limitErr) return limitErr;
-
-  // V3 T1 — quota guard Gemini (identify foloseste si Gemini ca fallback)
-  // Cota Gemini: daca e atinsa NU mai blocam — identify foloseste Pl@ntNet + GPT-4.1
-  // ca surse principale; sarim doar Gemini. (2026-06-24)
-  const geminiQuota = await checkAndIncrementQuota("gemini");
-  const geminiBlocked = !geminiQuota.ok;
 
   const t0 = Date.now();
   const log = (msg) => console.log(`[identify] ${msg} t+${Date.now() - t0}ms`);
@@ -191,143 +114,82 @@ export default async function handler(req) {
     );
   }
 
-  // ── Pl@ntNet + Gemini IN PARALEL ─────────────────────────────────────────
+  // ── Pl@ntNet + lant AI IN PARALEL ─────────────────────────────────────────
   const PLANTNET_KEY = process.env.PLANTNET_API_KEY;
-  const GEMINI_KEY1 = process.env.GOOGLE_AI_API_KEY;
-  const GH_TOKEN = process.env.GITHUB_MODELS_TOKEN;
 
-  const [plantnetSettled, geminiSettled, gpt41Settled] =
-    await Promise.allSettled([
-      // Pl@ntNet — identificare specie specializata
+  return streamJson(corsHeaders(req), async () => {
+    const attempts = [];
+    // Cota Gemini atinsa → sarim doar Gemini 2.5 Flash; Pl@ntNet + restul lantului raman active
+    const geminiBlocked = await isOverQuota("gemini");
+
+    const [plantnetSettled, aiChain] = await Promise.all([
       PLANTNET_KEY
         ? fetchWithTimeout(
             `https://my-api.plantnet.org/v2/identify/all?api-key=${PLANTNET_KEY}&lang=ro&nb-results=5&include-related-images=false`,
             { method: "POST", body: formData },
             18000,
+          ).then(
+            (v) => ({ status: "fulfilled", value: v }),
+            (e) => ({ status: "rejected", reason: e }),
           )
-        : Promise.reject(new Error("no plantnet key")),
-
-      // Gemini 2.5-flash — identificare AI cu descriere in romana
-      GEMINI_KEY1 && !geminiBlocked
-        ? callGemini(
-            GEMINI_KEY1,
-            "gemini-2.5-flash",
-            base64,
-            mimeType,
-            AI_PROMPT,
-            18000,
-            IDENTIFY_OPTS,
-          )
-        : Promise.reject(
-            new Error(geminiBlocked ? "gemini-quota-blocked" : "no gemini key"),
-          ),
-
-      // GPT-4.1 via GitHub Models (gratuit, 50-150 req/zi)
-      GH_TOKEN
-        ? callOpenAIVision(
-            "https://models.inference.ai.azure.com/chat/completions",
-            GH_TOKEN,
-            "gpt-4.1",
-            base64,
-            mimeType,
-            AI_PROMPT,
-            18000,
-            IDENTIFY_OPTS,
-          )
-        : Promise.reject(new Error("no github token")),
+        : Promise.resolve({ status: "rejected", reason: new Error("no plantnet key") }),
+      runChain(visionSteps(base64, mimeType, AI_PROMPT, IDENTIFY_OPTS, { geminiBlocked, primaryMs: 20000 }), {
+        deadline: t0 + BUDGET_MS,
+        log,
+        attempts,
+      }),
     ]);
 
-  // ── Extrage rezultate Pl@ntNet ────────────────────────────────────────────
-  let plantnetResults = [];
-  if (plantnetSettled.status === "fulfilled" && plantnetSettled.value.ok) {
-    try {
-      const data = await plantnetSettled.value.json();
-      plantnetResults = (data.results || []).slice(0, 3).map((r) => ({
-        scientificName: r.species?.scientificNameWithoutAuthor || "",
-        commonNames: (r.species?.commonNames || []).slice(0, 2),
-        family: r.species?.family?.scientificNameWithoutAuthor || "",
-        score: Math.round((r.score || 0) * 100),
-      }));
-      log(`plantnet ok — ${plantnetResults.length} rezultate`);
-    } catch {
-      log("plantnet parse err");
-    }
-  } else {
-    if (plantnetSettled.status === "rejected") {
-      log(
-        `plantnet err: ${plantnetSettled.reason?.name} — ${plantnetSettled.reason?.message}`,
-      );
-    } else {
-      const status = plantnetSettled.value?.status;
-      let errBody = "";
+    // ── Extrage rezultate Pl@ntNet ──────────────────────────────────────────
+    let plantnetResults = [];
+    if (plantnetSettled.status === "fulfilled" && plantnetSettled.value.ok) {
       try {
-        errBody = await plantnetSettled.value.text();
-      } catch {}
-      log(`plantnet HTTP ${status}: ${errBody.substring(0, 120)}`);
-    }
-  }
-
-  // ── Extrage rezultate Gemini ──────────────────────────────────────────────
-  let aiResult = null;
-  if (geminiSettled.status === "fulfilled" && geminiSettled.value.ok) {
-    try {
-      const text = geminiText(await geminiSettled.value.json());
-      if (text) {
-        aiResult = { text, model: "gemini-2.5-flash" };
-        log("gemini ok");
+        const data = await plantnetSettled.value.json();
+        plantnetResults = (data.results || []).slice(0, 3).map((r) => ({
+          scientificName: r.species?.scientificNameWithoutAuthor || "",
+          commonNames: (r.species?.commonNames || []).slice(0, 2),
+          family: r.species?.family?.scientificNameWithoutAuthor || "",
+          score: Math.round((r.score || 0) * 100),
+        }));
+        log(`plantnet ok — ${plantnetResults.length} rezultate`);
+      } catch {
+        log("plantnet parse err");
       }
-    } catch {
-      log("gemini parse err");
-    }
-  } else {
-    log(
-      `gemini key1 skip: ${geminiSettled.reason?.name || geminiSettled.value?.status}`,
-    );
-  }
-
-  // ── Extrage rezultate GPT-4.1 (parallel primary) ──────────────────────────
-  let gpt41Result = null;
-  if (gpt41Settled.status === "fulfilled" && gpt41Settled.value.ok) {
-    try {
-      const text = openaiText(await gpt41Settled.value.json());
-      if (text) {
-        gpt41Result = { text, model: "gpt-4.1 (github)" };
-        log("gpt-4.1 ok");
+      attempts.push({ provider: "plantnet", ok: true });
+    } else if (PLANTNET_KEY) {
+      let err;
+      if (plantnetSettled.status === "rejected") {
+        err = `${plantnetSettled.reason?.name} — ${plantnetSettled.reason?.message}`;
+      } else {
+        let errBody = "";
+        try {
+          errBody = await plantnetSettled.value.text();
+        } catch {}
+        err = `HTTP ${plantnetSettled.value?.status}: ${errBody.substring(0, 120)}`;
       }
-    } catch {
-      log("gpt-4.1 parse err");
+      log(`plantnet err: ${err}`);
+      attempts.push({ provider: "plantnet", ok: false, err });
     }
-  } else {
-    log(
-      `gpt-4.1 skip: ${gpt41Settled.reason?.name || gpt41Settled.value?.status}`,
-    );
-  }
 
-  // Daca Gemini a picat, foloseste GPT-4.1 (rulat deja in paralel)
-  if (!aiResult) aiResult = gpt41Result;
+    await recordAiCalls(attempts);
 
-  // ── Daca ambele primary AI au picat, incearca fallback-uri ────────────────
-  if (!aiResult) {
-    log("primary AI failed — try AI fallbacks");
-    aiResult = await tryAiFallbacks(base64, mimeType, log);
-  }
+    const aiResult = aiChain ? { text: aiChain.text, model: aiChain.label } : null;
 
-  // ── Daca nici Pl@ntNet nici AI nu au raspuns — eroare ────────────────────
-  if (!plantnetResults.length && !aiResult) {
-    return Response.json(
-      {
+    // ── Daca nici Pl@ntNet nici AI nu au raspuns — eroare ──────────────────
+    if (!plantnetResults.length && !aiResult) {
+      return {
         error:
           "Identificarea a esuat. Incearca o poza mai clara, cu planta in prim-plan.",
-      },
-      { status: 503, headers: corsHeaders(req) },
-    );
-  }
+      };
+    }
 
-  log(
-    `done — plantnet:${plantnetResults.length} ai:${aiResult ? aiResult.model : "none"}`,
-  );
-  return Response.json(
-    { results: plantnetResults, ai: aiResult },
-    { headers: corsHeaders(req) },
-  );
+    log(`done — plantnet:${plantnetResults.length} ai:${aiResult ? aiResult.model : "none"}`);
+    return {
+      results: plantnetResults,
+      ai: aiResult,
+      ...(aiChain && aiChain.index > 0
+        ? { _fallback: true, _fallbackModel: aiChain.label, _fallbackReason: aiChain.reason }
+        : {}),
+    };
+  });
 }

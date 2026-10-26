@@ -1,8 +1,11 @@
 import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
-import { callGemini, callOpenAIVision, geminiText, openaiText } from "./_ai.js";
+import { runChain, visionSteps } from "./_ai.js";
 import { fetchWithTimeout } from "./_timeout.js";
-import { checkAndIncrementQuota } from "./_quota.js";
+import { isOverQuota, recordAiCalls } from "./_quota.js";
+import { streamJson } from "./_stream.js";
 
+// Edge Runtime + raspuns in flux (vezi _stream.js) — diagnosticul dureaza 14–21 s doar pe
+// modelul principal; fara streaming orice fallback lovea limita Edge de 25 s (504).
 export const config = { runtime: "edge" };
 
 const MAX_IMAGES = 4;
@@ -143,6 +146,10 @@ function formatPlantNetResult(data) {
   }
 }
 
+const BUDGET_MS = 55000; // frontend asteapta 65 s
+
+const DIAG_OPTS = { maxTokens: 6144, temperature: 0.3, thinkingBudget: 0 };
+
 export default async function handler(req) {
   if (req.method === "OPTIONS") return handleOptions(req);
 
@@ -158,22 +165,6 @@ export default async function handler(req) {
 
   const limitErr = await rateLimit(req, 10);
   if (limitErr) return limitErr;
-
-  const GEMINI_KEY1 = process.env.GOOGLE_AI_API_KEY;
-  if (!GEMINI_KEY1) {
-    return Response.json(
-      { error: "GOOGLE_AI_API_KEY lipsa" },
-      { status: 500, headers: corsHeaders(req) },
-    );
-  }
-
-  // Cota Gemini (cheia 1): daca e atinsa NU mai blocam tot — sarim Gemini si folosim
-  // modelele vision de rezerva (GPT-4.1 / cheia 2 / Mistral / xAI), cu notificare. (2026-06-24)
-  const geminiQuota = await checkAndIncrementQuota("gemini");
-  const geminiBlocked = !geminiQuota.ok;
-  const fallbackReason = geminiBlocked
-    ? "Limita zilnica Gemini atinsa (1000/zi)"
-    : "Gemini indisponibil temporar";
 
   const t0 = Date.now();
   let images, species;
@@ -271,290 +262,105 @@ Raspunde STRUCTURAT in romana:
 
 Fii concis, practic, cu informatii pe care un pomicultor le poate aplica imediat.`;
 
-  // ── AI5: Gemini 2.5-pro → flash fallback ─
-  async function callGeminiProWithFallback(key, imgs, pr, timeout, opts) {
-    const proRes = await callGemini(
-      key,
-      "gemini-2.5-pro-preview-03-25",
-      imgs,
-      null,
-      pr,
-      5000,
-      opts,
-    );
-    if (proRes.ok) {
-      log("gemini-2.5-pro key1 ok");
-      return proRes;
-    }
-    log(`gemini-2.5-pro quota/fail (${proRes.status}), fallback flash`);
-    return callGemini(key, "gemini-2.5-flash", imgs, null, pr, timeout, opts);
-  }
+  return streamJson(corsHeaders(req), async () => {
+    const deadline = t0 + BUDGET_MS;
+    const attempts = [];
+    // Cota Gemini (cheia 1) atinsa → sarim doar Gemini 2.5 Flash, restul lantului ramane activ
+    const geminiBlocked = await isOverQuota("gemini");
 
-  // ── Plant.id + Pl@ntNet + Gemini + GPT-4.1 IN PARALEL ─────────────────────
-  const PLANT_ID_KEY = process.env.PLANT_ID_API_KEY;
-  const PLANTNET_KEY = process.env.PLANTNET_API_KEY;
-  const GH_TOKEN = process.env.GITHUB_MODELS_TOKEN;
+    const PLANT_ID_KEY = process.env.PLANT_ID_API_KEY;
+    const PLANTNET_KEY = process.env.PLANTNET_API_KEY;
 
-  const [geminiSettled, plantIdSettled, plantNetSettled, gpt41Settled] =
-    await Promise.allSettled([
-      geminiBlocked
-        ? Promise.reject(new Error("gemini-quota-blocked"))
-        : callGeminiProWithFallback(GEMINI_KEY1, images, prompt, 20000, {
-            maxTokens: 8192,
-          }),
-      PLANT_ID_KEY
-        ? callPlantId(PLANT_ID_KEY, images, 18000)
-        : Promise.reject(new Error("no plant.id key")),
+    // Pl@ntNet (identificare specie, gratuit) IN PARALEL cu lantul vision
+    const [plantNetSettled, vision] = await Promise.all([
       PLANTNET_KEY
-        ? callPlantNet(PLANTNET_KEY, images, 12000)
-        : Promise.reject(new Error("no plantnet key")),
-      GH_TOKEN
-        ? callOpenAIVision(
-            "https://models.inference.ai.azure.com/chat/completions",
-            GH_TOKEN,
-            "gpt-4.1",
-            images,
-            null,
-            prompt,
-            18000,
-            { maxTokens: 8192 },
+        ? callPlantNet(PLANTNET_KEY, images, 12000).then(
+            (v) => ({ status: "fulfilled", value: v }),
+            (e) => ({ status: "rejected", reason: e }),
           )
-        : Promise.reject(new Error("no github token")),
+        : Promise.resolve({ status: "rejected", reason: new Error("no plantnet key") }),
+      runChain(
+        visionSteps(images, null, prompt, DIAG_OPTS, { geminiBlocked, primaryMs: 30000 }),
+        { deadline, log, attempts },
+      ),
     ]);
 
-  // ── Plant.id ───────────────────────────────────────────────────────────────
-  let plantIdInfo = null;
-  if (plantIdSettled.status === "fulfilled" && plantIdSettled.value?.res?.ok) {
-    try {
-      const pidJson = await plantIdSettled.value.res.json();
-      plantIdInfo = formatPlantIdResult(pidJson, plantIdSettled.value.version);
-      log(
-        `plant.id ${plantIdSettled.value.version} ok — diseases:${!!plantIdInfo?.hasDiseases}`,
-      );
-    } catch {
-      log("plant.id parse err");
-    }
-  } else {
-    const status =
-      plantIdSettled.value?.res?.status || plantIdSettled.reason?.message;
-    log(`plant.id skip: ${String(status).substring(0, 80)}`);
-  }
-
-  // ── Pl@ntNet ───────────────────────────────────────────────────────────────
-  let plantNetInfo = null;
-  if (plantNetSettled.status === "fulfilled" && plantNetSettled.value.ok) {
-    try {
-      const pnJson = await plantNetSettled.value.json();
-      plantNetInfo = formatPlantNetResult(pnJson);
-      log(`plantnet ok — sp:${plantNetInfo?.identifiedSpecies?.name || "?"}`);
-    } catch {
-      log("plantnet parse err");
-    }
-  } else {
-    log(
-      `plantnet skip: ${plantNetSettled.value?.status || plantNetSettled.reason?.message}`,
-    );
-  }
-
-  const idPrefix = (plantIdInfo?.prefix || "") + (plantNetInfo?.prefix || "");
-
-  // ── Gemini primary ─────────────────────────────────────────────────────────
-  let diagnosisText = null;
-  let diagnosisMeta = {};
-
-  if (geminiSettled.status === "fulfilled" && geminiSettled.value.ok) {
-    try {
-      const text = geminiText(await geminiSettled.value.json());
-      if (text) {
-        diagnosisText = text;
-        log("gemini ok (pro or flash key1)");
-      }
-    } catch {
-      log("gemini parse err");
-    }
-  } else {
-    log(
-      `gemini key1 failed: ${geminiSettled.reason?.name || geminiSettled.value?.status}`,
-    );
-  }
-
-  // GPT-4.1 (rulat in paralel)
-  if (!diagnosisText) {
-    if (gpt41Settled.status === "fulfilled" && gpt41Settled.value.ok) {
+    // ── Pl@ntNet ───────────────────────────────────────────────────────────
+    let plantNetInfo = null;
+    if (plantNetSettled.status === "fulfilled" && plantNetSettled.value.ok) {
       try {
-        const text = openaiText(await gpt41Settled.value.json());
-        if (text) {
-          diagnosisText = text;
-          diagnosisMeta._fallback = true;
-          diagnosisMeta._fallbackReason = fallbackReason;
-          diagnosisMeta._model = "GPT-4.1";
-          log("gpt-4.1 ok (primary parallel)");
-        }
+        plantNetInfo = formatPlantNetResult(await plantNetSettled.value.json());
+        log(`plantnet ok — sp:${plantNetInfo?.identifiedSpecies?.name || "?"}`);
       } catch {
-        log("gpt-4.1 parse err");
+        log("plantnet parse err");
       }
-    } else {
-      log(
-        `gpt-4.1 skip: ${gpt41Settled.reason?.name || gpt41Settled.value?.status}`,
-      );
+      attempts.push({ provider: "plantnet", ok: !!plantNetInfo });
+    } else if (PLANTNET_KEY) {
+      const err = plantNetSettled.value?.status || plantNetSettled.reason?.message;
+      log(`plantnet skip: ${err}`);
+      attempts.push({ provider: "plantnet", ok: false, err: String(err) });
     }
-  }
 
-  if (diagnosisText) {
-    const finalText = idPrefix ? idPrefix + diagnosisText : diagnosisText;
-    if (plantIdInfo) diagnosisMeta._plantid = true;
-    if (plantNetInfo) diagnosisMeta._plantnet = true;
-    diagnosisMeta._model = diagnosisMeta._model || "Gemini 2.5-flash";
-    diagnosisMeta._imagesCount = images.length;
-    log(`ok — model=${diagnosisMeta._model} images=${images.length}`);
-    return Response.json(
-      { diagnosis: finalText, ...diagnosisMeta },
-      { headers: corsHeaders(req) },
-    );
-  }
-
-  // ── Fallback 2: Gemini 2.5-flash cheia 2 ─────────────────────────────────
-  const GEMINI_KEY2 = process.env.GOOGLE_AI_API_KEY_2;
-  if (GEMINI_KEY2) {
-    try {
-      const res = await callGemini(
-        GEMINI_KEY2,
-        "gemini-2.5-flash",
-        images,
-        null,
-        prompt,
-        20000,
-        { maxTokens: 8192 },
-      );
-      log(`gemini-2.5-flash key2 → ${res.status}`);
-      if (res.ok) {
-        const text = geminiText(await res.json());
-        if (text) {
-          return Response.json(
-            {
-              diagnosis: idPrefix ? idPrefix + text : text,
-              _fallback: true,
-              _fallbackReason: fallbackReason,
-              _model: "Gemini 2.5-flash (key2)",
-              _plantid: !!plantIdInfo,
-              _plantnet: !!plantNetInfo,
-              _imagesCount: images.length,
-            },
-            { headers: corsHeaders(req) },
-          );
+    // ── Plant.id — DOAR daca nici AI-ul vision, nici Pl@ntNet n-au raspuns.
+    // Free tier = 50 credite TOTAL (nu se reincarca); v2 identifica doar specia, ca Pl@ntNet.
+    let plantIdInfo = null;
+    if (!vision && !plantNetInfo && PLANT_ID_KEY && deadline - Date.now() > 6000) {
+      try {
+        const pid = await callPlantId(PLANT_ID_KEY, images, Math.min(12000, deadline - Date.now() - 1000));
+        if (pid.res.ok) {
+          plantIdInfo = formatPlantIdResult(await pid.res.json(), pid.version);
+          log(`plant.id ${pid.version} ok — diseases:${!!plantIdInfo?.hasDiseases}`);
         }
+        attempts.push({ provider: "plant_id", ok: pid.res.ok, err: pid.res.ok ? "" : String(pid.res.status) });
+      } catch (e) {
+        log(`plant.id err: ${e.name}`);
+        attempts.push({ provider: "plant_id", ok: false, err: e.name });
       }
-    } catch (e) {
-      log(`gemini key2 err: ${e.name}`);
     }
-  }
 
-  // ── Fallback 4: Pixtral-12B via Mistral ──────────────────────────────────
-  const MISTRAL_KEY = process.env.MISTRAL_API_KEY;
-  if (MISTRAL_KEY) {
-    try {
-      const res = await callOpenAIVision(
-        "https://api.mistral.ai/v1/chat/completions",
-        MISTRAL_KEY,
-        "pixtral-12b-2409",
-        images,
-        null,
-        prompt,
-        20000,
-        { maxTokens: 8192 },
-      );
-      log(`pixtral-12b → ${res.status}`);
-      if (res.ok) {
-        const text = openaiText(await res.json());
-        if (text)
-          return Response.json(
-            {
-              diagnosis: idPrefix ? idPrefix + text : text,
+    await recordAiCalls(attempts);
+
+    const idPrefix = (plantIdInfo?.prefix || "") + (plantNetInfo?.prefix || "");
+    const meta = {
+      _plantid: !!plantIdInfo,
+      _plantnet: !!plantNetInfo,
+      _imagesCount: images.length,
+    };
+
+    if (vision) {
+      log(`ok — model=${vision.label} images=${images.length}`);
+      return {
+        diagnosis: idPrefix ? idPrefix + vision.text : vision.text,
+        _model: vision.label,
+        ...(vision.index > 0
+          ? {
               _fallback: true,
-              _fallbackReason: fallbackReason,
-              _model: "Pixtral-12B",
-              _plantid: !!plantIdInfo,
-              _plantnet: !!plantNetInfo,
-              _imagesCount: images.length,
-            },
-            { headers: corsHeaders(req) },
-          );
-      }
-    } catch (e) {
-      log(`pixtral err: ${e.name}`);
+              _fallbackModel: vision.label,
+              _fallbackReason: vision.reason || "Modelul principal indisponibil",
+            }
+          : {}),
+        ...meta,
+      };
     }
-  }
 
-  // ── Fallback 5: Grok-2-vision (xAI) ──────────────────────────────────────
-  const XAI_KEY = process.env.XAI_API_KEY;
-  if (XAI_KEY) {
-    try {
-      const res = await callOpenAIVision(
-        "https://api.x.ai/v1/chat/completions",
-        XAI_KEY,
-        "grok-2-vision-1212",
-        images,
-        null,
-        prompt,
-        20000,
-        { maxTokens: 8192 },
-      );
-      log(`grok-2-vision → ${res.status}`);
-      if (res.ok) {
-        const text = openaiText(await res.json());
-        if (text)
-          return Response.json(
-            {
-              diagnosis: idPrefix ? idPrefix + text : text,
-              _fallback: true,
-              _fallbackReason: fallbackReason,
-              _model: "Grok-2-vision",
-              _plantid: !!plantIdInfo,
-              _plantnet: !!plantNetInfo,
-              _imagesCount: images.length,
-            },
-            { headers: corsHeaders(req) },
-          );
-      }
-    } catch (e) {
-      log(`grok err: ${e.name}`);
-    }
-  }
-
-  // ── Toate AI vision au picat — returneaza identificare specie + nota onesta ─
-  if (idPrefix) {
-    log("returning ID-only (all vision AI failed)");
-    let note = "_Diagnostic AI detaliat indisponibil momentan._";
-    if (plantIdInfo?.hasDiseases) {
-      note =
-        "_Plant.id v3 a detectat bolile listate mai sus. Diagnostic AI extins indisponibil momentan._";
-    } else if (
-      plantIdInfo?.identifiedSpecies ||
-      plantNetInfo?.identifiedSpecies
-    ) {
-      note =
-        "_Specia a fost identificata de Plant.id/Pl@ntNet. Diagnosticul AI de boli si tratamente este indisponibil momentan — incearca din nou peste cateva minute._";
-    }
-    return Response.json(
-      {
+    // ── Toate AI vision au picat — returneaza identificare specie + nota onesta ─
+    if (idPrefix) {
+      log("returning ID-only (all vision AI failed)");
+      const note = plantIdInfo?.hasDiseases
+        ? "_Plant.id a detectat bolile listate mai sus. Diagnostic AI extins indisponibil momentan._"
+        : "_Specia a fost identificata. Diagnosticul AI de boli si tratamente este indisponibil momentan — incearca din nou peste cateva minute._";
+      return {
         diagnosis: idPrefix + "\n" + note,
         _fallback: true,
-        _fallbackReason: fallbackReason,
-        _plantid: !!plantIdInfo,
-        _plantnet: !!plantNetInfo,
+        _fallbackReason: "Toate modelele AI vision indisponibile",
         _model: plantIdInfo ? "Plant.id" : "Pl@ntNet",
-        _imagesCount: images.length,
-      },
-      { headers: corsHeaders(req) },
-    );
-  }
+        ...meta,
+      };
+    }
 
-  log("toate fallback-urile epuizate");
-  return Response.json(
-    {
-      error:
-        "Serviciul AI de diagnostic este indisponibil momentan. Incearca din nou.",
-    },
-    { status: 503, headers: corsHeaders(req) },
-  );
+    log("toate fallback-urile epuizate");
+    return {
+      error: "Serviciul AI de diagnostic este indisponibil momentan. Incearca din nou.",
+    };
+  });
 }

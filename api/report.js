@@ -1,9 +1,13 @@
 import { Redis } from "@upstash/redis";
 import { corsHeaders, handleOptions, rateLimit, checkOrigin } from "./_auth.js";
-import { callCerebras, CEREBRAS_MODEL } from "./_ai.js";
-import { fetchWithTimeout } from "./_timeout.js";
+import { runChain, textSteps } from "./_ai.js";
+import { recordAiCalls } from "./_quota.js";
+import { streamJson } from "./_stream.js";
 
+// Edge Runtime + raspuns in flux (vezi _stream.js) — raportul lung + fallback pot depasi 25 s
 export const config = { runtime: "edge" };
+
+const BUDGET_MS = 55000; // frontend asteapta 65 s
 
 export default async function handler(req) {
   if (req.method === "OPTIONS") return handleOptions(req);
@@ -21,16 +25,28 @@ export default async function handler(req) {
   const limitErr = await rateLimit(req, 10); // M8: AI endpoint — limita 10 req/min
   if (limitErr) return limitErr;
 
-  const GROQ_KEY = process.env.GROQ_API_KEY;
-  if (!GROQ_KEY) {
-    return Response.json(
-      { error: "GROQ_API_KEY lipsa" },
-      { status: 500, headers: corsHeaders(req) },
-    );
-  }
-
+  // Jurnalul local trimis din dispozitiv (optional)
+  let localJournal = "";
   try {
-    const kv = Redis.fromEnv();
+    const body = await req.json();
+    if (body.localJournal) {
+      localJournal =
+        "\n\nJurnal local (din dispozitiv):\n" +
+        String(body.localJournal).substring(0, 5000);
+    }
+  } catch {}
+
+  const t0 = Date.now();
+  const logR = (msg) => console.log(`[report] ${msg} t+${Date.now() - t0}ms`);
+
+  return streamJson(corsHeaders(req), async () => {
+    let kv;
+    try {
+      kv = Redis.fromEnv();
+    } catch (err) {
+      console.error("API report error:", err?.message);
+      return { error: "Baza de date (Redis) nu este configurata." };
+    }
     const year = new Date().getFullYear();
 
     // Cache check: returneaza raportul cached daca e mai recent de 1h SI jurnalul nu s-a schimbat
@@ -44,21 +60,19 @@ export default async function handler(req) {
       const cacheIsStale =
         journalLastUpdate && Number(journalLastUpdate) > cached.generatedAt;
       if (ageMs < 3600_000 && !cacheIsStale) {
-        console.log(`[report] cache hit, age ${Math.round(ageMs / 60000)}min`);
-        return Response.json(
-          { ...cached, _cached: true },
-          { headers: corsHeaders(req) },
-        );
+        logR(`cache hit, age ${Math.round(ageMs / 60000)}min`);
+        return { ...cached, _cached: true };
       }
-      if (cacheIsStale)
-        console.log("[report] cache stale — jurnal actualizat dupa generare");
+      if (cacheIsStale) logR("cache stale — jurnal actualizat dupa generare");
     }
 
-    const journal = (await kv.get("livada:journal")) || [];
-    const meteoHistory = (await kv.get("livada:meteo:history")) || {};
+    const [journal, meteoHistory] = await Promise.all([
+      kv.get("livada:journal").catch(() => null),
+      kv.get("livada:meteo:history").catch(() => null),
+    ]);
 
     // Filter journal for current year
-    const yearEntries = journal.filter(
+    const yearEntries = (journal || []).filter(
       (e) => e.date && e.date.startsWith(String(year)),
     );
     const journalSummary =
@@ -67,7 +81,7 @@ export default async function handler(req) {
         : "Nicio interventie inregistrata in " + year + ".";
 
     // Filter meteo for current year
-    const meteoEntries = Object.entries(meteoHistory).filter(([d]) =>
+    const meteoEntries = Object.entries(meteoHistory || {}).filter(([d]) =>
       d.startsWith(String(year)),
     );
     const meteoSummary =
@@ -79,17 +93,6 @@ export default async function handler(req) {
             )
             .join("\n")
         : "Nicio inregistrare meteo in " + year + ".";
-
-    // Also include locally-sent journal from the request body
-    let localJournal = "";
-    try {
-      const body = await req.json();
-      if (body.localJournal) {
-        localJournal =
-          "\n\nJurnal local (din dispozitiv):\n" +
-          String(body.localJournal).substring(0, 5000);
-      }
-    } catch {}
 
     let todayRo = "";
     try {
@@ -106,7 +109,7 @@ export default async function handler(req) {
       {
         role: "system",
         content: `Esti consultant pomicol expert. Data de azi: ${todayRo}. Genereaza un RAPORT ANUAL detaliat pentru o livada din Nadlac, judetul Arad:
-- 100+ pomi, 17 specii (cires, visin, cais, piersic, prun, migdal, par, mar, zmeur, mur, afin, alun, rodiu)
+- 100+ pomi, 20 specii (cires, visin, cais, piersic, prun, migdal, par, mar, zmeur, mur, afin, alun, rodiu, kaki)
 - Proprietar: profesor, abordare semi-comerciala
 - Clima: continental, ierni reci, veri calde, sol cernoziom pH 7-8
 
@@ -126,150 +129,29 @@ Scrie in romana, profesional dar accesibil. Fii specific si practic.`,
       },
     ];
 
-    // M10: foloseste fetchWithTimeout din _timeout.js
-    const callGroqReport = (model, ms) =>
-      fetchWithTimeout(
-        "https://api.groq.com/openai/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${GROQ_KEY}`,
-          },
-          body: JSON.stringify({
-            model,
-            messages: reportMessages,
-            max_tokens: 8192,
-            temperature: 0.4,
-          }),
-        },
-        ms,
-      );
-
-    const tAI = Date.now();
-    const logR = (msg) =>
-      console.log(`[report] ${msg} t+${Date.now() - tAI}ms`);
-
-    // Primary: llama-4-scout (Llama 4, disponibil free tier Groq)
-    logR("start → llama-4-scout");
-    let groqRes = await callGroqReport(
-      "meta-llama/llama-4-scout-17b-16e-instruct",
-      23000,
+    const s = textSteps(reportMessages, { temperature: 0.4 });
+    const attempts = [];
+    const r = await runChain(
+      [s.groqPrimary, s.groqFallback, s.geminiLite2, s.geminiLite1],
+      { deadline: t0 + BUDGET_MS, log: logR, attempts },
     );
-    let usedFallback = false;
-    let activeModel = "llama-4-scout";
-    let fallbackReason = "";
-
-    if (!groqRes.ok && groqRes.status !== 401 && groqRes.status !== 403) {
-      fallbackReason =
-        groqRes.status === 429
-          ? "Groq suprasolicitat (limita atinsa)"
-          : "Groq indisponibil temporar";
-      logR(`llama-4-scout failed ${groqRes.status} → llama-3.3-70b`);
-      let anyFbOk = false;
-
-      // Fallback 1: llama-3.3-70b-versatile
-      try {
-        groqRes = await callGroqReport("llama-3.3-70b-versatile", 20000);
-        anyFbOk = groqRes.ok;
-        if (anyFbOk) {
-          usedFallback = true;
-          activeModel = "llama-3.3-70b-versatile";
-          logR("llama-3.3-70b ok");
-        }
-      } catch (e) {
-        logR(`llama-3.3-70b err: ${e.message}`);
-      }
-
-      // Fallback 2: Cerebras
-      if (!anyFbOk) {
-        logR("all groq failed → Cerebras");
-        try {
-          const cerebrasRes = await callCerebras(
-            reportMessages,
-            20000,
-            8192,
-            0.4,
-          );
-          if (cerebrasRes.ok) {
-            const result = await cerebrasRes.json();
-            const report =
-              result.choices?.[0]?.message?.content ||
-              "Nu am putut genera raportul.";
-            logR("cerebras ok");
-            const payload = {
-              report,
-              year,
-              journalCount: yearEntries.length,
-              meteoDays: meteoEntries.length,
-              generatedAt: Date.now(),
-              _fallback: true,
-              _fallbackModel: "Cerebras " + CEREBRAS_MODEL,
-              _fallbackReason: fallbackReason || "Groq indisponibil",
-            };
-            await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});
-            return Response.json(payload, { headers: corsHeaders(req) });
-          }
-        } catch (cerebrasErr) {
-          logR(`cerebras err: ${cerebrasErr.message}`);
-        }
-        return Response.json(
-          { error: "Serviciul AI nu a raspuns. Incearca din nou." },
-          { status: 503, headers: corsHeaders(req) },
-        );
-      }
-    }
-
-    if (!groqRes.ok) {
-      const errText = await groqRes.text().catch(() => "");
-      logR(`Groq eroare ${groqRes.status}: ${errText.substring(0, 200)}`);
-      if (groqRes.status === 429)
-        return Response.json(
-          { error: "AI suprasolicitat. Incearca din nou." },
-          { status: 503, headers: corsHeaders(req) },
-        );
-      return Response.json(
-        { error: "AI indisponibil. Incearca din nou." },
-        { status: 503, headers: corsHeaders(req) },
-      );
-    }
-
-    const result = await groqRes.json();
-    const report =
-      result.choices?.[0]?.message?.content || "Nu am putut genera raportul.";
-    logR(`ok model=${activeModel} tokens=${result.usage?.total_tokens || "?"}`);
+    await recordAiCalls(attempts);
+    if (!r) return { error: "Serviciul AI nu a raspuns. Incearca din nou." };
 
     const payload = {
-      report,
+      report: r.text,
       year,
       journalCount: yearEntries.length,
       meteoDays: meteoEntries.length,
       generatedAt: Date.now(),
-      ...(usedFallback
-        ? {
-            _fallback: true,
-            _fallbackModel: activeModel,
-            _fallbackReason: fallbackReason,
-          }
+      _model: r.label,
+      ...(r.index > 0
+        ? { _fallback: true, _fallbackModel: r.label, _fallbackReason: r.reason }
         : {}),
     };
 
     // Salveaza in cache Redis cu TTL 1h
     await kv.set(cacheKey, payload, { ex: 3600 }).catch(() => {});
-
-    return Response.json(payload, { headers: corsHeaders(req) });
-  } catch (err) {
-    const msg = err.message || String(err);
-    if (msg.includes("UPSTASH")) {
-      return Response.json(
-        { error: "Vercel KV nu este configurat." },
-        { status: 503, headers: corsHeaders(req) },
-      );
-    }
-    console.error("API report error:", err);
-    return Response.json(
-      { error: "Eroare la procesare. Incercati din nou." },
-      { status: 500, headers: corsHeaders(req) },
-    );
-  }
+    return payload;
+  });
 }

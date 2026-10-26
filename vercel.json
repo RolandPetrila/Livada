@@ -3,8 +3,52 @@
   "outputDirectory": "public",
   "crons": [
     {
-      "path": "/api/meteo-cron",
+      "path": "/api/meteo-cron?slot=00",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=02",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=04",
+      "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=06",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=08",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=10",
+      "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=12",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=14",
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=16",
+      "schedule": "0 16 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=18",
+      "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=20",
+      "schedule": "0 20 * * *"
+    },
+    {
+      "path": "/api/meteo-cron?slot=22",
+      "schedule": "0 22 * * *"
     }
   ],
   "rewrites": [

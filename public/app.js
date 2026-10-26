@@ -1975,7 +1975,7 @@ function showAppInfo() {
         "</tr></thead><tbody>" +
         rows +
         "</tbody></table>" +
-        '<div style="font-size:0.68rem;color:var(--text-dim);margin-top:8px;line-height:1.45;">Estimări numărate de aplicație, resetate zilnic (ora României). Nu includ Mistral/Grok (fallback foto), Vercel Blob, Redis.</div>';
+        '<div style="font-size:0.68rem;color:var(--text-dim);margin-top:8px;line-height:1.45;">Estimări numărate de aplicație, resetate zilnic (ora României). Numără apelurile reale (inclusiv cele eșuate). Nu includ Vercel Blob, Redis.</div>';
     })
     .catch(function () {
       var box = document.getElementById("appInfoQuota");
@@ -2441,25 +2441,30 @@ function authHeaders(extra) {
 // ====== AI STATUS PANEL ======
 // F2.1 — AI_PANEL_CONFIG extins cu frost
 var AI_PANEL_CONFIG = {
+  // Modele verificate live 2026-10-27 (sursa unica backend: api/_ai.js MODELS/LABELS)
   ask: [
-    { name: "Groq llama-4-scout", key: "groq", role: "primar" },
-    { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
-    { name: "Cerebras gpt-oss-120b", key: "cerebras", role: "rezerva" },
+    { name: "Groq GPT-OSS 120B", key: "groq", role: "primar" },
+    { name: "Groq Qwen 3.8", key: "groq", role: "rezerva" },
+    { name: "Gemini 3.5 Flash-Lite", key: "gemini_lite", role: "a doua parere" },
   ],
   diagnose: [
-    { name: "Gemini 2.5-flash", key: "gemini", role: "primar" },
-    { name: "GPT-4.1", key: "github_models", role: "paralel" },
-    { name: "Plant.id v3", key: "plant_id", role: "bonus" },
+    { name: "Gemini 2.5 Flash", key: "gemini", role: "primar" },
+    { name: "Gemini 3.5 Flash-Lite", key: "gemini_lite", role: "rezerva" },
+    { name: "Pixtral-12B", key: "mistral", role: "rezerva" },
+    { name: "Grok 4.3", key: "xai", role: "rezerva" },
+    { name: "PlantNet", key: "plantnet", role: "specie" },
+    { name: "Plant.id", key: "plant_id", role: "doar la nevoie" },
   ],
   identify: [
     { name: "PlantNet", key: "plantnet", role: "primar" },
-    { name: "Gemini 2.5-flash", key: "gemini", role: "paralel" },
-    { name: "GPT-4.1", key: "github_models", role: "paralel" },
+    { name: "Gemini 2.5 Flash", key: "gemini", role: "paralel" },
+    { name: "Gemini 3.5 Flash-Lite", key: "gemini_lite", role: "rezerva" },
+    { name: "Pixtral-12B", key: "mistral", role: "rezerva" },
   ],
   report: [
-    { name: "Groq llama-4-scout", key: "groq", role: "primar" },
-    { name: "Groq llama-3.3-70b", key: "groq", role: "rezerva" },
-    { name: "Cerebras gpt-oss-120b", key: "cerebras", role: "rezerva" },
+    { name: "Groq GPT-OSS 120B", key: "groq", role: "primar" },
+    { name: "Groq Qwen 3.8", key: "groq", role: "rezerva" },
+    { name: "Gemini 3.5 Flash-Lite", key: "gemini_lite", role: "rezerva" },
   ],
   frost: [
     { name: "Open-Meteo", key: "meteo", role: "sursa" },
@@ -2515,7 +2520,9 @@ function renderModelIndicator(containerId, modelName, isFallback, ms) {
 
 var _aiStatus = null,
   _aiStatusTs = 0,
-  _aiQuota = null;
+  _aiQuota = null,
+  _aiHealth = null,
+  _aiKeys = null;
 
 function loadAiStatus() {
   if (_aiStatus && Date.now() - _aiStatusTs < 600000)
@@ -2529,6 +2536,8 @@ function loadAiStatus() {
         _aiStatus = data.status;
         _aiStatusTs = Date.now();
         _aiQuota = data.quota || null;
+        _aiHealth = data.health && !data.health.error ? data.health : null;
+        _aiKeys = data.keys || null;
       }
       return _aiStatus || {};
     })
@@ -2578,17 +2587,29 @@ function renderAiStatusPanel(tabName, anchorId, position) {
       'border-radius:8px;border:1px solid var(--border);font-size:0.72rem;">' +
       '<span style="color:var(--text-dim);font-weight:600;margin-right:2px;flex-shrink:0;">AI:</span>';
     config.forEach(function (ai) {
-      var active = status[ai.key] !== false;
+      // Verde = ultimul apel real a mers (sau inca netestat); portocaliu = ultimul apel a esuat;
+      // rosu = cheie lipsa. Starea vine din apelurile reale (api/ai-status → ai-health).
+      var hasKey = _aiKeys ? _aiKeys[ai.key] !== false : status[ai.key] !== false;
+      var h = _aiHealth ? _aiHealth[ai.key] : null;
+      var failed = hasKey && h && h.ok === false;
+      var dot = !hasKey ? "#ef4444" : failed ? "#f59e0b" : "#22c55e";
+      var tip = !hasKey
+        ? "Cheie lipsa"
+        : failed
+          ? "Ultimul apel a esuat" + (h.err ? ": " + h.err : "")
+          : h && h.ok
+            ? "Functional (ultimul apel OK)"
+            : "Activ (inca netestat)";
       html +=
         '<span style="display:flex;align-items:center;gap:3px;opacity:' +
-        (active ? "1" : "0.5") +
+        (hasKey ? "1" : "0.5") +
         ";" +
         'background:var(--bg);padding:2px 7px;border-radius:12px;border:1px solid var(--border);">' +
         '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;' +
         "background:" +
-        (active ? "#22c55e" : "#ef4444") +
+        dot +
         ';" title="' +
-        (active ? "Activ" : "Cheie lipsa") +
+        escapeHtml(tip) +
         '"></span>' +
         escapeHtml(ai.name) +
         '<span style="color:var(--text-dim);margin-left:2px;font-size:0.68rem;">[' +
@@ -3657,7 +3678,7 @@ async function runDiagnose(_legacyInput, species, prefix) {
       resultEl.innerHTML = sizeInfo + sanitizeAI(data.diagnosis || "");
       // F1.3+F2.2 — log + model indicator
       var _diagModel =
-        data._model || (data._fallback ? "GPT-4.1" : "Gemini 2.5-flash");
+        data._model || "Gemini 2.5 Flash";
       livadaLog(
         "AI",
         "diagnose",
@@ -3788,14 +3809,14 @@ async function submitAsk() {
     } else {
       if (data._fallback)
         showAiFallback(
-          data._fallbackModel || "llama-3.3-70b-versatile",
+          data._fallbackModel || "model de rezerva",
           data._fallbackReason,
         );
       r.innerHTML = sanitizeAI(data.answer || "");
       // F1.3+F2.2 — log + model indicator
       var _askModel =
         data._model ||
-        (data._fallback ? data._fallbackModel : "Groq llama-4-scout");
+        (data._fallback ? data._fallbackModel : "Groq GPT-OSS 120B");
       livadaLog(
         "AI",
         "ask",
@@ -3822,8 +3843,8 @@ async function submitAsk() {
     }
     r.style.display = "block";
     document.getElementById("askCopyRow").style.display = "block";
-    // F4.2 — Buton "Cere parerea Cerebras" (doar daca raspunsul e de la Groq)
-    if (!data._fallback || (data._model && !data._model.includes("cerebras"))) {
+    // F4.2 — Buton "Cere a doua parere" (alt furnizor: Gemini; doar daca raspunsul nu e deja de la el)
+    if (!data._model || data._model.indexOf("Gemini") === -1) {
       var altRow = document.getElementById("askAltRow");
       if (!altRow) {
         altRow = document.createElement("div");
@@ -3833,7 +3854,7 @@ async function submitAsk() {
       }
       altRow.innerHTML =
         '<button class="btn btn-secondary" style="font-size:0.8rem;width:100%;" onclick="askAlternative()">' +
-        "\uD83D\uDD04 Cere p\u0103rerea Cerebras</button>";
+        "\uD83D\uDD04 Cere a doua p\u0103rere (Gemini)</button>";
     }
   } catch (e) {
     document.getElementById("askLoading").style.display = "none";
@@ -3931,20 +3952,20 @@ async function sendAskChat() {
   }
 }
 
-// F4.2 — Cere alternativa Cerebras
+// F4.2 — A doua parere: acelasi /api/ask, alt furnizor (Gemini) — Cerebras nu mai e gratuit (2026-10)
 async function askAlternative() {
   var question = document.getElementById("askInput").value.trim();
   if (!question) return;
   var altRow = document.getElementById("askAltRow");
   if (altRow)
     altRow.innerHTML =
-      '<div class="ai-load" style="display:block;"><div class="ai-load-spinner"></div> Se \u00eentreab\u0103 Cerebras...</div>';
+      '<div class="ai-load" style="display:block;"><div class="ai-load-spinner"></div> Se cere a doua p\u0103rere...</div>';
   var tc = document.getElementById(activeSpeciesId);
   var context = tc ? tc.textContent.substring(0, 3000) : "";
   var _t0Alt = Date.now();
   try {
     var res = await authFetch(
-      "/api/cerebras-opinion",
+      "/api/ask",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -3952,32 +3973,33 @@ async function askAlternative() {
           question: question,
           species: SPECIES[activeSpeciesId] || activeSpeciesId,
           context: context,
+          preferModel: "second",
         }),
       },
       65000,
     );
     var data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Eroare server");
+    if (!res.ok || data.error) throw new Error(data.error || "Eroare server");
     if (altRow) {
       altRow.innerHTML =
         '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">' +
         '<div style="font-size:0.78rem;color:var(--text-dim);font-weight:600;margin-bottom:6px;">' +
-        escapeHtml(data._model || "Cerebras gpt-oss-120b") +
+        escapeHtml(data._model || "Gemini 3.5 Flash-Lite") +
         " (a doua parere):</div>" +
         sanitizeAI(data.answer || "") +
         "</div>";
       renderModelIndicator(
         "askAltRow",
-        data._model || "Cerebras gpt-oss-120b",
+        data._model || "Gemini 3.5 Flash-Lite",
         false,
         Date.now() - _t0Alt,
       );
     }
-    livadaLog("AI", "ask-alt", "OK", "cerebras", Date.now() - _t0Alt);
+    livadaLog("AI", "ask-alt", "OK", data._model || "?", Date.now() - _t0Alt);
   } catch (e) {
     if (altRow)
       altRow.innerHTML =
-        '<div style="color:#ef4444;font-size:0.85rem;">Cerebras indisponibil: ' +
+        '<div style="color:#ef4444;font-size:0.85rem;">A doua p\u0103rere indisponibil\u0103: ' +
         escapeHtml(e.message) +
         "</div>";
     livadaLog("AI", "ask-alt", "ERR", e.message, Date.now() - _t0Alt);
@@ -4003,7 +4025,7 @@ async function submitAiIdent(input) {
           organ: "auto",
         }),
       },
-      35000,
+      65000,
     );
     var data = await res.json();
     document.getElementById("aiIdentLoading").style.display = "none";
@@ -4081,10 +4103,10 @@ async function submitAiIdent(input) {
           '<div style="background:var(--bg-surface);border-radius:10px;padding:12px;border:1px solid var(--border);">';
         html +=
           '<p style="font-size:0.75rem;font-weight:700;color:var(--accent);margin:0 0 8px;text-transform:uppercase;letter-spacing:0.5px;">&#129302; AI — Analiza detaliata</p>';
-        if (data.ai.model && data.ai.model !== "gemini-2.5-flash") {
+        if (data.ai.model && data.ai.model !== "Gemini 2.5 Flash") {
           html +=
             '<p style="font-size:0.72rem;color:var(--text-dim);margin:0 0 6px;">Model: ' +
-            data.ai.model +
+            escapeHtml(data.ai.model) +
             "</p>";
         }
         html +=
@@ -4191,7 +4213,7 @@ async function submitAiGenAsk() {
     } else {
       if (data._fallback)
         showAiFallback(
-          data._fallbackModel || "llama-3.3-70b-versatile",
+          data._fallbackModel || "model de rezerva",
           data._fallbackReason,
         );
       r.innerHTML = sanitizeAI(data.answer || "");
@@ -4297,7 +4319,7 @@ async function sendDiagChat(prefix) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: fullQuestion, species: species }),
       },
-      30000,
+      65000,
     );
     var data = await res.json();
     loadEl.style.display = "none";
@@ -5134,7 +5156,7 @@ async function generateReport() {
     } else {
       if (data._fallback)
         showAiFallback(
-          data._fallbackModel || "llama-3.3-70b-versatile",
+          data._fallbackModel || "model de rezerva",
           data._fallbackReason,
         );
       result.innerHTML =

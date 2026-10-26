@@ -1,11 +1,11 @@
-// Unit tests for api/ask.js — Groq AI intrebari cu fallback chain
-// Mocks: _auth.js, _timeout.js, _ai.js, global fetch
+// Unit tests pentru api/ask.js — Intreaba AI: Groq GPT-OSS → Qwen → Gemini Lite; a doua parere
+// Mocks: _auth.js, _timeout.js (router pe URL/model), _quota.js
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { okOpenAI, okGemini, fail, routeFetch, callLog, readJson, jsonReq, describeCall } from "./helpers/ai.js";
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-
-const { mockFetchWithTimeout, mockCallCerebras } = vi.hoisted(() => ({
+const { mockFetchWithTimeout, mockRecord } = vi.hoisted(() => ({
   mockFetchWithTimeout: vi.fn(),
-  mockCallCerebras: vi.fn(),
+  mockRecord: vi.fn(async () => {}),
 }));
 
 vi.mock("../api/_auth.js", () => ({
@@ -14,258 +14,129 @@ vi.mock("../api/_auth.js", () => ({
   handleOptions: vi.fn(() => new Response(null, { status: 204 })),
   rateLimit: vi.fn(async () => null),
 }));
-
-vi.mock("../api/_timeout.js", () => ({
-  fetchWithTimeout: mockFetchWithTimeout,
-}));
-
-vi.mock("../api/_ai.js", () => ({
-  callCerebras: mockCallCerebras,
-  CEREBRAS_MODEL: "gpt-oss-120b",
-}));
+vi.mock("../api/_timeout.js", () => ({ fetchWithTimeout: mockFetchWithTimeout }));
+vi.mock("../api/_quota.js", () => ({ recordAiCalls: mockRecord }));
 
 import handler from "../api/ask.js";
 
-function fakeReq(method, opts = {}) {
-  const rawText =
-    opts.rawText ??
-    (opts.body !== undefined ? JSON.stringify(opts.body) : "{}");
-  return {
-    method,
-    headers: { get: (name) => opts.headers?.[name.toLowerCase()] ?? null },
-    text: vi.fn(async () => rawText),
-  };
-}
-
-function groqOkResponse(answer = "Raspuns test", model = "test-model") {
-  return {
-    ok: true,
-    status: 200,
-    json: async () => ({
-      choices: [{ message: { content: answer } }],
-      usage: { total_tokens: 100 },
-    }),
-    text: async () => "",
-  };
-}
-
-function groqErrorResponse(status = 500) {
-  return {
-    ok: false,
-    status,
-    json: async () => ({ error: "fail" }),
-    text: async () => "error body",
-  };
-}
+const ask = (body) => handler(jsonReq("/api/ask", "POST", body));
 
 describe("ask API route", () => {
-  const ORIGINAL_KEY = process.env.GROQ_API_KEY;
-
   beforeEach(() => {
-    vi.clearAllMocks();
-    process.env.GROQ_API_KEY = "test-groq-key-1234";
-    delete process.env.CEREBRAS_API_KEY;
+    vi.resetAllMocks();
+    vi.spyOn(console, "log").mockImplementation(() => {});
+    process.env.GROQ_API_KEY = "test-groq";
+    process.env.GOOGLE_AI_API_KEY = "k1";
+    process.env.GOOGLE_AI_API_KEY_2 = "k2";
+    routeFetch(mockFetchWithTimeout, (c) =>
+      c.provider === "groq" ? okOpenAI("Raspuns Groq") : okGemini("Raspuns Gemini"),
+    );
   });
 
-  afterEach(() => {
-    if (ORIGINAL_KEY) process.env.GROQ_API_KEY = ORIGINAL_KEY;
-    else delete process.env.GROQ_API_KEY;
-  });
-
-  it("OPTIONS returns 204", async () => {
-    const res = await handler(fakeReq("OPTIONS"));
-    expect(res.status).toBe(204);
-  });
-
-  it("rejects non-POST methods with 405", async () => {
-    const res = await handler(fakeReq("GET"));
+  it("405 pe GET", async () => {
+    const res = await handler(jsonReq("/api/ask", "GET"));
     expect(res.status).toBe(405);
   });
 
-  it("returns 500 when GROQ_API_KEY is missing", async () => {
-    delete process.env.GROQ_API_KEY;
-    const res = await handler(fakeReq("POST", { body: { question: "test?" } }));
-    expect(res.status).toBe(500);
-    expect((await res.json()).error).toMatch(/GROQ_API_KEY/);
+  it("400 la intrebare goala", async () => {
+    const res = await ask({ question: "   " });
+    expect(res.status).toBe(400);
   });
 
-  it("rejects payload > 50KB with 413", async () => {
-    const res = await handler(fakeReq("POST", { rawText: "x".repeat(50_001) }));
+  it("413 la payload prea mare", async () => {
+    const res = await ask({ question: "x".repeat(60000) });
     expect(res.status).toBe(413);
   });
 
-  it("rejects invalid JSON with 400", async () => {
-    const res = await handler(fakeReq("POST", { rawText: "{bad json" }));
-    expect(res.status).toBe(400);
-  });
-
-  it("rejects empty question with 400", async () => {
-    const res = await handler(fakeReq("POST", { body: { question: "   " } }));
-    expect(res.status).toBe(400);
-    expect((await res.json()).error).toMatch(/intrebare/i);
-  });
-
-  it("rejects missing question with 400", async () => {
-    const res = await handler(fakeReq("POST", { body: { species: "Mar" } }));
-    expect(res.status).toBe(400);
-  });
-
-  // ── Groq primary success ──────────────────────────────────────────────────
-  it("returns answer from Groq primary model (llama-4-scout)", async () => {
-    mockFetchWithTimeout.mockResolvedValue(
-      groqOkResponse("Raspunsul la intrebare"),
-    );
-    const res = await handler(
-      fakeReq("POST", {
-        body: { question: "Cand se tund ciresii?", species: "Cires" },
-      }),
-    );
+  it("raspunde din modelul principal Groq GPT-OSS 120B, fara fallback", async () => {
+    const res = await ask({ question: "Cand tai ciresul?", species: "Cires" });
     expect(res.status).toBe(200);
-    const body = await res.json();
-    expect(body.answer).toBe("Raspunsul la intrebare");
-    expect(body._model).toBe("llama-4-scout");
+    const data = await readJson(res);
+    expect(data).toEqual({ answer: "Raspuns Groq", _model: "Groq GPT-OSS 120B" });
+    expect(callLog(mockFetchWithTimeout)).toEqual(["groq:openai/gpt-oss-120b"]);
+    expect(mockRecord).toHaveBeenCalledWith([{ provider: "groq", ok: true }]);
   });
 
-  it("includes species and context in Groq prompt", async () => {
-    mockFetchWithTimeout.mockResolvedValue(groqOkResponse());
-    await handler(
-      fakeReq("POST", {
-        body: {
-          question: "test?",
-          species: "Piersic",
-          context: "Documentatie piersic",
-        },
-      }),
+  it("include data, specia si contextul in prompt; trunchiaza intrebarea si contextul", async () => {
+    await ask({ question: "q".repeat(9000), species: "Cires", context: "c".repeat(13000) });
+    const { body } = describeCall(...mockFetchWithTimeout.mock.calls[0]);
+    expect(body.messages[0].content).toContain("Specia curenta: Cires");
+    expect(body.messages[0].content).toMatch(/Data de azi este/);
+    const user = body.messages[1].content;
+    expect(user).toContain("c".repeat(12000));
+    expect(user).not.toContain("c".repeat(12001));
+    expect(user).toContain("q".repeat(8000));
+    expect(user).not.toContain("q".repeat(8001));
+  });
+
+  it("model Groq retras (404) → Qwen, cu motiv lizibil", async () => {
+    routeFetch(mockFetchWithTimeout, (c) =>
+      c.model === "openai/gpt-oss-120b" ? fail(404, "model_not_found") : okOpenAI("Raspuns Qwen"),
     );
-    const callBody = JSON.parse(mockFetchWithTimeout.mock.calls[0][1].body);
-    expect(callBody.messages[0].content).toContain("Piersic");
-    expect(callBody.messages[1].content).toContain("Documentatie piersic");
-    expect(callBody.messages[1].content).toContain("test?");
+    const data = await readJson(await ask({ question: "q" }));
+    expect(data.answer).toBe("Raspuns Qwen");
+    expect(data._model).toBe("Groq Qwen 3.8");
+    expect(data._fallback).toBe(true);
+    expect(data._fallbackReason).toBe("Groq GPT-OSS 120B: model retras");
   });
 
-  // ── Fallback chain ────────────────────────────────────────────────────────
-  it("falls back to llama-3.3-70b when scout fails", async () => {
-    mockFetchWithTimeout
-      .mockResolvedValueOnce(groqErrorResponse(500)) // scout fails
-      .mockResolvedValueOnce(groqOkResponse("Fallback answer")); // 70b ok
-
-    const res = await handler(fakeReq("POST", { body: { question: "test?" } }));
-    const body = await res.json();
-    expect(body.answer).toBe("Fallback answer");
-    expect(body._fallback).toBe(true);
-    expect(body._model).toBe("llama-3.3-70b-versatile");
-  });
-
-  it("falls back to Cerebras when all Groq models fail", async () => {
-    mockFetchWithTimeout
-      .mockResolvedValueOnce(groqErrorResponse(500)) // scout fails
-      .mockResolvedValueOnce(groqErrorResponse(500)); // 70b fails
-    mockCallCerebras.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        choices: [{ message: { content: "Cerebras raspuns" } }],
-      }),
-    });
-
-    const res = await handler(fakeReq("POST", { body: { question: "test?" } }));
-    const body = await res.json();
-    expect(body.answer).toBe("Cerebras raspuns");
-    expect(body._model).toBe("Cerebras gpt-oss-120b");
-  });
-
-  it("returns 503 when all AI providers fail", async () => {
-    mockFetchWithTimeout
-      .mockResolvedValueOnce(groqErrorResponse(500))
-      .mockResolvedValueOnce(groqErrorResponse(500));
-    mockCallCerebras.mockResolvedValue({ ok: false, status: 500 });
-
-    const res = await handler(fakeReq("POST", { body: { question: "test?" } }));
-    expect(res.status).toBe(503);
-  });
-
-  it("does not try fallback when Groq returns 401/403 (auth error)", async () => {
-    mockFetchWithTimeout.mockResolvedValue(groqErrorResponse(401));
-    const res = await handler(fakeReq("POST", { body: { question: "test?" } }));
-    expect(res.status).toBe(503);
-    // Only 1 fetch call — no fallback attempted
-    expect(mockFetchWithTimeout).toHaveBeenCalledTimes(1);
-  });
-
-  // ── preferModel = cerebras ────────────────────────────────────────────────
-  it("skips Groq and calls Cerebras directly when preferModel=cerebras", async () => {
-    mockCallCerebras.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        choices: [{ message: { content: "Cerebras direct" } }],
-      }),
-    });
-
-    const res = await handler(
-      fakeReq("POST", {
-        body: { question: "test?", preferModel: "cerebras" },
-      }),
+  it("tot Groq picat → Gemini Flash-Lite pe cheia 2", async () => {
+    routeFetch(mockFetchWithTimeout, (c) =>
+      c.provider === "groq" ? fail(429, "rate") : okGemini("Raspuns Gemini"),
     );
-    const body = await res.json();
-    expect(body.answer).toBe("Cerebras direct");
-    expect(body._model).toBe("Cerebras gpt-oss-120b");
-    expect(mockFetchWithTimeout).not.toHaveBeenCalled();
+    const data = await readJson(await ask({ question: "q" }));
+    expect(data._model).toBe("Gemini 3.5 Flash-Lite");
+    expect(data._fallbackReason).toBe("Groq GPT-OSS 120B: prea multe cereri acum");
+    const last = describeCall(...mockFetchWithTimeout.mock.calls.at(-1));
+    expect(last.key).toBe("k2");
+    expect(last.model).toBe("gemini-3.5-flash-lite");
   });
 
-  it("returns 503 when preferModel=cerebras and Cerebras fails", async () => {
-    mockCallCerebras.mockRejectedValue(new Error("Cerebras down"));
-    const res = await handler(
-      fakeReq("POST", {
-        body: { question: "test?", preferModel: "cerebras" },
-      }),
+  it("fara GROQ_API_KEY → direct la Gemini (fara 500)", async () => {
+    delete process.env.GROQ_API_KEY;
+    const data = await readJson(await ask({ question: "q" }));
+    expect(data._model).toBe("Gemini 3.5 Flash-Lite");
+    expect(callLog(mockFetchWithTimeout)).toEqual(["gemini:gemini-3.5-flash-lite"]);
+  });
+
+  it("toti furnizorii picati → { error } in corp (status 200, raspuns in flux)", async () => {
+    routeFetch(mockFetchWithTimeout, () => fail(500));
+    const res = await ask({ question: "q" });
+    expect(res.status).toBe(200);
+    const data = await readJson(res);
+    expect(data.error).toMatch(/AI indisponibil/);
+    expect(callLog(mockFetchWithTimeout)).toHaveLength(4);
+  });
+
+  it("a doua parere (preferModel=second) foloseste Gemini, nu Groq", async () => {
+    const data = await readJson(await ask({ question: "q", preferModel: "second" }));
+    expect(data).toMatchObject({ answer: "Raspuns Gemini", _model: "Gemini 3.5 Flash-Lite", _second: true });
+    expect(data._fallback).toBeUndefined();
+    expect(callLog(mockFetchWithTimeout)).toEqual(["gemini:gemini-3.5-flash-lite"]);
+  });
+
+  it("preferModel=cerebras (app.js vechi in cache) e tratat ca a doua parere", async () => {
+    const data = await readJson(await ask({ question: "q", preferModel: "cerebras" }));
+    expect(data._second).toBe(true);
+    expect(data._model).toBe("Gemini 3.5 Flash-Lite");
+  });
+
+  it("a doua parere: Gemini picat pe ambele chei → Groq Qwen", async () => {
+    routeFetch(mockFetchWithTimeout, (c) =>
+      c.provider === "gemini" ? fail(503) : okOpenAI("Raspuns Qwen"),
     );
-    expect(res.status).toBe(503);
+    const data = await readJson(await ask({ question: "q", preferModel: "second" }));
+    expect(data._model).toBe("Groq Qwen 3.8");
+    expect(callLog(mockFetchWithTimeout)).toEqual([
+      "gemini:gemini-3.5-flash-lite",
+      "gemini:gemini-3.5-flash-lite",
+      "groq:qwen/qwen3.8-27b",
+    ]);
   });
 
-  // ── Error handling ────────────────────────────────────────────────────────
-  it("handles AbortError (timeout) gracefully", async () => {
-    const abortErr = new Error("timeout");
-    abortErr.name = "AbortError";
-    mockFetchWithTimeout.mockRejectedValue(abortErr);
-
-    const res = await handler(fakeReq("POST", { body: { question: "test?" } }));
-    expect(res.status).toBe(503);
-    expect((await res.json()).error).toMatch(/lent/i);
-  });
-
-  it("handles 429 (rate limit) from Groq", async () => {
-    // Scout returns 429, no fallback (because we need to check the flow)
-    // Actually, 429 is not 401/403, so it does try fallback
-    mockFetchWithTimeout
-      .mockResolvedValueOnce(groqErrorResponse(429)) // scout 429
-      .mockResolvedValueOnce(groqErrorResponse(429)); // 70b 429
-    mockCallCerebras.mockResolvedValue({ ok: false, status: 500 });
-
-    const res = await handler(fakeReq("POST", { body: { question: "test?" } }));
-    expect(res.status).toBe(503);
-  });
-
-  it("truncates question to 8000 chars", async () => {
-    mockFetchWithTimeout.mockResolvedValue(groqOkResponse());
-    await handler(
-      fakeReq("POST", {
-        body: { question: "q".repeat(10000) },
-      }),
-    );
-    const callBody = JSON.parse(mockFetchWithTimeout.mock.calls[0][1].body);
-    const userMsg = callBody.messages[1].content;
-    expect(userMsg.length).toBeLessThanOrEqual(8100); // 8000 + prefix text
-  });
-
-  it("truncates context to 12000 chars", async () => {
-    mockFetchWithTimeout.mockResolvedValue(groqOkResponse());
-    await handler(
-      fakeReq("POST", {
-        body: { question: "test?", context: "c".repeat(15000) },
-      }),
-    );
-    const callBody = JSON.parse(mockFetchWithTimeout.mock.calls[0][1].body);
-    const userMsg = callBody.messages[1].content;
-    // Context is substring(0, 12000) so msg should be less than 12000 + question + prefix
-    expect(userMsg.length).toBeLessThan(13000);
+  it("a doua parere: totul picat → mesaj dedicat", async () => {
+    routeFetch(mockFetchWithTimeout, () => fail(500));
+    const data = await readJson(await ask({ question: "q", preferModel: "second" }));
+    expect(data.error).toMatch(/A doua parere/);
   });
 });

@@ -1,9 +1,10 @@
 import { corsHeaders, handleOptions, checkOrigin, rateLimit } from "./_auth.js";
-import { getQuotaStatus } from "./_quota.js";
+import { getQuotaStatus, getHealthStatus } from "./_quota.js";
 
-// Edge Runtime — health check pentru toate serviciile AI configurate
-// T1 Sprint 1: include si quota usage per provider
-// Sprint 2 fix: rate limit adaugat (era expus fara protectie)
+// Edge Runtime — status servicii AI: cheie prezenta + ULTIMA STARE REALA (din apelurile
+// reale consemnate de rute in Redis) + quota zilnica.
+// `status[x]` e false daca lipseste cheia SAU ultimul apel real a esuat — ca panoul din UI
+// sa nu mai arate "verde" un furnizor mort (incident 2026-10-27).
 export const config = { runtime: "edge" };
 
 export default async function handler(req) {
@@ -16,29 +17,34 @@ export default async function handler(req) {
   if (rlErr) return rlErr;
 
   const t0 = Date.now();
+  const E = process.env;
 
-  // Verifica prezenta cheilor API (nu expune valorile, doar boolean)
-  const status = {
-    groq: !!process.env.GROQ_API_KEY,
-    gemini: !!process.env.GOOGLE_AI_API_KEY,
-    gemini2: !!process.env.GOOGLE_AI_API_KEY_2,
-    github_models: !!process.env.GITHUB_MODELS_TOKEN,
-    cerebras: !!process.env.CEREBRAS_API_KEY,
-    plantnet: !!process.env.PLANTNET_API_KEY,
-    plant_id: !!process.env.PLANT_ID_API_KEY,
-    redis: !!(
-      process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-    ),
-    blob: !!process.env.BLOB_READ_WRITE_TOKEN,
+  // Prezenta cheilor (nu expune valorile, doar boolean)
+  const keys = {
+    groq: !!E.GROQ_API_KEY,
+    gemini: !!E.GOOGLE_AI_API_KEY,
+    gemini2: !!E.GOOGLE_AI_API_KEY_2,
+    gemini_lite: !!(E.GOOGLE_AI_API_KEY || E.GOOGLE_AI_API_KEY_2),
+    mistral: !!E.MISTRAL_API_KEY,
+    xai: !!E.XAI_API_KEY,
+    plantnet: !!E.PLANTNET_API_KEY,
+    plant_id: !!E.PLANT_ID_API_KEY,
+    redis: !!(E.UPSTASH_REDIS_REST_URL && E.UPSTASH_REDIS_REST_TOKEN),
+    blob: !!E.BLOB_READ_WRITE_TOKEN,
   };
 
-  // T1: quota usage per provider (daca Redis indisponibil, quota e {error})
-  const quota = await getQuotaStatus();
+  const [quota, health] = await Promise.all([getQuotaStatus(), getHealthStatus()]);
+
+  const status = {};
+  for (const [k, present] of Object.entries(keys)) {
+    const h = health && !health.error ? health[k] : null;
+    status[k] = present && !(h && h.ok === false);
+  }
 
   console.log(`[ai-status] ${JSON.stringify(status)} t+${Date.now() - t0}ms`);
 
   return Response.json(
-    { status, quota, ts: Date.now() },
+    { status, keys, health, quota, ts: Date.now() },
     {
       headers: {
         ...corsHeaders(req),

@@ -1,320 +1,122 @@
-// Unit tests for api/report.js — Redis + Groq raport anual cu cache + fallback
-// Mocks: @upstash/redis, _auth.js, _timeout.js, _ai.js
+// Unit tests pentru api/report.js — raport anual: cache Redis + lant text (Groq → Qwen → Gemini)
+// Mocks: @upstash/redis, _auth.js, _timeout.js (router), _quota.js
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { okOpenAI, okGemini, fail, routeFetch, callLog, readJson, jsonReq, describeCall } from "./helpers/ai.js";
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+const { mockKv, mockFromEnv, mockFetchWithTimeout, mockRecord } = vi.hoisted(() => {
+  const mockKv = { get: vi.fn(), set: vi.fn() };
+  return {
+    mockKv,
+    mockFromEnv: vi.fn(() => mockKv),
+    mockFetchWithTimeout: vi.fn(),
+    mockRecord: vi.fn(async () => {}),
+  };
+});
 
-const { mockKv, mockFromEnv, mockFetchWithTimeout, mockCallCerebras } =
-  vi.hoisted(() => {
-    const mockKv = {
-      get: vi.fn(),
-      set: vi.fn(),
-    };
-    return {
-      mockKv,
-      mockFromEnv: vi.fn(() => mockKv),
-      mockFetchWithTimeout: vi.fn(),
-      mockCallCerebras: vi.fn(),
-    };
-  });
-
-vi.mock("@upstash/redis", () => ({
-  Redis: { fromEnv: mockFromEnv },
-}));
-
+vi.mock("@upstash/redis", () => ({ Redis: { fromEnv: mockFromEnv } }));
 vi.mock("../api/_auth.js", () => ({
   checkOrigin: vi.fn(() => null),
   corsHeaders: vi.fn(() => ({})),
   handleOptions: vi.fn(() => new Response(null, { status: 204 })),
   rateLimit: vi.fn(async () => null),
 }));
-
-vi.mock("../api/_timeout.js", () => ({
-  fetchWithTimeout: mockFetchWithTimeout,
-}));
-
-vi.mock("../api/_ai.js", () => ({
-  callCerebras: mockCallCerebras,
-  CEREBRAS_MODEL: "gpt-oss-120b",
-}));
+vi.mock("../api/_timeout.js", () => ({ fetchWithTimeout: mockFetchWithTimeout }));
+vi.mock("../api/_quota.js", () => ({ recordAiCalls: mockRecord }));
 
 import handler from "../api/report.js";
 
-function fakeReq(method, body = null) {
-  return {
-    method,
-    headers: { get: () => null },
-    json: vi.fn(async () => {
-      if (body === null) throw new Error("no body");
-      return body;
-    }),
-  };
-}
+const year = new Date().getFullYear();
+const post = (body = {}) => handler(jsonReq("/api/report", "POST", body));
 
-function groqOkResponse(report = "Raport test generat") {
-  return {
-    ok: true,
-    status: 200,
-    json: async () => ({
-      choices: [{ message: { content: report } }],
-      usage: { total_tokens: 500 },
-    }),
-    text: async () => "",
-  };
-}
-
-function groqErrorResponse(status = 500) {
-  return {
-    ok: false,
-    status,
-    text: async () => "error",
-  };
+function kvData({ cached = null, lastUpdate = null, journal = [], meteo = {} } = {}) {
+  mockKv.get.mockImplementation(async (key) => {
+    if (key === `livada:report:cache:${year}`) return cached;
+    if (key === "livada:journal:last-update") return lastUpdate;
+    if (key === "livada:journal") return journal;
+    if (key === "livada:meteo:history") return meteo;
+    return null;
+  });
 }
 
 describe("report API route", () => {
-  const ORIG_KEY = process.env.GROQ_API_KEY;
-  const year = new Date().getFullYear();
-  const cacheKey = `livada:report:cache:${year}`;
-
   beforeEach(() => {
-    vi.clearAllMocks();
-    process.env.GROQ_API_KEY = "test-groq-key";
-    mockFromEnv.mockReturnValue(mockKv);
-    mockKv.get.mockResolvedValue(null);
+    vi.resetAllMocks();
+    vi.spyOn(console, "log").mockImplementation(() => {});
+    mockFromEnv.mockImplementation(() => mockKv);
     mockKv.set.mockResolvedValue("OK");
-    mockFetchWithTimeout.mockResolvedValue(groqOkResponse());
+    kvData();
+    process.env.GROQ_API_KEY = "test-groq";
+    process.env.GOOGLE_AI_API_KEY = "k1";
+    process.env.GOOGLE_AI_API_KEY_2 = "k2";
+    routeFetch(mockFetchWithTimeout, (c) =>
+      c.provider === "groq" ? okOpenAI("Raport Groq") : okGemini("Raport Gemini"),
+    );
   });
 
-  afterEach(() => {
-    if (ORIG_KEY) process.env.GROQ_API_KEY = ORIG_KEY;
-    else delete process.env.GROQ_API_KEY;
+  it("405 pe GET", async () => {
+    expect((await handler(jsonReq("/api/report", "GET"))).status).toBe(405);
   });
 
-  it("OPTIONS returns 204", async () => {
-    const res = await handler(fakeReq("OPTIONS"));
-    expect(res.status).toBe(204);
-  });
-
-  it("rejects non-POST with 405", async () => {
-    const res = await handler(fakeReq("GET"));
-    expect(res.status).toBe(405);
-  });
-
-  it("returns 500 when GROQ_API_KEY is missing", async () => {
-    delete process.env.GROQ_API_KEY;
-    const res = await handler(fakeReq("POST"));
-    expect(res.status).toBe(500);
-    expect((await res.json()).error).toMatch(/GROQ_API_KEY/);
-  });
-
-  // ── Cache hit ─────────────────────────────────────────────────────────────
-  it("returns cached report when fresh (< 1h, no journal update)", async () => {
-    const cached = {
-      report: "Raport cached",
-      generatedAt: Date.now() - 30 * 60_000, // 30 min ago
-      year,
-      journalCount: 5,
-      meteoDays: 10,
-    };
-    mockKv.get.mockImplementation((key) => {
-      if (key === cacheKey) return Promise.resolve(cached);
-      if (key === "livada:journal:last-update")
-        return Promise.resolve(cached.generatedAt - 10000); // journal older than cache
-      return Promise.resolve(null);
-    });
-
-    const res = await handler(fakeReq("POST"));
-    const body = await res.json();
-    expect(body.report).toBe("Raport cached");
-    expect(body._cached).toBe(true);
+  it("intoarce raportul din cache (< 1h, jurnal neschimbat) fara apel AI", async () => {
+    kvData({ cached: { report: "vechi", generatedAt: Date.now() - 60_000 } });
+    const data = await readJson(await post());
+    expect(data).toMatchObject({ report: "vechi", _cached: true });
     expect(mockFetchWithTimeout).not.toHaveBeenCalled();
   });
 
-  it("regenerates when cache is stale (journal updated after generation)", async () => {
-    const cached = {
-      report: "Old report",
-      generatedAt: Date.now() - 10 * 60_000, // 10 min ago
-      year,
-    };
-    mockKv.get.mockImplementation((key) => {
-      if (key === cacheKey) return Promise.resolve(cached);
-      if (key === "livada:journal:last-update")
-        return Promise.resolve(Date.now()); // journal newer than cache
-      if (key === "livada:journal") return Promise.resolve([]);
-      if (key === "livada:meteo:history") return Promise.resolve({});
-      return Promise.resolve(null);
-    });
-
-    const res = await handler(fakeReq("POST"));
-    const body = await res.json();
-    expect(body._cached).toBeUndefined();
-    expect(mockFetchWithTimeout).toHaveBeenCalled();
+  it("regenereaza cand jurnalul s-a schimbat dupa generare", async () => {
+    const gen = Date.now() - 60_000;
+    kvData({ cached: { report: "vechi", generatedAt: gen }, lastUpdate: gen + 1000 });
+    const data = await readJson(await post());
+    expect(data.report).toBe("Raport Groq");
   });
 
-  it("regenerates when cache is expired (> 1h)", async () => {
-    const cached = {
-      report: "Expired report",
-      generatedAt: Date.now() - 2 * 3600_000, // 2h ago
-    };
-    mockKv.get.mockImplementation((key) => {
-      if (key === cacheKey) return Promise.resolve(cached);
-      if (key === "livada:journal") return Promise.resolve([]);
-      if (key === "livada:meteo:history") return Promise.resolve({});
-      return Promise.resolve(null);
-    });
-
-    const res = await handler(fakeReq("POST"));
-    expect(mockFetchWithTimeout).toHaveBeenCalled();
+  it("regenereaza cand cache-ul e mai vechi de 1h", async () => {
+    kvData({ cached: { report: "vechi", generatedAt: Date.now() - 3700_000 } });
+    expect((await readJson(await post())).report).toBe("Raport Groq");
   });
 
-  // ── Groq success ──────────────────────────────────────────────────────────
-  it("generates report with Groq and caches in Redis", async () => {
-    mockKv.get.mockImplementation((key) => {
-      if (key === "livada:journal")
-        return Promise.resolve([
-          {
-            id: 1,
-            date: `${year}-03-15`,
-            type: "tratament",
-            note: "Cupru",
-          },
-        ]);
-      if (key === "livada:meteo:history")
-        return Promise.resolve({
-          [`${year}-03-15`]: {
-            temp: 12,
-            temp_min: 5,
-            temp_max: 15,
-            description: "Senin",
-            humidity: 60,
-          },
-        });
-      return Promise.resolve(null);
+  it("genereaza cu Groq GPT-OSS, salveaza in cache 1h si raporteaza modelul", async () => {
+    kvData({
+      journal: [
+        { date: `${year}-03-10`, type: "tratament", note: "zeama bordeleza" },
+        { date: `${year - 1}-03-10`, type: "tratament", note: "an trecut" },
+      ],
+      meteo: { [`${year}-03-10`]: { temp_min: 1, temp_max: 12, description: "senin", humidity: 60 } },
     });
-    mockFetchWithTimeout.mockResolvedValue(
-      groqOkResponse("Raportul anual complet"),
-    );
-
-    const res = await handler(fakeReq("POST"));
-    const body = await res.json();
-    expect(body.report).toBe("Raportul anual complet");
-    expect(body.year).toBe(year);
-    expect(body.journalCount).toBe(1);
-    expect(body.meteoDays).toBe(1);
-    // Cache should be set
-    expect(mockKv.set).toHaveBeenCalledWith(
-      cacheKey,
-      expect.objectContaining({ report: "Raportul anual complet" }),
-      { ex: 3600 },
-    );
+    const data = await readJson(await post({ localJournal: "nota locala" }));
+    expect(data).toMatchObject({ report: "Raport Groq", year, journalCount: 1, meteoDays: 1, _model: "Groq GPT-OSS 120B" });
+    expect(mockKv.set).toHaveBeenCalledWith(`livada:report:cache:${year}`, expect.objectContaining({ report: "Raport Groq" }), { ex: 3600 });
+    const { body } = describeCall(...mockFetchWithTimeout.mock.calls[0]);
+    const user = body.messages[1].content;
+    expect(user).toContain("zeama bordeleza");
+    expect(user).not.toContain("an trecut");
+    expect(user).toContain("nota locala");
+    expect(body.temperature).toBe(0.4);
   });
 
-  it("includes localJournal from request body in prompt", async () => {
-    mockKv.get.mockImplementation((key) => {
-      if (key === "livada:journal") return Promise.resolve([]);
-      if (key === "livada:meteo:history") return Promise.resolve({});
-      return Promise.resolve(null);
-    });
-    mockFetchWithTimeout.mockResolvedValue(groqOkResponse());
-
-    await handler(fakeReq("POST", { localJournal: "Date locale test" }));
-    const callBody = JSON.parse(mockFetchWithTimeout.mock.calls[0][1].body);
-    expect(callBody.messages[1].content).toContain("Date locale test");
+  it("Groq picat → Qwen → Gemini, cu fallback marcat", async () => {
+    routeFetch(mockFetchWithTimeout, (c) => (c.provider === "groq" ? fail(404) : okGemini("Raport Gemini")));
+    const data = await readJson(await post());
+    expect(data.report).toBe("Raport Gemini");
+    expect(data._fallback).toBe(true);
+    expect(data._fallbackModel).toBe("Gemini 3.5 Flash-Lite");
+    expect(callLog(mockFetchWithTimeout).slice(0, 2)).toEqual(["groq:openai/gpt-oss-120b", "groq:qwen/qwen3.8-27b"]);
   });
 
-  it("filters journal entries by current year", async () => {
-    mockKv.get.mockImplementation((key) => {
-      if (key === "livada:journal")
-        return Promise.resolve([
-          { id: 1, date: `${year}-01-01`, type: "a", note: "this year" },
-          { id: 2, date: `${year - 1}-12-31`, type: "b", note: "last year" },
-        ]);
-      if (key === "livada:meteo:history") return Promise.resolve({});
-      return Promise.resolve(null);
-    });
-    mockFetchWithTimeout.mockResolvedValue(groqOkResponse());
-
-    const res = await handler(fakeReq("POST"));
-    const body = await res.json();
-    expect(body.journalCount).toBe(1);
+  it("toti furnizorii picati → { error }, fara cache", async () => {
+    routeFetch(mockFetchWithTimeout, () => fail(500));
+    const data = await readJson(await post());
+    expect(data.error).toMatch(/nu a raspuns/);
+    expect(mockKv.set).not.toHaveBeenCalled();
   });
 
-  // ── Fallback chain ────────────────────────────────────────────────────────
-  it("falls back to llama-3.3-70b when scout fails", async () => {
-    mockKv.get.mockImplementation((key) => {
-      if (key === "livada:journal") return Promise.resolve([]);
-      if (key === "livada:meteo:history") return Promise.resolve({});
-      return Promise.resolve(null);
-    });
-    mockFetchWithTimeout
-      .mockResolvedValueOnce(groqErrorResponse(500))
-      .mockResolvedValueOnce(groqOkResponse("Fallback report"));
-
-    const res = await handler(fakeReq("POST"));
-    const body = await res.json();
-    expect(body.report).toBe("Fallback report");
-    expect(body._fallback).toBe(true);
-  });
-
-  it("falls back to Cerebras when all Groq models fail", async () => {
-    mockKv.get.mockImplementation((key) => {
-      if (key === "livada:journal") return Promise.resolve([]);
-      if (key === "livada:meteo:history") return Promise.resolve({});
-      return Promise.resolve(null);
-    });
-    mockFetchWithTimeout
-      .mockResolvedValueOnce(groqErrorResponse(500))
-      .mockResolvedValueOnce(groqErrorResponse(500));
-    mockCallCerebras.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        choices: [{ message: { content: "Cerebras report" } }],
-      }),
-    });
-
-    const res = await handler(fakeReq("POST"));
-    const body = await res.json();
-    expect(body.report).toBe("Cerebras report");
-    expect(body._fallbackModel).toBe("Cerebras gpt-oss-120b");
-  });
-
-  it("returns 503 when all AI providers fail", async () => {
-    mockKv.get.mockImplementation((key) => {
-      if (key === "livada:journal") return Promise.resolve([]);
-      if (key === "livada:meteo:history") return Promise.resolve({});
-      return Promise.resolve(null);
-    });
-    mockFetchWithTimeout
-      .mockResolvedValueOnce(groqErrorResponse(500))
-      .mockResolvedValueOnce(groqErrorResponse(500));
-    mockCallCerebras.mockResolvedValue({ ok: false, status: 500 });
-
-    const res = await handler(fakeReq("POST"));
-    expect(res.status).toBe(503);
-  });
-
-  it("returns 503 with rate limit message on Groq 429", async () => {
-    mockKv.get.mockImplementation((key) => {
-      if (key === "livada:journal") return Promise.resolve([]);
-      if (key === "livada:meteo:history") return Promise.resolve({});
-      return Promise.resolve(null);
-    });
-    // Scout returns 429 — since it's not 401/403, it tries fallback
-    mockFetchWithTimeout
-      .mockResolvedValueOnce(groqErrorResponse(429))
-      .mockResolvedValueOnce(groqErrorResponse(429));
-    mockCallCerebras.mockResolvedValue({ ok: false, status: 500 });
-
-    const res = await handler(fakeReq("POST"));
-    expect(res.status).toBe(503);
-  });
-
-  // ── Redis failure ─────────────────────────────────────────────────────────
-  it("returns 503 with UPSTASH message on Redis init failure", async () => {
-    mockFromEnv.mockImplementationOnce(() => {
+  it("Redis neconfigurat → { error } explicit", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    mockFromEnv.mockImplementation(() => {
       throw new Error("UPSTASH_REDIS_REST_URL missing");
     });
-    const res = await handler(fakeReq("POST"));
-    expect(res.status).toBe(503);
-    expect((await res.json()).error).toMatch(/KV/i);
+    const data = await readJson(await post());
+    expect(data.error).toMatch(/Redis/);
   });
 });

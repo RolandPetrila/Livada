@@ -1,18 +1,25 @@
-// T1 Sprint 1: AI cost tracking + quota guard
-// Counter Redis per provider per zi — previne epuizare silent Gemini 1000 req/zi
-// Foloseste Europe/Bucharest pentru "ziua" (aliniaza cu meteo-cron today)
+// AI cost tracking + quota guard + sanatate reala per furnizor
+// Contor Redis per provider per zi (Europe/Bucharest) + ultima stare reala a fiecarui apel.
+// Starea reala exista pentru ca prezenta cheii NU inseamna functionare (2026-10-27: Groq/Cerebras/
+// GitHub Models aveau cheie, dar toate apelurile reale esuau → panoul AI arata fals "verde").
 import { Redis } from "@upstash/redis";
 
-// Limite free tier cunoscute (conservatoare — fara card inregistrat)
+// Limite free tier — [INCERT] Google/Groq nu publica cifre stabile pe pagini oficiale
+// (Gemini: doar in AI Studio). Valori conservatoare; furnizorul raspunde oricum 429 la depasire,
+// iar lantul de fallback trece la urmatorul model.
 export const QUOTA_LIMITS = {
-  gemini: { daily: 1000, warn: 0.8, label: "Gemini" },
-  gemini2: { daily: 1000, warn: 0.8, label: "Gemini (cheia 2)" },
-  groq: { daily: 14400, warn: 0.85, label: "Groq Llama" },
-  cerebras: { daily: 1440, warn: 0.85, label: "Cerebras" },
-  github_models: { daily: 150, warn: 0.7, label: "GitHub Models" },
+  gemini: { daily: 1000, warn: 0.8, label: "Gemini 2.5 Flash" },
+  gemini2: { daily: 1000, warn: 0.8, label: "Gemini 2.5 Flash (cheia 2)" },
+  gemini_lite: { daily: 500, warn: 0.8, label: "Gemini 3.5 Flash-Lite" },
+  groq: { daily: 1000, warn: 0.85, label: "Groq" },
+  mistral: { daily: 1000, warn: 0.85, label: "Mistral Pixtral" },
+  xai: { daily: 100, warn: 0.7, label: "xAI Grok (credite)" },
   plantnet: { daily: 500, warn: 0.8, label: "PlantNet" },
-  plant_id: { daily: 50, warn: 0.6, label: "Plant.ID" },
+  plant_id: { daily: 50, warn: 0.6, label: "Plant.ID (credite totale)" },
 };
+
+const HEALTH_TTL = 14 * 24 * 3600;
+const REDIS_TIMEOUT_MS = 1500;
 
 function todayRomania() {
   return new Intl.DateTimeFormat("en-CA", {
@@ -23,35 +30,57 @@ function todayRomania() {
   }).format(new Date());
 }
 
-// Incrementeaza si verifica quota — returneaza {ok, warning, used, limit, percent}
-export async function checkAndIncrementQuota(provider) {
-  const limit = QUOTA_LIMITS[provider];
-  if (!limit) return { ok: true, unknown: true };
+const quotaKey = (provider, day = todayRomania()) => `ai-quota:${provider}:${day}`;
+const healthKey = (provider) => `ai-health:${provider}`;
 
+function withTimeout(promise, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, rej) =>
+      setTimeout(() => rej(new Error(`${label} timeout`)), REDIS_TIMEOUT_MS),
+    ),
+  ]);
+}
+
+// Citeste (fara increment) daca providerul a depasit cota zilnica. Fail-open la Redis down.
+export async function isOverQuota(provider) {
+  const limit = QUOTA_LIMITS[provider];
+  if (!limit) return false;
+  try {
+    const used = await withTimeout(Redis.fromEnv().get(quotaKey(provider)), "Quota get");
+    return (Number(used) || 0) >= limit.daily;
+  } catch {
+    return false;
+  }
+}
+
+// Consemneaza apelurile facute intr-o cerere: +1 la cota + ultima stare (ok/eroare).
+// attempts: [{ provider, ok, err? }]. Nu arunca niciodata (best effort, 1 RTT).
+export async function recordAiCalls(attempts) {
+  if (!Array.isArray(attempts) || !attempts.length) return;
   try {
     const kv = Redis.fromEnv();
-    const key = `ai-quota:${provider}:${todayRomania()}`;
     const pipeline = kv.pipeline();
-    pipeline.incr(key);
-    pipeline.expire(key, 26 * 3600); // TTL safety margin
-    const [used] = await Promise.race([
-      pipeline.exec(),
-      new Promise((_, rej) =>
-        setTimeout(() => rej(new Error("Quota Redis timeout")), 1500),
-      ),
-    ]);
-    const usedNum = Number(used) || 0;
-    return {
-      ok: usedNum <= limit.daily,
-      warning: usedNum >= Math.floor(limit.daily * limit.warn),
-      used: usedNum,
-      limit: limit.daily,
-      percent: Math.round((usedNum / limit.daily) * 100),
-    };
-  } catch {
-    // Redis indisponibil — nu bloca AI call (fail-open pe quota e acceptabil,
-    // cheia AI va raspunde ea insasi cu 429 daca e depasita).
-    return { ok: true, error: "quota_check_failed" };
+    const now = Date.now();
+    const last = {};
+    for (const a of attempts) {
+      if (!a || !a.provider) continue;
+      if (QUOTA_LIMITS[a.provider]) {
+        pipeline.incr(quotaKey(a.provider));
+        pipeline.expire(quotaKey(a.provider), 26 * 3600);
+      }
+      last[a.provider] = a; // ultima incercare per provider castiga
+    }
+    for (const [provider, a] of Object.entries(last)) {
+      pipeline.set(
+        healthKey(provider),
+        { ok: !!a.ok, at: now, ...(a.ok ? {} : { err: String(a.err || "eroare").substring(0, 140) }) },
+        { ex: HEALTH_TTL },
+      );
+    }
+    await withTimeout(pipeline.exec(), "Record");
+  } catch (e) {
+    console.warn("[quota] record failed:", e?.message);
   }
 }
 
@@ -60,16 +89,9 @@ export async function getQuotaStatus() {
   const out = {};
   try {
     const kv = Redis.fromEnv();
-    const day = todayRomania();
-    const keys = Object.keys(QUOTA_LIMITS).map((p) => `ai-quota:${p}:${day}`);
-    // mget paralel — 1 RTT
-    const values = await Promise.race([
-      kv.mget(...keys),
-      new Promise((_, rej) =>
-        setTimeout(() => rej(new Error("Quota mget timeout")), 1500),
-      ),
-    ]);
-    Object.keys(QUOTA_LIMITS).forEach((provider, i) => {
+    const providers = Object.keys(QUOTA_LIMITS);
+    const values = await withTimeout(kv.mget(...providers.map((p) => quotaKey(p))), "Quota mget");
+    providers.forEach((provider, i) => {
       const used = Number(values[i]) || 0;
       const lim = QUOTA_LIMITS[provider];
       out[provider] = {
@@ -82,7 +104,22 @@ export async function getQuotaStatus() {
     });
     return out;
   } catch {
-    // Redis down — returneaza stub
     return { error: "quota_unavailable" };
+  }
+}
+
+// Ultima stare reala per provider: { provider: { ok, at, err? } | null }
+export async function getHealthStatus() {
+  const out = {};
+  try {
+    const kv = Redis.fromEnv();
+    const providers = Object.keys(QUOTA_LIMITS);
+    const values = await withTimeout(kv.mget(...providers.map(healthKey)), "Health mget");
+    providers.forEach((provider, i) => {
+      out[provider] = values[i] || null;
+    });
+    return out;
+  } catch {
+    return { error: "health_unavailable" };
   }
 }
