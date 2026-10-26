@@ -118,8 +118,8 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 - `GOOGLE_AI_API_KEY_2` — Gemini cheia 2: 3.5 Flash-Lite pt „a doua parere”/text + 2.5 Flash rezerva vision
 - `MISTRAL_API_KEY` — Pixtral-12B vision (rezerva in lantul foto)
 - `XAI_API_KEY` — Grok 4.3 vision (ultimul fallback foto; lent 9–17 s; credite gratuite finite [INCERT permanenta])
-- ~~`GITHUB_MODELS_TOKEN`~~ — **NEFOLOSIT**: GitHub Models retras 30.07.2026. Poate fi sters din Vercel.
-- ~~`CEREBRAS_API_KEY`~~ — **NEFOLOSIT**: Cerebras fara plan gratuit (402, verificat 2026-10-27). Poate fi sters din Vercel.
+- ~~`GITHUB_MODELS_TOKEN`~~ — **STERS din Vercel 2026-10-27** (GitHub Models retras 30.07.2026).
+- ~~`CEREBRAS_API_KEY`~~ — **STERS din Vercel 2026-10-27** (Cerebras fara plan gratuit, 402). Tot atunci sterse si SCALEWAY_API_KEY + OPENWEATHER_API_KEY (nefolosite in cod).
 - `PLANTNET_API_KEY` — Pl@ntNet — identificare specii din poza (identify.js, diagnose.js)
 - `PLANT_ID_API_KEY` — Plant.id v2 — DOAR ultima sursa in diagnose (50 credite TOTALE, 21 ramase la 2026-10-27)
 - `PLANT_ID_USE_V3` — flag config: "1" reactiveaza Plant.id API v3 (cere abonament Plus/Premium); default v2 free (diagnose.js:27)

@@ -94,4 +94,4 @@
 - **Ramas / neverificat:**
   - #12 limite quota reale — doar in Google AI Studio (necesita login Roland). Guard-ul e oricum doar soft: la 429 lantul trece mai departe.
   - Pixtral + Grok 4.3 verificate cu cheile LOCALE (OK), nu cu cheile din Vercel (nu au fost atinse pe prod — apar „inca netestat” in panou pana la primul fallback real).
-  - Vercel env `GITHUB_MODELS_TOKEN`, `CEREBRAS_API_KEY` (+ `SCALEWAY_API_KEY`, `OPENWEATHER_API_KEY`, nefolosite in cod) pot fi sterse — necesita confirmare Roland.
+  - ~~Vercel env nefolosite~~ — **STERSE 2026-10-27** de Roland (GITHUB_MODELS_TOKEN, CEREBRAS_API_KEY, SCALEWAY_API_KEY, OPENWEATHER_API_KEY); verificat cu vercel env ls: raman doar cele 15 folosite.
