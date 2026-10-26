@@ -80,6 +80,17 @@ describe("recordAiCalls", () => {
     expect(mockPipeline.exec).toHaveBeenCalledTimes(1);
   });
 
+  it("salveaza doar categoria erorii, niciodata corpul brut (ai-status e public)", async () => {
+    await recordAiCalls([
+      { provider: "plantnet", ok: false, err: 'HTTP 401: {"error":"bad api-key=SECRET123"}' },
+      { provider: "groq", ok: false, err: "eroare ciudata cu SECRET" },
+    ]);
+    const sets = Object.fromEntries(mockPipeline.set.mock.calls.map(([k, v]) => [k, v]));
+    expect(sets["ai-health:plantnet"].err).toBe("HTTP 401");
+    expect(sets["ai-health:groq"].err).toBe("eroare");
+    expect(JSON.stringify(mockPipeline.set.mock.calls)).not.toContain("SECRET");
+  });
+
   it("lista goala → niciun apel Redis", async () => {
     await recordAiCalls([]);
     expect(mockFromEnv).not.toHaveBeenCalled();

@@ -30,6 +30,17 @@ function todayRomania() {
   }).format(new Date());
 }
 
+// In ai-health salvam DOAR categoria erorii (cod HTTP / timeout), nu corpul brut al raspunsului:
+// /api/ai-status e public, iar corpul unei erori ar putea reflecta URL-uri cu chei (ex. Pl@ntNet).
+function errCategory(err) {
+  const e = String(err || "");
+  const code = e.match(/\b([1-5]\d\d)\b/);
+  if (code) return "HTTP " + code[1];
+  if (/timeout|abort/i.test(e)) return "timeout";
+  if (/gol/.test(e)) return "raspuns gol";
+  return "eroare";
+}
+
 const quotaKey = (provider, day = todayRomania()) => `ai-quota:${provider}:${day}`;
 const healthKey = (provider) => `ai-health:${provider}`;
 
@@ -74,7 +85,7 @@ export async function recordAiCalls(attempts) {
     for (const [provider, a] of Object.entries(last)) {
       pipeline.set(
         healthKey(provider),
-        { ok: !!a.ok, at: now, ...(a.ok ? {} : { err: String(a.err || "eroare").substring(0, 140) }) },
+        { ok: !!a.ok, at: now, ...(a.ok ? {} : { err: errCategory(a.err) }) },
         { ex: HEALTH_TTL },
       );
     }
