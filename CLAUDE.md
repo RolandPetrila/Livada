@@ -52,7 +52,7 @@ Roland.md        — Cerinte originale Roland (C1-C5, toate implementate)
 git add [fisiere] && git commit -m "feat: ..." && git push origin main && vercel --prod
 ```
 
-**Cron meteo (2026-10-27):** 12 Vercel Cron zilnice in `vercel.json` (`/api/meteo-cron?slot=HH`, ore pare UTC; Hobby = max 1×/zi per cron, ±59 min) = baza permanenta. GitHub Actions orar (`meteo-cron.yml`) e bonus: GitHub il dezactiveaza dupa 60 zile fara commit (repo public) → reactivare: `gh workflow enable "Meteo Cron - Actualizare alerte orar"`. Push-ul are dedup 24h, deci rularile duble nu trimit notificari duble.
+**Cron meteo (2026-10-27):** 12 Vercel Cron zilnice in `vercel.json` (`/api/meteo-cron?slot=HH`, ore pare UTC; Hobby = max 1×/zi per cron, ±59 min) = baza permanenta. GitHub Actions orar (`meteo-cron.yml`) **DEZACTIVAT intentionat** (decizie Roland 2026-10-27: nu vrea actualizare din ora in ora) — ramane doar pt rulare manuala (`workflow_dispatch`). NU-l reactiva fara cerere explicita.
 
 **Automatizari build (ruleaza automat pe Vercel la fiecare deploy):**
 
@@ -92,7 +92,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 | ask.js             | Edge+flux | 50s   | Groq GPT-OSS 120B → Groq Qwen 3.8 → Gemini 3.5 Flash-Lite; `preferModel:"second"` = a doua parere (Gemini intai)                                                 |
 | diagnose.js        | Edge+flux | 55s   | Gemini 2.5 Flash (thinking 0) → 3.5 Flash-Lite → cheia 2 → Pixtral → Grok 4.3; Pl@ntNet paralel; Plant.id DOAR daca AI + Pl@ntNet pica                         |
 | frost-alert.js     | Edge    | 5s      | Redis (MGET unic pe toate cheile de alerta)                                                                                                                      |
-| identify.js        | Edge+flux | 50s   | Pl@ntNet + acelasi lant vision ca diagnose (`visionSteps` din `_ai.js`)                                                                                          |
+| identify.js        | Edge+flux | 50s   | Pl@ntNet + lant vision cu `liteFirst` (3.5 Flash-Lite primar, ca 2.5 Flash — doar 20/zi — sa ramana pt diagnostic)                                              |
 | journal.js         | Edge    | 5s      | Redis                                                                                                                                                            |
 | meteo-cron.js      | Edge    | 25s     | Open-Meteo ICON-EU 2.2km + NASA POWER GDD + Redis + push-broadcast alerte                                                                                        |
 | meteo-history.js   | Edge    | 5s      | Redis                                                                                                                                                            |
@@ -114,7 +114,7 @@ Mur, Mur Copac, Afin, Rodiu, Kaki Rojo Brillante
 
 - `LIVADA_API_TOKEN` — autentificare API (dezactivata momentan, rate limit activ)
 - `GROQ_API_KEY` — AI ask + raport (`openai/gpt-oss-120b` primar, `qwen/qwen3.8-27b` rezerva — vezi `MODELS` in `api/_ai.js`)
-- `GOOGLE_AI_API_KEY` — Gemini 2.5 Flash (diagnose/identify primar) + 3.5 Flash-Lite (rezerva vision + text)
+- `GOOGLE_AI_API_KEY` — proiect AI Studio „Livada” (gen-lang-client-0462189427, Free tier). Limite [CERT, AI Studio 2026-10-27]: **2.5 Flash = 5 RPM / 20 RPD**, **3.5 Flash-Lite = 15 RPM / 500 RPD**. 2.5 Flash = primar diagnostic; Flash-Lite = primar identificare + rezerva
 - `GOOGLE_AI_API_KEY_2` — Gemini cheia 2: 3.5 Flash-Lite pt „a doua parere”/text + 2.5 Flash rezerva vision
 - `MISTRAL_API_KEY` — Pixtral-12B vision (rezerva in lantul foto)
 - `XAI_API_KEY` — Grok 4.3 vision (ultimul fallback foto; lent 9–17 s; credite gratuite finite [INCERT permanenta])

@@ -2457,8 +2457,8 @@ var AI_PANEL_CONFIG = {
   ],
   identify: [
     { name: "PlantNet", key: "plantnet", role: "primar" },
-    { name: "Gemini 2.5 Flash", key: "gemini", role: "paralel" },
-    { name: "Gemini 3.5 Flash-Lite", key: "gemini_lite", role: "rezerva" },
+    { name: "Gemini 3.5 Flash-Lite", key: "gemini_lite", role: "paralel" },
+    { name: "Gemini 2.5 Flash", key: "gemini", role: "rezerva" },
     { name: "Pixtral-12B", key: "mistral", role: "rezerva" },
   ],
   report: [
@@ -4103,7 +4103,7 @@ async function submitAiIdent(input) {
           '<div style="background:var(--bg-surface);border-radius:10px;padding:12px;border:1px solid var(--border);">';
         html +=
           '<p style="font-size:0.75rem;font-weight:700;color:var(--accent);margin:0 0 8px;text-transform:uppercase;letter-spacing:0.5px;">&#129302; AI — Analiza detaliata</p>';
-        if (data.ai.model && data.ai.model !== "Gemini 2.5 Flash") {
+        if (data.ai.model && data.ai.model !== "Gemini 3.5 Flash-Lite") {
           html +=
             '<p style="font-size:0.72rem;color:var(--text-dim);margin:0 0 6px;">Model: ' +
             escapeHtml(data.ai.model) +

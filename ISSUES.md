@@ -18,7 +18,7 @@
 | 9 | `Roland.md` suprascris (necomis) — cerintele originale C1–C5 sterse | SEV3 | Pierdere documentatie; nota noua contine afirmatii false (vezi #10) | ✅ |
 | 10 | Nota HuggingFace din `Roland.md` e falsa | INFO | HF Inference: HTTP 402 „no remaining credits”; modelul de specii: „not supported by provider” | ✅ |
 | 11 | Plant.id: 21/50 credite ramase (total, nu lunar) | SEV3 | Se consuma 1 credit la FIECARE diagnostic → ~21 diagnostice pana se epuizeaza (degradare gratioasa, nu crash) | ✅ |
-| 12 | Limite quota in `_quota.js` neverificate (Gemini 1000/zi etc.) | INFO | Guard-ul de quota poate fi prea permisiv/restrictiv; documentatia Google nu publica cifrele (doar in AI Studio) | ⏸️ |
+| 12 | Limite quota in `_quota.js` neverificate (Gemini 1000/zi etc.) | INFO | Guard-ul de quota poate fi prea permisiv/restrictiv; documentatia Google nu publica cifrele (doar in AI Studio) | ✅ |
 | 13 | `CLAUDE.md` invechit (modele, furnizori, „Vercel CLI”) | INFO | Context gresit pentru sesiuni viitoare | ✅ |
 
 ---
@@ -92,6 +92,7 @@
   - Teste: 263/263 (rescrise pe router de fetch). CI GitHub verde. UI verificat cu Playwright (Intreaba + a doua parere, 0 erori consola).
 - **2026-10-27 — commit `b6640f6`:** `ai-health` salveaza doar categoria erorii (`HTTP 4xx`/`timeout`), nu corpul brut (ruta `ai-status` e publica). Streaming verificat pe prod: primul byte la 0,4–0,6 s, raspuns complet la ~10 s (si cu compresie gzip/br).
 - **Ramas / neverificat:**
-  - #12 limite quota reale — doar in Google AI Studio (necesita login Roland). Guard-ul e oricum doar soft: la 429 lantul trece mai departe.
+  - ~~#12~~ **REZOLVAT 2026-10-27** — citit din AI Studio (proiect Livada, Free tier): 2.5 Flash = 5 RPM / **20 RPD** (nu 1000!), 3.5 Flash-Lite = 15 RPM / 500 RPD. `_quota.js` corectat; identificarea porneste acum cu Flash-Lite ca sa nu consume cele 20/zi ale diagnosticului.
+  - Cron GitHub orar **dezactivat manual** (decizie Roland: fara actualizare din ora in ora); raman cele 12 Vercel Cron (~la 2 ore).
   - Pixtral + Grok 4.3 verificate cu cheile LOCALE (OK), nu cu cheile din Vercel (nu au fost atinse pe prod — apar „inca netestat” in panou pana la primul fallback real).
   - ~~Vercel env nefolosite~~ — **STERSE 2026-10-27** de Roland (GITHUB_MODELS_TOKEN, CEREBRAS_API_KEY, SCALEWAY_API_KEY, OPENWEATHER_API_KEY); verificat cu vercel env ls: raman doar cele 15 folosite.

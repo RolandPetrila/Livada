@@ -32,6 +32,9 @@ describe("QUOTA_LIMITS", () => {
     for (const p of ["gemini", "gemini2", "gemini_lite", "groq", "mistral", "xai", "plantnet", "plant_id"]) {
       expect(QUOTA_LIMITS[p]).toMatchObject({ daily: expect.any(Number), label: expect.any(String) });
     }
+    // valori citite din AI Studio (proiect Livada, Free tier) 2026-10-27
+    expect(QUOTA_LIMITS.gemini.daily).toBe(20);
+    expect(QUOTA_LIMITS.gemini_lite.daily).toBe(500);
     expect(QUOTA_LIMITS.cerebras).toBeUndefined();
     expect(QUOTA_LIMITS.github_models).toBeUndefined();
   });

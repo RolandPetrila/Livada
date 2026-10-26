@@ -4,12 +4,14 @@
 // GitHub Models aveau cheie, dar toate apelurile reale esuau → panoul AI arata fals "verde").
 import { Redis } from "@upstash/redis";
 
-// Limite free tier — [INCERT] Google/Groq nu publica cifre stabile pe pagini oficiale
-// (Gemini: doar in AI Studio). Valori conservatoare; furnizorul raspunde oricum 429 la depasire,
-// iar lantul de fallback trece la urmatorul model.
+// Limite free tier. Gemini [CERT] citite din AI Studio → Rate Limit, proiect "Livada"
+// (gen-lang-client-0462189427, Free tier) la 2026-10-27: 2.5 Flash = 5 RPM / 20 RPD,
+// 3.5 Flash-Lite = 15 RPM / 500 RPD. Cheia 2 e in alt proiect [INCERT] — aceeasi limita presupusa.
+// Groq/Mistral/xAI [INCERT] (nepublicate stabil). La depasire furnizorul raspunde 429, iar
+// lantul de fallback trece la urmatorul model; guard-ul doar evita apelul sigur esuat.
 export const QUOTA_LIMITS = {
-  gemini: { daily: 1000, warn: 0.8, label: "Gemini 2.5 Flash" },
-  gemini2: { daily: 1000, warn: 0.8, label: "Gemini 2.5 Flash (cheia 2)" },
+  gemini: { daily: 20, warn: 0.8, label: "Gemini 2.5 Flash" },
+  gemini2: { daily: 20, warn: 0.8, label: "Gemini 2.5 Flash (cheia 2)" },
   gemini_lite: { daily: 500, warn: 0.8, label: "Gemini 3.5 Flash-Lite" },
   groq: { daily: 1000, warn: 0.85, label: "Groq" },
   mistral: { daily: 1000, warn: 0.85, label: "Mistral Pixtral" },

@@ -80,15 +80,17 @@ describe("identify API route", () => {
     expect((await post({ base64: "A".repeat(5 * 1024 * 1024 + 4) })).status).toBe(400);
   });
 
-  it("intoarce Pl@ntNet (max 2 nume comune) + AI Gemini 2.5 Flash", async () => {
+  it("intoarce Pl@ntNet (max 2 nume comune) + AI Gemini 3.5 Flash-Lite (primar la identificare)", async () => {
     const res = await post({ base64: IMG, mimeType: "image/jpeg", organ: "leaf" });
     expect(res.status).toBe(200);
     const data = await readJson(res);
     expect(data.results).toEqual([
       { scientificName: "Malus domestica", commonNames: ["Mar", "Mar de cultura"], family: "Rosaceae", score: 87 },
     ]);
-    expect(data.ai).toEqual({ text: "ID Gemini", model: "Gemini 2.5 Flash" });
+    expect(data.ai).toEqual({ text: "ID Lite", model: "Gemini 3.5 Flash-Lite" });
     expect(data._fallback).toBeUndefined();
+    // 2.5 Flash (doar 20/zi pe free tier) ramane rezervat diagnosticului
+    expect(callLog(mockFetchWithTimeout)).not.toContain("gemini:gemini-2.5-flash");
   });
 
   it("mimeType invalid → image/jpeg in apelul AI", async () => {
@@ -97,12 +99,12 @@ describe("identify API route", () => {
     expect(gem.body.contents[0].parts[1].inline_data.mime_type).toBe("image/jpeg");
   });
 
-  it("Gemini 2.5 Flash picat → 3.5 Flash-Lite, marcat fallback", async () => {
-    setRoutes({ "gemini:gemini-2.5-flash": fail(429) });
+  it("3.5 Flash-Lite picat → Gemini 2.5 Flash, marcat fallback", async () => {
+    setRoutes({ "gemini:gemini-3.5-flash-lite": fail(429) });
     const data = await readJson(await post({ base64: IMG }));
-    expect(data.ai.model).toBe("Gemini 3.5 Flash-Lite");
+    expect(data.ai.model).toBe("Gemini 2.5 Flash");
     expect(data._fallback).toBe(true);
-    expect(data._fallbackReason).toBe("Gemini 2.5 Flash: prea multe cereri acum");
+    expect(data._fallbackReason).toBe("Gemini 3.5 Flash-Lite: prea multe cereri acum");
   });
 
   it("cota Gemini atinsa → nu apeleaza 2.5 Flash", async () => {

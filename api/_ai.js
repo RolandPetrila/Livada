@@ -265,7 +265,14 @@ export async function runChain(steps, { deadline, log = () => {}, attempts = [],
 // Ordine: Gemini 2.5 Flash (cheia 1, cea mai buna calitate masurata) → 3.5 Flash-Lite pe aceeasi
 // cheie (cota separata, ~5 s) → 2.5 Flash cheia 2 → Pixtral → Grok 4.3 (lent, 9–17 s, ultimul).
 // images: array {base64,mimeType} SAU base64 + mimeType. geminiBlocked = cota cheii 1 atinsa.
-export function visionSteps(images, mimeType, prompt, opts, { geminiBlocked = false, primaryMs = 25000 } = {}) {
+// liteFirst: incepe cu 3.5 Flash-Lite (500/zi) ca sa lase 2.5 Flash (doar 20/zi) pt diagnostic.
+export function visionSteps(
+  images,
+  mimeType,
+  prompt,
+  opts,
+  { geminiBlocked = false, primaryMs = 25000, liteFirst = false } = {},
+) {
   const K1 = process.env.GOOGLE_AI_API_KEY;
   const K2 = process.env.GOOGLE_AI_API_KEY_2;
   const MISTRAL = process.env.MISTRAL_API_KEY;
@@ -287,9 +294,10 @@ export function visionSteps(images, mimeType, prompt, opts, { geminiBlocked = fa
     call: (ms) => callOpenAIVision(endpoint, key, model, images, mimeType, prompt, ms, opts),
     parse: openaiText,
   });
+  const flash = gem(K1, MODELS.geminiFlash, "gemini", LABELS.geminiFlash, primaryMs, !!K1 && !geminiBlocked, geminiBlocked ? "quota" : "");
+  const lite = gem(K1, MODELS.geminiLite, "gemini_lite", LABELS.geminiLite, liteFirst ? primaryMs : 15000, !!K1);
   return [
-    gem(K1, MODELS.geminiFlash, "gemini", LABELS.geminiFlash, primaryMs, !!K1 && !geminiBlocked, geminiBlocked ? "quota" : ""),
-    gem(K1, MODELS.geminiLite, "gemini_lite", LABELS.geminiLite, 15000, !!K1),
+    ...(liteFirst ? [lite, flash] : [flash, lite]),
     gem(K2, MODELS.geminiFlash, "gemini2", LABELS.geminiFlash + " (cheia 2)", 25000, !!K2),
     oai("https://api.mistral.ai/v1/chat/completions", MISTRAL, MODELS.mistralVision, "mistral", LABELS.mistralVision, 20000),
     oai("https://api.x.ai/v1/chat/completions", XAI, MODELS.xaiVision, "xai", LABELS.xaiVision, 25000),

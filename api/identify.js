@@ -133,7 +133,7 @@ export default async function handler(req) {
             (e) => ({ status: "rejected", reason: e }),
           )
         : Promise.resolve({ status: "rejected", reason: new Error("no plantnet key") }),
-      runChain(visionSteps(base64, mimeType, AI_PROMPT, IDENTIFY_OPTS, { geminiBlocked, primaryMs: 20000 }), {
+      runChain(visionSteps(base64, mimeType, AI_PROMPT, IDENTIFY_OPTS, { geminiBlocked, primaryMs: 20000, liteFirst: true }), {
         deadline: t0 + BUDGET_MS,
         log,
         attempts,
