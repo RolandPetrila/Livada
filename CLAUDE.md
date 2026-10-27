@@ -206,9 +206,15 @@ Z. Glosar Pomicol — dictionar 80+ termeni tehnici explicati simplu (fisier com
 - [ ] Setup Lighthouse CI + Sentry RUM
 - [ ] HTTP/2 Server Push for critical CSS
 
+## 🔄 LA START SESIUNE NOUA
+
+1. `/onboard` → citeste `ISSUES.md` (probleme + jurnal remediere) — ultima stare: 2026-10-27, tot AI-ul functional pe prod.
+2. Ultimul checkpoint: `~/.claude/context-snapshots/livada-checkpoint-2026-10-27/snapshot.md`.
+3. Ramas: diagnostic real de pe telefon (Roland); Pixtral/Grok neverificate cu cheile Vercel.
+
 ## Imbunatatiri pendinte
 
-**⏭️ NEXT STEP (2026-06-23):** `99_Plan_vs_Audit/PLAN_I2_I3_INTEGRARE_20260623.md` — plan executabil pentru **I2** (decrement stoc la tratament) + **I3** (`treeId` in jurnal/diagnostic/galerie), cu QA pe **preview deploy** + Playwright inainte de prod. **Citeste-l intai.** Livrat in sesiunea 2026-06-23: I1 (unificare cost) + CSP hardening + cache `app.js` + CI teste (commits `a28a036`/`1ab7b5b`), V4 generat (`RECOMANDARI_IMBUNATATIRI_V4.md` — V3 majoritar livrat, gap dominant = integrare subsisteme). Vercel: toate cheile prezente (VAPID activ).
+**⏭️ NEXT STEP (2026-06-23, LIVRAT — I2/I3 pe prod):** `99_Plan_vs_Audit/PLAN_I2_I3_INTEGRARE_20260623.md` — plan executabil pentru **I2** (decrement stoc la tratament) + **I3** (`treeId` in jurnal/diagnostic/galerie), cu QA pe **preview deploy** + Playwright inainte de prod. **Citeste-l intai.** Livrat in sesiunea 2026-06-23: I1 (unificare cost) + CSP hardening + cache `app.js` + CI teste (commits `a28a036`/`1ab7b5b`), V4 generat (`RECOMANDARI_IMBUNATATIRI_V4.md` — V3 majoritar livrat, gap dominant = integrare subsisteme). Vercel: toate cheile prezente (VAPID activ).
 
 **ACTUAL:** `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V3.md` — plan complet V3 (36 recomandari, generat 2026-04-15).
 Vezi si `99_Plan_vs_Audit/RECOMANDARI_IMBUNATATIRI_V2.md` (arhivat — 25/31 itemi DONE) si snapshot V3 in `.claude-outputs/imbunatatiri/2026-04-15_013111/`.
